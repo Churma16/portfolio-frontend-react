@@ -13,8 +13,8 @@ export interface Category extends BaseEntity {
 
 export interface TechStack extends BaseEntity {
     name: string;
-    slug?: string; 
-    icon_url?: string; 
+    slug?: string;
+    icon_url?: string;
 }
 
 export interface Tag extends BaseEntity {
@@ -22,7 +22,7 @@ export interface Tag extends BaseEntity {
     slug: string;
     color?: string;
     category_id?: number;
-    category?: Category; 
+    category?: Category;
 }
 
 // 3. Profile (Berdasarkan tabel 'profiles')
@@ -31,7 +31,6 @@ export interface SocialLinks {
     linkedin?: string;
     email?: string;
     instagram?: string;
-    
 }
 
 export interface Profile extends BaseEntity {
@@ -39,18 +38,18 @@ export interface Profile extends BaseEntity {
     headline: string;
     bio: string;
     avatar: string;
-    cv_files: string; 
-    socials: SocialLinks; 
+    cv_files: string;
+    socials: SocialLinks;
 }
 
-// 4. Work Experience 
+// 4. Work Experience
 export interface WorkExperience extends BaseEntity {
     company: string;
     position: string;
     location: string;
     start_date: string;
-    end_date?: string | null; 
-    is_current: boolean; 
+    end_date?: string | null;
+    is_current: boolean;
     description: string;
 
     // Relasi (Pivot Tables)
@@ -58,12 +57,12 @@ export interface WorkExperience extends BaseEntity {
     stacks?: TechStack[];
 }
 
-// 5. Project 
+// 5. Project
 export interface Project extends BaseEntity {
     title: string;
     slug: string;
     thumbnail: string;
-    content: string; 
+    content: string;
     demo_url?: string;
     repo_url?: string;
     is_featured: boolean;
@@ -71,13 +70,13 @@ export interface Project extends BaseEntity {
 
     // Relasi
     tags?: Tag[];
-    stacks?: TechStack[];
+    tech_stack?: TechStack[];
 }
 
 // 6. API Response Helper (Opsional, biar gampang)
 export interface ApiResponse<T> {
     data: T;
     message?: string;
-    meta?: any;    
+    meta?: any;
     status?: string;
 }
