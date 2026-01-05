@@ -4,7 +4,9 @@ import { Project, ApiResponse } from "../types";
 
 const fetchProjects = async (): Promise<Project[]> => {
     // Ambil response dari Axios
-    const response = await apiClient.get<ApiResponse<Project[]>>("/projects?with=techStacks,tags");
+    const response = await apiClient.get<ApiResponse<Project[]>>(
+        "/projects?with=techStacks,tags"
+    );
 
     // 🔍 PERHATIKAN BARIS INI:
     // response.data = Body JSON dari Laravel ({ data: [...] })
