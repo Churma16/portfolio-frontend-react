@@ -7,8 +7,19 @@ const apiClient = axios.create({
         "Content-Type": "application/json",
         Accept: "application/json",
     },
-    // withCredentials wajib true jika kamu menggunakan Laravel Sanctum untuk autentikasi
-    withCredentials: true,
+    // Disable withCredentials untuk login (akan enable setelah login)
+    withCredentials: false,
+});
+
+apiClient.interceptors.request.use((config) => {
+    // Ambil token yang disimpan saat Login tadi
+    const token = localStorage.getItem("token");
+
+    if (token) {
+        // Tempelkan ke header: "Authorization: Bearer 12345abcde..."
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
 });
 
 // Interceptor untuk menangani error secara global
