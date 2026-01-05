@@ -1,6 +1,7 @@
 import { useProjects } from "../hooks/useProjects";
 import ProjectCard from "../components/projects/ProjectCard";
-import Layout from "../components/layout/layout";
+import Layout from "../components/layout/Layout";
+import Hero from "../components/layout/Hero";
 
 function App() {
     // Panggil hook sakti kita
@@ -8,6 +9,7 @@ function App() {
 
     return (
         <Layout>
+            <Hero/>
             <div className="min-h-dvh bg-linear-to-b from-cyan-200 to-white to-[60vh]">
                 <div className="mx-auto max-w-6xl">
                     <header className="mb-12 text-center">
