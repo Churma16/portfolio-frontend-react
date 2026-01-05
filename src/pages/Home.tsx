@@ -2,6 +2,7 @@ import { useProjects } from "../hooks/useProjects";
 import ProjectCard from "../components/projects/ProjectCard";
 import Layout from "../components/layout/Layout";
 import Hero from "../components/layout/Hero";
+import TechMarquee from "../components/layout/TechMarquee";
 
 function App() {
     // Panggil hook sakti kita
@@ -9,7 +10,10 @@ function App() {
 
     return (
         <Layout>
-            <Hero/>
+            <Hero />
+            <div className="mb-24">
+                <TechMarquee />
+            </div>
             <div className="min-h-dvh bg-linear-to-b from-cyan-200 to-white to-[60vh]">
                 <div className="mx-auto max-w-6xl">
                     <header className="mb-12 text-center">
