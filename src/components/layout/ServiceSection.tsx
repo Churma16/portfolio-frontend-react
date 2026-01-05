@@ -1,5 +1,5 @@
 import ServiceCard from "../Services/ServiceCard";
-// Kita pakai Heroicons 2 Outline biar style-nya crisp & modern
+// Import ikon outline yang modern
 import {
     HiOutlineServer,
     HiOutlineComputerDesktop,
@@ -10,48 +10,45 @@ const services = [
     {
         title: "Backend Development",
         description:
-            "Building robust RESTful APIs using Laravel 11. Focusing on authentication (Sanctum), automated testing (Pest/PHPUnit), and scalable architecture.",
-        icon: <HiOutlineServer className="w-6 h-6" />,
+            "Building robust RESTful APIs using Laravel 11. Focusing on authentication (Sanctum), automated testing (Pest), and scalable architecture.",
+        icon: <HiOutlineServer className="w-6 h-6" />, // Icon Server
     },
     {
         title: "Frontend Engineering",
         description:
             "Crafting responsive Single Page Applications (SPA) with React and Tailwind CSS. Obsessed with pixel-perfect design and smooth interactions.",
-        icon: <HiOutlineComputerDesktop className="w-6 h-6" />,
+        icon: <HiOutlineComputerDesktop className="w-6 h-6" />, // Icon Layar
     },
     {
         title: "Database Optimization",
         description:
-            "Designing efficient schemas in MySQL. Implementing indexing strategies, query optimization, and Redis caching for high-performance data retrieval.",
-        icon: <HiOutlineCircleStack className="w-6 h-6" />,
+            "Designing efficient schemas in MySQL. Implementing indexing strategies, query optimization, and Redis caching for high-performance data.",
+        icon: <HiOutlineCircleStack className="w-6 h-6" />, // Icon Database
     },
 ];
 
 export default function ServicesSection() {
     return (
-        <section className="py-24 relative ">
-            <div className="container mx-auto px-4">
-                {/* Header Section */}
-                <div className="text-center max-w-2xl mx-auto mb-16">
-                    <h2 className="text-3xl md:text-4xl font-heading font-bold text-white mb-4">
+        <section className="py-24 relative">
+            <div className="container mx-auto px-4 relative z-10">
+                {/* Header */}
+                <div className="text-center max-w-2xl mx-auto mb-16 space-y-4">
+                    <h2 className="text-3xl md:text-4xl font-heading font-bold text-white">
                         What I <span className="text-lara-blue">Offer</span>.
                     </h2>
-                    <p className="text-slate-400">
+                    <p className="text-slate-400 text-lg">
                         I don't just write code; I build complete, efficient
-                        solutions. Here are the technical areas where I
-                        specialize.
+                        solutions.
                     </p>
                 </div>
 
-                {/* Grid 3 Kolom */}
+                {/* Grid Container */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
                     {services.map((service, index) => (
                         <ServiceCard
                             key={index}
                             index={index}
-                            title={service.title}
-                            description={service.description}
-                            icon={service.icon}
+                            {...service} // Spread operator biar ringkas
                         />
                     ))}
                 </div>
