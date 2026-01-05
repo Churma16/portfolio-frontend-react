@@ -78,5 +78,6 @@ export interface Project extends BaseEntity {
 export interface ApiResponse<T> {
     data: T;
     message?: string;
+    meta?: any;    
     status?: string;
 }

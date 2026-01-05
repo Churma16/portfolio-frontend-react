@@ -1,18 +1,21 @@
 import { useQuery } from "@tanstack/react-query";
 import apiClient from "../api/axios";
-import type { Project, ApiResponse } from "../types"; // Import dari file index.ts yang baru kamu buat
+import { Project, ApiResponse } from "../types";
 
-// Function fetcher
 const fetchProjects = async (): Promise<Project[]> => {
+    // Ambil response dari Axios
     const response = await apiClient.get<ApiResponse<Project[]>>("/projects");
+
+    // 🔍 PERHATIKAN BARIS INI:
+    // response.data = Body JSON dari Laravel ({ data: [...] })
+    // response.data.data = Array Projects asli ([...])
     return response.data.data;
 };
 
 export const useProjects = () => {
     return useQuery({
-        queryKey: ["projects"], // Key unik biar React Query tau ini data apa
+        queryKey: ["projects"],
         queryFn: fetchProjects,
-        staleTime: 1000 * 60 * 5, // Data dianggap segar selama 5 menit (Cache)
-        retry: 1, // Kalau gagal, coba 1x lagi sebelum error
+        staleTime: 1000 * 60 * 5,
     });
 };
