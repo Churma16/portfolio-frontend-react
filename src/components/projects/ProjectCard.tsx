@@ -1,21 +1,31 @@
 import { Project } from "../../types";
 import { motion } from "framer-motion";
-import { cn } from "../../lib/utils";
-import TechIcon from "../common/TechIcon"; // Pastikan sudah import ini
+import TechIcon from "../common/TechIcon";
+
+interface ProjectCardProps {
+    project: Project;
+    index: number;
+    onClick?: () => void;
+    layoutId?: string;
+}
 
 export default function ProjectCard({
     project,
     index,
-}: {
-    project: Project;
-    index: number;
-}) {
+    onClick, // <--- Terima prop
+    layoutId, // <--- Terima prop
+}: ProjectCardProps) {
     return (
         <motion.div
+            // Pasang layoutId dari props (Penting buat animasi expand)
+            layoutId={layoutId}
+            // Pasang onClick handler
+            onClick={onClick}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: index * 0.1 }}
-            className="group flex flex-col overflow-hidden rounded-2xl bg-[#0a101f] border border-lara-border transition-all duration-300 hover:border-lara-blue/50 hover:shadow-2xl hover:shadow-lara-blue/5 h-full"
+            // Tambahkan cursor-pointer agar terlihat bisa diklik
+            className="group flex flex-col overflow-hidden rounded-2xl bg-[#0a101f] border border-lara-border transition-all duration-300 hover:border-lara-blue/50 hover:shadow-2xl hover:shadow-lara-blue/5 h-full cursor-pointer"
         >
             {/* Thumbnail */}
             <div className="relative aspect-video overflow-hidden bg-slate-800">
