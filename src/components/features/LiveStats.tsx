@@ -1,60 +1,63 @@
-import { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { SiRedis } from "react-icons/si";
+import apiClient from "../../api/axios";
+
+// Definisikan tipe respon dari API Health kita
+interface HealthResponse {
+    status: string;
+    redis_alive: boolean;
+    server_time: number;
+    redis_processing_time: number; // <--- Field baru dari backend
+}
 
 export default function LiveStats() {
-    const [ping, setPing] = useState(45);
-    const [isHit, setIsHit] = useState(true);
+    const { data, isLoading, isError } = useQuery({
+        queryKey: ["health-check"],
+        queryFn: async () => {
+            const start = Date.now();
+            const response = await apiClient.get<HealthResponse>("/health");
+            const end = Date.now();
+            const latency = end - start;
 
-    // Simulasi Ping & Cache Status berubah tiap 2 detik
-    useEffect(() => {
-        const interval = setInterval(() => {
-            // Random ping antara 20ms - 90ms
-            setPing(Math.floor(Math.random() * (90 - 20 + 1) + 20));
+            return {
+                ping: latency, // Latency Jaringan (Gede)
+                redis: response.data.redis_alive,
+                // Ambil waktu proses asli dari server (Kecil banget)
+                redisTime: response.data.redis_processing_time,
+            };
+        },
+        refetchInterval: 3000, // Cek tiap 3 detik biar seru
+        refetchOnWindowFocus: false,
+    });
 
-            // Random Cache HIT (90% chance) vs MISS (10% chance)
-            setIsHit(Math.random() > 0.1);
-        }, 2000);
-
-        return () => clearInterval(interval);
-    }, []);
+    const ping = data?.ping ?? 0;
+    const redisTime = data?.redisTime ?? 0; // Default 0
+    const isRedisAlive = data?.redis ?? false;
 
     return (
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 mt-12 font-mono text-xs sm:text-sm text-lara-sky/70">
-            {/* Stat 1: Server Response */}
-            <div className="flex items-center gap-2 bg-lara-dark/50 border border-white/5 px-4 py-2 rounded-full backdrop-blur-sm">
-                <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-                </span>
-                <span>Server Response:</span>
-                <motion.span
-                    key={ping} // Trigger animasi pas angka berubah
-                    initial={{ opacity: 0, y: -5 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className={`font-bold ${
-                        ping < 50 ? "text-green-400" : "text-yellow-400"
-                    }`}
-                >
-                    {ping}ms
-                </motion.span>
+            {/* 1. NETWORK LATENCY (Tetap ada buat info) */}
+            <div className="flex items-center gap-2 bg-lara-dark/50 border border-white/5 px-4 py-2 rounded-full backdrop-blur-sm opacity-60">
+                <span>Network Latency:</span>
+                <span className="font-bold text-slate-400">{ping}ms</span>
             </div>
 
-            {/* Stat 2: Redis Cache */}
-            <div className="flex items-center gap-2 bg-lara-dark/50 border border-white/5 px-4 py-2 rounded-full backdrop-blur-sm">
-                <SiRedis className="text-red-500" />
-                <span>Cache Status:</span>
+            {/* 2. REDIS PERFORMANCE (SHOW OFF ITEM!) */}
+            <div className="flex items-center gap-2 bg-lara-dark/50 border border-green-500/30 px-4 py-2 rounded-full backdrop-blur-sm shadow-[0_0_15px_rgba(34,197,94,0.2)]">
+                <SiRedis
+                    className={isRedisAlive ? "text-red-500" : "text-slate-500"}
+                />
+                <span className="text-white font-medium">Redis Response:</span>
+
+                {/* Angka ini harusnya super kecil */}
                 <motion.span
-                    key={isHit ? "HIT" : "MISS"}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className={`font-bold px-1.5 rounded ${
-                        isHit
-                            ? "bg-green-500/20 text-green-400"
-                            : "bg-red-500/20 text-red-400"
-                    }`}
+                    key={redisTime}
+                    initial={{ scale: 1.2, color: "#fff" }}
+                    animate={{ scale: 1, color: "#4ade80" }}
+                    className="font-bold text-green-400 text-base"
                 >
-                    {isHit ? "HIT" : "MISS"}
+                    {isLoading ? "..." : `${redisTime} ms`} ⚡
                 </motion.span>
             </div>
         </div>

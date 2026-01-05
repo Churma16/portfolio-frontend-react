@@ -51,30 +51,53 @@ const DataFlow = ({
 }: {
     label: string;
     direction?: "right" | "left";
-}) => (
-    <div className="hidden lg:flex flex-col items-center justify-center w-32 relative mx-2">
-        {/* Label (JSON / SQL) */}
-        <span className="absolute -top-6 text-[10px] font-bold text-slate-500 uppercase tracking-widest">
-            {label}
-        </span>
+}) => {
+    // Style panah (segitiga)
+    const arrowStyles =
+        "absolute top-1/2 -translate-y-1/2 w-0 h-0 border-y-[5px] border-y-transparent";
 
-        {/* Garis */}
-        <div className="w-full h-[2px] bg-slate-800 relative overflow-hidden">
-            {/* Titik Jalan (Animasi Paket) */}
-            <motion.div
-                animate={{ x: direction === "right" ? [-20, 140] : [140, -20] }}
-                transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
-                className="absolute top-0 left-0 w-8 h-full bg-gradient-to-r from-transparent via-lara-blue to-transparent"
-            />
-        </div>
+    return (
+        <div className="hidden lg:flex flex-col items-center justify-center w-32 relative mx-2">
+            <span className="absolute -top-6 text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+                {label}
+            </span>
 
-        {/* Panah Ujung */}
-        <div className="absolute w-full flex justify-between px-0 text-slate-800">
-            <span>◄</span>
-            <span>►</span>
+            <div className="relative w-full h-[2px] bg-slate-800 flex items-center">
+                {/* Panah Kiri */}
+                <div
+                    className={`${arrowStyles} left-0 border-r-[8px] border-r-slate-800`}
+                />
+
+                {/* Container Sinar (Overflow Hidden agar sinar muncul/hilang pas di ujung) */}
+                <div className="relative w-full h-full overflow-hidden">
+                    <motion.div
+                        // PERBAIKAN DI SINI:
+                        // Kita ubah jarak tempuhnya menjadi jauh lebih besar (400%)
+                        // Karena lebar elemen ini cuma 25% (w-1/4), dia butuh travel 400% untuk sampai ujung.
+                        animate={{
+                            x:
+                                direction === "right"
+                                    ? ["-100%", "400%"]
+                                    : ["400%", "-100%"],
+                        }}
+                        transition={{
+                            duration: 1.5,
+                            repeat: Infinity,
+                            ease: "linear",
+                        }}
+                        // Kita kecilkan juga lebarnya jadi w-1/4 biar sinarnya lebih tajam/cepat
+                        className="absolute top-0 left-0 w-1/4 h-full bg-gradient-to-r from-transparent via-lara-blue to-transparent"
+                    />
+                </div>
+
+                {/* Panah Kanan */}
+                <div
+                    className={`${arrowStyles} right-0 border-l-[8px] border-l-slate-800`}
+                />
+            </div>
         </div>
-    </div>
-);
+    );
+};
 
 export default function ArchitectureDiagram() {
     return (
