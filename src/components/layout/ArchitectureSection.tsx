@@ -3,20 +3,33 @@ import LiveStats from "../features/LiveStats";
 
 export default function ArchitectureSection() {
     return (
-        <section className="relative py-24 border-y border-lara-border overflow-hidden bg-[#050914]">
-            {/* --- BACKGROUND GRID PATTERN (CSS TRICK) --- */}
-            <div
-                className="absolute inset-0 pointer-events-none opacity-[0.03]"
-                style={{
-                    backgroundImage: `
-                   linear-gradient(to right, #808080 1px, transparent 1px),
-                   linear-gradient(to bottom, #808080 1px, transparent 1px)
-               `,
-                    backgroundSize: "40px 40px",
-                }}
-            />
-            {/* Vignette biar grid-nya nge-fade di pinggir */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#050914] via-transparent to-[#050914]" />
+        // 1. Hapus bg-[#050914], ganti jadi relative saja (transparan/ikut body)
+        // 2. Hapus border-y kalau mau benar-benar seamless (opsional)
+        <section className="relative py-32 overflow-hidden">
+            {/* --- REVISI BACKGROUND: SPOTLIGHT EFFECT --- */}
+
+            {/* Layer 1: Grid Pattern dengan Masking Radial */}
+            {/* Grid hanya muncul di tengah dan memudar ke transparan di pinggir */}
+            <div className="absolute inset-0 z-0 pointer-events-none">
+                <div
+                    className="absolute inset-0 opacity-[0.15]"
+                    style={{
+                        backgroundImage: `
+                    linear-gradient(to right, #808080 1px, transparent 1px),
+                    linear-gradient(to bottom, #808080 1px, transparent 1px)
+                `,
+                        backgroundSize: "40px 40px",
+                        // KUNCI: Masking agar grid tidak kotak, tapi lonjong memudar
+                        maskImage:
+                            "radial-gradient(ellipse 80% 50% at 50% 50%, black 0%, transparent 100%)",
+                        WebkitMaskImage:
+                            "radial-gradient(ellipse 80% 50% at 50% 50%, black 0%, transparent 100%)",
+                    }}
+                />
+            </div>
+
+            {/* Layer 2: Glow Biru Samar di Tengah (Biar diagramnya "pop") */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-1/2 bg-lara-blue/5 blur-[120px] rounded-full -z-10" />
 
             <div className="container mx-auto px-4 relative z-10">
                 {/* HEADER */}
@@ -25,8 +38,7 @@ export default function ArchitectureSection() {
                         Under the <span className="text-lara-blue">Hood</span>.
                     </h2>
                     <p className="text-slate-400 text-lg">
-                        This portfolio isn't just a static template. It's a
-                        full-featured{" "}
+                        This portfolio is a full-featured{" "}
                         <span className="text-white font-medium">
                             Single Page Application (SPA)
                         </span>{" "}
@@ -40,8 +52,7 @@ export default function ArchitectureSection() {
                 {/* STATS */}
                 <LiveStats />
 
-                {/* FOOTNOTE */}
-                <p className="text-center text-[10px] text-slate-600 font-mono mt-12 uppercase tracking-widest">
+                <p className="text-center text-[10px] text-slate-600 font-mono mt-12 uppercase tracking-widest opacity-50">
                     System Status: 🟢 All Systems Operational
                 </p>
             </div>
