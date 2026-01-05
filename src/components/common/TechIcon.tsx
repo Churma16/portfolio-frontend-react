@@ -9,6 +9,10 @@ import {
     SiFramer,
     SiVite,
     SiDocker,
+    SiGit,
+    SiRedis,
+    SiPostgresql,
+    SiNginx,
 } from "react-icons/si";
 
 interface TechIconProps {
@@ -50,6 +54,15 @@ export default function TechIcon({ name, className }: TechIconProps) {
             return <SiVite className={className} />;
         case "docker":
             return <SiDocker className={className} />;
+        case "git":
+            return <SiGit className={className} />;
+        case "redis":
+            return <SiRedis className={className} />;
+        case "postgresql":
+        case "pgsql":
+            return <SiPostgresql className={className} />;
+        case "nginx":
+            return <SiNginx className={className} />;
 
         // Default jika icon tidak ditemukan (Munculkan inisial huruf pertama)
         default:
