@@ -4,31 +4,25 @@ import { HiPaperAirplane } from "react-icons/hi2";
 import { CgSpinner } from "react-icons/cg";
 
 export default function ContactSection() {
-    // State untuk Form Data
+    // State Form (Tidak Berubah)
     const [formData, setFormData] = useState({
         name: "",
         email: "",
         message: "",
     });
-
-    // State untuk UI (Loading, Success, Error)
     const [status, setStatus] = useState<"idle" | "submitting" | "success">(
         "idle"
     );
     const [errors, setErrors] = useState<Record<string, string>>({});
 
-    // Handle Input Change
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
-        // Hapus error realtime saat user mengetik
-        if (errors[e.target.name]) {
+        if (errors[e.target.name])
             setErrors({ ...errors, [e.target.name]: "" });
-        }
     };
 
-    // Validasi Sederhana
     const validate = () => {
         const newErrors: Record<string, string> = {};
         if (!formData.name) newErrors.name = "Name is required.";
@@ -38,38 +32,45 @@ export default function ContactSection() {
             newErrors.email = "Email is invalid.";
         }
         if (!formData.message) newErrors.message = "Message cannot be empty.";
-
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
 
-    // Handle Submit
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
-
         if (!validate()) return;
-
         setStatus("submitting");
-
-        // --- SIMULASI API CALL (Nanti diganti axios.post) ---
         setTimeout(() => {
             setStatus("success");
             setFormData({ name: "", email: "", message: "" });
-
-            // Reset status ke idle setelah 3 detik
             setTimeout(() => setStatus("idle"), 3000);
         }, 2000);
     };
 
     return (
-        <section
-            id="contact"
-            className="py-24 relative overflow-hidden bg-[#050914]"
-        >
-            {/* Background Decoration */}
-            <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-purple-600/10 rounded-full blur-[100px] -z-10" />
+        // 1. HAPUS bg-[#050914], ganti jadi relative transparan
+        <section id="contact" className="py-24 relative overflow-hidden">
+            {/* --- BACKGROUND SEAMLESS (GRID PATTERN) --- */}
+            <div className="absolute inset-0 z-0 pointer-events-none">
+                <div
+                    className="absolute inset-0 opacity-[0.3]" // Opacity dinaikkan biar kelihatan
+                    style={{
+                        backgroundImage:
+                            "radial-gradient(#94a3b8 1px, transparent 1px)", // Warna titik lebih terang (Slate-400)
+                        backgroundSize: "32px 32px", // Jarak antar titik
+                        // Masking lebih lebar supaya tidak habis di pinggir
+                        maskImage:
+                            "radial-gradient(circle at center, black 20%, transparent 100%)",
+                        WebkitMaskImage:
+                            "radial-gradient(circle at center, black 20%, transparent 100%)",
+                    }}
+                />
+            </div>
 
-            <div className="container mx-auto px-4 max-w-4xl">
+            {/* Dekorasi Glow Ungu/Biru Samar */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-lara-blue/10 rounded-full blur-[100px] -z-10" />
+
+            <div className="container mx-auto px-4 max-w-4xl relative z-10">
                 {/* Header */}
                 <div className="text-center mb-16 space-y-4">
                     <h2 className="text-3xl md:text-4xl font-heading font-bold text-white">
@@ -87,7 +88,8 @@ export default function ContactSection() {
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="bg-[#0a101f] border border-white/5 p-8 md:p-10 rounded-2xl shadow-2xl relative overflow-hidden"
+                    // 2. Ubah background kartu jadi semi-transparan + blur biar nyatu
+                    className="bg-[#0a101f]/80 backdrop-blur-md border border-white/5 p-8 md:p-10 rounded-2xl shadow-2xl relative overflow-hidden"
                 >
                     {/* Spotlight Effect Top Border */}
                     <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-lara-blue to-transparent opacity-50" />
@@ -96,7 +98,6 @@ export default function ContactSection() {
                         onSubmit={handleSubmit}
                         className="space-y-6 relative z-10"
                     >
-                        {/* Row 1: Name & Email */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             {/* Input Name */}
                             <div className="space-y-2">
@@ -109,7 +110,8 @@ export default function ContactSection() {
                                     value={formData.name}
                                     onChange={handleChange}
                                     placeholder="John Doe"
-                                    className={`w-full bg-[#050914] border ${
+                                    // Input bg transparan gelap
+                                    className={`w-full bg-[#050914]/50 border ${
                                         errors.name
                                             ? "border-red-500/50 focus:border-red-500"
                                             : "border-white/10 focus:border-lara-blue"
@@ -133,7 +135,7 @@ export default function ContactSection() {
                                     value={formData.email}
                                     onChange={handleChange}
                                     placeholder="john@example.com"
-                                    className={`w-full bg-[#050914] border ${
+                                    className={`w-full bg-[#050914]/50 border ${
                                         errors.email
                                             ? "border-red-500/50 focus:border-red-500"
                                             : "border-white/10 focus:border-lara-blue"
@@ -147,7 +149,7 @@ export default function ContactSection() {
                             </div>
                         </div>
 
-                        {/* Row 2: Message */}
+                        {/* Message */}
                         <div className="space-y-2">
                             <label className="text-sm font-medium text-slate-300">
                                 Message
@@ -158,7 +160,7 @@ export default function ContactSection() {
                                 value={formData.message}
                                 onChange={handleChange}
                                 placeholder="Tell me about your project..."
-                                className={`w-full bg-[#050914] border ${
+                                className={`w-full bg-[#050914]/50 border ${
                                     errors.message
                                         ? "border-red-500/50 focus:border-red-500"
                                         : "border-white/10 focus:border-lara-blue"
