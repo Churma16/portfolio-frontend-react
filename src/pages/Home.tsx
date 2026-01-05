@@ -6,6 +6,7 @@ import TechMarquee from "../components/layout/TechMarquee";
 import { useTechStacks } from "../hooks/useTechStacks";
 import AboutSection from "../components/layout/AboutSection";
 import ArchitectureSection from "../components/layout/ArchitectureSection";
+import ServicesSection from "../components/layout/ServiceSection";
 
 function App() {
     // Panggil hook sakti kita
@@ -67,6 +68,7 @@ function App() {
                 </div>
             </div>
             <AboutSection />
+            <ServicesSection/>
             <ArchitectureSection />
         </Layout>
     );
