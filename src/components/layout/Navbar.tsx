@@ -12,7 +12,7 @@ export default function Navbar() {
                         to="/"
                         className="text-2xl font-heading font-bold text-white tracking-tight"
                     >
-                        Fathan<span className="text-lara-blue">.dev</span>
+                        Churma<span className="text-lara-blue">.dev</span>
                     </Link>
 
                     {/* Menu dengan Font Kanit (font-body) */}
