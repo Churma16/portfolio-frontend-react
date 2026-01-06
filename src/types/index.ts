@@ -74,6 +74,7 @@ export interface Project extends BaseEntity {
     published_at?: string;
 
     // Relasi
+    category?: Category;
     tags?: Tag[];
     tech_stack?: TechStack[];
 }
