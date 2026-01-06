@@ -1,18 +1,18 @@
 import { Outlet, useNavigate, Link } from "react-router-dom";
+import { logout } from "@/lib/auth";
 import {
     HiOutlineHome,
     HiOutlineCube,
     HiArrowRightOnRectangle,
     HiCommandLine,
     HiTag,
+    HiList,
+
 } from "react-icons/hi2";
 
 export default function DashboardLayout() {
-    const navigate = useNavigate();
-
     const handleLogout = () => {
-        localStorage.removeItem("token");
-        navigate("/login");
+        logout();
     };
 
     return (
@@ -26,25 +26,32 @@ export default function DashboardLayout() {
                 </div>
                 <nav className="flex-1 px-4 space-y-2">
                     <Link
-                        to="/dashboard"
+                        to="/admin"
                         className="flex items-center gap-3 px-4 py-3 bg-white/5 rounded-lg text-white hover:bg-white/10"
                     >
                         <HiOutlineCube className="w-5 h-5 text-lara-blue" />
                         Projects
                     </Link>
                     <Link
-                        to="/dashboard/tech-stacks"
+                        to="/admin/tech-stacks"
                         className="flex items-center gap-3 px-4 py-3 bg-transparent rounded-lg text-slate-400 hover:text-white hover:bg-white/5"
                     >
                         <HiCommandLine className="w-5 h-5" />
                         Tech Stacks
                     </Link>
                     <Link
-                        to="/dashboard/tags"
+                        to="/admin/tags"
                         className="flex items-center gap-3 px-4 py-3 bg-transparent rounded-lg text-slate-400 hover:text-white hover:bg-white/5"
                     >
                         <HiTag className="w-5 h-5" />
                         Tags
+                    </Link>
+                    <Link
+                        to="/admin/categories"
+                        className="flex items-center gap-3 px-4 py-3 bg-transparent rounded-lg text-slate-400 hover:text-white hover:bg-white/5"
+                    >
+                        {/* <HiList className="w-5 h-5" /> */}
+                        Categories
                     </Link>
                 </nav>
 
