@@ -1,4 +1,5 @@
 import { useState, useEffect, FormEvent } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
     HiOutlineEnvelope,
@@ -9,12 +10,16 @@ import {
 } from "react-icons/hi2";
 import { CgSpinner } from "react-icons/cg";
 import Layout from "../components/layout/Layout";
+import apiClient from "../api/axios";
 
 export default function Login() {
-    const [formData, setFormData] = useState({ email: "", password: "" });
+    const navigate = useNavigate();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const [status, setStatus] = useState<
         "idle" | "loading" | "success" | "error"
     >("idle");
+    const [errorMessage, setErrorMessage] = useState("");
     const [isGlitch, setIsGlitch] = useState(false);
 
     // --- LOGIKA GLITCH LOOP ---
@@ -31,14 +36,51 @@ export default function Login() {
         return () => clearTimeout(initialTimeout);
     }, []);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
-
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         setStatus("loading");
-        setTimeout(() => setStatus("success"), 2000);
+        setErrorMessage("");
+
+        try {
+            // 1. Hit API Login
+            const response = await apiClient.post("/login", {
+                email,
+                password,
+            });
+
+            console.log("Response Login:", response.data);
+
+            // 2. Ambil token dari response
+            const token =
+                response.data.access_token ||
+                response.data.token ||
+                response.data.data?.access_token;
+
+            if (!token) {
+                setStatus("error");
+                setErrorMessage(
+                    "Login Gagal: Token tidak diterima dari server"
+                );
+                console.error("Response structure:", response.data);
+                return;
+            }
+
+            // 3. Simpan ke LocalStorage
+            localStorage.setItem("token", token);
+
+            // 4. Redirect ke halaman admin/dashboard
+            setStatus("success");
+            setTimeout(() => navigate("/admin/dashboard"), 1500);
+        } catch (error: any) {
+            console.error("Login Error:", error);
+            setStatus("error");
+            setErrorMessage(
+                "Login Gagal: " +
+                    (error.response?.data?.message ||
+                        error.message ||
+                        "Unknown error")
+            );
+        }
     };
 
     return (
@@ -175,6 +217,11 @@ export default function Login() {
                         </div>
 
                         <form onSubmit={handleSubmit} className="space-y-6">
+                            {status === "error" && (
+                                <div className="bg-red-500/20 border border-red-500/50 text-red-300 px-4 py-3 rounded-lg text-sm">
+                                    {errorMessage}
+                                </div>
+                            )}
                             <div className="space-y-2">
                                 <label className="text-xs font-bold uppercase tracking-widest text-slate-500">
                                     {isGlitch ? "TARGET_ID" : "Email Address"}
@@ -189,10 +236,11 @@ export default function Login() {
                                     </div>
                                     <input
                                         type="email"
-                                        name="email"
                                         required
-                                        value={formData.email}
-                                        onChange={handleChange}
+                                        value={email}
+                                        onChange={(e) =>
+                                            setEmail(e.target.value)
+                                        }
                                         className={`w-full rounded-lg pl-10 pr-4 py-3 outline-none transition-none ${
                                             !isGlitch &&
                                             "bg-[#050914]/50 border border-white/10 focus:border-lara-blue text-white placeholder:text-slate-600"
@@ -220,10 +268,11 @@ export default function Login() {
                                     </div>
                                     <input
                                         type="password"
-                                        name="password"
                                         required
-                                        value={formData.password}
-                                        onChange={handleChange}
+                                        value={password}
+                                        onChange={(e) =>
+                                            setPassword(e.target.value)
+                                        }
                                         className={`w-full rounded-lg pl-10 pr-4 py-3 outline-none transition-none ${
                                             !isGlitch &&
                                             "bg-[#050914]/50 border border-white/10 focus:border-lara-blue text-white placeholder:text-slate-600"
