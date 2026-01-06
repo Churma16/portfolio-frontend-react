@@ -2,7 +2,7 @@ const GUEST_TOKEN = import.meta.env.VITE_GUEST_TOKEN;
 
 export const logout = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("token_type"); // Remove marker
+    localStorage.removeItem("abilities");
     window.location.href = "/";
 };
 
@@ -12,21 +12,44 @@ export const getToken = () => {
 };
 
 export const isAdmin = () => {
-    // Cek dari localStorage marker, bukan dari token prefix
-    return localStorage.getItem("token_type") === "admin";
+    // Check dari abilities (dari database)
+    const abilities = localStorage.getItem("abilities");
+    if (!abilities) return false;
+
+    try {
+        const parsedAbilities = JSON.parse(abilities);
+        return (
+            Array.isArray(parsedAbilities) && parsedAbilities.includes("admin")
+        );
+    } catch {
+        return false;
+    }
 };
 
 export const isGuest = () => {
-    return (
-        !localStorage.getItem("token") ||
-        localStorage.getItem("token_type") !== "admin"
-    );
+    return !isAdmin();
 };
 
-export const setAdminToken = (token: string) => {
+export const setAdminToken = (token: string, abilities?: string[]) => {
     // Simpan token TANPA prefix
     localStorage.setItem("token", token);
-    localStorage.setItem("token_type", "admin");
+    if (abilities) {
+        localStorage.setItem("abilities", JSON.stringify(abilities));
+    }
+};
+
+export const setAbilities = (abilities: string[]) => {
+    localStorage.setItem("abilities", JSON.stringify(abilities));
+};
+
+export const getAbilities = () => {
+    const abilities = localStorage.getItem("abilities");
+    if (!abilities) return [];
+    try {
+        return JSON.parse(abilities);
+    } catch {
+        return [];
+    }
 };
 
 export const getGuestToken = () => {
