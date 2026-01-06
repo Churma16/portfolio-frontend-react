@@ -35,6 +35,15 @@ export default function ProjectCard({
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-lara-dark/90 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+
+                {/* Category Badge - Top Left (Glassmorphism with Blue Tint) */}
+                {project.tags && project.tags.length > 0 && (
+                    <div className="absolute top-3 left-3 z-10">
+                        <span className="inline-flex items-center px-3 py-1.5 rounded-full bg-lara-blue/15 backdrop-blur-md text-white text-xs font-bold uppercase tracking-wide shadow-xl border border-lara-blue/30 hover:bg-lara-blue/25 hover:border-lara-blue/50 transition-all duration-300 group-hover:shadow-2xl group-hover:shadow-lara-blue/40">
+                            #{project.tags[0].name}
+                        </span>
+                    </div>
+                )}
             </div>
 
             {/* Content */}
@@ -80,7 +89,7 @@ export default function ProjectCard({
                                 {/* 1. Icon Kecil */}
                                 <TechIcon
                                     name={stack.name}
-                                    icon={stack.icon_url}
+                                    icon={stack.icon}
                                     className="w-3.5 h-3.5"
                                 />
 
