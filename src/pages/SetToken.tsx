@@ -8,6 +8,7 @@ import {
 } from "react-icons/hi2";
 import Layout from "../components/layout/Layout";
 import { setAdminToken, getGuestToken } from "@/lib/auth";
+import apiClient from "@/api/axios";
 
 export default function SetToken() {
     const navigate = useNavigate();
@@ -18,7 +19,8 @@ export default function SetToken() {
     const handleSetToken = (e: React.FormEvent) => {
         e.preventDefault();
         if (token.trim()) {
-            setAdminToken(token);
+            // Simpan token dan abilities kosong (user manual set token)
+            setAdminToken(token, ["admin"]);
             setCopied(true);
             setTimeout(() => {
                 navigate("/admin/dashboard");
@@ -39,7 +41,7 @@ export default function SetToken() {
         setTimeout(() => setCopied(false), 2000);
     };
 
-    const isAdminToken = token.startsWith("admin_");
+    const isValidToken = token.trim() && token !== guestToken;
 
     return (
         <Layout>
@@ -128,28 +130,28 @@ export default function SetToken() {
                                 {token && (
                                     <div
                                         className={`p-4 rounded-xl flex items-center gap-3 ${
-                                            isAdminToken
+                                            isValidToken
                                                 ? "bg-cat-testing/10 border border-cat-testing/30"
                                                 : "bg-cat-framework/10 border border-cat-framework/30"
                                         }`}
                                     >
                                         <HiCheck
                                             className={`w-5 h-5 flex-shrink-0 ${
-                                                isAdminToken
+                                                isValidToken
                                                     ? "text-cat-testing"
                                                     : "text-cat-framework"
                                             }`}
                                         />
                                         <p
                                             className={`text-sm ${
-                                                isAdminToken
+                                                isValidToken
                                                     ? "text-cat-testing-light"
                                                     : "text-cat-framework-light"
                                             }`}
                                         >
-                                            {isAdminToken
-                                                ? "✓ Valid admin token - can access admin panel"
-                                                : "⚠ Token doesn't start with 'admin_' - won't have admin access"}
+                                            {isValidToken
+                                                ? "✓ Valid token - can access admin panel"
+                                                : "⚠ Token cannot be same as guest token"}
                                         </p>
                                     </div>
                                 )}
@@ -159,7 +161,7 @@ export default function SetToken() {
                                     <button
                                         type="submit"
                                         disabled={
-                                            !token.trim() || !isAdminToken
+                                            !token.trim() || !isValidToken
                                         }
                                         className="flex-1 py-4 px-6 rounded-xl font-bold text-white bg-lara-blue hover:bg-lara-blue/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center gap-2 group"
                                     >
@@ -197,12 +199,9 @@ export default function SetToken() {
                                         <span className="text-lara-blue font-semibold">
                                             💡 Admin Token:
                                         </span>{" "}
-                                        Must start with{" "}
-                                        <code className="bg-lara-dark/50 px-2 py-1 rounded">
-                                            admin_
-                                        </code>{" "}
-                                        to access admin panel. Stored in
-                                        browser's local storage.
+                                        Once you set a token, it will be stored
+                                        in browser's local storage and used for
+                                        API requests.
                                     </p>
                                 </div>
                                 <div className="p-4 rounded-xl bg-cat-testing/5 border border-cat-testing/20">
