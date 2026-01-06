@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getToken } from "@/lib/auth";
 
 const apiClient = axios.create({
     // URL ini harus sesuai dengan alamat server Laravel kamu (biasanya localhost:8000)
@@ -12,26 +13,15 @@ const apiClient = axios.create({
 });
 
 apiClient.interceptors.request.use((config) => {
-    // Ambil token yang disimpan saat Login tadi
-    const token = localStorage.getItem("token");
+    // Ambil token dari localStorage atau gunakan guest token
+    const token = getToken();
 
     if (token) {
         // Tempelkan ke header: "Authorization: Bearer 12345abcde..."
         config.headers.Authorization = `Bearer ${token}`;
     }
+
     return config;
 });
-
-// Interceptor untuk menangani error secara global
-apiClient.interceptors.response.use(
-    (response) => response,
-    (error) => {
-        // Jika token kadaluarsa (401), kamu bisa arahkan ke halaman login di sini
-        if (error.response && error.response.status === 401) {
-            console.error("Unauthorized, please login.");
-        }
-        return Promise.reject(error);
-    }
-);
 
 export default apiClient;
