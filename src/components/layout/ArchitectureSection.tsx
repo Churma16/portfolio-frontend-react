@@ -52,9 +52,7 @@ export default function ArchitectureSection() {
                 {/* STATS */}
                 <LiveStats />
 
-                <p className="text-center text-[10px] text-slate-600 font-mono mt-12 uppercase tracking-widest opacity-50">
-                    System Status: 🟢 All Systems Operational
-                </p>
+            
             </div>
         </section>
     );

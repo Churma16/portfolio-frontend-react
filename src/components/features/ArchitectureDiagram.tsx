@@ -138,6 +138,7 @@ export default function ArchitectureDiagram() {
                     "Queue Workers",
                 ]}
             />
+            
         </div>
     );
 }
