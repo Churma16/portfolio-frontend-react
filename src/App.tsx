@@ -7,26 +7,26 @@ import Dashboard from "./pages/Dashboard"; // Halaman Admin
 
 // Import Satpam tadi
 import ProtectedRoute from "./components/common/ProtectedRoute";
+import DashboardLayout from "./components/layout/DashboardLayout"; // Kita buat habis ini
+import ProjectList from "./pages/admin/ProjectList"; // Halaman CRUD nanti
 
 function App() {
     return (
         <BrowserRouter>
             {/* Navbar bisa ditaruh di sini kalau mau muncul di semua halaman */}
-
             <Routes>
-                {/* --- RUTE PUBLIK (Bisa diakses siapa aja) --- */}
+                {/* Public Routes */}
                 <Route path="/" element={<Home />} />
-
-                {/* Ini jawaban pertanyaanmu: KITA DAFTARKAN RUTE LOGIN DISINI */}
                 <Route path="/login" element={<Login />} />
 
+                {/* ADMIN ROUTES (Diproteksi) */}
                 <Route element={<ProtectedRoute />}>
-                    <Route path="/admin/dashboard" element={<Dashboard />} />
-                    {/* Nanti bisa tambah: <Route path="/admin/projects/create" ... /> */}
+                    <Route path="/dashboard" element={<DashboardLayout />}>
+                        {/* Halaman Default Dashboard */}
+                        <Route index element={<ProjectList />} />
+                        {/* Nanti tambah route lain di sini: Create, Edit, dll */}
+                    </Route>
                 </Route>
-
-                {/* --- RUTE 404 (Kalau user ngawur ngetik URL) --- */}
-                {/* <Route path="*" element={<NotFound />} /> */}
             </Routes>
         </BrowserRouter>
     );
