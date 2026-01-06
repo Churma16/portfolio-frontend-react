@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
     Table,
     TableBody,
@@ -6,16 +6,16 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table"; // Import dari Shadcn
+} from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { HiPlus, HiPencil, HiTrash, HiOutlineCube } from "react-icons/hi2";
-import { Project } from "../../types"; // Pastikan type Project ada
-// import { Badge } from "@/components/ui/badge"; // Kalau sudah install badge, pakai ini. Kalau belum, pakai span manual.
-import ProjectDialog from "./ProjectDialog"; // Import komponen baru
+import { Project } from "../../types";
+import ProjectDialog from "./ProjectDialog";
+import { useProjects } from "../../hooks/useProjects"; // Import custom hook
 
 export default function ProjectList() {
-    const [projects, setProjects] = useState<Project[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
+    // Use custom hook instead of manual fetch
+    const { data: projects = [], isLoading, refetch } = useProjects();
 
     // State untuk Modal
     const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -23,47 +23,15 @@ export default function ProjectList() {
 
     // Fungsi handle Edit
     const handleEdit = (project: Project) => {
-        setProjectToEdit(project); // Set data yang mau diedit
-        setIsDialogOpen(true); // Buka modal
+        setProjectToEdit(project);
+        setIsDialogOpen(true);
     };
 
     // Fungsi handle Create
     const handleCreate = () => {
-        setProjectToEdit(null); // Kosongkan data (Mode Create)
-        setIsDialogOpen(true); // Buka modal
+        setProjectToEdit(null);
+        setIsDialogOpen(true);
     };
-    // Fetch Data
-    const fetchProjects = async () => {
-        setIsLoading(true);
-        try {
-            const token = localStorage.getItem("token");
-            // Ganti URL sesuai API kamu
-            const response = await fetch(
-                "http://127.0.0.1:8000/api/projects?with=techStacks,tags",
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        Accept: "application/json",
-                    },
-                }
-            );
-            const result = await response.json();
-
-            if (response.ok) {
-                setProjects(result.data);
-            } else {
-                console.error("Failed fetch:", result);
-            }
-        } catch (error) {
-            console.error("Error:", error);
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        fetchProjects();
-    }, []);
 
     return (
         <div className="space-y-6">
@@ -96,6 +64,9 @@ export default function ProjectList() {
                             </TableHead>
                             <TableHead className="text-slate-300">
                                 Project Info
+                            </TableHead>
+                            <TableHead className="text-slate-300">
+                                Category
                             </TableHead>
                             <TableHead className="text-slate-300">
                                 Tech Stack
@@ -165,7 +136,20 @@ export default function ProjectList() {
                                         </div>
                                     </TableCell>
 
+                                    {/* Kolom Category */}
+                                    <TableCell>
+                                        <div className="flex flex-wrap gap-1.5">
+                                            <span
+                                                key={project.category?.id}
+                                                className="px-2 py-0.5 rounded text-[10px] font-medium bg-blue-500/10 text-blue-400 border border-blue-500/20"
+                                            >
+                                                {project.category?.name}
+                                            </span>
+                                        </div>
+                                    </TableCell>
+
                                     {/* Kolom Tech Stack (Badge) */}
+
                                     <TableCell>
                                         <div className="flex flex-wrap gap-1.5">
                                             {project.tech_stack
@@ -235,7 +219,7 @@ export default function ProjectList() {
                     open={isDialogOpen}
                     onOpenChange={setIsDialogOpen}
                     projectToEdit={projectToEdit}
-                    onSuccess={fetchProjects} // Refresh tabel kalau sukses simpan
+                    onSuccess={refetch} // Refresh data using hook's refetch
                 />
             </div>
         </div>
