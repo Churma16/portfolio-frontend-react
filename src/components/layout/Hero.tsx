@@ -2,10 +2,10 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import PixelButton from "../common/PixelButton";
 import { PixelChat, PixelDownload, PixelPlay } from "../common/PixelIcon";
-import { useProfiles } from "../../hooks/useProfile";
+import { useProfile } from "../../hooks/useProfile";
 
 export default function Hero() {
-    const { data: profiles, isLoading, isError } = useProfiles();
+    const { data: profile, isLoading, isError } = useProfile();
 
     return (
         <section className="relative overflow-hidden pt-10 pb-20 lg:pt-20 lg:pb-32">
@@ -16,7 +16,7 @@ export default function Hero() {
                 {/* --- KIRI: Teks & CTA --- */}
                 <div className="flex-1 text-center lg:text-left space-y-6">
                     {/* Badge 'Available for work' */}
-                    {profiles?.is_hireable ? (
+                    {profile?.is_hireable ? (
                         <motion.div
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -66,12 +66,12 @@ export default function Hero() {
                     >
                         Hi, I'm{" "}
                         <span className="text-white font-bold">
-                            {profiles?.name}
+                            {profile?.name}
                         </span>
                         . {" "}
                         <span
                             dangerouslySetInnerHTML={{
-                                __html: profiles?.bio_short,
+                                __html: profile?.bio_short || "",
                             }}
                         />
                     </motion.p>
@@ -92,7 +92,7 @@ export default function Hero() {
 
                         {/* 2. Download CV (Baru!) */}
                         {/* Ganti '/my-cv.pdf' dengan lokasi file CV kamu nanti */}
-                        <a href={profiles?.cv_files} target="_blank" rel="noopener noreferrer">
+                        <a href={profile?.cv_files} target="_blank" rel="noopener noreferrer">
                             <PixelButton variant="primary">
                                 <PixelDownload className="w-5 h-5" />
                                 Resume
