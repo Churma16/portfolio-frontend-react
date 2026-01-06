@@ -11,6 +11,7 @@ import DashboardLayout from "./components/layout/DashboardLayout"; // Kita buat 
 import ProjectList from "./pages/admin/ProjectList"; // Halaman CRUD nanti
 import TechStackList from "./pages/admin/masters/TechStackList";
 import TagList from "./pages/admin/masters/TagList";
+import SetToken from "./pages/SetToken";
 
 function App() {
     return (
@@ -20,11 +21,12 @@ function App() {
                 {/* Public Routes */}
                 <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/set-token" element={<SetToken />} />
 
                 {/* ADMIN ROUTES (Diproteksi) */}
                 <Route element={<ProtectedRoute />}>
-                    <Route path="/dashboard" element={<DashboardLayout />}>
-                        {/* Halaman Default Dashboard */}
+                    <Route path="/admin" element={<DashboardLayout />}>
+                        {/* Index = default ketika akses /admin */}
                         <Route index element={<ProjectList />} />
                         <Route path="tech-stacks" element={<TechStackList />} />
                         <Route path="tags" element={<TagList />} />
