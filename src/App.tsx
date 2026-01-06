@@ -13,7 +13,7 @@ import TechStackList from "./pages/admin/masters/TechStackList";
 import TagList from "./pages/admin/masters/TagList";
 import CategoryList from "./pages/admin/masters/CategoryList";
 import SetToken from "./pages/SetToken";
-import ProfileForm from "./pages/admin/ProfileForm";
+import ProfileForm from "./pages/admin/ProfileForm/index";
 
 function App() {
     return (
