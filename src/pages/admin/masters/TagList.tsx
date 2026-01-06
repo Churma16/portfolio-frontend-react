@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
     Table,
     TableBody,
@@ -11,34 +11,34 @@ import { Button } from "@/components/ui/button";
 import { HiPlus, HiPencil, HiTrash } from "react-icons/hi2";
 import { Tag } from "../../../types";
 import TagDialog from "./TagDialog";
+import { useTags } from "@/hooks/useTags";
+import apiClient from "@/api/axios";
 
 export default function TagList() {
-    const [data, setData] = useState<Tag[]>([]);
-    const [isDialogOpen, setIsDialogOpen] = useState(false);
-    const [editItem, setEditItem] = useState<Tag | null>(null);
+    const { data: tags = [], isLoading, refetch } = useTags();
 
-    const fetchData = async () => {
-        const token = localStorage.getItem("token");
-        const res = await fetch("http://127.0.0.1:8000/api/tags", {
-            headers: { Authorization: `Bearer ${token}` },
-        });
-        const json = await res.json();
-        setData(json.data || []);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [tagToEdit, setTagToEdit] = useState<Tag | null>(null);
+
+    const handleEdit = (tag: Tag) => {
+        setTagToEdit(tag);
+        setIsDialogOpen(true);
+    };
+
+    const handleCreate = () => {
+        setTagToEdit(null);
+        setIsDialogOpen(true);
     };
 
     const handleDelete = async (id: number) => {
         if (!confirm("Are you sure?")) return;
-        const token = localStorage.getItem("token");
-        await fetch(`http://127.0.0.1:8000/api/tags/${id}`, {
-            method: "DELETE",
-            headers: { Authorization: `Bearer ${token}` },
-        });
-        fetchData();
+        try {
+            await apiClient.delete(`/tags/${id}`);
+            refetch();
+        } catch (error) {
+            console.error("Delete error:", error);
+        }
     };
-
-    useEffect(() => {
-        fetchData();
-    }, []);
 
     // Helper warna (bisa dipindah ke utils)
     const getColorClass = (color: string) => {
@@ -54,77 +54,114 @@ export default function TagList() {
 
     return (
         <div className="space-y-6">
-            <div className="flex justify-between items-center">
-                <h2 className="text-2xl font-bold text-white">Tags</h2>
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                    <h2 className="text-3xl font-heading font-bold text-white tracking-tight">
+                        Tags
+                    </h2>
+                    <p className="text-slate-400 text-sm">
+                        Manage your project tags here.
+                    </p>
+                </div>
                 <Button
-                    onClick={() => {
-                        setEditItem(null);
-                        setIsDialogOpen(true);
-                    }}
-                    className="bg-lara-blue gap-2"
+                    onClick={handleCreate}
+                    className="bg-lara-blue hover:bg-blue-600 text-white gap-2"
                 >
-                    <HiPlus /> Add New
+                    <HiPlus className="w-4 h-4" />
+                    Add New Tag
                 </Button>
             </div>
 
             <div className="rounded-xl border border-white/10 bg-[#0a101f]/50 overflow-hidden">
                 <Table>
                     <TableHeader className="bg-white/5">
-                        <TableRow className="border-white/5">
-                            <TableHead>Preview</TableHead>
-                            <TableHead>Name</TableHead>
-                            <TableHead className="text-right">
+                        <TableRow className="border-white/5 hover:bg-transparent">
+                            <TableHead className="text-slate-300">
+                                Preview
+                            </TableHead>
+                            <TableHead className="text-slate-300">
+                                Name
+                            </TableHead>
+                            <TableHead className="text-right text-slate-300">
                                 Actions
                             </TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {data.map((item) => (
-                            <TableRow
-                                key={item.id}
-                                className="border-white/5 hover:bg-white/5"
-                            >
-                                <TableCell>
-                                    <span
-                                        className={`px-2 py-1 rounded text-xs font-bold uppercase border ${getColorClass(
-                                            item.color ?? "blue"
-                                        )}`}
-                                    >
-                                        #{item.name}
-                                    </span>
-                                </TableCell>
-                                <TableCell className="font-medium text-white">
-                                    {item.name}
-                                </TableCell>
-                                <TableCell className="text-right space-x-2">
-                                    <Button
-                                        size="icon"
-                                        variant="ghost"
-                                        onClick={() => {
-                                            setEditItem(item);
-                                            setIsDialogOpen(true);
-                                        }}
-                                    >
-                                        <HiPencil className="w-4 h-4 text-slate-400" />
-                                    </Button>
-                                    <Button
-                                        size="icon"
-                                        variant="ghost"
-                                        onClick={() => handleDelete(item.id)}
-                                    >
-                                        <HiTrash className="w-4 h-4 text-red-400" />
-                                    </Button>
+                        {isLoading ? (
+                            <TableRow>
+                                <TableCell
+                                    colSpan={3}
+                                    className="h-24 text-center text-slate-500 animate-pulse"
+                                >
+                                    Loading tags...
                                 </TableCell>
                             </TableRow>
-                        ))}
+                        ) : tags.length === 0 ? (
+                            <TableRow>
+                                <TableCell
+                                    colSpan={3}
+                                    className="h-32 text-center text-slate-500"
+                                >
+                                    <div className="flex flex-col items-center justify-center gap-2">
+                                        <p>
+                                            No tags found. Start by creating
+                                            one!
+                                        </p>
+                                    </div>
+                                </TableCell>
+                            </TableRow>
+                        ) : (
+                            tags.map((item) => (
+                                <TableRow
+                                    key={item.id}
+                                    className="border-white/5 hover:bg-white/5 transition-colors"
+                                >
+                                    <TableCell>
+                                        <span
+                                            className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border ${getColorClass(
+                                                item.color ?? "blue"
+                                            )}`}
+                                        >
+                                            {item.name}
+                                        </span>
+                                    </TableCell>
+                                    <TableCell className="font-medium text-white">
+                                        {item.name}
+                                    </TableCell>
+                                    <TableCell className="text-right">
+                                        <div className="flex items-center justify-end gap-2">
+                                            <Button
+                                                size="icon"
+                                                variant="ghost"
+                                                onClick={() => handleEdit(item)}
+                                                className="h-8 w-8 text-slate-400 hover:text-white hover:bg-white/10"
+                                            >
+                                                <HiPencil className="w-4 h-4" />
+                                            </Button>
+                                            <Button
+                                                size="icon"
+                                                variant="ghost"
+                                                onClick={() =>
+                                                    handleDelete(item.id)
+                                                }
+                                                className="h-8 w-8 text-slate-400 hover:text-red-400 hover:bg-red-500/10"
+                                            >
+                                                <HiTrash className="w-4 h-4" />
+                                            </Button>
+                                        </div>
+                                    </TableCell>
+                                </TableRow>
+                            ))
+                        )}
                     </TableBody>
                 </Table>
             </div>
             <TagDialog
                 open={isDialogOpen}
                 onOpenChange={setIsDialogOpen}
-                dataToEdit={editItem}
-                onSuccess={fetchData}
+                dataToEdit={tagToEdit}
+                onSuccess={refetch}
             />
         </div>
     );
