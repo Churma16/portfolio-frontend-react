@@ -11,6 +11,7 @@ import {
 import { CgSpinner } from "react-icons/cg";
 import Layout from "../components/layout/Layout";
 import apiClient from "../api/axios";
+import { setAdminToken } from "@/lib/auth";
 
 export default function Login() {
     const navigate = useNavigate();
@@ -65,8 +66,33 @@ export default function Login() {
                 return;
             }
 
-            // 3. Simpan ke LocalStorage
-            localStorage.setItem("token", token);
+            // 3. Simpan token dan abilities ke LocalStorage
+            // Try multiple possible fields for abilities
+            const abilities = response.data.abilities ||
+                response.data.data?.abilities ||
+                response.data.user?.abilities || ["admin"]; // Default ke admin jika tidak ada abilities dari API
+
+            console.log("Storing abilities:", abilities);
+            setAdminToken(token, abilities);
+
+            // Debug: Check localStorage
+            console.log("After setAdminToken:");
+            console.log(
+                "Token in localStorage:",
+                localStorage.getItem("token")
+            );
+            console.log(
+                "Abilities in localStorage:",
+                localStorage.getItem("abilities")
+            );
+            console.log(
+                "isAdmin() check:",
+                localStorage.getItem("abilities")
+                    ? JSON.parse(localStorage.getItem("abilities")).includes(
+                          "admin"
+                      )
+                    : false
+            );
 
             // 4. Redirect ke halaman admin/dashboard
             setStatus("success");
@@ -222,6 +248,18 @@ export default function Login() {
                                     {errorMessage}
                                 </div>
                             )}
+                            <div className="space-y-2">
+                                <p className="text-sm text-slate-400 mb-4 text-center">
+                                    Or{" "}
+                                    <button
+                                        type="button"
+                                        onClick={() => navigate("/set-token")}
+                                        className="text-lara-blue hover:underline font-semibold"
+                                    >
+                                        set bearer token manually
+                                    </button>
+                                </p>
+                            </div>
                             <div className="space-y-2">
                                 <label className="text-xs font-bold uppercase tracking-widest text-slate-500">
                                     {isGlitch ? "TARGET_ID" : "Email Address"}
