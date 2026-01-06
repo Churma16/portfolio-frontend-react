@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { CgSpinner } from "react-icons/cg";
 import { TechStack } from "@/types";
 import TechIcon from "@/components/common/TechIcon";
+import apiClient from "@/api/axios";
 
 interface Props {
     open: boolean;
@@ -41,24 +42,21 @@ export default function TechStackDialog({
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
-        const token = localStorage.getItem("token");
         const url = dataToEdit
-            ? `http://127.0.0.1:8000/api/tech-stacks/${dataToEdit.id}`
-            : "http://127.0.0.1:8000/api/tech-stacks";
+            ? `/tech-stacks/${dataToEdit.id}`
+            : "/tech-stacks";
 
         try {
-            await fetch(url, {
-                method: dataToEdit ? "PUT" : "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify(formData),
-            });
+            if (dataToEdit) {
+                await apiClient.put(url, formData);
+            } else {
+                await apiClient.post(url, formData);
+            }
             onSuccess();
             onOpenChange(false);
-        } catch (err) {
-            console.error(err);
+        } catch (error) {
+            console.error("Error saving tech stack:", error);
+            alert("Gagal menyimpan tech stack!");
         } finally {
             setIsSubmitting(false);
         }
