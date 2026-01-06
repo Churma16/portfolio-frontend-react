@@ -2,8 +2,11 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import PixelButton from "../common/PixelButton";
 import { PixelChat, PixelDownload, PixelPlay } from "../common/PixelIcon";
+import { useProfiles } from "../../hooks/useProfile";
 
 export default function Hero() {
+    const { data: profiles, isLoading, isError } = useProfiles();
+
     return (
         <section className="relative overflow-hidden pt-10 pb-20 lg:pt-20 lg:pb-32">
             {/* 1. Background Glow Effect (Opsional: biar ada aura birunya) */}
@@ -13,18 +16,32 @@ export default function Hero() {
                 {/* --- KIRI: Teks & CTA --- */}
                 <div className="flex-1 text-center lg:text-left space-y-6">
                     {/* Badge 'Available for work' */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5 }}
-                        className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-lara-blue/10 border border-lara-blue/20 text-lara-blue text-xs font-bold uppercase tracking-wider mx-auto lg:mx-0"
-                    >
-                        <span className="relative flex h-2 w-2">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-lara-blue opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-2 w-2 bg-lara-blue"></span>
-                        </span>
-                        Available for Hire
-                    </motion.div>
+                    {profiles?.is_hireable ? (
+                        <motion.div
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5 }}
+                            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-lara-blue/10 border border-lara-blue/20 text-lara-blue text-xs font-bold uppercase tracking-wider mx-auto lg:mx-0"
+                        >
+                            <span className="relative flex h-2 w-2">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-lara-blue opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-lara-blue"></span>
+                            </span>
+                            Available for Hire
+                        </motion.div>
+                    ) : (
+                        <motion.div
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5 }}
+                            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-500/10 border border-slate-500/20 text-slate-400 text-xs font-bold uppercase tracking-wider mx-auto lg:mx-0"
+                        >
+                            <span className="relative flex h-2 w-2">
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-slate-400"></span>
+                            </span>
+                            Not Available
+                        </motion.div>
+                    )}
 
                     {/* Headline Utama */}
                     <motion.h1
@@ -48,12 +65,15 @@ export default function Hero() {
                         className="text-lg text-slate-400 max-w-2xl mx-auto lg:mx-0 leading-relaxed"
                     >
                         Hi, I'm{" "}
-                        <span className="text-white font-bold">Fathan</span>. A
-                        Full Stack Developer specializing in
-                        <span className="text-lara-blue"> Laravel</span> &{" "}
-                        <span className="text-lara-blue">React</span>. I build
-                        accessible, pixel-perfect, and performant web
-                        applications.
+                        <span className="text-white font-bold">
+                            {profiles?.name}
+                        </span>
+                        . {" "}
+                        <span
+                            dangerouslySetInnerHTML={{
+                                __html: profiles?.bio_short,
+                            }}
+                        />
                     </motion.p>
 
                     {/* Tombol CTA (Call to Action) */}
@@ -72,15 +92,17 @@ export default function Hero() {
 
                         {/* 2. Download CV (Baru!) */}
                         {/* Ganti '/my-cv.pdf' dengan lokasi file CV kamu nanti */}
-                        <PixelButton variant="primary" href="/my-cv.pdf">
-                            <PixelDownload className="w-5 h-5" />
-                            Resume
-                        </PixelButton>
+                        <a href={profiles?.cv_files} target="_blank" rel="noopener noreferrer">
+                            <PixelButton variant="primary">
+                                <PixelDownload className="w-5 h-5" />
+                                Resume
+                            </PixelButton>
+                        </a>
 
                         {/* 3. Let's Talk (Contact) */}
                         {/* Kita buat variant 'outline' atau 'ghost' opsional, 
                 tapi pakai dark/primary juga oke. Disini kita pakai dark biar seimbang. */}
-                        <PixelButton variant="dark" to="/about">
+                        <PixelButton variant="dark" href="#contact">
                             <PixelChat className="w-5 h-5" />
                             Contact
                         </PixelButton>

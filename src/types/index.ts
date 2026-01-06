@@ -36,9 +36,14 @@ export interface SocialLinks {
 export interface Profile extends BaseEntity {
     name: string;
     headline: string;
-    bio: string;
+    role: string;
+    bio_short: string;
+    bio_long: string;
+    location: string;
+    is_hireable: boolean;
     avatar: string;
     cv_files: string;
+    hero_image_code: string;
     socials: SocialLinks;
 }
 
@@ -71,6 +76,13 @@ export interface Project extends BaseEntity {
     // Relasi
     tags?: Tag[];
     tech_stack?: TechStack[];
+}
+
+export interface Message extends BaseEntity {
+    name: string;
+    email: string;
+    content: string;
+    is_read: boolean;
 }
 
 // 6. API Response Helper (Opsional, biar gampang)
