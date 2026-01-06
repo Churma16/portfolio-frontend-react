@@ -38,11 +38,11 @@ export default function ArchitectureSection() {
                         Under the <span className="text-lara-blue">Hood</span>.
                     </h2>
                     <p className="text-slate-400 text-lg">
-                        This portfolio is a full-featured{" "}
+                        Transparency is key. Here is a live look at the{" "}
                         <span className="text-white font-medium">
-                            Single Page Application (SPA)
+                            architecture
                         </span>{" "}
-                        built with a modified TALL stack architecture.
+                        powering this portfolio.
                     </p>
                 </div>
 

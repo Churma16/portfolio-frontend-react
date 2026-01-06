@@ -5,7 +5,7 @@ import { PixelChat, PixelDownload, PixelPlay } from "../common/PixelIcon";
 
 export default function Hero() {
     return (
-        <section className="relative overflow-hidden pt-10 pb-20 lg:pt-20 lg:pb-32" >
+        <section className="relative overflow-hidden pt-10 pb-20 lg:pt-20 lg:pb-32">
             {/* 1. Background Glow Effect (Opsional: biar ada aura birunya) */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-lara-blue/20 rounded-full blur-[120px] -z-10 opacity-50" />
 
@@ -33,9 +33,10 @@ export default function Hero() {
                         transition={{ duration: 0.5, delay: 0.1 }}
                         className="text-4xl sm:text-5xl lg:text-7xl font-heading font-extrabold text-white leading-tight"
                     >
-                        Building Digital <br className="hidden lg:block" />
+                        Ready to Build {""}
+                        <br className="hidden lg:block" />
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-lara-blue to-cat-technique-light">
-                            Experiences.
+                            Scalable Apps.
                         </span>
                     </motion.h1>
 

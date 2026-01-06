@@ -74,12 +74,12 @@ export default function ContactSection() {
                 {/* Header */}
                 <div className="text-center mb-16 space-y-4">
                     <h2 className="text-3xl md:text-4xl font-heading font-bold text-white">
-                        Ready to{" "}
-                        <span className="text-lara-blue">Collaborate</span>?
+                        Let's Work{" "}
+                        <span className="text-lara-blue">Together</span>.
                     </h2>
                     <p className="text-slate-400">
-                        Got a project in mind? Let's turn your ideas into
-                        reality.
+                        I am currently available for full-time positions. Let's
+                        discuss how I can contribute to your team.
                     </p>
                 </div>
 
