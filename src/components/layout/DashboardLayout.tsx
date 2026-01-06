@@ -1,12 +1,13 @@
 import { Outlet, useNavigate, Link } from "react-router-dom";
 import { logout } from "@/lib/auth";
 import {
-    HiOutlineHome,
     HiOutlineCube,
     HiArrowRightOnRectangle,
     HiCommandLine,
     HiTag,
     HiList,
+    HiListBullet,
+    HiMiniUser,
 
 } from "react-icons/hi2";
 
@@ -50,8 +51,17 @@ export default function DashboardLayout() {
                         to="/admin/categories"
                         className="flex items-center gap-3 px-4 py-3 bg-transparent rounded-lg text-slate-400 hover:text-white hover:bg-white/5"
                     >
+                        <HiListBullet />
                         {/* <HiList className="w-5 h-5" /> */}
                         Categories
+                    </Link>
+                    <Link
+                        to="/admin/profile"
+                        className="flex items-center gap-3 px-4 py-3 bg-transparent rounded-lg text-slate-400 hover:text-white hover:bg-white/5"
+                    >
+                        <HiMiniUser />
+                        {/* <HiList className="w-5 h-5" /> */}
+                        Edit Profile
                     </Link>
                 </nav>
 
