@@ -5,7 +5,7 @@ import { PixelChat, PixelDownload, PixelPlay } from "../common/PixelIcon";
 
 export default function Hero() {
     return (
-        <section className="relative overflow-hidden pt-10 pb-20 lg:pt-20 lg:pb-32">
+        <section className="relative overflow-hidden pt-10 pb-20 lg:pt-20 lg:pb-32" >
             {/* 1. Background Glow Effect (Opsional: biar ada aura birunya) */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-lara-blue/20 rounded-full blur-[120px] -z-10 opacity-50" />
 
