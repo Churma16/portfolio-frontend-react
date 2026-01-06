@@ -80,7 +80,7 @@ export default function ProjectCard({
                                 {/* 1. Icon Kecil */}
                                 <TechIcon
                                     name={stack.name}
-                                    icon={stack.icon}
+                                    icon={stack.icon_url}
                                     className="w-3.5 h-3.5"
                                 />
 
