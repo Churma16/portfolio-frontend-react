@@ -14,7 +14,7 @@ export interface Category extends BaseEntity {
 export interface TechStack extends BaseEntity {
     name: string;
     slug?: string;
-    icon_url?: string;
+    icon?: string;
 }
 
 export interface Tag extends BaseEntity {
