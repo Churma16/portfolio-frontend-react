@@ -53,7 +53,7 @@ export default function TechMarquee() {
                             {techStacks.map((tech, index) => (
                                 <div key={`list1-${index}`} className="flex items-center gap-3 shrink-0 group/item cursor-default">
                                     <TechIcon 
-                                        name={tech.name} icon={tech.icon_url}
+                                        name={tech.name} icon={tech.icon}
                                         className="w-8 h-8 text-slate-600 transition-all duration-500 grayscale group-hover/item:grayscale-0 group-hover/item:scale-110 group-hover/item:text-lara-blue" 
                                     />
                                     <span className="text-xl font-heading font-bold text-slate-700 transition-colors duration-300 group-hover/item:text-slate-200">
@@ -68,7 +68,7 @@ export default function TechMarquee() {
                             {techStacks.map((tech, index) => (
                                 <div key={`list2-${index}`} className="flex items-center gap-3 shrink-0 group/item cursor-default">
                                     <TechIcon 
-                                        name={tech.name} icon={tech.icon_url}
+                                        name={tech.name} icon={tech.icon}
                                         className="w-8 h-8 text-slate-600 transition-all duration-500 grayscale group-hover/item:grayscale-0 group-hover/item:scale-110 group-hover/item:text-lara-blue" 
                                     />
                                     <span className="text-xl font-heading font-bold text-slate-700 transition-colors duration-300 group-hover/item:text-slate-200">
