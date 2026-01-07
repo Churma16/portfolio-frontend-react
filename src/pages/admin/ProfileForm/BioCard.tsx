@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import { useFormContext, Controller } from "react-hook-form";
 import {
     Card,
     CardContent,
@@ -7,34 +8,33 @@ import {
     CardDescription,
 } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
+import { ProfileFormValues } from "./ProfileForm";
 
-interface BioCardProps {
-    formData: {
-        bio_short: string;
-        bio_long: string;
-        is_hireable: boolean;
-        cv_files: string | null;
-    };
-    cvFile: File | null;
-    onBioShortChange: (value: string) => void;
-    onBioLongChange: (value: string) => void;
-    onHireableChange: (value: boolean) => void;
-    onCvFileChange: (file: File | null) => void;
-}
-
-export default function BioCard({
-    formData,
-    cvFile,
-    onBioShortChange,
-    onBioLongChange,
-    onHireableChange,
-    onCvFileChange,
-}: BioCardProps) {
+export default function BioCard() {
+    const { register, control, watch, setValue } =
+        useFormContext<ProfileFormValues>();
     const cvInputRef = useRef<HTMLInputElement>(null);
+
+    const cvFileList = watch("cv_file");
+    const existingCv = watch("cv_files"); // string url
+
+    // Nama file untuk display
+    const fileName =
+        cvFileList && cvFileList.length > 0
+            ? cvFileList[0].name
+            : existingCv
+            ? existingCv.split("/").pop()
+            : "No file uploaded";
+
+    const handleCvChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files) {
+            // Manually set FileList ke form state
+            setValue("cv_file", e.target.files);
+        }
+    };
 
     return (
         <Card className="bg-card-bg-lara-admin border-card-border-lara-admin text-white shadow-lg">
@@ -47,73 +47,67 @@ export default function BioCard({
             <CardContent className="space-y-6">
                 <div className="grid grid-cols-1 gap-6">
                     <div className="space-y-2">
-                        <Label className="text-lara-sky/90">
-                            Short Bio (Home Page)
-                        </Label>
+                        <Label>Short Bio</Label>
                         <Textarea
-                            value={formData.bio_short}
-                            onChange={(e) => onBioShortChange(e.target.value)}
-                            className="bg-field-bg-lara-admin border-card-border-lara-admin min-h-[80px] focus-visible:ring-lara-blue placeholder-lara-sky/30"
+                            {...register("bio_short")}
+                            className="bg-field-bg-lara-admin min-h-[80px]"
                         />
                     </div>
                     <div className="space-y-2">
-                        <Label className="text-lara-sky/90">
-                            Full Biography (About Page - Markdown)
-                        </Label>
+                        <Label>Full Biography</Label>
                         <Textarea
-                            value={formData.bio_long}
-                            onChange={(e) => onBioLongChange(e.target.value)}
-                            className="bg-field-bg-lara-admin border-card-border-lara-admin min-h-[200px] font-mono text-sm focus-visible:ring-lara-blue placeholder-lara-sky/30"
+                            {...register("bio_long")}
+                            className="bg-field-bg-lara-admin min-h-[200px] font-mono text-sm"
                         />
                     </div>
                 </div>
 
-                {/* Status & CV Row */}
                 <div className="flex flex-col md:flex-row gap-6 pt-4 border-t border-white/10">
+                    {/* Switch dengan Controller */}
                     <div className="flex-1 flex items-center justify-between p-4 rounded-lg bg-field-bg-lara-admin border border-card-border-lara-admin">
                         <div>
-                            <Label className="text-base text-lara-sky/90">
-                                Open to Work?
-                            </Label>
+                            <Label>Open to Work?</Label>
                             <p className="text-xs text-lara-sky/60 mt-1">
-                                Shows a "Hire Me" badge on your profile.
+                                Shows a "Hire Me" badge.
                             </p>
                         </div>
-                        <Switch
-                            checked={formData.is_hireable}
-                            onCheckedChange={onHireableChange}
-                            className="data-[state=checked]:bg-cat-testing"
+                        <Controller
+                            control={control}
+                            name="is_hireable"
+                            render={({ field }) => (
+                                <Switch
+                                    checked={field.value}
+                                    onCheckedChange={field.onChange}
+                                    className="data-[state=checked]:bg-cat-testing"
+                                />
+                            )}
                         />
                     </div>
 
+                    {/* CV File Upload */}
                     <div className="flex-1 space-y-2">
-                        <Label className="text-lara-sky/90">
-                            Resume / CV (PDF)
-                        </Label>
+                        <Label>Resume / CV (PDF)</Label>
                         <div className="flex items-center gap-3">
                             <Button
                                 type="button"
                                 variant="outline"
                                 onClick={() => cvInputRef.current?.click()}
-                                className="bg-white/5 border-white/10 hover:bg-white/10 text-lara-blue"
+                                className="bg-white/5 border-white/10 text-lara-blue"
                             >
-                                {cvFile ? "Change File" : "Select PDF"}
+                                {cvFileList ? "Change File" : "Select PDF"}
                             </Button>
                             <span className="text-xs text-lara-sky/60 truncate max-w-[200px]">
-                                {cvFile
-                                    ? cvFile.name
-                                    : formData.cv_files
-                                    ? formData.cv_files.split("/").pop()
-                                    : "No file uploaded"}
+                                {fileName}
                             </span>
                             <input
                                 type="file"
-                                ref={cvInputRef}
                                 className="hidden"
                                 accept=".pdf"
-                                onChange={(e) =>
-                                    onCvFileChange(e.target.files?.[0] || null)
-                                }
+                                ref={(e) => {
+                                    // Simpan ref lokal untuk click handler
+                                    cvInputRef.current = e;
+                                }}
+                                onChange={handleCvChange}
                             />
                         </div>
                     </div>
