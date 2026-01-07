@@ -9,6 +9,7 @@ export interface BaseEntity {
 export interface Category extends BaseEntity {
     name: string;
     slug: string;
+    color: string;
 }
 
 export interface TechStack extends BaseEntity {
