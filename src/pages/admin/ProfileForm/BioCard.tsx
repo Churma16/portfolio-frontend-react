@@ -11,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { ProfileFormValues } from "./ProfileForm";
+import { ProfileFormValues } from "./index"; // Import tipe jika perlu
 
 export default function BioCard() {
     const { register, control, watch, setValue } =

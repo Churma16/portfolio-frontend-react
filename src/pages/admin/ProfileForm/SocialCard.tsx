@@ -9,7 +9,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { HiPlus, HiTrash } from "react-icons/hi2";
-import { ProfileFormValues } from "./ProfileForm";
+import { ProfileFormValues } from "./index"; // Import tipe jika perlu
 
 export default function SocialCard() {
     const { control, register } = useFormContext<ProfileFormValues>();
