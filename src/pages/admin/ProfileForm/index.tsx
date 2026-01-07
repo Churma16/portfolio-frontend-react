@@ -88,13 +88,17 @@ export default function ProfileForm() {
         mutationFn: async (data: ProfileFormValues) => {
             const formData = new FormData();
 
+            // Helper function untuk clean whitespace
+            const cleanText = (text: string) =>
+                text.trim().replace(/\s+/g, " "); // Replace multiple spaces/newlines with single space
+
             // Append basic fields
-            formData.append("name", data.name);
-            formData.append("headline", data.headline || "");
-            formData.append("role", data.role || "");
-            formData.append("location", data.location || "");
-            formData.append("bio_short", data.bio_short || "");
-            formData.append("bio_long", data.bio_long || "");
+            formData.append("name", data.name.trim());
+            formData.append("headline", cleanText(data.headline) || "");
+            formData.append("role", data.role.trim() || "");
+            formData.append("location", data.location.trim() || "");
+            formData.append("bio_short", cleanText(data.bio_short) || "");
+            formData.append("bio_long", cleanText(data.bio_long) || "");
             formData.append("is_hireable", data.is_hireable ? "1" : "0");
 
             // Transform Array UI kembali ke format DB
@@ -108,8 +112,8 @@ export default function ProfileForm() {
             // 2. Hero Codes: Array Object -> Array String
             // Filter out empty values dan extract value property
             const codesArray = data.hero_image_codes
-                .map((c) => c.value)
-                .filter((val) => val && val.trim() !== ""); // Remove empty strings
+                .map((c) => c.value.trim())
+                .filter((val) => val !== ""); // Remove empty strings
             formData.append("hero_image_codes", JSON.stringify(codesArray));
 
             // Handle Files
@@ -129,15 +133,31 @@ export default function ProfileForm() {
             // POST ke /profiles/{id} dengan method override untuk PUT
             // Laravel akan membaca _method dan treat sebagai PUT request
             formData.append("_method", "PUT");
+
+            // DEBUG: Log semua FormData entries
+            console.log("=== FormData Debug ===");
+            formData.forEach((value, key) => {
+                if (value instanceof File) {
+                    console.log(`${key}: File(${value.name})`);
+                } else {
+                    console.log(`${key}: ${value}`);
+                }
+            });
+            console.log("=== End FormData Debug ===");
+
             return apiClient.post(`/profiles/${profileId}`, formData);
         },
         onSuccess: () => {
             alert("Profile Updated!");
             queryClient.invalidateQueries({ queryKey: ["profile"] });
         },
-        onError: (err) => {
-            console.error(err);
-            alert("Failed update.");
+        onError: (err: any) => {
+            console.error("=== Full Error ===");
+            console.error("Status:", err.response?.status);
+            console.error("Response data:", err.response?.data);
+            console.error("Error messages:", err.response?.data?.errors);
+            console.error("=== End Error ===");
+            alert("Failed update. Check console for validation errors.");
         },
     });
 
