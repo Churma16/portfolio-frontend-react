@@ -2,8 +2,12 @@ import { motion } from "framer-motion";
 import CodeWindow from "../common/CodeWindow";
 import PixelButton from "../common/PixelButton"; // Reuse tombol pixel kita
 import { PixelDownload } from "../common/PixelIcon";
+import { useProfile } from "../../hooks/useProfile";
+
 
 export default function AboutSection() {
+    const { data: profile, isLoading, isError } = useProfile();
+
     return (
         <section id="about" className="py-20 lg:py-32 relative overflow-hidden">
             {/* Background Decoration (Glow samar di belakang Code Window) */}
@@ -24,35 +28,13 @@ export default function AboutSection() {
                             <span className="text-lara-blue">Code</span>.
                         </h2>
 
-                        <div className="space-y-4 text-slate-400 font-body text-lg leading-relaxed">
-                            <p>
-                                Hello! I'm{" "}
-                                <strong className="text-white">Fathan</strong>,
-                                a software engineer based in{" "}
-                                <span className="text-white">
-                                    Semarang, Indonesia
-                                </span>
-                                .
-                            </p>
-                            <p>
-                                I graduated from{" "}
-                                <strong className="text-white">
-                                    Universitas Diponegoro
-                                </strong>{" "}
-                                with a degree in Informatics. My journey
-                                involves bridging the gap between robust
-                                backends (Laravel) and interactive frontends
-                                (React).
-                            </p>
-                            <p>
-                                When I'm not debugging, you can find me grinding
-                                ranks in{" "}
-                                <span className="text-lara-blue font-medium">
-                                    EA Sports FC
-                                </span>
-                                , capturing moments through my camera lens, or
-                                exploring new coffee spots in Tembalang.
-                            </p>
+                        <div
+                            dangerouslySetInnerHTML={{
+                                __html: profile?.bio_long || "",
+                            }}
+                            className="space-y-4 text-slate-400 font-body text-lg leading-relaxed"
+                        >
+
                         </div>
 
                         {/* Tombol Download CV */}
@@ -69,7 +51,7 @@ export default function AboutSection() {
                         {/* Hiasan kotak di belakang biar ada dimensi */}
                         <div className="absolute -inset-4 bg-gradient-to-r from-lara-blue to-purple-600 rounded-xl opacity-20 blur-lg rotate-2" />
 
-                        <CodeWindow />
+                        <CodeWindow profile={profile} />
                     </div>
                 </div>
             </div>
