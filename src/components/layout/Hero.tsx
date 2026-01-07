@@ -68,7 +68,7 @@ export default function Hero() {
                         <span className="text-white font-bold">
                             {profile?.name}
                         </span>
-                        . {" "}
+                        .{" "}
                         <span
                             dangerouslySetInnerHTML={{
                                 __html: profile?.bio_short || "",
@@ -89,10 +89,13 @@ export default function Hero() {
                             <PixelPlay className="w-5 h-5" />
                             Discover
                         </PixelButton>
-
-                        {/* 2. Download CV (Baru!) */}
-                        {/* Ganti '/my-cv.pdf' dengan lokasi file CV kamu nanti */}
-                        <a href={profile?.cv_files} target="_blank" rel="noopener noreferrer">
+                        <a
+                            href={`${import.meta.env.VITE_FILE_URL}${
+                                profile?.cv_files
+                            }`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
                             <PixelButton variant="primary">
                                 <PixelDownload className="w-5 h-5" />
                                 Resume
@@ -124,8 +127,10 @@ export default function Hero() {
                         {/* Sementara pakai placeholder kotak rounded */}
                         <div className="relative w-full h-full rounded-3xl bg-slate-800 border border-white/10 overflow-hidden shadow-2xl rotate-3 hover:rotate-0 transition-all duration-500">
                             <img
-                                src="https://avatars.githubusercontent.com/u/1?v=4" // Contoh avatar (Ganti URL foto kamu)
-                                alt="Aditya Profile"
+                                src={`${import.meta.env.VITE_FILE_URL}${
+                                    profile?.avatar
+                                }`}
+                                alt="Fathan Profile"
                                 className="w-full h-full object-cover opacity-80 hover:opacity-100 transition-opacity"
                             />
 
