@@ -43,7 +43,7 @@ export interface Profile extends BaseEntity {
     is_hireable: boolean;
     avatar: string;
     cv_files: string;
-    hero_image_code: string;
+    hero_image_codes: string;
     socials: SocialLinks;
 }
 
