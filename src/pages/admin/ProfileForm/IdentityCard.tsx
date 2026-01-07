@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { HiPencil } from "react-icons/hi2";
-import { ProfileFormValues } from "./ProfileForm"; // Import tipe jika perlu
+import { ProfileFormValues } from "./index"; // Import tipe jika perlu
 
 export default function IdentityCard() {
     const { register, watch, setValue } = useFormContext<ProfileFormValues>();
@@ -26,7 +26,7 @@ export default function IdentityCard() {
         avatarFileList && avatarFileList.length > 0
             ? URL.createObjectURL(avatarFileList[0])
             : avatarUrl
-            ? `http://127.0.0.1:8000${avatarUrl}`
+            ? `${avatarUrl}`
             : null;
 
     const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,7 +54,9 @@ export default function IdentityCard() {
                         >
                             {previewImage ? (
                                 <img
-                                    src={previewImage}
+                                    src={`${import.meta.env.VITE_FILE_URL}${
+                                    previewImage
+                                }`}
                                     className="w-full h-full object-cover"
                                     alt="Avatar"
                                 />
