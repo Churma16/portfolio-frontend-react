@@ -16,6 +16,7 @@ import { Project, TechStack, Tag } from "../../types";
 import TechIcon from "../../components/common/TechIcon";
 import { useTechStacks } from "@/hooks/useTechStacks";
 import { useTags } from "@/hooks/useTags";
+import { useProjectMutation } from "@/hooks/useProjects";
 import apiClient from "@/api/axios";
 
 interface ProjectDialogProps {
@@ -31,12 +32,13 @@ export default function ProjectDialog({
     projectToEdit,
     onSuccess,
 }: ProjectDialogProps) {
-    const [isSubmitting, setIsSubmitting] = useState(false);
-
     // Use custom hooks for master data
     const { data: availableStacks = [], isLoading: stacksLoading } =
         useTechStacks();
     const { data: availableTags = [], isLoading: tagsLoading } = useTags();
+
+    // Use mutation hook with projectId parameter
+    const mutation = useProjectMutation(projectToEdit?.id);
 
     // Form State
     const [formData, setFormData] = useState({
@@ -46,6 +48,11 @@ export default function ProjectDialog({
         repo_url: "",
         demo_url: "",
     });
+
+    // File upload state
+    const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
+    const [thumbnailPreview, setThumbnailPreview] = useState<string>("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     // Toggle State (Array ID yang dipilih)
     const [selectedStackIds, setSelectedStackIds] = useState<number[]>([]);
@@ -62,6 +69,10 @@ export default function ProjectDialog({
                     repo_url: projectToEdit.repo_url || "",
                     demo_url: projectToEdit.demo_url || "",
                 });
+                setThumbnailPreview(
+                    `${import.meta.env.VITE_FILE_URL}${projectToEdit.thumbnail}`
+                );
+                setThumbnailFile(null);
                 // Isi toggle yang sudah terpilih
                 setSelectedStackIds(
                     projectToEdit.tech_stack?.map((s) => s.id) || []
@@ -76,6 +87,8 @@ export default function ProjectDialog({
                     repo_url: "",
                     demo_url: "",
                 });
+                setThumbnailFile(null);
+                setThumbnailPreview("");
                 setSelectedStackIds([]);
                 setSelectedTagIds([]);
             }
@@ -99,32 +112,92 @@ export default function ProjectDialog({
         );
     };
 
+    // Handle Thumbnail File Upload
+    const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            setThumbnailFile(file);
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setThumbnailPreview(reader.result as string);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
     // Handle Submit
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
+
         try {
-            const url = projectToEdit
-                ? `/projects/${projectToEdit.id}` // Edit
-                : "/projects"; // Create
+            if (thumbnailFile) {
+                // Jika ada file thumbnail, gunakan FormData
+                const formDataToSend = new FormData();
+                formDataToSend.append("title", formData.title);
+                formDataToSend.append("content", formData.content);
+                formDataToSend.append("repo_url", formData.repo_url);
+                formDataToSend.append("demo_url", formData.demo_url);
+                formDataToSend.append("thumbnail", thumbnailFile);
+                formDataToSend.append(
+                    "tech_stack_ids",
+                    JSON.stringify(selectedStackIds)
+                );
+                formDataToSend.append(
+                    "tag_ids",
+                    JSON.stringify(selectedTagIds)
+                );
 
-            const method = projectToEdit ? "PUT" : "POST";
+                // Hit /projects endpoint (create atau update)
+                if (projectToEdit) {
+                    // PUT request untuk update
+                    formDataToSend.append("_method", "PUT");
+                    await apiClient.post(
+                        `/projects/${projectToEdit.id}`,
+                        formDataToSend,
+                        {
+                            headers: {
+                                "Content-Type": "multipart/form-data",
+                            },
+                        }
+                    );
+                } else {
+                    // POST request untuk create
+                    await apiClient.post("/projects", formDataToSend, {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                        },
+                    });
+                }
 
-            // Payload yang dikirim ke Laravel
-            const payload = {
-                ...formData,
-                tech_stack_ids: selectedStackIds,
-                tag_ids: selectedTagIds,
-            };
-
-            if (method === "POST") {
-                await apiClient.post(url, payload);
+                onSuccess();
+                onOpenChange(false);
             } else {
-                await apiClient.put(url, payload);
-            }
+                // Jika tidak ada file, gunakan JSON payload biasa
+                const payload: any = {
+                    title: formData.title,
+                    content: formData.content,
+                    repo_url: formData.repo_url,
+                    demo_url: formData.demo_url,
+                    tech_stack_ids: selectedStackIds,
+                    tag_ids: selectedTagIds,
+                };
 
-            onSuccess(); // Refresh tabel di parent
-            onOpenChange(false); // Tutup modal
+                // Only include thumbnail URL jika tidak ada file baru (edit mode)
+                if (formData.thumbnail) {
+                    payload.thumbnail = formData.thumbnail;
+                }
+
+                mutation.mutate(payload, {
+                    onSuccess: () => {
+                        onSuccess();
+                        onOpenChange(false);
+                    },
+                    onError: () => {
+                        alert("Gagal menyimpan project!");
+                    },
+                });
+            }
         } catch (error) {
             console.error("Error submitting project:", error);
             alert("Gagal menyimpan project!");
@@ -147,7 +220,7 @@ export default function ProjectDialog({
                 </DialogHeader>
 
                 <form onSubmit={handleSubmit} className="space-y-6 mt-4">
-                    {/* Row 1: Title & Links */}
+                    {/* Row 1: Title & Thumbnail */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="space-y-2">
                             <Label>Project Title</Label>
@@ -165,18 +238,38 @@ export default function ProjectDialog({
                             />
                         </div>
                         <div className="space-y-2">
-                            <Label>Thumbnail URL</Label>
-                            <Input
-                                value={formData.thumbnail}
-                                onChange={(e) =>
-                                    setFormData({
-                                        ...formData,
-                                        thumbnail: e.target.value,
-                                    })
-                                }
-                                placeholder="https://..."
-                                className="bg-black/20 border-white/10"
-                            />
+                            <Label>Thumbnail Image</Label>
+                            <div className="space-y-2">
+                                <div className="relative border-2 border-dashed border-white/20 rounded-lg p-4 text-center hover:border-white/40 transition-colors cursor-pointer group">
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={handleThumbnailChange}
+                                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                    />
+                                    {thumbnailPreview ? (
+                                        <div className="space-y-2">
+                                            <img
+                                                src={thumbnailPreview}
+                                                alt="Preview"
+                                                className="w-full h-32 object-cover rounded"
+                                            />
+                                            <p className="text-xs text-slate-400">
+                                                Click to change
+                                            </p>
+                                        </div>
+                                    ) : (
+                                        <div className="py-6 space-y-2">
+                                            <p className="text-sm text-slate-400 group-hover:text-slate-300">
+                                                Click to upload image
+                                            </p>
+                                            <p className="text-xs text-slate-500">
+                                                PNG, JPG or GIF
+                                            </p>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -308,9 +401,9 @@ export default function ProjectDialog({
                         <Button
                             type="submit"
                             className="bg-lara-blue hover:bg-blue-600 min-w-[120px]"
-                            disabled={isSubmitting}
+                            disabled={mutation.isPending || isSubmitting}
                         >
-                            {isSubmitting ? (
+                            {mutation.isPending || isSubmitting ? (
                                 <CgSpinner className="animate-spin mr-2" />
                             ) : null}
                             {projectToEdit
