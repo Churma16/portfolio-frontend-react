@@ -12,7 +12,7 @@ const fetchMessage = async (): Promise<Message> => {
 interface CreateMessagePayload {
     name: string;
     email: string;
-    message: string;
+    content: string;
 }
 
 export const useMessage = () => {
