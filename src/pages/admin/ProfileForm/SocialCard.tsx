@@ -1,3 +1,4 @@
+import { useFormContext, useFieldArray } from "react-hook-form";
 import {
     Card,
     CardContent,
@@ -8,22 +9,16 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { HiPlus, HiTrash } from "react-icons/hi2";
+import { ProfileFormValues } from "./ProfileForm";
 
-interface SocialCardProps {
-    socials: { [key: string]: string };
-    onAddSocial: () => void;
-    onRemoveSocial: (platform: string) => void;
-    onUpdatePlatform: (oldKey: string, newKey: string) => void;
-    onUpdateUrl: (platform: string, url: string) => void;
-}
+export default function SocialCard() {
+    const { control, register } = useFormContext<ProfileFormValues>();
 
-export default function SocialCard({
-    socials,
-    onAddSocial,
-    onRemoveSocial,
-    onUpdatePlatform,
-    onUpdateUrl,
-}: SocialCardProps) {
+    const { fields, append, remove } = useFieldArray({
+        control,
+        name: "socialsArray",
+    });
+
     return (
         <Card className="bg-card-bg-lara-admin border-card-border-lara-admin text-white shadow-lg">
             <CardHeader className="flex flex-row items-center justify-between">
@@ -39,49 +34,41 @@ export default function SocialCard({
                     type="button"
                     size="sm"
                     variant="secondary"
-                    onClick={onAddSocial}
-                    className="gap-2 text-lara-blue hover:bg-lara-blue/10"
+                    onClick={() => append({ platform: "", url: "" })}
                 >
-                    <HiPlus className="w-4 h-4" /> Add Platform
+                    <HiPlus className="w-4 h-4 mr-2" /> Add Platform
                 </Button>
             </CardHeader>
             <CardContent className="space-y-4">
-                {Object.entries(socials).map(([platform, url], idx) => (
-                    <div key={idx} className="flex gap-3 items-center group">
-                        {/* Platform Key Input */}
+                {fields.map((field, idx) => (
+                    <div key={field.id} className="flex gap-3 items-center">
                         <div className="w-1/3 max-w-[200px]">
+                            {/* Input untuk Key (Platform) */}
                             <Input
-                                placeholder="Platform (e.g. twitter)"
-                                value={platform}
-                                onChange={(e) =>
-                                    onUpdatePlatform(platform, e.target.value)
-                                }
-                                className="bg-field-bg-lara-admin border-card-border-lara-admin focus-visible:ring-lara-blue placeholder-lara-sky/30"
+                                placeholder="Platform"
+                                {...register(`socialsArray.${idx}.platform`)}
+                                className="bg-field-bg-lara-admin"
                             />
                         </div>
-                        {/* URL Value Input */}
                         <div className="flex-1">
+                            {/* Input untuk Value (URL) */}
                             <Input
                                 placeholder="https://..."
-                                value={url}
-                                onChange={(e) =>
-                                    onUpdateUrl(platform, e.target.value)
-                                }
-                                className="bg-field-bg-lara-admin border-card-border-lara-admin focus-visible:ring-lara-blue placeholder-lara-sky/30"
+                                {...register(`socialsArray.${idx}.url`)}
+                                className="bg-field-bg-lara-admin"
                             />
                         </div>
                         <Button
                             type="button"
                             size="icon"
                             variant="ghost"
-                            onClick={() => onRemoveSocial(platform)}
-                            className="text-lara-sky/60 hover:text-cat-framework hover:bg-cat-framework/10"
+                            onClick={() => remove(idx)}
                         >
                             <HiTrash className="w-4 h-4" />
                         </Button>
                     </div>
                 ))}
-                {Object.keys(socials).length === 0 && (
+                {fields.length === 0 && (
                     <div className="text-center py-8 text-lara-sky/50 border border-dashed border-white/10 rounded-lg">
                         No social links added yet.
                     </div>
