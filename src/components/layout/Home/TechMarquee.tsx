@@ -1,5 +1,5 @@
-import { useTechStacks } from "../../hooks/useTechStacks";
-import TechIcon from "../common/TechIcon";
+import { useTechStacks } from "@/hooks/useTechStacks.ts";
+import TechIcon from "../../common/TechIcon.tsx";
 // 1. Import AnimatePresence
 import { motion, AnimatePresence } from "framer-motion"; 
 
