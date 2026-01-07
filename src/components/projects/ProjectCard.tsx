@@ -30,7 +30,9 @@ export default function ProjectCard({
             {/* Thumbnail */}
             <div className="relative aspect-video overflow-hidden bg-slate-800">
                 <img
-                    src={project.thumbnail}
+                    src={`${import.meta.env.VITE_FILE_URL}${
+                        project.thumbnail
+                    }`}
                     alt={project.title}
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
