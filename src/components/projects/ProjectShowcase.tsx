@@ -76,8 +76,12 @@ export default function ProjectShowcase({ projects }: ProjectShowcaseProps) {
                                 {/* Header Image */}
                                 <div className="relative h-64 sm:h-80 shrink-0">
                                     <img
-                                        src={`${import.meta.env.VITE_FILE_URL}${selectedProject.thumbnail}`}
-                                        alt={`${import.meta.env.VITE_FILE_URL}${selectedProject.thumbnail}`}
+                                        src={`${import.meta.env.VITE_FILE_URL}${
+                                            selectedProject.thumbnail
+                                        }`}
+                                        alt={`${import.meta.env.VITE_FILE_URL}${
+                                            selectedProject.thumbnail
+                                        }`}
                                         className="w-full h-full object-cover"
                                     />
                                     <button
@@ -141,6 +145,7 @@ export default function ProjectShowcase({ projects }: ProjectShowcaseProps) {
                                                     >
                                                         <TechIcon
                                                             name={stack.name}
+                                                            icon={stack.icon}
                                                             className="w-5 h-5 text-lara-blue"
                                                         />
                                                         <span className="text-sm text-slate-300">
