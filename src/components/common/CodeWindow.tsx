@@ -1,12 +1,12 @@
 import { motion } from "framer-motion";
 
-export default function CodeWindow() {
+export default function CodeWindow({profile}: Profile) {
     // Data JSON sesuai ASCII Art kamu
     const codeString = [
         { line: 1, text: "{" },
-        { line: 2, text: '  "name": "Fathan",', indent: true },
-        { line: 3, text: '  "role": "Fullstack Developer",', indent: true },
-        { line: 4, text: '  "location": "Semarang, ID",', indent: true },
+        { line: 2, text: `  "name": "${profile?.name}",`, indent: true },
+        { line: 3, text: `  "role": "${profile?.role}",`, indent: true },
+        { line: 4, text: `  "location": "${profile?.location}",`, indent: true },
         {
             line: 5,
             text: '  "education": "Universitas Diponegoro",',
