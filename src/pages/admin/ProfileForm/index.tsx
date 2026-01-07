@@ -21,9 +21,9 @@ export interface ProfileFormValues {
     is_hireable: boolean;
     avatar: string | null; // URL dari DB
     cv_files: string | null; // URL dari DB
-    
+
     // Kita ubah object socials menjadi array agar mudah diedit di UI
-    socialsArray: { platform: string; url: string }[]; 
+    socialsArray: { platform: string; url: string }[];
     hero_image_codes: { value: string }[]; // Array of objects untuk useFieldArray
 
     // Field file upload (tidak ada di data fetch)
@@ -51,17 +51,34 @@ export default function ProfileForm() {
     // Sync Data Fetch -> Form
     useEffect(() => {
         if (profileData) {
+            // Parse hero_image_codes jika berupa string JSON
+            let heroCodes = [];
+            if (profileData.hero_image_codes) {
+                if (typeof profileData.hero_image_codes === "string") {
+                    try {
+                        heroCodes = JSON.parse(profileData.hero_image_codes);
+                    } catch {
+                        heroCodes = [];
+                    }
+                } else if (Array.isArray(profileData.hero_image_codes)) {
+                    heroCodes = profileData.hero_image_codes;
+                }
+            }
+
             reset({
                 ...profileData,
                 is_hireable: Boolean(profileData.is_hireable),
                 // Transform Object {twitter: url} -> Array [{platform: 'twitter', url: url}]
-                socialsArray: profileData.socials 
-                    ? Object.entries(profileData.socials).map(([k, v]) => ({ platform: k, url: v as string })) 
+                socialsArray: profileData.socials
+                    ? Object.entries(profileData.socials).map(([k, v]) => ({
+                          platform: k,
+                          url: v as string,
+                      }))
                     : [],
                 // Transform Array ["code"] -> Array Object [{value: "code"}] (RHF butuh object unique id)
-                hero_image_codes: profileData.hero_image_codes 
-                    ? profileData.hero_image_codes.map((code: string) => ({ value: code }))
-                    : [],
+                hero_image_codes: heroCodes.map((code: string) => ({
+                    value: code,
+                })),
             });
         }
     }, [profileData, reset]);
@@ -70,7 +87,7 @@ export default function ProfileForm() {
     const mutation = useMutation({
         mutationFn: async (data: ProfileFormValues) => {
             const formData = new FormData();
-            
+
             // Append basic fields
             formData.append("name", data.name);
             formData.append("headline", data.headline || "");
@@ -89,20 +106,30 @@ export default function ProfileForm() {
             formData.append("socials", JSON.stringify(socialsObj));
 
             // 2. Hero Codes: Array Object -> Array String
-            const codesArray = data.hero_image_codes.map(c => c.value);
+            // Filter out empty values dan extract value property
+            const codesArray = data.hero_image_codes
+                .map((c) => c.value)
+                .filter((val) => val && val.trim() !== ""); // Remove empty strings
             formData.append("hero_image_codes", JSON.stringify(codesArray));
-
-            formData.append("_method", "PUT");
 
             // Handle Files
             if (data.avatar_file && data.avatar_file.length > 0) {
-                formData.append("avatar_file", data.avatar_file[0]);
+                formData.append("avatar", data.avatar_file[0]);
             }
             if (data.cv_file && data.cv_file.length > 0) {
-                formData.append("cv_file", data.cv_file[0]);
+                formData.append("cv_files", data.cv_file[0]);
             }
 
-            return apiClient.post("/profile", formData);
+            // GET profile ID dari data fetch
+            const profileId = profileData?.id;
+            if (!profileId) {
+                throw new Error("Profile ID tidak ditemukan");
+            }
+
+            // POST ke /profiles/{id} dengan method override untuk PUT
+            // Laravel akan membaca _method dan treat sebagai PUT request
+            formData.append("_method", "PUT");
+            return apiClient.post(`/profiles/${profileId}`, formData);
         },
         onSuccess: () => {
             alert("Profile Updated!");
@@ -111,7 +138,7 @@ export default function ProfileForm() {
         onError: (err) => {
             console.error(err);
             alert("Failed update.");
-        }
+        },
     });
 
     const onSubmit: SubmitHandler<ProfileFormValues> = (data) => {
@@ -122,7 +149,7 @@ export default function ProfileForm() {
 
     return (
         <div className="max-w-5xl mx-auto pb-32 min-h-screen">
-                  <div className="mb-8">
+            <div className="mb-8">
                 <h2 className="text-3xl font-heading font-bold text-white">
                     Edit Profile
                 </h2>
