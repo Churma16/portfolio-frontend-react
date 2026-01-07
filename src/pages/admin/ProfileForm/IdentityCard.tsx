@@ -8,6 +8,7 @@ import {
     CardDescription,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { HiPencil } from "react-icons/hi2";
 import { ProfileFormValues } from "./ProfileForm"; // Import tipe jika perlu
