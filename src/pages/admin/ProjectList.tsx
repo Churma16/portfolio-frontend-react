@@ -8,34 +8,63 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { HiPlus, HiPencil, HiTrash, HiOutlineCube } from "react-icons/hi2";
+// Tambahkan HiArrowUp dan HiArrowDown
+import {
+    HiPlus,
+    HiPencil,
+    HiTrash,
+    HiOutlineCube,
+    HiArrowUp,
+    HiArrowDown,
+} from "react-icons/hi2";
 import { Project } from "../../types";
 import ProjectDialog from "./ProjectDialog";
-import { useProjects } from "../../hooks/useProjects"; // Import custom hook
+import { useProjects } from "../../hooks/useProjects";
+import axios from "axios";
+import apiClient from "@/api/axios";
 
 export default function ProjectList() {
-    // Use custom hook instead of manual fetch
     const { data: projects = [], isLoading, refetch } = useProjects();
 
-    // State untuk Modal
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [projectToEdit, setProjectToEdit] = useState<Project | null>(null);
 
-    // Fungsi handle Edit
+    // --- FUNGSI REORDER ---
+    // Anda perlu menghubungkan ini ke API backend Anda nantinya
+    const handleReorder = async (id: number, direction: "up" | "down") => {
+        console.log(`Memindahkan project ${id} ke arah ${direction}`);
+
+        // Contoh Logika API (Sesuaikan dengan endpoint backend Anda):
+        try {
+            await apiClient.post(`/projects/${id}/reorder`, { direction });
+            refetch(); // Refresh data agar urutan baru tampil
+        } catch (error) {
+            console.error("Gagal mengubah urutan", error);
+        }
+    };
+
     const handleEdit = (project: Project) => {
         setProjectToEdit(project);
         setIsDialogOpen(true);
     };
 
-    // Fungsi handle Create
     const handleCreate = () => {
         setProjectToEdit(null);
         setIsDialogOpen(true);
     };
 
+    const handleDelete = async (project: Project) => {
+        if (!confirm("Are you sure?")) return;
+        try {
+            await apiClient.delete(`/projects/${project.id}`);
+            refetch();
+        } catch (error) {
+            console.error("Delete error:", error);
+        }
+    };
+
     return (
         <div className="space-y-6">
-            {/* HEADER: Judul & Tombol Add */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
                     <h2 className="text-3xl font-heading font-bold text-white tracking-tight">
@@ -54,13 +83,16 @@ export default function ProjectList() {
                 </Button>
             </div>
 
-            {/* TABEL DATA */}
             <div className="rounded-xl border border-white/10 bg-[#0a101f]/50 overflow-hidden">
                 <Table>
                     <TableHeader className="bg-white/5">
                         <TableRow className="border-white/5 hover:bg-transparent">
                             <TableHead className="text-slate-300 w-[50px]">
                                 ID
+                            </TableHead>
+                            {/* TAMBAHAN: Header Order */}
+                            <TableHead className="text-slate-300 w-[80px] text-center">
+                                Order
                             </TableHead>
                             <TableHead className="text-slate-300">
                                 Project Info
@@ -83,7 +115,7 @@ export default function ProjectList() {
                         {isLoading ? (
                             <TableRow>
                                 <TableCell
-                                    colSpan={5}
+                                    colSpan={7}
                                     className="h-24 text-center text-slate-500 animate-pulse"
                                 >
                                     Loading projects data...
@@ -92,7 +124,7 @@ export default function ProjectList() {
                         ) : projects.length === 0 ? (
                             <TableRow>
                                 <TableCell
-                                    colSpan={5}
+                                    colSpan={7}
                                     className="h-32 text-center text-slate-500"
                                 >
                                     <div className="flex flex-col items-center justify-center gap-2">
@@ -105,7 +137,8 @@ export default function ProjectList() {
                                 </TableCell>
                             </TableRow>
                         ) : (
-                            projects.map((project) => (
+                            // Tambahkan parameter index di sini untuk logika disable tombol
+                            projects.map((project, index) => (
                                 <TableRow
                                     key={project.id}
                                     className="border-white/5 hover:bg-white/5 transition-colors"
@@ -114,10 +147,49 @@ export default function ProjectList() {
                                         #{project.id}
                                     </TableCell>
 
-                                    {/* Kolom Info: Gambar + Judul */}
+                                    {/* --- TAMBAHAN: Kolom Tombol Order --- */}
+                                    <TableCell>
+                                        <div className="flex flex-col items-center gap-1">
+                                            {/* Tombol NAIK */}
+                                            <Button
+                                                size="icon"
+                                                variant="ghost"
+                                                className="h-6 w-6 text-slate-400 hover:text-white hover:bg-white/10 disabled:opacity-30"
+                                                onClick={() =>
+                                                    handleReorder(
+                                                        project.id,
+                                                        "up"
+                                                    )
+                                                }
+                                                disabled={index === 0} // Disable jika item pertama
+                                            >
+                                                <HiArrowUp className="w-3 h-3" />
+                                            </Button>
+
+                                            {/* Tombol TURUN */}
+                                            <Button
+                                                size="icon"
+                                                variant="ghost"
+                                                className="h-6 w-6 text-slate-400 hover:text-white hover:bg-white/10 disabled:opacity-30"
+                                                onClick={() =>
+                                                    handleReorder(
+                                                        project.id,
+                                                        "down"
+                                                    )
+                                                }
+                                                disabled={
+                                                    index ===
+                                                    projects.length - 1
+                                                } // Disable jika item terakhir
+                                            >
+                                                <HiArrowDown className="w-3 h-3" />
+                                            </Button>
+                                        </div>
+                                    </TableCell>
+                                    {/* ----------------------------------- */}
+
                                     <TableCell>
                                         <div className="flex items-center gap-4">
-                                            {/* Thumbnail Mini */}
                                             <div className="w-12 h-12 rounded-lg bg-slate-800 overflow-hidden shrink-0 border border-white/10">
                                                 <img
                                                     src={`${
@@ -139,19 +211,13 @@ export default function ProjectList() {
                                         </div>
                                     </TableCell>
 
-                                    {/* Kolom Category */}
                                     <TableCell>
                                         <div className="flex flex-wrap gap-1.5">
-                                            <span
-                                                key={project.category?.id}
-                                                className="px-2 py-0.5 rounded text-[10px] font-medium bg-blue-500/10 text-blue-400 border border-blue-500/20"
-                                            >
+                                            <span className="px-2 py-0.5 rounded text-[10px] font-medium bg-blue-500/10 text-blue-400 border border-blue-500/20">
                                                 {project.category?.name}
                                             </span>
                                         </div>
                                     </TableCell>
-
-                                    {/* Kolom Tech Stack (Badge) */}
 
                                     <TableCell>
                                         <div className="flex flex-wrap gap-1.5">
@@ -177,7 +243,6 @@ export default function ProjectList() {
                                         </div>
                                     </TableCell>
 
-                                    {/* Kolom Tags */}
                                     <TableCell>
                                         <div className="flex flex-wrap gap-1.5">
                                             {project.tags?.map((tag) => (
@@ -191,7 +256,6 @@ export default function ProjectList() {
                                         </div>
                                     </TableCell>
 
-                                    {/* Kolom Actions */}
                                     <TableCell className="text-right">
                                         <div className="flex items-center justify-end gap-2">
                                             <Button
@@ -199,7 +263,7 @@ export default function ProjectList() {
                                                 variant="ghost"
                                                 onClick={() =>
                                                     handleEdit(project)
-                                                } // <--- Pasang handler di sini
+                                                }
                                                 className="h-8 w-8 text-slate-400 hover:text-white hover:bg-white/10"
                                             >
                                                 <HiPencil className="w-4 h-4" />
@@ -207,6 +271,9 @@ export default function ProjectList() {
                                             <Button
                                                 size="icon"
                                                 variant="ghost"
+                                                onClick={() =>
+                                                    handleDelete(project)
+                                                }
                                                 className="h-8 w-8 text-slate-400 hover:text-red-400 hover:bg-red-500/10"
                                             >
                                                 <HiTrash className="w-4 h-4" />
@@ -222,7 +289,7 @@ export default function ProjectList() {
                     open={isDialogOpen}
                     onOpenChange={setIsDialogOpen}
                     projectToEdit={projectToEdit}
-                    onSuccess={refetch} // Refresh data using hook's refetch
+                    onSuccess={refetch}
                 />
             </div>
         </div>
