@@ -120,7 +120,10 @@ export default function ProjectList() {
                                             {/* Thumbnail Mini */}
                                             <div className="w-12 h-12 rounded-lg bg-slate-800 overflow-hidden shrink-0 border border-white/10">
                                                 <img
-                                                    src={project.thumbnail}
+                                                    src={`${
+                                                        import.meta.env
+                                                            .VITE_FILE_URL
+                                                    }${project.thumbnail}`}
                                                     alt={project.title}
                                                     className="w-full h-full object-cover"
                                                 />
