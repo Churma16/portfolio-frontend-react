@@ -1,12 +1,16 @@
 import { motion } from "framer-motion";
 
-export default function CodeWindow({profile}: Profile) {
+export default function CodeWindow({ profile }: Profile) {
     // Data JSON sesuai ASCII Art kamu
     const codeString = [
         { line: 1, text: "{" },
         { line: 2, text: `  "name": "${profile?.name}",`, indent: true },
         { line: 3, text: `  "role": "${profile?.role}",`, indent: true },
-        { line: 4, text: `  "location": "${profile?.location}",`, indent: true },
+        {
+            line: 4,
+            text: `  "location": "${profile?.location}",`,
+            indent: true,
+        },
         {
             line: 5,
             text: '  "education": "Universitas Diponegoro",',
@@ -16,14 +20,14 @@ export default function CodeWindow({profile}: Profile) {
         { line: 7, text: '    "Gaming 🎮",', indent: true, subIndent: true },
         {
             line: 8,
-            text: '    "Photography 📸",',
+            text: '    "Cooking 👨‍🍳",',
             indent: true,
             subIndent: true,
         },
         { line: 9, text: '    "Coding 💻"', indent: true, subIndent: true },
         { line: 10, text: "  ],", indent: true },
         { line: 11, text: '  "hard_worker": true,', indent: true },
-        { line: 12, text: '  "coffee_lover": true', indent: true },
+        { line: 12, text: '  "food_lover": true', indent: true },
         { line: 13, text: "}" },
     ];
 
