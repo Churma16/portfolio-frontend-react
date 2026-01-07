@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import PixelButton from "../common/PixelButton";
 import { PixelChat, PixelDownload, PixelPlay } from "../common/PixelIcon";
 import { useProfile } from "../../hooks/useProfile";
@@ -16,32 +16,38 @@ export default function Hero() {
                 {/* --- KIRI: Teks & CTA --- */}
                 <div className="flex-1 text-center lg:text-left space-y-6">
                     {/* Badge 'Available for work' */}
-                    {profile?.is_hireable ? (
-                        <motion.div
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5 }}
-                            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-lara-blue/10 border border-lara-blue/20 text-lara-blue text-xs font-bold uppercase tracking-wider mx-auto lg:mx-0"
-                        >
-                            <span className="relative flex h-2 w-2">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-lara-blue opacity-75"></span>
-                                <span className="relative inline-flex rounded-full h-2 w-2 bg-lara-blue"></span>
-                            </span>
-                            Available for Hire
-                        </motion.div>
-                    ) : (
-                        <motion.div
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5 }}
-                            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-500/10 border border-slate-500/20 text-slate-400 text-xs font-bold uppercase tracking-wider mx-auto lg:mx-0"
-                        >
-                            <span className="relative flex h-2 w-2">
-                                <span className="relative inline-flex rounded-full h-2 w-2 bg-slate-400"></span>
-                            </span>
-                            Not Available
-                        </motion.div>
-                    )}
+                    <AnimatePresence mode="wait">
+                        {profile?.is_hireable ? (
+                            <motion.div
+                                key="available"
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -10 }}
+                                transition={{ duration: 0.5 }}
+                                className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-lara-blue/10 border border-lara-blue/20 text-lara-blue text-xs font-bold uppercase tracking-wider mx-auto lg:mx-0"
+                            >
+                                <span className="relative flex h-2 w-2">
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-lara-blue opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-lara-blue"></span>
+                                </span>
+                                Available for Hire
+                            </motion.div>
+                        ) : (
+                            <motion.div
+                                key="not-available"
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -10 }}
+                                transition={{ duration: 0.5 }}
+                                className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-500/10 border border-slate-500/20 text-slate-400 text-xs font-bold uppercase tracking-wider mx-auto lg:mx-0"
+                            >
+                                <span className="relative flex h-2 w-2">
+                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-slate-400"></span>
+                                </span>
+                                Not Available
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
 
                     {/* Headline Utama */}
                     <motion.h1
@@ -58,23 +64,41 @@ export default function Hero() {
                     </motion.h1>
 
                     {/* Deskripsi Diri */}
-                    <motion.p
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: 0.2 }}
-                        className="text-lg text-slate-400 max-w-2xl mx-auto lg:mx-0 leading-relaxed"
-                    >
-                        Hi, I'm{" "}
-                        <span className="text-white font-bold">
-                            {profile?.name}
-                        </span>
-                        .{" "}
-                        <span
-                            dangerouslySetInnerHTML={{
-                                __html: profile?.bio_short || "",
-                            }}
-                        />
-                    </motion.p>
+                    <AnimatePresence mode="wait">
+                        {profile ? (
+                            <motion.p
+                                key="profile-text"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -20 }}
+                                transition={{ duration: 0.5, delay: 0.2 }}
+                                className="text-lg text-slate-400 max-w-2xl mx-auto lg:mx-0 leading-relaxed"
+                            >
+                                Hi, I'm{" "}
+                                <span className="text-white font-bold">
+                                    {profile.name}
+                                </span>
+                                .{" "}
+                                <span
+                                    dangerouslySetInnerHTML={{
+                                        __html: profile.bio_short || "",
+                                    }}
+                                />
+                            </motion.p>
+                        ) : (
+                            <motion.div
+                                key="profile-skeleton"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -20 }}
+                                transition={{ duration: 0.3 }}
+                                className="text-lg text-slate-400 max-w-2xl mx-auto lg:mx-0 leading-relaxed space-y-2"
+                            >
+                                <div className="h-4 bg-slate-700 rounded animate-pulse w-40"></div>
+                                <div className="h-4 bg-slate-700 rounded animate-pulse w-48"></div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
 
                     {/* Tombol CTA (Call to Action) */}
                     <motion.div
@@ -126,13 +150,31 @@ export default function Hero() {
                         {/* GANTI SRC INI DENGAN FOTO KAMU NANTI */}
                         {/* Sementara pakai placeholder kotak rounded */}
                         <div className="relative w-full h-full rounded-3xl bg-slate-800 border border-white/10 overflow-hidden shadow-2xl rotate-3 hover:rotate-0 transition-all duration-500">
-                            <img
-                                src={`${import.meta.env.VITE_FILE_URL}${
-                                    profile?.avatar
-                                }`}
-                                alt="Fathan Profile"
-                                className="w-full h-full object-cover opacity-80 hover:opacity-100 transition-opacity"
-                            />
+                            <AnimatePresence mode="wait">
+                                {profile?.avatar ? (
+                                    <motion.img
+                                        key="avatar-loaded"
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0 }}
+                                        transition={{ duration: 0.6 }}
+                                        src={`${import.meta.env.VITE_FILE_URL}${
+                                            profile.avatar
+                                        }`}
+                                        alt="Fathan Profile"
+                                        className="w-full h-full object-cover opacity-80 hover:opacity-100 transition-opacity"
+                                    />
+                                ) : (
+                                    <motion.div
+                                        key="avatar-skeleton"
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0 }}
+                                        transition={{ duration: 0.3 }}
+                                        className="w-full h-full bg-gradient-to-br from-slate-700 to-slate-800 animate-pulse"
+                                    />
+                                )}
+                            </AnimatePresence>
 
                             {/* Overlay Code Snippet style (Hiasan) */}
                             <div className="absolute bottom-0 left-0 right-0 p-4 bg-black/60 backdrop-blur-md border-t border-white/10">
