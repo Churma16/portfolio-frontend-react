@@ -16,6 +16,7 @@ import { Project, TechStack, Tag } from "../../types";
 import TechIcon from "../../components/common/TechIcon";
 import { useTechStacks } from "@/hooks/useTechStacks";
 import { useTags } from "@/hooks/useTags";
+import { useCategories } from "@/hooks/useCategories";
 import { useProjectMutation } from "@/hooks/useProjects";
 import apiClient from "@/api/axios";
 
@@ -36,6 +37,8 @@ export default function ProjectDialog({
     const { data: availableStacks = [], isLoading: stacksLoading } =
         useTechStacks();
     const { data: availableTags = [], isLoading: tagsLoading } = useTags();
+    const { data: availableCategories = [], isLoading: categoriesLoading } =
+        useCategories();
 
     // Use mutation hook with projectId parameter
     const mutation = useProjectMutation(projectToEdit?.id);
@@ -53,6 +56,11 @@ export default function ProjectDialog({
     const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
     const [thumbnailPreview, setThumbnailPreview] = useState<string>("");
     const [isSubmitting, setIsSubmitting] = useState(false);
+
+    // Category State (Single selection)
+    const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
+        null
+    );
 
     // Toggle State (Array ID yang dipilih)
     const [selectedStackIds, setSelectedStackIds] = useState<number[]>([]);
@@ -73,6 +81,8 @@ export default function ProjectDialog({
                     `${import.meta.env.VITE_FILE_URL}${projectToEdit.thumbnail}`
                 );
                 setThumbnailFile(null);
+                // Set selected category
+                setSelectedCategoryId(projectToEdit.category?.id || null);
                 // Isi toggle yang sudah terpilih
                 setSelectedStackIds(
                     projectToEdit.tech_stack?.map((s) => s.id) || []
@@ -89,6 +99,7 @@ export default function ProjectDialog({
                 });
                 setThumbnailFile(null);
                 setThumbnailPreview("");
+                setSelectedCategoryId(null);
                 setSelectedStackIds([]);
                 setSelectedTagIds([]);
             }
@@ -147,6 +158,12 @@ export default function ProjectDialog({
                     "tag_ids",
                     JSON.stringify(selectedTagIds)
                 );
+                if (selectedCategoryId) {
+                    formDataToSend.append(
+                        "category_id",
+                        selectedCategoryId.toString()
+                    );
+                }
 
                 // Hit /projects endpoint (create atau update)
                 if (projectToEdit) {
@@ -154,20 +171,11 @@ export default function ProjectDialog({
                     formDataToSend.append("_method", "PUT");
                     await apiClient.post(
                         `/projects/${projectToEdit.id}`,
-                        formDataToSend,
-                        {
-                            headers: {
-                                "Content-Type": "multipart/form-data",
-                            },
-                        }
+                        formDataToSend
                     );
                 } else {
                     // POST request untuk create
-                    await apiClient.post("/projects", formDataToSend, {
-                        headers: {
-                            "Content-Type": "multipart/form-data",
-                        },
-                    });
+                    await apiClient.post("/projects", formDataToSend);
                 }
 
                 onSuccess();
@@ -181,12 +189,10 @@ export default function ProjectDialog({
                     demo_url: formData.demo_url,
                     tech_stack_ids: selectedStackIds,
                     tag_ids: selectedTagIds,
+                    category_id: selectedCategoryId,
                 };
 
-                // Only include thumbnail URL jika tidak ada file baru (edit mode)
-                if (formData.thumbnail) {
-                    payload.thumbnail = formData.thumbnail;
-                }
+                // Jangan include thumbnail jika tidak ada file baru
 
                 mutation.mutate(payload, {
                     onSuccess: () => {
@@ -319,6 +325,38 @@ export default function ProjectDialog({
                             className="bg-black/20 border-white/10"
                             rows={4}
                         />
+                    </div>
+
+                    {/* --- CATEGORY SELECTOR (Single Selection) --- */}
+                    <div className="space-y-3">
+                        <Label className="text-purple-400 font-bold uppercase tracking-wider text-xs">
+                            Select Category
+                        </Label>
+                        <div className="flex flex-wrap gap-2 p-4 rounded-xl bg-black/20 border border-white/5">
+                            {availableCategories.map((category) => {
+                                const isSelected =
+                                    selectedCategoryId === category.id;
+                                return (
+                                    <div
+                                        key={category.id}
+                                        onClick={() =>
+                                            setSelectedCategoryId(category.id)
+                                        }
+                                        className={`cursor-pointer px-4 py-2 rounded-lg border transition-all duration-200 select-none
+                                            ${
+                                                isSelected
+                                                    ? "bg-purple-500/20 border-purple-500 text-white shadow-[0_0_10px_rgba(168,85,247,0.3)]"
+                                                    : "bg-white/5 border-transparent text-slate-400 hover:bg-white/10 hover:border-white/20"
+                                            }
+                                        `}
+                                    >
+                                        <span className="text-sm font-medium">
+                                            {category.name}
+                                        </span>
+                                    </div>
+                                );
+                            })}
+                        </div>
                     </div>
 
                     {/* --- TOGGLE AREA: TECH STACKS --- */}
