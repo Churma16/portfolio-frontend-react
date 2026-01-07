@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import { useFormContext } from "react-hook-form"; // Import ini
 import {
     Card,
     CardContent,
@@ -9,33 +10,30 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { HiPencil } from "react-icons/hi2";
+import { ProfileFormValues } from "./ProfileForm"; // Import tipe jika perlu
 
-interface IdentityCardProps {
-    formData: {
-        name: string;
-        headline: string;
-        role: string;
-        location: string;
-        avatar: string | null;
-    };
-    avatarFile: File | null;
-    onNameChange: (value: string) => void;
-    onHeadlineChange: (value: string) => void;
-    onRoleChange: (value: string) => void;
-    onLocationChange: (value: string) => void;
-    onAvatarChange: (file: File | null) => void;
-}
-
-export default function IdentityCard({
-    formData,
-    avatarFile,
-    onNameChange,
-    onHeadlineChange,
-    onRoleChange,
-    onLocationChange,
-    onAvatarChange,
-}: IdentityCardProps) {
+export default function IdentityCard() {
+    const { register, watch, setValue } = useFormContext<ProfileFormValues>();
     const avatarInputRef = useRef<HTMLInputElement>(null);
+
+    // Watch values untuk preview
+    const avatarUrl = watch("avatar");
+    const avatarFileList = watch("avatar_file");
+
+    // Logic Preview Image
+    const previewImage =
+        avatarFileList && avatarFileList.length > 0
+            ? URL.createObjectURL(avatarFileList[0])
+            : avatarUrl
+            ? `http://127.0.0.1:8000${avatarUrl}`
+            : null;
+
+    const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files) {
+            // Manually set FileList ke form state
+            setValue("avatar_file", e.target.files);
+        }
+    };
 
     return (
         <Card className="bg-card-bg-lara-admin border-card-border-lara-admin text-white shadow-lg">
@@ -47,88 +45,69 @@ export default function IdentityCard({
             </CardHeader>
             <CardContent>
                 <div className="flex flex-col md:flex-row gap-8 items-start">
-                    {/* Avatar Section */}
+                    {/* Avatar Upload */}
                     <div className="flex flex-col items-center space-y-3">
                         <div
-                            className="relative group w-32 h-32 rounded-full bg-lara-dark border-2 border-dashed border-lara-blue/30 overflow-hidden cursor-pointer hover:border-lara-blue transition-all"
+                            className="relative group w-32 h-32 rounded-full bg-lara-dark border-2 border-dashed border-lara-blue/30 overflow-hidden cursor-pointer"
                             onClick={() => avatarInputRef.current?.click()}
                         >
-                            {avatarFile || formData.avatar ? (
+                            {previewImage ? (
                                 <img
-                                    src={
-                                        avatarFile
-                                            ? URL.createObjectURL(avatarFile)
-                                            : `http://127.0.0.1:8000${formData.avatar}`
-                                    }
-                                    className="w-full h-full object-cover group-hover:opacity-75 transition-opacity"
+                                    src={previewImage}
+                                    className="w-full h-full object-cover"
                                     alt="Avatar"
                                 />
                             ) : (
-                                <div className="w-full h-full flex items-center justify-center text-lara-sky/50">
-                                    <span className="text-xs">Upload</span>
+                                <div className="w-full h-full flex items-center justify-center text-xs text-lara-sky/50">
+                                    Upload
                                 </div>
                             )}
-
-                            {/* Overlay Icon */}
-                            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40">
+                            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/40 transition-opacity">
                                 <HiPencil className="w-6 h-6 text-lara-blue" />
                             </div>
                         </div>
+
+                        {/* Hidden Input connected to RHF */}
                         <input
                             type="file"
-                            ref={avatarInputRef}
                             className="hidden"
                             accept="image/*"
-                            onChange={(e) =>
-                                onAvatarChange(e.target.files?.[0] || null)
-                            }
+                            ref={(e) => {
+                                // Simpan ref lokal untuk click handler
+                                avatarInputRef.current = e;
+                            }}
+                            onChange={handleAvatarChange}
                         />
-                        <span className="text-xs text-lara-sky/50">
-                            Click to change
-                        </span>
                     </div>
 
-                    {/* Inputs Grid */}
+                    {/* Text Inputs */}
                     <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
                         <div className="space-y-2">
-                            <Label className="text-lara-sky/90">
-                                Full Name
-                            </Label>
+                            <Label>Full Name</Label>
                             <Input
-                                value={formData.name}
-                                onChange={(e) => onNameChange(e.target.value)}
-                                className="bg-field-bg-lara-admin border-card-border-lara-admin focus-visible:ring-lara-blue placeholder-lara-sky/30"
+                                {...register("name")}
+                                className="bg-field-bg-lara-admin"
                             />
                         </div>
                         <div className="space-y-2">
-                            <Label className="text-lara-sky/90">Headline</Label>
+                            <Label>Headline</Label>
                             <Input
-                                value={formData.headline}
-                                onChange={(e) =>
-                                    onHeadlineChange(e.target.value)
-                                }
-                                placeholder="e.g. Software Engineer at Google"
-                                className="bg-field-bg-lara-admin border-card-border-lara-admin focus-visible:ring-lara-blue placeholder-lara-sky/30"
+                                {...register("headline")}
+                                className="bg-field-bg-lara-admin"
                             />
                         </div>
                         <div className="space-y-2">
-                            <Label className="text-lara-sky/90">
-                                Current Role
-                            </Label>
+                            <Label>Current Role</Label>
                             <Input
-                                value={formData.role}
-                                onChange={(e) => onRoleChange(e.target.value)}
-                                className="bg-field-bg-lara-admin border-card-border-lara-admin focus-visible:ring-lara-blue placeholder-lara-sky/30"
+                                {...register("role")}
+                                className="bg-field-bg-lara-admin"
                             />
                         </div>
                         <div className="space-y-2">
-                            <Label className="text-lara-sky/90">Location</Label>
+                            <Label>Location</Label>
                             <Input
-                                value={formData.location}
-                                onChange={(e) =>
-                                    onLocationChange(e.target.value)
-                                }
-                                className="bg-field-bg-lara-admin border-card-border-lara-admin focus-visible:ring-lara-blue placeholder-lara-sky/30"
+                                {...register("location")}
+                                className="bg-field-bg-lara-admin"
                             />
                         </div>
                     </div>
