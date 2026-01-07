@@ -30,20 +30,49 @@ export default function ProjectCard({
             {/* Thumbnail */}
             <div className="relative aspect-video overflow-hidden bg-slate-800">
                 <img
-                    src={`${import.meta.env.VITE_FILE_URL}${
-                        project.thumbnail
-                    }`}
+                    src={`${import.meta.env.VITE_FILE_URL}${project.thumbnail}`}
                     alt={project.title}
+                    onError={(e) => {
+                        e.currentTarget.src =
+                            "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Crect x='3' y='3' width='18' height='18' rx='2'/%3E%3Ccircle cx='8.5' cy='8.5' r='1.5'/%3E%3Cpath d='M21 15l-5-5L5 21'/%3E%3C/svg%3E";
+                    }}
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-lara-dark/90 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
 
-                {/* Category Badge - Top Left (Glassmorphism with Blue Tint) */}
-                {project.tags && project.tags.length > 0 && (
-                    <div className="absolute top-3 left-3 z-10">
-                        <span className="inline-flex items-center px-3 py-1.5 rounded-full bg-lara-blue/15 backdrop-blur-md text-white text-xs font-bold uppercase tracking-wide shadow-xl border border-lara-blue/30 hover:bg-lara-blue/25 hover:border-lara-blue/50 transition-all duration-300 group-hover:shadow-2xl group-hover:shadow-lara-blue/40">
-                            #{project.tags[0].name}
-                        </span>
+                {/* Category Badge - Top Left */}
+                {project.category && (
+                    <div className="absolute top-4 left-4 z-10">
+                        {project.category.color === "framework" && (
+                            <span className="inline-flex items-center px-3.5 py-1.5 rounded-full bg-cat-framework/20 text-cat-framework-light text-[11px] font-bold uppercase tracking-wider shadow-xl backdrop-blur-xl border border-cat-framework/40 group-hover:shadow-2xl group-hover:shadow-cat-framework/20 transition-all">
+                                #{project.category.name}
+                            </span>
+                        )}
+                        {project.category.color === "technique" && (
+                            <span className="inline-flex items-center px-3.5 py-1.5 rounded-full bg-cat-technique/20 text-cat-technique-light text-[11px] font-bold uppercase tracking-wider shadow-xl backdrop-blur-xl border border-cat-technique/40 group-hover:shadow-2xl group-hover:shadow-cat-technique/20 transition-all">
+                                #{project.category.name}
+                            </span>
+                        )}
+                        {project.category.color === "testing" && (
+                            <span className="inline-flex items-center px-3.5 py-1.5 rounded-full bg-cat-testing/20 text-cat-testing-light text-[11px] font-bold uppercase tracking-wider shadow-xl backdrop-blur-xl border border-cat-testing/40 group-hover:shadow-2xl group-hover:shadow-cat-testing/20 transition-all">
+                                #{project.category.name}
+                            </span>
+                        )}
+                        {project.category.color === "language" && (
+                            <span className="inline-flex items-center px-3.5 py-1.5 rounded-full bg-cat-language/20 text-cat-language-light text-[11px] font-bold uppercase tracking-wider shadow-xl backdrop-blur-xl border border-cat-language/40 group-hover:shadow-2xl group-hover:shadow-cat-language/20 transition-all">
+                                #{project.category.name}
+                            </span>
+                        )}
+                        {project.category.color === "tooling" && (
+                            <span className="inline-flex items-center px-3.5 py-1.5 rounded-full bg-cat-tooling/20 text-cat-tooling-light text-[11px] font-bold uppercase tracking-wider shadow-xl backdrop-blur-xl border border-cat-tooling/40 group-hover:shadow-2xl group-hover:shadow-cat-tooling/20 transition-all">
+                                #{project.category.name}
+                            </span>
+                        )}
+                        {project.category.color === "devops" && (
+                            <span className="inline-flex items-center px-3.5 py-1.5 rounded-full bg-cat-devops/20 text-cat-devops-light text-[11px] font-bold uppercase tracking-wider shadow-xl backdrop-blur-xl border border-cat-devops/40 group-hover:shadow-2xl group-hover:shadow-cat-devops/20 transition-all">
+                                #{project.category.name}
+                            </span>
+                        )}
                     </div>
                 )}
             </div>
@@ -52,11 +81,11 @@ export default function ProjectCard({
             <div className="flex flex-1 flex-col p-5">
                 {/* Tags Kategori (Optional: bisa ditaruh di atas gambar juga) */}
                 {project.tags && project.tags.length > 0 && (
-                    <div className="mb-3 flex flex-wrap gap-2">
+                    <div className="mb-4 flex flex-wrap gap-2">
                         {project.tags.map((tag) => (
                             <span
                                 key={tag.id}
-                                className="text-[10px] font-bold tracking-wider uppercase text-slate-400"
+                                className="text-[9px] font-bold tracking-widest uppercase text-slate-500 bg-slate-900/40 px-2.5 py-1 rounded-md border border-slate-700/40 hover:border-slate-600/60 transition-colors"
                             >
                                 #{tag.name}
                             </span>
