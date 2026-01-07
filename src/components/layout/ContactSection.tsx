@@ -2,17 +2,18 @@ import { useState, FormEvent } from "react";
 import { motion } from "framer-motion";
 import { HiPaperAirplane } from "react-icons/hi2";
 import { CgSpinner } from "react-icons/cg";
+import { useCreateMessage } from "@/hooks/useMessages";
 
 export default function ContactSection() {
-    // State Form (Tidak Berubah)
+    // Mutation hook untuk send message
+    const mutation = useCreateMessage();
+
+    // State Form
     const [formData, setFormData] = useState({
         name: "",
         email: "",
-        message: "",
+        content: "",
     });
-    const [status, setStatus] = useState<"idle" | "submitting" | "success">(
-        "idle"
-    );
     const [errors, setErrors] = useState<Record<string, string>>({});
 
     const handleChange = (
@@ -31,7 +32,7 @@ export default function ContactSection() {
         } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
             newErrors.email = "Email is invalid.";
         }
-        if (!formData.message) newErrors.message = "Message cannot be empty.";
+        if (!formData.content) newErrors.content = "Message cannot be empty.";
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -39,12 +40,18 @@ export default function ContactSection() {
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         if (!validate()) return;
-        setStatus("submitting");
-        setTimeout(() => {
-            setStatus("success");
-            setFormData({ name: "", email: "", message: "" });
-            setTimeout(() => setStatus("idle"), 3000);
-        }, 2000);
+
+        // Kirim data ke API menggunakan mutation
+        mutation.mutate(formData, {
+            onSuccess: () => {
+                // Reset form setelah sukses
+                setFormData({ name: "", email: "", content: "" });
+                // Auto reset status setelah 3 detik
+                setTimeout(() => {
+                    mutation.reset();
+                }, 3000);
+            },
+        });
     };
 
     return (
@@ -98,6 +105,7 @@ export default function ContactSection() {
                         onSubmit={handleSubmit}
                         className="space-y-6 relative z-10"
                     >
+             
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             {/* Input Name */}
                             <div className="space-y-2">
@@ -155,20 +163,20 @@ export default function ContactSection() {
                                 Message
                             </label>
                             <textarea
-                                name="message"
+                                name="content"
                                 rows={5}
-                                value={formData.message}
+                                value={formData.content}
                                 onChange={handleChange}
                                 placeholder="Tell me about your project..."
                                 className={`w-full bg-[#050914]/50 border ${
-                                    errors.message
+                                    errors.content
                                         ? "border-red-500/50 focus:border-red-500"
                                         : "border-white/10 focus:border-lara-blue"
                                 } rounded-lg px-4 py-3 text-white outline-none transition-colors resize-none`}
                             />
-                            {errors.message && (
+                            {errors.content && (
                                 <p className="text-xs text-red-400">
-                                    {errors.message}
+                                    {errors.content}
                                 </p>
                             )}
                         </div>
@@ -176,24 +184,22 @@ export default function ContactSection() {
                         {/* Submit Button */}
                         <button
                             type="submit"
-                            disabled={
-                                status === "submitting" || status === "success"
-                            }
+                            disabled={mutation.isPending || mutation.isSuccess}
                             className={`w-full py-4 rounded-lg font-bold text-white transition-all duration-300 flex items-center justify-center gap-2
                                 ${
-                                    status === "success"
+                                    mutation.isSuccess
                                         ? "bg-green-500 hover:bg-green-600"
                                         : "bg-gradient-to-r from-lara-blue to-blue-600 hover:shadow-[0_0_20px_rgba(59,130,246,0.5)]"
                                 }
                                 disabled:opacity-70 disabled:cursor-not-allowed
                             `}
                         >
-                            {status === "submitting" ? (
+                            {mutation.isPending ? (
                                 <>
                                     <CgSpinner className="animate-spin w-5 h-5" />
                                     Sending...
                                 </>
-                            ) : status === "success" ? (
+                            ) : mutation.isSuccess ? (
                                 "Message Sent Successfully! 🎉"
                             ) : (
                                 <>
