@@ -1,9 +1,11 @@
 import { SiGithub, SiLinkedin, SiInstagram } from "react-icons/si";
-
+import { useProfile } from "@/hooks/useProfile";
 export default function Footer() {
     const currentYear = new Date().getFullYear();
+    const { data: profile, isLoading, isError } = useProfile();
 
     return (
+        // console.log("Footer profile data:", profile.socials),
         <footer className="py-8 border-t border-white/5 bg-[#050914] relative overflow-hidden">
             {/* Background Glow halus di bawah */}
             <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-24 bg-lara-blue/5 blur-[100px] pointer-events-none" />
@@ -20,7 +22,7 @@ export default function Footer() {
                     {/* TENGAH: Social Links */}
                     <div className="flex items-center gap-6">
                         <a
-                            href="https://github.com"
+                            href={profile?.socials.github || "https://github.com"}
                             target="_blank"
                             rel="noreferrer"
                             className="text-slate-400 hover:text-white transition-colors"
@@ -28,7 +30,7 @@ export default function Footer() {
                             <SiGithub className="w-5 h-5" />
                         </a>
                         <a
-                            href="https://linkedin.com"
+                            href={profile?.socials.linkedin || "https://linkedin.com"}
                             target="_blank"
                             rel="noreferrer"
                             className="text-slate-400 hover:text-blue-400 transition-colors"
@@ -36,7 +38,7 @@ export default function Footer() {
                             <SiLinkedin className="w-5 h-5" />
                         </a>
                         <a
-                            href="https://instagram.com"
+                            href={profile?.socials.instagram || "https://instagram.com"}
                             target="_blank"
                             rel="noreferrer"
                             className="text-slate-400 hover:text-pink-500 transition-colors"
