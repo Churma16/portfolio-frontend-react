@@ -68,7 +68,7 @@ export default function Navbar() {
                         to="/"
                         className="text-2xl font-heading font-bold text-white tracking-tight"
                     >
-                        Churma<span className="text-lara-blue">.dev</span>
+                        Churma<span className="text-lara-blue">.codes</span>
                     </Link>
 
                     {/* Menu dengan Font Kanit (font-body) */}
