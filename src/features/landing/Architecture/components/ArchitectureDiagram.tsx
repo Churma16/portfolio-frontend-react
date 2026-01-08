@@ -6,12 +6,15 @@ import {
     SiMysql,
     SiDigitalocean,
     SiUbuntu,
-    SiNginx,
     SiCloudflare,
 } from "react-icons/si";
 
 // 1. Komponen Kotak Stack (Tidak Berubah)
-const StackBox = ({title, icon, items}: any) => (
+const StackBox = ({title, icon, items}: {
+    title: string;
+    icon: React.ReactNode;
+    items: string[];
+}) => (
     <motion.div
         whileHover={{y: -5}}
         className="flex-1 bg-[#0a101f] border border-white/10 p-5 rounded-xl relative z-10 w-full min-w-[200px] shadow-2xl shadow-black/50"
@@ -66,11 +69,12 @@ const DataFlow = ({
 
             {/* Garis (Tidak Berubah) */}
             <div className="relative w-full h-[2px] bg-slate-800 flex items-center">
-                <div className="absolute top-1/2 -translate-y-1/2 left-0 w-0 h-0 border-y-[5px] border-y-transparent border-r-[8px] border-r-slate-800" />
+                <div
+                    className="absolute top-1/2 -translate-y-1/2 left-0 w-0 h-0 border-y-[5px] border-y-transparent border-r-[8px] border-r-slate-800"/>
 
                 <div className="relative w-full h-full overflow-hidden">
                     <motion.div
-                        animate={{ x: ["-100%", "400%"] }}
+                        animate={{x: ["-100%", "400%"]}}
                         transition={{
                             duration: 1.5,
                             repeat: Infinity,
@@ -80,7 +84,8 @@ const DataFlow = ({
                     />
                 </div>
 
-                <div className="absolute top-1/2 -translate-y-1/2 right-0 w-0 h-0 border-y-[5px] border-y-transparent border-l-[8px] border-l-slate-800" />
+                <div
+                    className="absolute top-1/2 -translate-y-1/2 right-0 w-0 h-0 border-y-[5px] border-y-transparent border-l-[8px] border-l-slate-800"/>
             </div>
         </div>
     );
