@@ -12,7 +12,11 @@ export const getToken = () => {
 };
 
 export const isAdmin = () => {
-    // Check dari abilities (dari database)
+    // First check: must have a token stored (not just guest token)
+    const token = localStorage.getItem("token");
+    if (!token) return false;
+
+    // Second check: abilities must include "admin"
     const abilities = localStorage.getItem("abilities");
     if (!abilities) return false;
 
