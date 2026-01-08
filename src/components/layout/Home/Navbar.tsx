@@ -6,19 +6,6 @@ export default function Navbar() {
     const [underlineStyle, setUnderlineStyle] = useState({ left: 0, width: 0 });
     const navRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-        setActiveHash(window.location.hash);
-        updateUnderline();
-
-        const handleHashChange = () => {
-            setActiveHash(window.location.hash);
-            updateUnderline();
-        };
-
-        window.addEventListener("hashchange", handleHashChange);
-        return () => window.removeEventListener("hashchange", handleHashChange);
-    }, []);
-
     const updateUnderline = () => {
         if (!navRef.current) return;
 
@@ -34,6 +21,19 @@ export default function Navbar() {
             });
         }
     };
+
+    useEffect(() => {
+        setActiveHash(window.location.hash);
+        updateUnderline();
+
+        const handleHashChange = () => {
+            setActiveHash(window.location.hash);
+            updateUnderline();
+        };
+
+        window.addEventListener("hashchange", handleHashChange);
+        return () => window.removeEventListener("hashchange", handleHashChange);
+    }, []);
 
     useEffect(() => {
         setActiveHash(window.location.hash || "#home");
