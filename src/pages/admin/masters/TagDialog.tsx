@@ -15,7 +15,7 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/Select";
+} from "@/components/ui/select";
 import { CgSpinner } from "react-icons/cg";
 import { Tag } from "../../../types";
 import apiClient from "@/api/axios";

@@ -7,7 +7,7 @@ import Dashboard from "./pages/Dashboard"; // Halaman Admin
 
 // Import Satpam tadi
 import ProtectedRoute from "./components/common/ProtectedRoute";
-import DashboardLayout from "./components/layout/DashboardLayout"; // Kita buat habis ini
+import DashboardLayout from "./components/layout/Admin/DashboardLayout.tsx"; // Kita buat habis ini
 import ProjectList from "./pages/admin/ProjectList"; // Halaman CRUD nanti
 import TechStackList from "./pages/admin/masters/TechStackList";
 import TagList from "./pages/admin/masters/TagList";

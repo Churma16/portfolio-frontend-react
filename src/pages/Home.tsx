@@ -1,4 +1,4 @@
-import Layout from "../components/layout/Home/Layout.tsx";
+import Layout from "../components/layout/Home/Layout/Layout.tsx";
 import Hero from "../components/layout/Home/Hero/HeroSection.tsx";
 import AboutSection from "../components/layout/Home/About/AboutSection.tsx";
 import ArchitectureSection from "../components/layout/Home/Architecture/ArchitectureSection.tsx";

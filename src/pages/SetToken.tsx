@@ -6,7 +6,7 @@ import {
     HiArrowLeft,
     HiCheck,
 } from "react-icons/hi2";
-import Layout from "../components/layout/Layout";
+import Layout from "../components/layout/Home/Layout/Layout.tsx";
 import { setAdminToken, getGuestToken } from "@/lib/auth";
 import apiClient from "@/api/axios";
 

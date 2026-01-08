@@ -1,9 +1,9 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useProjects } from "../../hooks/useProjects";
-import ProjectShowcase from "../projects/ProjectShowcase";
-import ProjectSectionHeader from "../projects/ProjectSectionHeader";
-import ProjectsSkeletonGrid from "../projects/ProjectsSkeletonGrid";
-import ProjectError from "../projects/ProjectError";
+import { useProjects } from "../../../hooks/useProjects.ts";
+import ProjectShowcase from "../../projects/ProjectShowcase.tsx";
+import ProjectSectionHeader from "../../projects/ProjectSectionHeader.tsx";
+import ProjectsSkeletonGrid from "../../projects/ProjectsSkeletonGrid.tsx";
+import ProjectError from "../../projects/ProjectError.tsx";
 
 export default function ProjectSection() {
     const { data: projects, isLoading, isError, error } = useProjects();

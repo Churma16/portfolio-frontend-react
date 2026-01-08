@@ -9,7 +9,7 @@ import {
     HiCommandLine,
 } from "react-icons/hi2";
 import { CgSpinner } from "react-icons/cg";
-import Layout from "../components/layout/Layout";
+import Layout from "../components/layout/Home/Layout/Layout.tsx";
 import apiClient from "../api/axios";
 import { setAdminToken } from "@/lib/auth";
 
