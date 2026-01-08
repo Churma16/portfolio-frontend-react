@@ -2,7 +2,7 @@ import { useState, FormEvent } from "react";
 import { motion } from "framer-motion";
 import { HiPaperAirplane } from "react-icons/hi2";
 import { CgSpinner } from "react-icons/cg";
-import { useCreateMessage } from "@/hooks/useMessages";
+import { useCreateMessage } from "@/hooks/useMessages.ts";
 
 export default function ContactSection() {
     // Mutation hook untuk send message
@@ -13,6 +13,7 @@ export default function ContactSection() {
         name: "",
         email: "",
         content: "",
+        gotcha: "",
     });
     const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -25,6 +26,11 @@ export default function ContactSection() {
     };
 
     const validate = () => {
+        // Honeypot validation - if gotcha is filled, it's a bot
+        if (formData.gotcha) {
+            return false; // Silently reject, don't show error message
+        }
+
         const newErrors: Record<string, string> = {};
         if (!formData.name) newErrors.name = "Name is required.";
         if (!formData.email) {
@@ -39,13 +45,20 @@ export default function ContactSection() {
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
+
+        if (formData.gotcha) {
+            setFormData({ name: "", email: "", content: "", gotcha: "" });
+
+            return;
+        }
+
         if (!validate()) return;
 
         // Kirim data ke API menggunakan mutation
         mutation.mutate(formData, {
             onSuccess: () => {
                 // Reset form setelah sukses
-                setFormData({ name: "", email: "", content: "" });
+                setFormData({ name: "", email: "", content: "", gotcha: "" });
                 // Auto reset status setelah 3 detik
                 setTimeout(() => {
                     mutation.reset();
@@ -105,7 +118,26 @@ export default function ContactSection() {
                         onSubmit={handleSubmit}
                         className="space-y-6 relative z-10"
                     >
-             
+                        <div
+                            style={{
+                                display: "none",
+                                opacity: 0,
+                                visibility: "hidden",
+                            }}
+                        >
+                            <label htmlFor="gotcha">
+                                Jangan diisi jika Anda manusia
+                            </label>
+                            <input
+                                type="text"
+                                name="gotcha"
+                                id="gotcha"
+                                tabIndex={-1}
+                                autoComplete="off"
+                                // Sambungkan ke state form Anda
+                                onChange={handleChange}
+                            />
+                        </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             {/* Input Name */}
                             <div className="space-y-2">

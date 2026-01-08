@@ -1,5 +1,5 @@
 import { Outlet, useNavigate, Link, useLocation } from "react-router-dom";
-import { logout } from "@/lib/auth";
+import { logout } from "@/lib/auth.ts";
 import {
     HiOutlineCube,
     HiArrowRightOnRectangle,
