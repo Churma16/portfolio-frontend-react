@@ -15,7 +15,7 @@ import { CgSpinner } from "react-icons/cg";
 import {
     HiPlus,
     HiTrash,
-    HiOutlineCloudUpload,
+    HiOutlineCloud,
     HiPencil,
 } from "react-icons/hi2";
 import { useProfile } from "@/hooks/useProfile";
@@ -400,7 +400,7 @@ export default function ProfileForm() {
                                         }
                                         className="bg-white/5 border-white/10 hover:bg-white/10 text-lara-blue"
                                     >
-                                        {/* <HiOutlineCloudUpload className="mr-2 h-4 w-4" />  */}
+                                        {/* <HiOutlineCloud className="mr-2 h-4 w-4" />  */}
                                         {cvFile ? "Change File" : "Select PDF"}
                                     </Button>
                                     <span className="text-xs text-lara-sky/60 truncate max-w-[200px]">
