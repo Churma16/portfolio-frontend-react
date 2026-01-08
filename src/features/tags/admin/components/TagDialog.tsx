@@ -17,7 +17,7 @@ import {
     SelectValue,
 } from "@/components/ui/select.tsx";
 import { CgSpinner } from "react-icons/cg";
-import { Tag } from "../../../../types";
+import { Tag } from "@/types";
 import apiClient from "@/api/axios.ts";
 
 interface Props {
