@@ -1,19 +1,17 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 // Import halaman-halaman kamu
-import Home from "./pages/Home";
-import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard"; // Halaman Admin
-
+import Home from "./pages/public/Home.tsx";
+import LoginPage from "./pages/auth/LoginPage.tsx";
 // Import Satpam tadi
 import ProtectedRoute from "./components/common/ProtectedRoute";
-import DashboardLayout from "./components/layout/Admin/DashboardLayout.tsx"; // Kita buat habis ini
-import ProjectList from "./pages/admin/ProjectList"; // Halaman CRUD nanti
-import TechStackList from "./pages/admin/masters/TechStackList";
-import TagList from "./pages/admin/masters/TagList";
-import CategoryList from "./pages/admin/masters/CategoryList";
-import SetToken from "./pages/SetToken";
-import ProfileForm from "./pages/admin/ProfileForm/index";
+import DashboardLayout from "@/components/layout/admin/DashboardLayout.tsx"; // Kita buat habis ini
+import ProjectList from "@/features/projects/admin/ProjectList.tsx"; // Halaman CRUD nanti
+import TechStackList from "./features/tech-stacks/admin/TechStackList.tsx";
+import TagList from "./features/tags/admin/TagList.tsx";
+import CategoryList from "./features/categories/admin/CategoryList.tsx";
+import SetTokenPage from "./pages/auth/SetTokenPage.tsx";
+import ProfileForm from "./features/profile/admin";
 
 function App() {
     return (
@@ -22,8 +20,8 @@ function App() {
             <Routes>
                 {/* Public Routes */}
                 <Route path="/" element={<Home />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/set-token" element={<SetToken />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/set-token" element={<SetTokenPage />} />
 
                 {/* ADMIN ROUTES (Diproteksi) */}
                 <Route element={<ProtectedRoute />}>
