@@ -3,7 +3,7 @@ import { getToken } from "@/lib/auth";
 
 const apiClient = axios.create({
     // URL ini harus sesuai dengan alamat server Laravel kamu (biasanya localhost:8000)
-    baseURL: import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api/",
+    baseURL: import.meta.env.VITE_API_URL || "https://churma.codes/api/",
     headers: {
         Accept: "application/json",
     },
@@ -28,5 +28,23 @@ apiClient.interceptors.request.use((config) => {
 
     return config;
 });
+
+// Response interceptor untuk handle error 401 (Unauthorized)
+apiClient.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (error.response?.status === 401) {
+            console.error("❌ 401 Unauthorized - Token mungkin invalid/expired");
+            console.log("Token saat ini:", getToken());
+            console.log("Response error:", error.response?.data);
+
+            // Optional: Clear token dan redirect ke login
+            // localStorage.removeItem("token");
+            // localStorage.removeItem("abilities");
+            // window.location.href = "/login";
+        }
+        return Promise.reject(error);
+    }
+);
 
 export default apiClient;
