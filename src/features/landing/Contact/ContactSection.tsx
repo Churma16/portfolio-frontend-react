@@ -1,8 +1,8 @@
-import { useState, FormEvent } from "react";
-import { motion } from "framer-motion";
-import { HiPaperAirplane } from "react-icons/hi2";
-import { CgSpinner } from "react-icons/cg";
-import { useCreateMessage } from "@/hooks/useMessages.ts";
+import {useState, FormEvent} from "react";
+import {motion} from "framer-motion";
+import {HiPaperAirplane} from "react-icons/hi2";
+import {CgSpinner} from "react-icons/cg";
+import {useCreateMessage} from "@/hooks/useMessages.ts";
 
 export default function ContactSection() {
     // Mutation hook untuk send message
@@ -20,9 +20,9 @@ export default function ContactSection() {
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        setFormData({...formData, [e.target.name]: e.target.value});
         if (errors[e.target.name])
-            setErrors({ ...errors, [e.target.name]: "" });
+            setErrors({...errors, [e.target.name]: ""});
     };
 
     const validate = () => {
@@ -47,7 +47,7 @@ export default function ContactSection() {
         e.preventDefault();
 
         if (formData.gotcha) {
-            setFormData({ name: "", email: "", content: "", gotcha: "" });
+            setFormData({name: "", email: "", content: "", gotcha: ""});
 
             return;
         }
@@ -58,7 +58,7 @@ export default function ContactSection() {
         mutation.mutate(formData, {
             onSuccess: () => {
                 // Reset form setelah sukses
-                setFormData({ name: "", email: "", content: "", gotcha: "" });
+                setFormData({name: "", email: "", content: "", gotcha: ""});
                 // Auto reset status setelah 3 detik
                 setTimeout(() => {
                     mutation.reset();
@@ -88,7 +88,8 @@ export default function ContactSection() {
             </div>
 
             {/* Dekorasi Glow Ungu/Biru Samar */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-lara-blue/10 rounded-full blur-[100px] -z-10" />
+            <div
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-lara-blue/10 rounded-full blur-[100px] -z-10"/>
 
             <div className="container mx-auto px-4 max-w-4xl relative z-10">
                 {/* Header */}
@@ -98,21 +99,22 @@ export default function ContactSection() {
                         <span className="text-lara-blue">Together</span>.
                     </h2>
                     <p className="text-slate-400">
-                        I am currently available for full-time positions. Let's
-                        discuss how I can contribute to your team.
+                        I’m currently available for full-time positions or freelance projects. If you have a question or
+                        just want to say hi, my inbox is always open!
                     </p>
                 </div>
 
                 {/* Form Card */}
                 <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
+                    initial={{opacity: 0, y: 30}}
+                    whileInView={{opacity: 1, y: 0}}
+                    viewport={{once: true}}
                     // 2. Ubah background kartu jadi semi-transparan + blur biar nyatu
                     className="bg-[#0a101f]/80 backdrop-blur-md border border-white/5 p-8 md:p-10 rounded-2xl shadow-2xl relative overflow-hidden"
                 >
                     {/* Spotlight Effect Top Border */}
-                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-lara-blue to-transparent opacity-50" />
+                    <div
+                        className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-lara-blue to-transparent opacity-50"/>
 
                     <form
                         onSubmit={handleSubmit}
@@ -199,7 +201,7 @@ export default function ContactSection() {
                                 rows={5}
                                 value={formData.content}
                                 onChange={handleChange}
-                                placeholder="Tell me about your project..."
+                                placeholder="Hi Fathan! I have an idea for a web app and I'd love to discuss how your Laravel and React skills can help. Let's talk!"
                                 className={`w-full bg-[#050914]/50 border ${
                                     errors.content
                                         ? "border-red-500/50 focus:border-red-500"
@@ -219,16 +221,16 @@ export default function ContactSection() {
                             disabled={mutation.isPending || mutation.isSuccess}
                             className={`w-full py-4 rounded-lg font-bold text-white transition-all duration-300 flex items-center justify-center gap-2
                                 ${
-                                    mutation.isSuccess
-                                        ? "bg-green-500 hover:bg-green-600"
-                                        : "bg-gradient-to-r from-lara-blue to-blue-600 hover:shadow-[0_0_20px_rgba(59,130,246,0.5)]"
-                                }
+                                mutation.isSuccess
+                                    ? "bg-green-500 hover:bg-green-600"
+                                    : "bg-gradient-to-r from-lara-blue to-blue-600 hover:shadow-[0_0_20px_rgba(59,130,246,0.5)]"
+                            }
                                 disabled:opacity-70 disabled:cursor-not-allowed
                             `}
                         >
                             {mutation.isPending ? (
                                 <>
-                                    <CgSpinner className="animate-spin w-5 h-5" />
+                                    <CgSpinner className="animate-spin w-5 h-5"/>
                                     Sending...
                                 </>
                             ) : mutation.isSuccess ? (
@@ -236,7 +238,7 @@ export default function ContactSection() {
                             ) : (
                                 <>
                                     Send Message{" "}
-                                    <HiPaperAirplane className="-rotate-45 mb-1" />
+                                    <HiPaperAirplane className="-rotate-45 mb-1"/>
                                 </>
                             )}
                         </button>
