@@ -35,17 +35,18 @@ export interface SocialLinks {
 }
 
 export interface Profile extends BaseEntity {
-    name: string;
-    headline: string;
-    role: string;
-    bio_short: string;
-    bio_long: string;
-    location: string;
-    is_hireable: boolean;
-    avatar: string;
-    cv_files: string;
-    hero_image_codes: string;
-    socials: SocialLinks;
+    name: string,
+    headline: string,
+    role: string,
+    bio_short: string,
+    bio_long: string,
+    location: string,
+    is_hireable: boolean,
+    avatar: string,
+    cv_files: string,
+    hero_image_codes: string,
+    socials: SocialLinks,
+    profile?: Profile | undefined
 }
 
 // 4. Work Experience
