@@ -8,7 +8,6 @@ import {
 } from "react-icons/hi2";
 import PublicLayout from "../../components/layout/public/PublicLayout.tsx";
 import { setAdminToken, getGuestToken } from "@/lib/auth.ts";
-import apiClient from "@/api/axios.ts";
 
 export default function SetTokenPage() {
     const navigate = useNavigate();

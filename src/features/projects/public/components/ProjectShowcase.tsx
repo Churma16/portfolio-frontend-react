@@ -6,7 +6,7 @@ import {
     HiOutlineCodeBracket,
 } from "react-icons/hi2";
 import TechIcon from "../../../../components/common/TechIcon.tsx";
-import { Project } from "../../../../types";
+import { Project } from "@/types";
 import ProjectCard from "./ProjectCard.tsx";
 
 interface ProjectShowcaseProps {

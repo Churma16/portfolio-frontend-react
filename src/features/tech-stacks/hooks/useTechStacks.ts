@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import apiClient from "../../../api/axios.ts";
-import { ApiResponse, TechStack } from "../../../types";
+import { ApiResponse, TechStack } from "@/types";
 
 const fetchTechStack = async (): Promise<TechStack[]> => {
     // Ambil response dari Axios

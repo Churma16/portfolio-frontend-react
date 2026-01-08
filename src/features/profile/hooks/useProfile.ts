@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import apiClient from "../../../api/axios.ts";
-import { ApiResponse, Profile } from "../../../types";
+import { ApiResponse, Profile } from "@/types";
 
 const fetchProfile = async (): Promise<Profile> => {
     const response = await apiClient.get<ApiResponse<Profile>>("/profiles");

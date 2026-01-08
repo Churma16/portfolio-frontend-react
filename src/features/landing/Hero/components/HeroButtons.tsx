@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import PixelButton from "../../../../components/common/PixelButton.tsx";
-import { PixelChat, PixelDownload, PixelPlay } from "../../../../components/common/PixelIcon.tsx";
+import { PixelChat, PixelDownload, PixelPlay } from "@/components/common/PixelIcon.tsx";
 
 interface HeroButtonsProps {
     cvFileUrl?: string;

@@ -8,7 +8,6 @@ import {
     CardDescription,
 } from "@/components/ui/card.tsx";
 import { Input } from "@/components/ui/input.tsx";
-import { Textarea } from "@/components/ui/textarea.tsx";
 import { Label } from "@/components/ui/label.tsx";
 import { HiPencil } from "react-icons/hi2";
 import { ProfileFormValues } from "../index.tsx"; // Import tipe jika perlu

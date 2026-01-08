@@ -17,10 +17,9 @@ import {
     HiArrowUp,
     HiArrowDown,
 } from "react-icons/hi2";
-import { Project } from "../../../types";
+import { Project } from "@/types";
 import ProjectDialog from "./components/ProjectDialog.tsx";
 import { useProjects } from "../hooks/useProjects.ts";
-import axios from "axios";
 import apiClient from "@/api/axios.ts";
 
 export default function ProjectList() {

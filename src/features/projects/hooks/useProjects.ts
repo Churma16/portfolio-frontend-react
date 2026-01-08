@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import apiClient from "../../../api/axios.ts";
-import { Project, ApiResponse } from "../../../types";
+import { Project, ApiResponse } from "@/types";
 
 const fetchProjects = async (): Promise<Project[]> => {
     // Ambil response dari Axios

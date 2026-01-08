@@ -9,7 +9,6 @@ import {
 import {Button} from "@/components/ui/button.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {Label} from "@/components/ui/label.tsx";
-import {Textarea} from "@/components/ui/textarea.tsx";
 import {CgSpinner} from "react-icons/cg";
 import apiClient from "@/api/axios.ts";
 import {Category} from "@/types";

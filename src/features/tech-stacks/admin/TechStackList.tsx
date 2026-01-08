@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/table.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { HiPlus, HiPencil, HiTrash } from "react-icons/hi2";
-import { TechStack } from "../../../types";
+import { TechStack } from "@/types";
 import TechStackDialog from "./components/TechStackDialog.tsx";
 import TechIcon from "../../../components/common/TechIcon.tsx";
 import { useTechStacks } from "@/features/tech-stacks/hooks/useTechStacks.ts";

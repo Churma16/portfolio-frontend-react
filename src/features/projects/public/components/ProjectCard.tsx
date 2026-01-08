@@ -1,4 +1,4 @@
-import { Project } from "../../../../types";
+import { Project } from "@/types";
 import { motion } from "framer-motion";
 import TechIcon from "../../../../components/common/TechIcon.tsx";
 

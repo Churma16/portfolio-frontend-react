@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import PixelButton from "../../../../components/common/PixelButton.tsx";
-import { PixelDownload } from "../../../../components/common/PixelIcon.tsx";
+import { PixelDownload } from "@/components/common/PixelIcon.tsx";
 import AboutSectionHeader from "./AboutSectionHeader.tsx";
 
 interface AboutContentProps {

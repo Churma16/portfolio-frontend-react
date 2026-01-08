@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/table.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { HiPlus, HiPencil, HiTrash } from "react-icons/hi2";
-import { Tag } from "../../../types";
+import { Tag } from "@/types";
 import TagDialog from "./components/TagDialog.tsx";
 import { useTags } from "@/features/tags/hooks/useTags.ts";
 import apiClient from "@/api/axios.ts";
