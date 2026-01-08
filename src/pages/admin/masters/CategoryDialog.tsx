@@ -1,4 +1,4 @@
-import { useEffect, useState, FormEvent } from "react";
+import {useEffect, useState, FormEvent} from "react";
 import {
     Dialog,
     DialogContent,
@@ -6,13 +6,13 @@ import {
     DialogTitle,
     DialogFooter,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { CgSpinner } from "react-icons/cg";
+import {Button} from "@/components/ui/button";
+import {Input} from "@/components/ui/input";
+import {Label} from "@/components/ui/label";
+import {Textarea} from "@/components/ui/textarea";
+import {CgSpinner} from "react-icons/cg";
 import apiClient from "@/api/axios";
-import { Category } from "@/types";
+import {Category} from "@/types";
 
 interface Props {
     open: boolean;
@@ -22,19 +22,19 @@ interface Props {
 }
 
 export default function CategoryDialog({
-    open,
-    onOpenChange,
-    dataToEdit,
-    onSuccess,
-}: Props) {
+                                           open,
+                                           onOpenChange,
+                                           dataToEdit,
+                                           onSuccess,
+                                       }: Props) {
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [formData, setFormData] = useState({ name: "", description: "" });
+    const [formData, setFormData] = useState({name: "",});
 
     useEffect(() => {
         if (open) {
             setFormData({
-                name: dataToEdit?.name || "",
-                description: dataToEdit?.description || "",
+                name: dataToEdit?.name || ""
+
             });
         }
     }, [open, dataToEdit]);
@@ -84,21 +84,21 @@ export default function CategoryDialog({
                             required
                         />
                     </div>
-                    <div className="space-y-2">
-                        <Label>Description</Label>
-                        <Textarea
-                            value={formData.description}
-                            onChange={(e) =>
-                                setFormData({
-                                    ...formData,
-                                    description: e.target.value,
-                                })
-                            }
-                            placeholder="Describe this category..."
-                            className="bg-black/20 border-white/10"
-                            rows={4}
-                        />
-                    </div>
+                    {/*<div className="space-y-2">*/}
+                    {/*    <Label>Description</Label>*/}
+                    {/*    <Textarea*/}
+                    {/*        value={formData.description}*/}
+                    {/*        onChange={(e) =>*/}
+                    {/*            setFormData({*/}
+                    {/*                ...formData,*/}
+                    {/*                description: e.target.value,*/}
+                    {/*            })*/}
+                    {/*        }*/}
+                    {/*        placeholder="Describe this category..."*/}
+                    {/*        className="bg-black/20 border-white/10"*/}
+                    {/*        rows={4}*/}
+                    {/*    />*/}
+                    {/*</div>*/}
                     <DialogFooter>
                         <Button
                             type="submit"
@@ -106,7 +106,7 @@ export default function CategoryDialog({
                             disabled={isSubmitting}
                         >
                             {isSubmitting && (
-                                <CgSpinner className="animate-spin mr-2" />
+                                <CgSpinner className="animate-spin mr-2"/>
                             )}
                             Save
                         </Button>
