@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import {BrowserRouter, Routes, Route} from "react-router-dom";
 
 // Import halaman-halaman kamu
 import Home from "./pages/public/Home.tsx";
@@ -13,25 +13,36 @@ import CategoryList from "./features/categories/admin/CategoryList.tsx";
 import SetTokenPage from "./pages/auth/SetTokenPage.tsx";
 import ProfileForm from "./features/profile/admin";
 
+// if (import.meta.env.PROD) {
+//     console.log = () => {
+//     };
+//     console.error = () => {
+//     };
+//     console.debug = () => {
+//     };
+//     console.warn = () => {
+//     };
+// }
+
 function App() {
     return (
         <BrowserRouter>
             {/* Navbar bisa ditaruh di sini kalau mau muncul di semua halaman */}
             <Routes>
                 {/* Public Routes */}
-                <Route path="/" element={<Home />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/set-token" element={<SetTokenPage />} />
+                <Route path="/" element={<Home/>}/>
+                <Route path="/login" element={<LoginPage/>}/>
+                <Route path="/set-token" element={<SetTokenPage/>}/>
 
                 {/* ADMIN ROUTES (Diproteksi) */}
-                <Route element={<ProtectedRoute />}>
-                    <Route path="/admin" element={<DashboardLayout />}>
+                <Route element={<ProtectedRoute/>}>
+                    <Route path="/admin" element={<DashboardLayout/>}>
                         {/* Index = default ketika akses /admin */}
-                        <Route index element={<ProjectList />} />
-                        <Route path="tech-stacks" element={<TechStackList />} />
-                        <Route path="tags" element={<TagList />} />
-                        <Route path="categories" element={<CategoryList />} />
-                        <Route path="profile" element={<ProfileForm />} />
+                        <Route index element={<ProjectList/>}/>
+                        <Route path="tech-stacks" element={<TechStackList/>}/>
+                        <Route path="tags" element={<TagList/>}/>
+                        <Route path="categories" element={<CategoryList/>}/>
+                        <Route path="profile" element={<ProfileForm/>}/>
                         {/* Nanti tambah route lain di sini: Create, Edit, dll */}
                     </Route>
                 </Route>
