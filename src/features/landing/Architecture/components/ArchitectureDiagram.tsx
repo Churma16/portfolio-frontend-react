@@ -182,7 +182,7 @@ export default function ArchitectureDiagram() {
 
             {/* Panah 2: Request diteruskan ke Server */}
             <DataFlow label="Proxied Traffic" width="w-24"/>
-            <VerticalDataFlow label="HTTPS Request"/> {/* Mobile */}
+            <VerticalDataFlow label="Proxied Traffic"/> {/* Mobile */}
             {/* 3. ZONA SERVER (DIGITAL OCEAN) */}
             <div
                 className="relative border-2 border-dashed border-blue-500/20 bg-blue-500/5 rounded-3xl p-6 pt-10 flex flex-col items-center gap-4 shrink-0">
