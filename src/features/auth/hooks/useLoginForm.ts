@@ -39,7 +39,7 @@ export const useLoginForm = () => {
             console.log("Abilities in localStorage:", localStorage.getItem("abilities"));
 
             setStatus("success");
-            setTimeout(() => navigate("/admin/dashboard"), 1500);
+            setTimeout(() => navigate("/admin"), 1500);
         } catch (error: any) {
             console.error("Login Error:", error);
             setStatus("error");
