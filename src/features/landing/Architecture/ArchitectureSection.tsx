@@ -3,7 +3,7 @@ import ArchitectureContent from "./components/ArchitectureContent.tsx";
 
 export default function ArchitectureSection() {
     return (
-        <section className="relative py-32 overflow-hidden">
+        <section className="relative py-32 overflow-hidden" id="architecture">
             {/* --- REVISI BACKGROUND: SPOTLIGHT EFFECT --- */}
 
             {/* Layer 1: Grid Pattern dengan Masking Radial */}

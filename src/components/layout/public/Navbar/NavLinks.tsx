@@ -21,8 +21,10 @@ interface NavLinksProps {
 
 const DEFAULT_LINKS: NavLink[] = [
     { href: "#home", label: "Home" },
+    { href: "#tech-stacks", label: "Tech Stacks" },
     { href: "#projects", label: "Projects" },
     { href: "#about", label: "About Me" },
+    { href: "#architecture", label: "Architecture" },
     { href: "#contact", label: "Contact Me" },
 ];
 
