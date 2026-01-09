@@ -14,8 +14,8 @@ export default function Navbar() {
                         underlineStyle={underlineStyle}
                         navRef={navRef}
                         isActive={isActive}
-                        links={[]}
                         activeHash=""
+
                     />
                 </div>
             </div>
