@@ -15,8 +15,8 @@ export default function ProtectedRoute() {
     );
 
     if (!adminStatus) {
-        console.log("Redirecting to /set-token because isAdmin() is false");
-        return <Navigate to="/set-token" replace />;
+        console.log("Redirecting to /dashboard because isAdmin() is false");
+        return <Navigate to="/" replace />;
     }
 
     return <Outlet />;
