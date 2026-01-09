@@ -1,4 +1,5 @@
 import {useEffect, useState, FormEvent} from "react";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {
     Dialog,
     DialogContent,
@@ -11,7 +12,8 @@ import {Input} from "@/components/ui/input.tsx";
 import {Label} from "@/components/ui/label.tsx";
 import {CgSpinner} from "react-icons/cg";
 import apiClient from "@/api/axios.ts";
-import {Category} from "@/types";
+import {Category, ApiResponse} from "@/types";
+import axios from "axios";
 
 interface Props {
     open: boolean;
@@ -20,53 +22,81 @@ interface Props {
     onSuccess: () => void;
 }
 
+interface CategoryFormData {
+    name: string;
+    color: string;
+}
+
 export default function CategoryDialog({
                                            open,
                                            onOpenChange,
                                            dataToEdit,
                                            onSuccess,
                                        }: Props) {
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [formData, setFormData] = useState({name: "",});
+    const queryClient = useQueryClient();
+    const [formData, setFormData] = useState<CategoryFormData>({name: "", color: ""});
+    const [errorMessage, setErrorMessage] = useState("");
 
     useEffect(() => {
         if (open) {
             setFormData({
-                name: dataToEdit?.name || ""
-
+                name: dataToEdit?.name || "",
+                color: dataToEdit?.color || "",
             });
+            setErrorMessage("");
         }
     }, [open, dataToEdit]);
 
-    const handleSubmit = async (e: FormEvent) => {
-        e.preventDefault();
-        setIsSubmitting(true);
-        const url = dataToEdit ? `/categories/${dataToEdit.id}` : "/categories";
-
-        try {
+    // --- TANSTACK QUERY MUTATION ---
+    const mutation = useMutation({
+        mutationFn: async (data: CategoryFormData) => {
+            const url = dataToEdit ? `/categories/${dataToEdit.id}` : "/categories";
             if (dataToEdit) {
-                await apiClient.put(url, formData);
+                return await apiClient.put<ApiResponse<Category>>(url, data);
             } else {
-                await apiClient.post(url, formData);
+                return await apiClient.post<ApiResponse<Category>>(url, data);
             }
+        },
+        onSuccess: () => {
+            // Invalidate categories query untuk refresh data
+            queryClient.invalidateQueries({queryKey: ["categories"]});
             onSuccess();
             onOpenChange(false);
-        } catch (error) {
-            console.error("Error saving category:", error);
-            alert("Gagal menyimpan category!");
-        } finally {
-            setIsSubmitting(false);
-        }
+        },
+        onError: (error) => {
+            // Type-safe error handling
+            if (axios.isAxiosError(error)) {
+                const message = error.response?.data?.message || "Gagal menyimpan category";
+                setErrorMessage(message);
+                console.error("Category save error:", error.response?.data);
+            } else {
+                setErrorMessage("Terjadi kesalahan yang tidak terduga");
+                console.error("Unexpected error:", error);
+            }
+        },
+    });
+
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        mutation.mutate(formData);
     };
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="bg-[#0f172a] border-white/10 text-white">
+            <DialogContent className=" w-[90vw] bg-[#0f172a] border-white/10 text-white">
                 <DialogHeader>
                     <DialogTitle>
                         {dataToEdit ? "Edit Category" : "Add Category"}
                     </DialogTitle>
                 </DialogHeader>
+
+                {/* Error Message */}
+                {errorMessage && (
+                    <div className="p-3 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400 text-sm">
+                        {errorMessage}
+                    </div>
+                )}
+
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div className="space-y-2">
                         <Label>Category Name</Label>
@@ -83,31 +113,31 @@ export default function CategoryDialog({
                             required
                         />
                     </div>
-                    {/*<div className="space-y-2">*/}
-                    {/*    <Label>Description</Label>*/}
-                    {/*    <Textarea*/}
-                    {/*        value={formData.description}*/}
-                    {/*        onChange={(e) =>*/}
-                    {/*            setFormData({*/}
-                    {/*                ...formData,*/}
-                    {/*                description: e.target.value,*/}
-                    {/*            })*/}
-                    {/*        }*/}
-                    {/*        placeholder="Describe this category..."*/}
-                    {/*        className="bg-black/20 border-white/10"*/}
-                    {/*        rows={4}*/}
-                    {/*    />*/}
-                    {/*</div>*/}
+
+                    <div className="space-y-2">
+                        <Label>Color</Label>
+                        <Input
+                            type="input"
+                            value={formData.color}
+                            onChange={(e) =>
+                                setFormData({
+                                    ...formData,
+                                    color: e.target.value,
+                                })
+                            }
+                            className="bg-black/20 border-white/10 h-10 cursor-pointer"
+                        />
+                    </div>
                     <DialogFooter>
                         <Button
                             type="submit"
                             className="bg-lara-blue"
-                            disabled={isSubmitting}
+                            disabled={mutation.isPending}
                         >
-                            {isSubmitting && (
+                            {mutation.isPending && (
                                 <CgSpinner className="animate-spin mr-2"/>
                             )}
-                            Save
+                            {dataToEdit ? "Update" : "Create"}
                         </Button>
                     </DialogFooter>
                 </form>

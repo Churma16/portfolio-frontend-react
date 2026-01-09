@@ -82,7 +82,7 @@ export default function CategoryList() {
                         <TableHeader>
                             <TableRow className="border-white/10">
                                 <TableHead>Name</TableHead>
-                                <TableHead>Description</TableHead>
+                                <TableHead>Color</TableHead>
                                 <TableHead className="text-right">
                                     Actions
                                 </TableHead>
@@ -97,9 +97,9 @@ export default function CategoryList() {
                                     <TableCell className="font-medium text-white">
                                         {category.name}
                                     </TableCell>
-                                    {/*<TableCell className="text-lara-sky/80">*/}
-                                    {/*    {category.description || "-"}*/}
-                                    {/*</TableCell>*/}
+                                    <TableCell className="text-lara-sky/80">
+                                        {category.color || "-"}
+                                    </TableCell>
                                     <TableCell className="text-right space-x-2">
                                         <Button
                                             variant="ghost"
