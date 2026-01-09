@@ -102,7 +102,7 @@ export default function LoginForm({
                                 !isGlitch &&
                                 "bg-[#050914]/50 border border-white/10 focus:border-lara-blue text-white placeholder:text-slate-600"
                             }`}
-                            placeholder={isGlitch ? "X_X_X_X" : "admin@churma.dev"}
+                            placeholder={isGlitch ? "X_X_X_X" : "admin@churma.codes"}
                         />
                     </div>
                 </div>
