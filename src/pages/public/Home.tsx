@@ -6,18 +6,19 @@ import ServicesSection from "../../features/landing/Service/public/ServiceSectio
 import ContactSection from "@/features/landing/Contact/ContactSection.tsx";
 import ProjectSection from "../../features/projects/public/ProjectSection.tsx";
 import TechSection from "@/features/tech-stacks/public/TechSection.tsx";
+import WorkExperienceLaracast from "@/features/work-experiences/public/WorkExperiencesLaracast.tsx";
 
 function App() {
-
     return (
         <PublicLayout>
-            <Hero />
+            <Hero/>
             <TechSection/>
-            <ProjectSection />
-            <AboutSection />
-            <ServicesSection />
-            <ArchitectureSection />
-            <ContactSection />
+            <ProjectSection/>
+            <WorkExperienceLaracast/>
+            <AboutSection/>
+            <ServicesSection/>
+            <ArchitectureSection/>
+            <ContactSection/>
         </PublicLayout>
     );
 }
