@@ -1,6 +1,7 @@
 import {useState} from "react";
 import {motion} from "framer-motion";
 import {WorkExperience, TechStack} from "@/types";
+import TechIcon from "@/components/common/TechIcon.tsx";
 
 export default function WorkExperiencesBody({workExperiences}: { workExperiences: WorkExperience[] }) {
     // Ambil data real
@@ -126,18 +127,23 @@ export default function WorkExperiencesBody({workExperiences}: { workExperiences
                                 {/* Tech Stack Tags */}
                                 <div className="flex flex-wrap gap-2 pt-4 border-t border-slate-800/50">
                                     {/* Gunakan Optional Chaining (?.) untuk jaga-jaga kalau stacks kosong */}
-                                    {workExperience.stacks?.map((stack: TechStack, i) => (
-                                        <span
-                                            key={i}
-                                            className={`
-                                                px-3 py-1 text-xs font-semibold rounded-full border transition-all
-                                                ${hoveredIndex === index
-                                                ? "bg-blue-500/10 text-blue-300 border-blue-500/20"
-                                                : "bg-slate-800 text-slate-400 border-slate-700/50"}
-                                            `}
+                                    {workExperience.tech_stack?.map((stack: TechStack, i) => (
+                                        <div
+                                            key={stack.id}
+                                            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-lara-blue/10 border border-lara-blue/20 text-lara-blue transition-colors hover:bg-lara-blue/20"
                                         >
-                                            {stack.name}
-                                        </span>
+                                            {/* 1. Icon Kecil */}
+                                            <TechIcon
+                                                name={stack.name}
+                                                icon={stack.icon}
+                                                className="w-3.5 h-3.5"
+                                            />
+
+                                            {/* 2. Teks Nama (Jelas & Terbaca) */}
+                                            <span className="text-[11px] font-medium leading-none pb-[1px]">
+                                    {stack.name}
+                                </span>
+                                        </div>
                                     ))}
                                 </div>
                             </motion.div>

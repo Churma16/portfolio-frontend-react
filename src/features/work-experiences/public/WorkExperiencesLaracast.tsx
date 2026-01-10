@@ -1,11 +1,11 @@
-import {motion, AnimatePresence} from "framer-motion";
-import {useWorkExperiences} from "../useWorkExperiences.ts";
+import {AnimatePresence} from "framer-motion";
+import {useWorkExperiences} from "../hooks/useWorkExperiences.ts";
 
 import ExperienceHeader from "@/features/work-experiences/public/components/ExperiencesHeader.tsx";
 import WorkExperiencesBody from "@/features/work-experiences/public/components/WorkExperiencesBody.tsx";
 import WorkExperiencesSkeleton from "@/features/work-experiences/public/components/WorkExperiencesSkeleton.tsx";
 
-export default function WorkExperienceLaracast() {
+export default function WorkExperiencesLaracast() {
     const {data: workExperiences = [], isLoading} = useWorkExperiences();
 
     return (
@@ -14,10 +14,10 @@ export default function WorkExperienceLaracast() {
             <AnimatePresence mode="wait">
                 {isLoading ? (
 
-                        <WorkExperiencesSkeleton/>
+                    <WorkExperiencesSkeleton/>
                 ) : (
 
-                        <WorkExperiencesBody workExperiences={workExperiences}/>
+                    <WorkExperiencesBody workExperiences={workExperiences}/>
 
                 )}
             </AnimatePresence>

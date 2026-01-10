@@ -12,6 +12,7 @@ import TagList from "./features/tags/admin/TagList.tsx";
 import CategoryList from "./features/categories/admin/CategoryList.tsx";
 import SetTokenPage from "./pages/auth/SetTokenPage.tsx";
 import ProfileForm from "./features/profile/admin";
+import WorkExperiencesList from "@/features/work-experiences/admin/WorkExperiencesList.tsx";
 
 // if (import.meta.env.PROD) {
 //     console.log = () => {
@@ -39,6 +40,7 @@ function App() {
                     <Route path="/admin" element={<DashboardLayout/>}>
                         {/* Index = default ketika akses /admin */}
                         <Route index element={<ProjectList/>}/>
+                        <Route path="work-experiences" element={<WorkExperiencesList/>}/>
                         <Route path="tech-stacks" element={<TechStackList/>}/>
                         <Route path="tags" element={<TagList/>}/>
                         <Route path="categories" element={<CategoryList/>}/>
