@@ -64,7 +64,7 @@ export default function TechStackDialog({
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="bg-[#0f172a] border-white/10 text-white">
+            <DialogContent className="w-[95vw] bg-[#0f172a] border-white/10 text-white">
                 <DialogHeader>
                     <DialogTitle>
                         {dataToEdit ? "Edit Tech Stack" : "Add Tech Stack"}

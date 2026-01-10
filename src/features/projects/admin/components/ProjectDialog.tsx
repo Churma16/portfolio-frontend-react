@@ -214,7 +214,7 @@ export default function ProjectDialog({
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="max-w-3xl bg-[#0f172a] border border-white/10 text-white max-h-[90vh] overflow-y-auto">
+            <DialogContent className="max-w-3xl w-[95vw] bg-[#0f172a] border border-white/10 text-white max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
                     <DialogTitle>
                         {projectToEdit ? "Edit Project" : "Add New Project"}

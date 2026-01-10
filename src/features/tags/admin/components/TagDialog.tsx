@@ -68,7 +68,7 @@ export default function TagDialog({
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="bg-[#0f172a] border-white/10 text-white">
+            <DialogContent className="bg-[#0f172a] w-[95vw] border-white/10 text-white">
                 <DialogHeader>
                     <DialogTitle>
                         {dataToEdit ? "Edit Tag" : "Add Tag"}
