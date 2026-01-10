@@ -61,7 +61,7 @@ export interface WorkExperience extends BaseEntity {
 
     // Relasi (Pivot Tables)
     tags?: Tag[];
-    stacks?: TechStack[];
+    tech_stack?: TechStack[];
 }
 
 // 5. Project
