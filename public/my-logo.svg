@@ -1,0 +1,10 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="512" height="512" rx="120" fill="#050914"/>
+
+    <path d="M320 140H192C156.654 140 128 168.654 128 204V308C128 343.346 156.654 372 192 372H320" stroke="#61dafb"
+          stroke-width="45" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <rect x="230" y="236" width="130" height="40" rx="10" fill="#a855f7">
+        <animate attributeName="opacity" values="1;0;1" dur="4s" repeatCount="indefinite"/>
+    </rect>
+</svg>
