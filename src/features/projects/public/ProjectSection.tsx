@@ -1,5 +1,5 @@
-import { motion, AnimatePresence } from "framer-motion";
-import { useProjects } from "../hooks/useProjects.ts";
+import {AnimatePresence, motion} from "framer-motion";
+import {useProjects} from "../hooks/useProjects.ts";
 import ProjectShowcase from "@/features/projects/public/components/ProjectShowcase.tsx";
 import ProjectSectionHeader from "@/features/projects/public/components/ProjectSectionHeader.tsx";
 import ProjectsSkeletonGrid from "@/features/projects/public/components/ProjectsSkeletonGrid.tsx";
@@ -10,7 +10,7 @@ export default function ProjectSection() {
 
     return (
         <section id="projects" className="py-24 bg-lara-dark relative">
-            <div className="container mx-auto px-4 relative z-10">
+            <div className="container mx-auto lg:px-4 relative z-10">
                 <ProjectSectionHeader />
 
                 {/* Loading & Error State */}

@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {motion} from "framer-motion";
-import {WorkExperience, TechStack} from "@/types";
+import {TechStack, WorkExperience} from "@/types";
 import TechIcon from "@/components/common/TechIcon.tsx";
 
 export default function WorkExperiencesBody({workExperiences}: { workExperiences: WorkExperience[] }) {
@@ -31,7 +31,7 @@ export default function WorkExperiencesBody({workExperiences}: { workExperiences
             <div
                 className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[400px]  rounded-full pointer-events-none opacity-50"></div>
 
-            <div className="container mx-auto px-6 relative z-10 max-w-4xl">
+            <div className="container mx-auto lg:px-6 relative z-10 max-w-4xl">
 
                 <div className="relative space-y-12">
 
