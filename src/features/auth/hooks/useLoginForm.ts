@@ -1,8 +1,8 @@
 // src/hooks/useLoginForm.ts
-import { useState, FormEvent } from "react";
-import { useNavigate } from "react-router-dom";
+import {FormEvent, useState} from "react";
+import {useNavigate} from "react-router-dom";
 import apiClient from "@/api/axios.ts";
-import { setAdminToken } from "@/lib/auth.ts";
+import {setToken} from "@/lib/auth.ts";
 
 export const useLoginForm = () => {
     const navigate = useNavigate();
@@ -29,14 +29,8 @@ export const useLoginForm = () => {
                 return;
             }
 
-            const abilities = response.data.abilities || response.data.data?.abilities || response.data.user?.abilities || ["admin"];
-
-            console.log("Storing abilities:", abilities);
-            setAdminToken(token, abilities);
-
-            console.log("After setAdminToken:");
-            console.log("Token in localStorage:", localStorage.getItem("token"));
-            console.log("Abilities in localStorage:", localStorage.getItem("abilities"));
+            setToken(token);
+            console.log("Token saved to localStorage:", token);
 
             setStatus("success");
             setTimeout(() => navigate("/admin"), 1500);
