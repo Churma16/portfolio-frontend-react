@@ -1,9 +1,9 @@
 // src/contexts/ApiContext.tsx
-import React, {createContext, ReactNode, useContext, useEffect, useState} from 'react';
-import apiClient from '@/api/axios'; // Import your cleaned axios
+import React, {createContext, ReactNode, useEffect, useRef, useState} from 'react';
+import apiClient from '@/api/axios';
 import {BackendType, getToken} from '@/lib/auth';
+import {useQueryClient} from '@tanstack/react-query';
 
-// CONFIG: Define your two backends here
 const API_CONFIG = {
     laravel: {
         baseURL: import.meta.env.VITE_LARAVEL_URL || "http://localhost:8000/api",
@@ -23,32 +23,49 @@ interface ApiContextProps {
 const ApiContext = createContext<ApiContextProps | undefined>(undefined);
 
 export const ApiProvider = ({children}: { children: ReactNode }) => {
-    // 1. Load the last used backend (or default to laravel)
+    const queryClient = useQueryClient();
+
+    // 1. State untuk React Reactivity (UI update)
     const [activeBackend, setActiveBackend] = useState<BackendType>(() => {
         return (localStorage.getItem('preferred_backend') as BackendType) || 'laravel';
     });
 
+    // 2. Ref untuk "Live Value" (Biar Interceptor baca nilai terbaru DETIK ITU JUGA)
+    const backendRef = useRef(activeBackend);
+
     const switchBackend = (backend: BackendType) => {
-        setActiveBackend(backend);
+        // A. Update Ref DULUAN (Penting! Sebelum re-render terjadi)
+        backendRef.current = backend;
+
+        // B. Simpan ke Storage
         localStorage.setItem('preferred_backend', backend);
-        // Optional: Refresh to ensure clean state
-        window.location.reload();
+
+        // C. Baru update State (Akan memicu re-render anak-anak)
+        setActiveBackend(backend);
+
+        // D. Bersihkan cache lama agar UI loading ulang
+        console.log(`Switching to ${backend}... Nuking Cache.`);
+        queryClient.cancelQueries();
+        queryClient.resetQueries();
     };
 
-    // 2. THE CSS THEME SWITCHER (Bonus!)
+    // 3. Efek untuk Ganti CSS Theme
     useEffect(() => {
         document.documentElement.setAttribute('data-theme', activeBackend);
     }, [activeBackend]);
 
-    // 3. THE API SWITCHER (Axios Interceptor)
+    // 4. SETUP INTERCEPTOR (Cuma sekali saat mount!)
     useEffect(() => {
         const interceptorId = apiClient.interceptors.request.use(config => {
-            // A. Set the Base URL dynamically
-            config.baseURL = API_CONFIG[activeBackend].baseURL;
+            // TRICK UTAMA: Baca dari Ref, bukan dari State!
+            // Ini menjamin kita dapat nilai 'backend' yang baru saja diset di switchBackend
+            // meskipun useEffect ini tidak dijalankan ulang.
+            const currentBackend = backendRef.current;
 
-            // B. Get the correct token for this backend
-            const token = getToken(activeBackend);
+            // Set URL & Token
+            config.baseURL = API_CONFIG[currentBackend].baseURL;
 
+            const token = getToken(currentBackend);
             if (token) {
                 config.headers.Authorization = `Bearer ${token}`;
             }
@@ -59,7 +76,7 @@ export const ApiProvider = ({children}: { children: ReactNode }) => {
         return () => {
             apiClient.interceptors.request.eject(interceptorId);
         };
-    }, [activeBackend]);
+    }, []); // Dependency array KOSONG. Kita tidak perlu re-create interceptor.
 
     return (
         <ApiContext.Provider value={{activeBackend, switchBackend}}>
@@ -68,8 +85,4 @@ export const ApiProvider = ({children}: { children: ReactNode }) => {
     );
 };
 
-export const useApi = () => {
-    const context = useContext(ApiContext);
-    if (!context) throw new Error('useApi must be used within ApiProvider');
-    return context;
-};
+export {ApiContext};
