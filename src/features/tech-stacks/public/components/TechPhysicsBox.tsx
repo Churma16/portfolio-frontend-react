@@ -1,14 +1,14 @@
-import { useEffect, useRef, useState } from "react";
+import {useEffect, useRef, useState} from "react";
 import Matter from "matter-js";
-import { motion } from "framer-motion";
+import {motion} from "framer-motion";
 import TechIcon from "../../../../components/common/TechIcon.tsx";
-import { TechStack } from "@/types";
+import {TechStack} from "@/types";
 
 interface TechPhysicsBoxProps {
     techStacks: TechStack[];
 }
 
-export default function TechPhysicsBox({ techStacks }: TechPhysicsBoxProps) {
+export default function TechPhysicsBox({techStacks}: TechPhysicsBoxProps) {
     const sceneRef = useRef<HTMLDivElement>(null);
     const boxRefs = useRef<(HTMLDivElement | null)[]>([]);
     const engineRef = useRef<Matter.Engine | null>(null);
@@ -50,10 +50,10 @@ export default function TechPhysicsBox({ techStacks }: TechPhysicsBoxProps) {
         // Create walls
         const wallThickness = 500;
         const walls = [
-            Bodies.rectangle(width / 2, height + wallThickness / 2, width + 200, wallThickness, { isStatic: true }),
-            Bodies.rectangle(0 - wallThickness / 2, height / 2, wallThickness, height * 2, { isStatic: true }),
-            Bodies.rectangle(width + wallThickness / 2, height / 2, wallThickness, height * 2, { isStatic: true }),
-            Bodies.rectangle(width / 2, -wallThickness / 2, width + 200, wallThickness, { isStatic: true }),
+            Bodies.rectangle(width / 2, height + wallThickness / 2, width + 200, wallThickness, {isStatic: true}),
+            Bodies.rectangle(0 - wallThickness / 2, height / 2, wallThickness, height * 2, {isStatic: true}),
+            Bodies.rectangle(width + wallThickness / 2, height / 2, wallThickness, height * 2, {isStatic: true}),
+            Bodies.rectangle(width / 2, -wallThickness / 2, width + 200, wallThickness, {isStatic: true}),
         ];
         World.add(world, walls);
 
@@ -81,7 +81,7 @@ export default function TechPhysicsBox({ techStacks }: TechPhysicsBoxProps) {
             mouse: mouse,
             constraint: {
                 stiffness: 0.1,
-                render: { visible: false },
+                render: {visible: false},
             },
         });
 
@@ -94,7 +94,7 @@ export default function TechPhysicsBox({ techStacks }: TechPhysicsBoxProps) {
         // Respawn system
         Events.on(engine, "beforeUpdate", () => {
             techBodies.forEach((body) => {
-                const { x, y } = body.position;
+                const {x, y} = body.position;
                 const buffer = 100;
                 const isOutsideX = x < -buffer || x > width + buffer;
                 const isOutsideY = y < -buffer || y > height + buffer;
@@ -104,7 +104,7 @@ export default function TechPhysicsBox({ techStacks }: TechPhysicsBoxProps) {
                         x: width / 2 + (Math.random() * 40 - 20),
                         y: height / 2,
                     });
-                    Matter.Body.setVelocity(body, { x: 0, y: 0 });
+                    Matter.Body.setVelocity(body, {x: 0, y: 0});
                 }
             });
         });
@@ -113,7 +113,7 @@ export default function TechPhysicsBox({ techStacks }: TechPhysicsBoxProps) {
         const handleOrientation = (event: DeviceOrientationEvent) => {
             if (!engineRef.current) return;
 
-            const { gamma, beta } = event;
+            const {gamma, beta} = event;
             // Gamma: Miring Kiri/Kanan (-90 sampai 90)
             // Beta: Miring Depan/Belakang (-180 sampai 180)
 
@@ -140,7 +140,7 @@ export default function TechPhysicsBox({ techStacks }: TechPhysicsBoxProps) {
             techBodies.forEach((body, index) => {
                 const domNode = boxRefs.current[index];
                 if (domNode) {
-                    const { x, y } = body.position;
+                    const {x, y} = body.position;
                     const angle = body.angle;
                     domNode.style.transform = `translate(${x - 30}px, ${y - 30}px) rotate(${angle}rad)`;
                 }
@@ -163,12 +163,11 @@ export default function TechPhysicsBox({ techStacks }: TechPhysicsBoxProps) {
 
     return (
         <motion.div
-            initial={{ opacity: 0, filter: "blur(10px)" }}
-            animate={{ opacity: 1, filter: "blur(0px)" }}
-            transition={{ duration: 0.8 }}
+            initial={{opacity: 0, filter: "blur(10px)"}}
+            animate={{opacity: 1, filter: "blur(0px)"}}
+            transition={{duration: 0.8}}
             className="md:hidden relative w-full h-[450px] bg-[#0a101f] overflow-hidden touch-none select-none"
         >
-            {/* ... (Bagian render icon sama seperti sebelumnya) ... */}
             <div
                 ref={sceneRef}
                 className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing"
@@ -180,13 +179,16 @@ export default function TechPhysicsBox({ techStacks }: TechPhysicsBoxProps) {
                             boxRefs.current[index] = el;
                         }}
                         className="absolute top-0 left-0 w-[60px] h-[60px] bg-slate-800 border-2 border-slate-600 rounded-xl shadow-lg flex flex-col items-center justify-center select-none will-change-transform z-10"
-                        style={{ transform: "translate(-999px, -999px)" }}
+                        style={{transform: "translate(-999px, -999px)"}}
                     >
                         <TechIcon
                             name={tech.name}
                             icon={tech.icon}
                             className="w-8 h-8 text-slate-300 pointer-events-none"
                         />
+                        <span className="text-[8px] text-slate-400 mt-1 pointer-events-none">
+                        {tech.name}
+                        </span>
                     </div>
                 ))}
             </div>
@@ -200,8 +202,9 @@ export default function TechPhysicsBox({ techStacks }: TechPhysicsBoxProps) {
                 }}
             />
 
-            <div className="absolute top-4 w-full text-center pointer-events-none text-[10px] text-slate-500 font-mono tracking-widest uppercase animate-pulse z-0">
-                Physics Playground: Tilt your phone!
+            <div
+                className="absolute top-4 w-full text-center pointer-events-none text-[10px] text-slate-500 font-mono tracking-widest uppercase animate-pulse z-0">
+                Physics Playground: Move The Box!
             </div>
         </motion.div>
     );
