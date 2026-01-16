@@ -10,7 +10,7 @@ export default function ProjectSection() {
 
     return (
         <section id="projects" className="py-24 bg-lara-dark relative">
-            <div className="container mx-auto lg:px-4 relative z-10">
+            <div className="container mx-auto px-4 relative z-10">
                 <ProjectSectionHeader />
 
                 {/* Loading & Error State */}
