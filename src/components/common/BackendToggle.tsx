@@ -1,4 +1,4 @@
-import {useApi} from "@/contexts/ApiContext";
+import {useApi} from "@/contexts/useApi.ts";
 import {Button} from "@/components/ui/button";
 import TechIcon from "@/components/common/TechIcon.tsx";
 
