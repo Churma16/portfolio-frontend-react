@@ -1,25 +1,18 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import {
-    HiOutlineKey,
-    HiOutlineTrash,
-    HiArrowLeft,
-    HiCheck,
-} from "react-icons/hi2";
+import {useState} from "react";
+import {useNavigate} from "react-router-dom";
+import {HiArrowLeft, HiCheck, HiOutlineKey, HiOutlineTrash,} from "react-icons/hi2";
 import PublicLayout from "../../components/layout/public/PublicLayout.tsx";
-import { setAdminToken, getGuestToken } from "@/lib/auth.ts";
+import {setToken as saveToken} from "@/lib/auth.ts";
 
 export default function SetTokenPage() {
     const navigate = useNavigate();
-    const guestToken = getGuestToken();
     const [token, setToken] = useState(localStorage.getItem("token") || "");
     const [copied, setCopied] = useState(false);
 
     const handleSetToken = (e: React.FormEvent) => {
         e.preventDefault();
         if (token.trim()) {
-            // Simpan token dan abilities kosong (user manual set token)
-            setAdminToken(token, ["admin"]);
+            saveToken(token);
             setCopied(true);
             setTimeout(() => {
                 navigate("/admin/dashboard");
@@ -40,7 +33,7 @@ export default function SetTokenPage() {
         setTimeout(() => setCopied(false), 2000);
     };
 
-    const isValidToken = token.trim() && token !== guestToken;
+    const isValidToken = token.trim().length > 0;
 
     return (
         <PublicLayout>
@@ -105,7 +98,7 @@ export default function SetTokenPage() {
                                             onChange={(e) =>
                                                 setToken(e.target.value)
                                             }
-                                            placeholder="Paste your admin bearer token here (must start with admin_)..."
+                                            placeholder="Paste your bearer token here..."
                                             className="token-input-glow w-full h-32 rounded-xl p-4 bg-lara-dark/50 border border-lara-border text-lara-sky placeholder:text-lara-sky/30 font-mono text-sm outline-none resize-none focus:border-lara-blue"
                                         />
                                         {token && (
@@ -150,7 +143,7 @@ export default function SetTokenPage() {
                                         >
                                             {isValidToken
                                                 ? "✓ Valid token - can access admin panel"
-                                                : "⚠ Token cannot be same as guest token"}
+                                                : "⚠ Please enter a token"}
                                         </p>
                                     </div>
                                 )}
@@ -196,23 +189,11 @@ export default function SetTokenPage() {
                                 <div className="p-4 rounded-xl bg-lara-blue/5 border border-lara-blue/20">
                                     <p className="text-xs text-lara-sky/60 leading-relaxed">
                                         <span className="text-lara-blue font-semibold">
-                                            💡 Admin Token:
+                                            💡 Bearer Token:
                                         </span>{" "}
                                         Once you set a token, it will be stored
                                         in browser's local storage and used for
-                                        API requests.
-                                    </p>
-                                </div>
-                                <div className="p-4 rounded-xl bg-cat-testing/5 border border-cat-testing/20">
-                                    <p className="text-xs text-lara-sky/60 leading-relaxed">
-                                        <span className="text-cat-testing font-semibold">
-                                            📌 Guest Token:
-                                        </span>{" "}
-                                        When no admin token is set, guest token{" "}
-                                        <code className="bg-lara-dark/50 px-2 py-1 rounded text-xs">
-                                            {guestToken.substring(0, 20)}...
-                                        </code>{" "}
-                                        is used automatically.
+                                        all API requests to authenticate your admin access.
                                     </p>
                                 </div>
                             </div>
