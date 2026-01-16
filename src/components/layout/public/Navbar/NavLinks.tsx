@@ -1,6 +1,7 @@
 import {RefObject, useState} from "react";
-import {Sheet, SheetContent, SheetTrigger,} from "@/components/ui/sheet";
+import {Sheet, SheetContent, SheetTrigger} from "@/components/ui/sheet";
 import {Menu} from "lucide-react";
+import {BackendToggle} from "@/components/common/BackendToggle.tsx";
 
 interface NavLink {
     href: string;
@@ -41,12 +42,12 @@ export default function NavLinks({
         <>
             {/* Desktop Navigation */}
             <div
-                className="hidden md:flex gap-8 text-sm font-medium text-lara-sky/80 relative"
+                className="hidden md:flex gap-8 text-sm font-medium text-accent/80 relative items-center"
                 ref={navRef}
             >
                 {/* Animated Underline */}
                 <div
-                    className="absolute bottom-0 h-[2px] bg-lara-blue transition-all duration-300"
+                    className="absolute bottom-0 h-[2px] bg-primary transition-all duration-300"
                     style={{
                         left: `${underlineStyle.left}px`,
                         width: `${underlineStyle.width}px`,
@@ -59,22 +60,23 @@ export default function NavLinks({
                         key={link.href}
                         href={link.href}
                         className={`hover:text-white transition-colors py-6 ${
-                            isActive(link.href) ? "active text-lara-blue" : ""
+                            isActive(link.href) ? "active text-primary" : ""
                         }`}
                     >
                         {link.label}
                     </a>
                 ))}
+                <BackendToggle/>
             </div>
 
             {/* Mobile Navigation */}
             <Sheet open={open} onOpenChange={setOpen}>
                 <SheetTrigger asChild>
-                    <button className="md:hidden p-2 hover:bg-lara-blue/10 rounded-lg transition-colors">
-                        <Menu size={24} className="text-lara-sky" />
+                    <button className="md:hidden p-2 hover:bg-primary/10 rounded-lg transition-colors">
+                        <Menu size={24} className="text-accent"/>
                     </button>
                 </SheetTrigger>
-                <SheetContent side="right" className="w-72 bg-lara-dark border-lara-border">
+                <SheetContent side="right" className="w-72 bg-background border-border">
                     <nav className="flex flex-col gap-4 mt-8">
                         {links.map((link) => (
                             <a
@@ -83,8 +85,8 @@ export default function NavLinks({
                                 onClick={handleLinkClick}
                                 className={`px-4 py-3 text-base font-medium rounded-lg transition-all ${
                                     isActive(link.href)
-                                        ? "bg-lara-blue/20 text-lara-blue border border-lara-blue/50"
-                                        : "text-lara-sky/80 hover:text-white hover:bg-lara-blue/10"
+                                        ? "bg-primary/20 text-primary border border-primary/50"
+                                        : "text-accent/80 hover:text-white hover:bg-primary/10"
                                 }`}
                             >
                                 {link.label}
