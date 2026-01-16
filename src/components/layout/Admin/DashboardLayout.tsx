@@ -1,8 +1,6 @@
 import {useState} from "react"; // Tambah useState
-import {Outlet,  useLocation} from "react-router-dom";
-import {
-    HiBars3, // Icon Hamburger
-} from "react-icons/hi2";
+import {Outlet, useLocation} from "react-router-dom";
+import {HiBars3,} from "react-icons/hi2";
 import Sidebar from "@/components/layout/admin/components/Sidebar.tsx";
 
 export default function DashboardLayout() {
@@ -36,7 +34,7 @@ export default function DashboardLayout() {
             {/* --- MOBILE HEADER (Visible only on mobile) --- */}
             <div
                 className="md:hidden fixed top-0 left-0 right-0 h-16 bg-[#050914]/90 backdrop-blur-md border-b border-white/10 flex items-center justify-between px-4 z-50">
-                <span className="text-lg font-bold font-heading text-lara-blue">
+                <span className="text-lg font-bold font-heading text-primary">
                     Admin<span className="text-white">Panel</span>
                 </span>
                 <button
