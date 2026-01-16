@@ -1,5 +1,5 @@
-import { motion, AnimatePresence } from "framer-motion";
-import { useTechStacks } from "@/features/tech-stacks/hooks/useTechStacks.ts";
+import {AnimatePresence, motion} from "framer-motion";
+import {useTechStacks} from "@/features/tech-stacks/hooks/useTechStacks.ts";
 import TechPhysicsBox from "./TechPhysicsBox.tsx";
 import TechMarquee from "./TechMarquee.tsx";
 import TechSkeletonLoader from "./TechSkeletonLoader.tsx";
@@ -15,7 +15,7 @@ export default function TechList() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className=" border-y border-lara-border bg-lara-dark/50 relative"
+            className=" border-y border-border bg-background/50 relative"
         >
             <AnimatePresence mode="wait">
                 {isLoading ? (

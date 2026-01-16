@@ -31,7 +31,7 @@ export default function BioCard() {
     };
 
     return (
-        <Card className="bg-card-bg-lara-admin border-card-border-lara-admin text-lara-text-primary shadow-lg">
+        <Card className="bg-admin-card border-admin-border text-foreground shadow-lg">
             <CardHeader>
                 <CardTitle className="font-heading">About You</CardTitle>
                 <CardDescription>
@@ -44,24 +44,25 @@ export default function BioCard() {
                         <Label>Short Bio</Label>
                         <Textarea
                             {...register("bio_short")}
-                            className="bg-field-bg-lara-admin min-h-[80px]"
+                            className="bg-admin-field min-h-[80px]"
                         />
                     </div>
                     <div className="space-y-2">
                         <Label>Full Biography</Label>
                         <Textarea
                             {...register("bio_long")}
-                            className="bg-field-bg-lara-admin min-h-[200px] font-mono text-sm"
+                            className="bg-admin-field min-h-[200px] font-mono text-sm"
                         />
                     </div>
                 </div>
 
                 <div className="flex flex-col md:flex-row gap-6 pt-4 border-t border-white/10">
                     {/* Switch dengan Controller */}
-                    <div className="flex-1 flex items-center justify-between p-4 rounded-lg bg-field-bg-lara-admin border border-card-border-lara-admin">
+                    <div
+                        className="flex-1 flex items-center justify-between p-4 rounded-lg bg-admin-field border border-admin-border">
                         <div>
                             <Label>Open to Work?</Label>
-                            <p className="text-xs text-lara-sky/60 mt-1">
+                            <p className="text-xs text-accent/60 mt-1">
                                 Shows a "Hire Me" badge.
                             </p>
                         </div>
@@ -86,11 +87,11 @@ export default function BioCard() {
                                 type="button"
                                 variant="outline"
                                 onClick={() => cvInputRef.current?.click()}
-                                className="bg-white/5 border-white/10 text-lara-blue"
+                                className="bg-white/5 border-white/10 text-primary"
                             >
                                 {cvFileList ? "Change File" : "Select PDF"}
                             </Button>
-                            <span className="text-xs text-lara-sky/60 truncate max-w-[200px]">
+                            <span className="text-xs text-accent/60 truncate max-w-[200px]">
                                 {fileName}
                             </span>
                             <input

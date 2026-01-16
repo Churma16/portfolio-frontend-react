@@ -165,15 +165,15 @@ export default function ProfileForm() {
         mutation.mutate(data);
     };
 
-    if (isLoading) return <div className="p-8 text-lara-text-primary">Loading...</div>;
+    if (isLoading) return <div className="p-8 text-foreground">Loading...</div>;
 
     return (
         <div className="max-w-5xl mx-auto pb-32 min-h-screen">
             <div className="mb-8">
-                <h2 className="text-3xl font-heading font-bold text-lara-text-primary">
+                <h2 className="text-3xl font-heading font-bold text-foreground">
                     Edit Profile
                 </h2>
-                <p className="text-lara-sky/80">
+                <p className="text-accent/80">
                     Manage your public presence and bio.
                 </p>
             </div>

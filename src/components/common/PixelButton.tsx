@@ -1,6 +1,6 @@
-import { ReactNode } from "react";
-import { Link } from "react-router-dom";
-import { cn } from "../../lib/utils";
+import {ReactNode} from "react";
+import {Link} from "react-router-dom";
+import {cn} from "../../lib/utils";
 
 interface PixelButtonProps {
     children: ReactNode;
@@ -24,7 +24,7 @@ export default function PixelButton({
     const variants = {
         // Style Biru (Discussions)
         primary:
-            "bg-lara-blue text-white shadow-[4px_4px_0_0_#1e3a8a] hover:bg-blue-500",
+            "bg-primary text-white shadow-[4px_4px_0_0_#1e3a8a] hover:bg-blue-500",
 
         // Style Gelap (Discover)
         dark: "bg-[#1e293b] text-white shadow-[4px_4px_0_0_#0f172a] hover:bg-[#334155]",

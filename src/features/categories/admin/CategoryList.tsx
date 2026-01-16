@@ -45,16 +45,16 @@ export default function CategoryList() {
             {/* Header */}
             <div className="flex justify-between items-start">
                 <div>
-                    <h1 className="text-3xl font-bold text-lara-text-primary mb-2">
+                    <h1 className="text-3xl font-bold text-foreground mb-2">
                         Categories
                     </h1>
-                    <p className="text-lara-sky/60">
+                    <p className="text-accent/60">
                         Manage your project categories
                     </p>
                 </div>
                 <Button
                     onClick={handleCreate}
-                    className="bg-lara-blue hover:bg-lara-blue/90"
+                    className="bg-primary hover:bg-primary/90"
                 >
                     <HiOutlinePlus className="w-5 h-5 mr-2" /> Add Category
                 </Button>
@@ -64,10 +64,10 @@ export default function CategoryList() {
             <div className="rounded-lg border border-white/10 overflow-hidden bg-black/20">
                 {isLoading ? (
                     <div className="flex items-center justify-center py-12">
-                        <CgSpinner className="animate-spin w-8 h-8 text-lara-blue" />
+                        <CgSpinner className="animate-spin w-8 h-8 text-primary"/>
                     </div>
                 ) : categories.length === 0 ? (
-                    <div className="flex items-center justify-center py-12 text-lara-sky/60">
+                    <div className="flex items-center justify-center py-12 text-accent/60">
                         No categories yet. Create one to get started!
                     </div>
                 ) : (
@@ -87,10 +87,10 @@ export default function CategoryList() {
                                     key={category.id}
                                     className="border-white/5 hover:bg-white/5"
                                 >
-                                    <TableCell className="font-medium text-lara-text-primary">
+                                    <TableCell className="font-medium text-foreground">
                                         {category.name}
                                     </TableCell>
-                                    <TableCell className="text-lara-sky/80">
+                                    <TableCell className="text-accent/80">
                                         {category.color || "-"}
                                     </TableCell>
                                     <TableCell className="text-right space-x-2">
@@ -98,7 +98,7 @@ export default function CategoryList() {
                                             variant="ghost"
                                             size="sm"
                                             onClick={() => handleEdit(category)}
-                                            className="text-lara-blue hover:bg-lara-blue/10"
+                                            className="text-primary hover:bg-primary/10"
                                         >
                                             <HiOutlinePencil className="w-4 h-4" />
                                         </Button>

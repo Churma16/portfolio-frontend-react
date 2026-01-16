@@ -58,7 +58,7 @@ export default function TechStackDialog({
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="w-[95vw] bg-card-bg-lara-admin border-white/10 text-lara-text-primary">
+            <DialogContent className="w-[95vw] bg-admin-card border-white/10 text-foreground">
                 <DialogHeader>
                     <DialogTitle>
                         {dataToEdit ? "Edit Tech Stack" : "Add Tech Stack"}
@@ -121,14 +121,14 @@ export default function TechStackDialog({
                             </span>
                             <TechIcon
                                 name={formData.icon}
-                                className="w-6 h-6 text-lara-text-primary"
+                                className="w-6 h-6 text-foreground"
                             />
                         </div>
                     )}
                     <DialogFooter>
                         <Button
                             type="submit"
-                            className="bg-lara-blue"
+                            className="bg-primary"
                             disabled={isSubmitting}
                         >
                             {isSubmitting && (

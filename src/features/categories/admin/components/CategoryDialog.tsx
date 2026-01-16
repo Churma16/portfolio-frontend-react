@@ -77,7 +77,7 @@ export default function CategoryDialog({
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className=" w-[90vw] bg-card-bg-lara-admin border-white/10 text-lara-text-primary">
+            <DialogContent className=" w-[90vw] bg-admin-card border-white/10 text-foreground">
                 <DialogHeader>
                     <DialogTitle>
                         {dataToEdit ? "Edit Category" : "Add Category"}
@@ -125,7 +125,7 @@ export default function CategoryDialog({
                     <DialogFooter>
                         <Button
                             type="submit"
-                            className="bg-lara-blue"
+                            className="bg-primary"
                             disabled={mutation.isPending}
                         >
                             {mutation.isPending && (

@@ -12,7 +12,7 @@ export default function ProjectCardSkeleton({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: index * 0.1 }}
-            className="flex flex-col overflow-hidden rounded-2xl bg-lara-dark-blue border border-lara-border h-full"
+            className="flex flex-col overflow-hidden rounded-2xl bg-background-blue border border-border h-full"
         >
             {/* Thumbnail Skeleton */}
             <div className="aspect-video bg-slate-800 animate-pulse" />

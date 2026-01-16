@@ -1,6 +1,6 @@
 import HeroContent from "./components/HeroContent.tsx";
 import HeroAvatar from "./components/HeroAvatar.tsx";
-import { useProfile } from "../../profile/hooks/useProfile.ts";
+import {useProfile} from "../../profile/hooks/useProfile.ts";
 
 export default function Hero() {
     const { data: profile } = useProfile();
@@ -13,7 +13,8 @@ export default function Hero() {
 
     return (
         <section className="relative overflow-hidden pt-10 pb-20 lg:pt-20 lg:pb-32">
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-lara-blue/20 rounded-full blur-[120px] -z-10 opacity-50" />
+            <div
+                className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[120px] -z-10 opacity-50"/>
 
             <div className="flex flex-col-reverse lg:flex-row items-center justify-between gap-12">
                 <HeroContent

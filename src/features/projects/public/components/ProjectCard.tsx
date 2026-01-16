@@ -25,7 +25,7 @@ export default function ProjectCard({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: index * 0.1 }}
             // Tambahkan cursor-pointer agar terlihat bisa diklik
-            className="group flex flex-col overflow-hidden rounded-2xl bg-[#0a101f] border border-lara-border transition-all duration-300 hover:border-lara-blue/50 hover:shadow-2xl hover:shadow-lara-blue/5 h-full cursor-pointer"
+            className="group flex flex-col overflow-hidden rounded-2xl bg-[#0a101f] border border-border transition-all duration-300 hover:border-primary/50 hover:shadow-2xl hover:shadow-lara-blue/5 h-full cursor-pointer"
         >
             {/* Thumbnail */}
             <div className="relative aspect-video overflow-hidden bg-slate-800">
@@ -94,7 +94,7 @@ export default function ProjectCard({
                 )}
 
                 {/* Judul */}
-                <h3 className="font-heading text-xl font-bold text-lara-text-primary group-hover:text-lara-blue transition-colors leading-tight mb-2">
+                <h3 className="font-heading text-xl font-bold text-foreground group-hover:text-primary transition-colors leading-tight mb-2">
                     {project.title}
                 </h3>
 
@@ -115,7 +115,7 @@ export default function ProjectCard({
                         {project.tech_stack?.map((stack) => (
                             <div
                                 key={stack.id}
-                                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-lara-blue/10 border border-lara-blue/20 text-lara-blue transition-colors hover:bg-lara-blue/20"
+                                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-primary/10 border border-primary/20 text-primary transition-colors hover:bg-primary/20"
                             >
                                 {/* 1. Icon Kecil */}
                                 <TechIcon
@@ -134,7 +134,7 @@ export default function ProjectCard({
 
                     {/* View Details Button */}
                     <div
-                        className="flex items-center text-lara-text-primary font-medium text-sm group/link cursor-pointer hover:text-lara-blue transition-colors">
+                        className="flex items-center text-foreground font-medium text-sm group/link cursor-pointer hover:text-primary transition-colors">
                         View Project Details
                         <svg
                             className="ml-2 w-4 h-4 transition-transform group-hover/link:translate-x-1"

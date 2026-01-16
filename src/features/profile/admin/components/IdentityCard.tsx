@@ -30,7 +30,7 @@ export default function IdentityCard() {
     };
 
     return (
-        <Card className="bg-card-bg-lara-admin border-card-border-lara-admin text-lara-text-primary shadow-lg">
+        <Card className="bg-admin-card border-admin-border text-foreground shadow-lg">
             <CardHeader>
                 <CardTitle className="font-heading">Identity & Role</CardTitle>
                 <CardDescription>
@@ -42,7 +42,7 @@ export default function IdentityCard() {
                     {/* Avatar Upload */}
                     <div className="flex flex-col items-center space-y-3">
                         <div
-                            className="relative group w-32 h-32 rounded-full bg-lara-dark border-2 border-dashed border-lara-blue/30 overflow-hidden cursor-pointer"
+                            className="relative group w-32 h-32 rounded-full bg-background border-2 border-dashed border-primary/30 overflow-hidden cursor-pointer"
                             onClick={() => avatarInputRef.current?.click()}
                         >
                             {previewImage ? (
@@ -54,12 +54,12 @@ export default function IdentityCard() {
                                     alt="Avatar"
                                 />
                             ) : (
-                                <div className="w-full h-full flex items-center justify-center text-xs text-lara-sky/50">
+                                <div className="w-full h-full flex items-center justify-center text-xs text-accent/50">
                                     Upload
                                 </div>
                             )}
                             <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/40 transition-opacity">
-                                <HiPencil className="w-6 h-6 text-lara-blue" />
+                                <HiPencil className="w-6 h-6 text-primary"/>
                             </div>
                         </div>
 
@@ -82,28 +82,28 @@ export default function IdentityCard() {
                             <Label>Full Name</Label>
                             <Input
                                 {...register("name")}
-                                className="bg-field-bg-lara-admin"
+                                className="bg-admin-field"
                             />
                         </div>
                         <div className="space-y-2">
                             <Label>Headline</Label>
                             <Input
                                 {...register("headline")}
-                                className="bg-field-bg-lara-admin"
+                                className="bg-admin-field"
                             />
                         </div>
                         <div className="space-y-2">
                             <Label>Current Role</Label>
                             <Input
                                 {...register("role")}
-                                className="bg-field-bg-lara-admin"
+                                className="bg-admin-field"
                             />
                         </div>
                         <div className="space-y-2">
                             <Label>Location</Label>
                             <Input
                                 {...register("location")}
-                                className="bg-field-bg-lara-admin"
+                                className="bg-admin-field"
                             />
                         </div>
                     </div>

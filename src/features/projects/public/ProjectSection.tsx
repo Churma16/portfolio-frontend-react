@@ -9,7 +9,7 @@ export default function ProjectSection() {
     const { data: projects, isLoading, isError, error } = useProjects();
 
     return (
-        <section id="projects" className="py-24 bg-lara-dark relative">
+        <section id="projects" className="py-24 bg-background relative">
             <div className="container mx-auto px-4 relative z-10">
                 <ProjectSectionHeader />
 

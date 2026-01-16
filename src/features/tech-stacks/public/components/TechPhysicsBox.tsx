@@ -166,7 +166,7 @@ export default function TechPhysicsBox({techStacks}: TechPhysicsBoxProps) {
             initial={{opacity: 0, filter: "blur(10px)"}}
             animate={{opacity: 1, filter: "blur(0px)"}}
             transition={{duration: 0.8}}
-            className="md:hidden relative w-full h-[450px] bg-lara-dark-blue overflow-hidden touch-none select-none"
+            className="md:hidden relative w-full h-[450px] bg-background-blue overflow-hidden touch-none select-none"
         >
             <div
                 ref={sceneRef}

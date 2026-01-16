@@ -89,14 +89,14 @@ export default function ContactSection() {
 
             {/* Dekorasi Glow Ungu/Biru Samar */}
             <div
-                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-lara-blue/10 rounded-full blur-[100px] -z-10"/>
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[100px] -z-10"/>
 
             <div className="container mx-auto px-4 max-w-4xl relative z-10">
                 {/* Header */}
                 <div className="text-center mb-16 space-y-4">
                     <h2 className="text-3xl md:text-4xl font-heading font-bold text-white">
                         Let's Work{" "}
-                        <span className="text-lara-blue">Together</span>.
+                        <span className="text-primary">Together</span>.
                     </h2>
                     <p className="text-slate-400">
                         I’m currently available for full-time positions or freelance projects. If you have a question or
@@ -156,7 +156,7 @@ export default function ContactSection() {
                                     className={`w-full bg-[#050914]/50 border ${
                                         errors.name
                                             ? "border-red-500/50 focus:border-red-500"
-                                            : "border-white/10 focus:border-lara-blue"
+                                            : "border-white/10 focus:border-primary"
                                     } rounded-lg px-4 py-3 text-white outline-none transition-colors`}
                                 />
                                 {errors.name && (
@@ -180,7 +180,7 @@ export default function ContactSection() {
                                     className={`w-full bg-[#050914]/50 border ${
                                         errors.email
                                             ? "border-red-500/50 focus:border-red-500"
-                                            : "border-white/10 focus:border-lara-blue"
+                                            : "border-white/10 focus:border-primary"
                                     } rounded-lg px-4 py-3 text-white outline-none transition-colors`}
                                 />
                                 {errors.email && (
@@ -205,7 +205,7 @@ export default function ContactSection() {
                                 className={`w-full bg-[#050914]/50 border ${
                                     errors.content
                                         ? "border-red-500/50 focus:border-red-500"
-                                        : "border-white/10 focus:border-lara-blue"
+                                        : "border-white/10 focus:border-primary"
                                 } rounded-lg px-4 py-3 text-white outline-none transition-colors resize-none`}
                             />
                             {errors.content && (

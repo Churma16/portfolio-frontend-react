@@ -15,7 +15,7 @@ export default function HeroCodeCard() {
     });
 
     return (
-        <Card className="bg-card-bg-lara-admin border-card-border-lara-admin text-lara-text-primary shadow-lg">
+        <Card className="bg-admin-card border-admin-border text-foreground shadow-lg">
             <CardHeader className="flex flex-row items-center justify-between">
                 <div>
                     <CardTitle className="font-heading">
@@ -37,13 +37,13 @@ export default function HeroCodeCard() {
             <CardContent className="space-y-2">
                 {fields.map((field, idx) => (
                     <div key={field.id} className="flex gap-3 items-center">
-                        <span className="text-lara-sky/40 font-mono text-xs w-6 text-right">
+                        <span className="text-accent/40 font-mono text-xs w-6 text-right">
                             {idx + 1}
                         </span>
                         {/* Register array index yang spesifik */}
                         <Input
                             {...register(`hero_image_codes.${idx}.value`)}
-                            className="bg-field-bg-lara-admin font-mono text-sm border-l-2 border-l-lara-blue/30"
+                            className="bg-admin-field font-mono text-sm border-l-2 border-l-lara-blue/30"
                         />
                         <Button
                             type="button"

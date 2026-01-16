@@ -1,15 +1,9 @@
 // src/components/Auth/LoginForm.tsx
-import { FormEvent } from "react";
-import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
-import {
-    HiOutlineEnvelope,
-    HiOutlineLockClosed,
-    HiArrowRight,
-    HiQrCode,
-    HiCommandLine,
-} from "react-icons/hi2";
-import { CgSpinner } from "react-icons/cg";
+import {FormEvent} from "react";
+import {useNavigate} from "react-router-dom";
+import {motion} from "framer-motion";
+import {HiArrowRight, HiCommandLine, HiOutlineEnvelope, HiOutlineLockClosed, HiQrCode,} from "react-icons/hi2";
+import {CgSpinner} from "react-icons/cg";
 
 interface LoginFormProps {
     email: string;
@@ -73,7 +67,7 @@ export default function LoginForm({
                         <button
                             type="button"
                             onClick={() => navigate("/set-token")}
-                            className="text-lara-blue hover:underline font-semibold"
+                            className="text-primary hover:underline font-semibold"
                         >
                             set bearer token manually
                         </button>
@@ -100,7 +94,7 @@ export default function LoginForm({
                             onChange={(e) => setEmail(e.target.value)}
                             className={`w-full rounded-lg pl-10 pr-4 py-3 outline-none transition-none ${
                                 !isGlitch &&
-                                "bg-[#050914]/50 border border-white/10 focus:border-lara-blue text-white placeholder:text-slate-600"
+                                "bg-[#050914]/50 border border-white/10 focus:border-primary text-white placeholder:text-slate-600"
                             }`}
                             placeholder={isGlitch ? "X_X_X_X" : "admin@churma.codes"}
                         />
@@ -127,7 +121,7 @@ export default function LoginForm({
                             onChange={(e) => setPassword(e.target.value)}
                             className={`w-full rounded-lg pl-10 pr-4 py-3 outline-none transition-none ${
                                 !isGlitch &&
-                                "bg-[#050914]/50 border border-white/10 focus:border-lara-blue text-white placeholder:text-slate-600"
+                                "bg-[#050914]/50 border border-white/10 focus:border-primary text-white placeholder:text-slate-600"
                             }`}
                             placeholder="••••••••"
                         />
@@ -142,7 +136,7 @@ export default function LoginForm({
                         !isGlitch
                             ? status === "success"
                                 ? "bg-green-500 text-white"
-                                : "bg-lara-blue text-white hover:bg-blue-600"
+                                : "bg-primary text-white hover:bg-blue-600"
                             : ""
                     }`}
                 >

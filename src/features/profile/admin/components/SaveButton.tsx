@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/button.tsx";
-import { CgSpinner } from "react-icons/cg";
+import {Button} from "@/components/ui/button.tsx";
+import {CgSpinner} from "react-icons/cg";
 
 interface SaveButtonProps {
     isSubmitting: boolean;
@@ -12,7 +12,7 @@ export default function SaveButton({ isSubmitting }: SaveButtonProps) {
             <Button
                 type="submit"
                 size="lg"
-                className="bg-lara-blue hover:bg-blue-600 shadow-[0_0_20px_rgba(59,130,246,0.5)] transition-all hover:scale-105"
+                className="bg-primary hover:bg-blue-600 shadow-[0_0_20px_rgba(59,130,246,0.5)] transition-all hover:scale-105"
                 disabled={isSubmitting}
             >
                 {isSubmitting ? (

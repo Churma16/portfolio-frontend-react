@@ -215,7 +215,7 @@ export default function ProjectDialog({
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent
-                className="max-w-3xl w-[95vw] bg-card-bg-lara-admin border border-white/10 text-lara-text-primary max-h-[90vh] overflow-y-auto">
+                className="max-w-3xl w-[95vw] bg-admin-card border border-white/10 text-foreground max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
                     <DialogTitle>
                         {projectToEdit ? "Edit Project" : "Add New Project"}
@@ -346,7 +346,7 @@ export default function ProjectDialog({
                                         className={`cursor-pointer px-4 py-2 rounded-lg border transition-all duration-200 select-none
                                             ${
                                                 isSelected
-                                                    ? "bg-purple-500/20 border-purple-500 text-lara-text-primary shadow-[0_0_10px_rgba(168,85,247,0.3)]"
+                                                    ? "bg-purple-500/20 border-purple-500 text-foreground shadow-[0_0_10px_rgba(168,85,247,0.3)]"
                                                     : "bg-white/5 border-transparent text-slate-400 hover:bg-white/10 hover:border-white/20"
                                             }
                                         `}
@@ -362,7 +362,7 @@ export default function ProjectDialog({
 
                     {/* --- TOGGLE AREA: TECH STACKS --- */}
                     <div className="space-y-3">
-                        <Label className="text-lara-blue font-bold uppercase tracking-wider text-xs">
+                        <Label className="text-primary font-bold uppercase tracking-wider text-xs">
                             Select Tech Stacks
                         </Label>
                         <div className="flex flex-wrap gap-2 p-4 rounded-xl bg-black/20 border border-white/5">
@@ -377,7 +377,7 @@ export default function ProjectDialog({
                                         className={`cursor-pointer flex items-center gap-2 px-3 py-2 rounded-lg border transition-all duration-200 select-none
                                             ${
                                                 isSelected
-                                                    ? "bg-lara-blue/20 border-lara-blue text-lara-text-primary shadow-[0_0_10px_rgba(59,130,246,0.3)]"
+                                                    ? "bg-primary/20 border-primary text-foreground shadow-[0_0_10px_rgba(59,130,246,0.3)]"
                                                     : "bg-white/5 border-transparent text-slate-400 hover:bg-white/10 hover:border-white/20"
                                             }
                                         `}
@@ -387,7 +387,7 @@ export default function ProjectDialog({
                                             icon={stack.icon}
                                             className={`w-4 h-4 ${
                                                 isSelected
-                                                    ? "text-lara-blue"
+                                                    ? "text-primary"
                                                     : "text-slate-500"
                                             }`}
                                         />
@@ -439,7 +439,7 @@ export default function ProjectDialog({
                         </Button>
                         <Button
                             type="submit"
-                            className="bg-lara-blue hover:bg-blue-600 min-w-[120px]"
+                            className="bg-primary hover:bg-blue-600 min-w-[120px]"
                             disabled={mutation.isPending || isSubmitting}
                         >
                             {mutation.isPending || isSubmitting ? (

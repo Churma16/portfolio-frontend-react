@@ -25,7 +25,8 @@ export default function ArchitectureSection() {
             </div>
 
             {/* Layer 2: Glow Biru Samar di Tengah */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-1/2 bg-lara-blue/5 blur-[120px] rounded-full -z-10" />
+            <div
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-1/2 bg-primary/5 blur-[120px] rounded-full -z-10"/>
 
             <div className="container mx-auto px-4 relative z-10">
                 <ArchitectureSectionHeader />

@@ -38,23 +38,23 @@ export default function LiveStats() {
     return (
         <>
             <div
-                className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 mt-12 font-mono text-xs sm:text-sm text-lara-sky/70">
+                className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 mt-12 font-mono text-xs sm:text-sm text-accent/70">
                 {/* 1. NETWORK LATENCY (Tetap ada buat info) */}
                 <div
-                    className="flex items-center gap-2 bg-lara-dark/50 border border-white/5 px-4 py-2 rounded-full backdrop-blur-sm opacity-60">
+                    className="flex items-center gap-2 bg-background/50 border border-white/5 px-4 py-2 rounded-full backdrop-blur-sm opacity-60">
                     <span>Network Latency:</span>
                     <span className="font-bold text-lara-text-muted">{ping}ms</span>
                 </div>
 
                 {/* 2. REDIS PERFORMANCE (SHOW OFF ITEM!) */}
                 <div
-                    className="flex items-center gap-2 bg-lara-dark/50 border border-green-500/30 px-4 py-2 rounded-full backdrop-blur-sm shadow-[0_0_15px_rgba(34,197,94,0.2)]">
+                    className="flex items-center gap-2 bg-background/50 border border-green-500/30 px-4 py-2 rounded-full backdrop-blur-sm shadow-[0_0_15px_rgba(34,197,94,0.2)]">
                     <SiRedis
                         className={
-                            isRedisAlive ? "text-lara-accent-red" : "text-lara-text-muted-dark"
+                            isRedisAlive ? "text-red-500" : "text-lara-text-muted-dark"
                         }
                     />
-                    <span className="text-lara-text-primary font-medium">
+                    <span className="text-foreground font-medium">
                         Redis Response:
                     </span>
 

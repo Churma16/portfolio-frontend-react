@@ -14,7 +14,7 @@ export default function SocialCard() {
     });
 
     return (
-        <Card className="bg-card-bg-lara-admin border-card-border-lara-admin text-lara-text-primary shadow-lg">
+        <Card className="bg-admin-card border-admin-border text-foreground shadow-lg">
             <CardHeader className="flex flex-row items-center justify-between">
                 <div>
                     <CardTitle className="font-heading">
@@ -41,7 +41,7 @@ export default function SocialCard() {
                             <Input
                                 placeholder="Platform"
                                 {...register(`socialsArray.${idx}.platform`)}
-                                className="bg-field-bg-lara-admin"
+                                className="bg-admin-field"
                             />
                         </div>
                         <div className="flex-1">
@@ -49,7 +49,7 @@ export default function SocialCard() {
                             <Input
                                 placeholder="https://..."
                                 {...register(`socialsArray.${idx}.url`)}
-                                className="bg-field-bg-lara-admin"
+                                className="bg-admin-field"
                             />
                         </div>
                         <Button
@@ -63,7 +63,7 @@ export default function SocialCard() {
                     </div>
                 ))}
                 {fields.length === 0 && (
-                    <div className="text-center py-8 text-lara-sky/50 border border-dashed border-white/10 rounded-lg">
+                    <div className="text-center py-8 text-accent/50 border border-dashed border-white/10 rounded-lg">
                         No social links added yet.
                     </div>
                 )}

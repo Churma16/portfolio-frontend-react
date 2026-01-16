@@ -66,7 +66,7 @@ export default function ProjectShowcase({ projects }: ProjectShowcaseProps) {
                                 // 1. max-h-[80dvh]: Menggunakan Dynamic Viewport Height agar aman dari address bar HP.
                                 // 2. w-full max-w-xl: Membatasi lebar agar tidak terlalu lebar di tablet.
                                 // 3. my-auto: Memastikan posisi vertikal di tengah.
-                                className="w-full max-w-xl bg-card-bg-lara-admin border border-white/10 rounded-2xl overflow-hidden shadow-2xl pointer-events-auto flex flex-col max-h-[80dvh]"
+                                className="w-full max-w-xl bg-admin-card border border-white/10 rounded-2xl overflow-hidden shadow-2xl pointer-events-auto flex flex-col max-h-[80dvh]"
                             >
                                 {/* --- HEADER IMAGE --- */}
                                 {/* PERBAIKAN: Tinggi gambar dikurangi jadi h-40 (160px) di HP biar teks muat banyak */}
@@ -83,7 +83,7 @@ export default function ProjectShowcase({ projects }: ProjectShowcaseProps) {
                                     {/* Tombol Close - Diperbesar area kliknya biar gampang dipencet di HP */}
                                     <button
                                         onClick={() => setSelectedId(null)}
-                                        className="absolute top-3 right-3 p-2 bg-black/40 text-lara-text-primary rounded-full hover:bg-red-500 hover:text-lara-text-primary transition-all backdrop-blur-md border border-white/10 active:scale-95"
+                                        className="absolute top-3 right-3 p-2 bg-black/40 text-foreground rounded-full hover:bg-red-500 hover:text-foreground transition-all backdrop-blur-md border border-white/10 active:scale-95"
                                     >
                                         <HiXMark className="w-6 h-6" />
                                     </button>
@@ -92,11 +92,11 @@ export default function ProjectShowcase({ projects }: ProjectShowcaseProps) {
                                 {/* --- SCROLLABLE CONTENT --- */}
                                 {/* overscroll-contain: Mencegah body belakang ikut scroll saat modal mentok */}
                                 <div
-                                    className="flex-1 overflow-y-auto p-5 sm:p-6 bg-card-bg-lara-admin overscroll-contain">
+                                    className="flex-1 overflow-y-auto p-5 sm:p-6 bg-admin-card overscroll-contain">
 
                                     {/* Title & Buttons */}
                                     <div className="flex flex-wrap justify-between items-start gap-4 mb-5">
-                                        <h3 className="text-xl sm:text-2xl font-heading font-bold text-lara-text-primary leading-tight flex-1 min-w-[200px]">
+                                        <h3 className="text-xl sm:text-2xl font-heading font-bold text-foreground leading-tight flex-1 min-w-[200px]">
                                             {selectedProject.title}
                                         </h3>
 
@@ -106,7 +106,7 @@ export default function ProjectShowcase({ projects }: ProjectShowcaseProps) {
                                                     href={selectedProject.repo_url}
                                                     target="_blank"
                                                     rel="noreferrer"
-                                                    className="flex items-center gap-2 px-3 py-1.5 bg-slate-800 text-lara-text-primary rounded-lg font-bold text-xs hover:bg-slate-700 transition-colors border border-white/10"
+                                                    className="flex items-center gap-2 px-3 py-1.5 bg-slate-800 text-foreground rounded-lg font-bold text-xs hover:bg-slate-700 transition-colors border border-white/10"
                                                 >
                                                     <SiGithub className="w-4 h-4" />
                                                     GitHub
@@ -117,7 +117,7 @@ export default function ProjectShowcase({ projects }: ProjectShowcaseProps) {
                                                     href={selectedProject.demo_url}
                                                     target="_blank"
                                                     rel="noreferrer"
-                                                    className="flex items-center gap-2 px-3 py-1.5 bg-lara-blue text-lara-text-primary rounded-lg font-bold text-xs hover:bg-blue-600 transition-colors shadow-lg shadow-blue-500/20"
+                                                    className="flex items-center gap-2 px-3 py-1.5 bg-primary text-foreground rounded-lg font-bold text-xs hover:bg-blue-600 transition-colors shadow-lg shadow-blue-500/20"
                                                 >
                                                     <HiOutlineGlobeAlt className="w-4 h-4" />
                                                     Demo
@@ -145,7 +145,7 @@ export default function ProjectShowcase({ projects }: ProjectShowcaseProps) {
                                                     <TechIcon
                                                         name={stack.name}
                                                         icon={stack.icon}
-                                                        className="w-3.5 h-3.5 text-lara-blue"
+                                                        className="w-3.5 h-3.5 text-primary"
                                                     />
                                                     <span className="text-[11px] sm:text-xs text-slate-300 font-medium">
                                                         {stack.name}

@@ -97,7 +97,7 @@ export default function WorkExperiencesBody({workExperiences}: { workExperiences
                                 {/* Header Card */}
                                 <div className="flex flex-col md:flex-row md:justify-between md:items-start mb-4 gap-3">
                                     <div>
-                                        <h3 className={`text-xl md:text-2xl font-bold transition-colors break-all ${hoveredIndex === index ? "text-lara-accent-blue-light" : "text-lara-text-primary"}`}>
+                                        <h3 className={`text-xl md:text-2xl font-bold transition-colors break-all ${hoveredIndex === index ? "text-lara-accent-blue-light" : "text-foreground"}`}>
                                             {workExperience.position}
                                         </h3>
 
@@ -130,7 +130,7 @@ export default function WorkExperiencesBody({workExperiences}: { workExperiences
                                     {workExperience.tech_stack?.map((stack: TechStack, i) => (
                                         <div
                                             key={stack.id}
-                                            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-lara-blue/10 border border-lara-blue/20 text-lara-blue transition-colors hover:bg-lara-blue/20"
+                                            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-primary/10 border border-primary/20 text-primary transition-colors hover:bg-primary/20"
                                         >
                                             {/* 1. Icon Kecil */}
                                             <TechIcon

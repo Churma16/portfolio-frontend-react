@@ -34,7 +34,7 @@ const EXPERIENCE_DATA = [
 export default function ExperienceSection() {
     return (
         // BACKGROUND: Menggunakan Slate-950 (Biru Gelap Elegan) khas Laracasts, bukan Hitam Pekat
-        <section className="py-24 min-h-screen bg-slate-950 text-lara-text-secondary relative overflow-hidden">
+        <section className="py-24 min-h-screen bg-slate-950 text-muted-foreground relative overflow-hidden">
 
             {/* Background Glow Halus (Bukan Grid Cyberpunk) */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[400px] bg-blue-600/20 blur-[120px] rounded-full pointer-events-none opacity-50"></div>
@@ -43,7 +43,7 @@ export default function ExperienceSection() {
 
                 {/* HEADER: Bersih, Sans-Serif, Professional */}
                 <div className="mb-20 text-center md:text-left">
-                    <h2 className="text-3xl md:text-5xl font-bold text-lara-text-primary mb-6 tracking-tight">
+                    <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-6 tracking-tight">
                         Professional <span className="text-lara-accent-blue">Journey</span>
                     </h2>
                     <p className="text-lara-text-muted text-lg max-w-2xl leading-relaxed">
@@ -86,7 +86,7 @@ export default function ExperienceSection() {
                                 {/* Header Kartu */}
                                 <div className="flex flex-col md:flex-row md:justify-between md:items-start mb-4 gap-3">
                                     <div>
-                                        <h3 className="text-xl md:text-2xl font-bold text-lara-text-primary group-hover:text-lara-accent-blue-light transition-colors">
+                                        <h3 className="text-xl md:text-2xl font-bold text-foreground group-hover:text-lara-accent-blue-light transition-colors">
                                             {exp.role}
                                         </h3>
                                         <div

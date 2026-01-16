@@ -52,7 +52,7 @@ export default function ProjectList() {
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
-                    <h2 className="text-3xl font-heading font-bold text-lara-text-primary tracking-tight">
+                    <h2 className="text-3xl font-heading font-bold text-foreground tracking-tight">
                         Projects
                     </h2>
                     <p className="text-slate-400 text-sm">
@@ -61,7 +61,7 @@ export default function ProjectList() {
                 </div>
                 <Button
                     onClick={handleCreate}
-                    className="bg-lara-blue hover:bg-blue-600 text-lara-text-primary gap-2"
+                    className="bg-primary hover:bg-blue-600 text-foreground gap-2"
                 >
                     <HiPlus className="w-4 h-4" />
                     Add New Project
@@ -139,7 +139,7 @@ export default function ProjectList() {
                                             <Button
                                                 size="icon"
                                                 variant="ghost"
-                                                className="h-6 w-6 text-lara-text-muted hover:text-lara-text-primary hover:bg-white/10 disabled:opacity-30"
+                                                className="h-6 w-6 text-lara-text-muted hover:text-foreground hover:bg-white/10 disabled:opacity-30"
                                                 onClick={() =>
                                                     handleReorder(
                                                         project.id,
@@ -155,7 +155,7 @@ export default function ProjectList() {
                                             <Button
                                                 size="icon"
                                                 variant="ghost"
-                                                className="h-6 w-6 text-lara-text-muted hover:text-lara-text-primary hover:bg-white/10 disabled:opacity-30"
+                                                className="h-6 w-6 text-lara-text-muted hover:text-foreground hover:bg-white/10 disabled:opacity-30"
                                                 onClick={() =>
                                                     handleReorder(
                                                         project.id,
@@ -186,7 +186,7 @@ export default function ProjectList() {
                                                 />
                                             </div>
                                             <div>
-                                                <div className="font-bold text-lara-text-primary">
+                                                <div className="font-bold text-foreground">
                                                     {project.title}
                                                 </div>
                                                 <div className="text-xs text-slate-400 truncate max-w-[200px]">
@@ -250,7 +250,7 @@ export default function ProjectList() {
                                                 onClick={() =>
                                                     handleEdit(project)
                                                 }
-                                                className="h-8 w-8 text-lara-text-muted hover:text-lara-text-primary hover:bg-white/10"
+                                                className="h-8 w-8 text-lara-text-muted hover:text-foreground hover:bg-white/10"
                                             >
                                                 <HiPencil className="w-4 h-4" />
                                             </Button>

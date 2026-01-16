@@ -17,7 +17,7 @@ export default function FooterSocials({
                 href={github}
                 target="_blank"
                 rel="noreferrer"
-                className="text-lara-text-muted hover:text-lara-text-primary transition-colors"
+                className="text-lara-text-muted hover:text-foreground transition-colors"
             >
                 <SiGithub className="w-5 h-5" />
             </a>

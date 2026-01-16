@@ -1,5 +1,5 @@
-import { motion } from "framer-motion";
-import { IconType } from "react-icons"; // 1. Ubah import dari ReactNode ke IconType
+import {motion} from "framer-motion";
+import {IconType} from "react-icons"; // 1. Ubah import dari ReactNode ke IconType
 
 interface ServiceCardProps {
     title: string;
@@ -19,19 +19,21 @@ export default function ServiceCard({ title, description, icon: Icon, index }: S
             transition={{ duration: 0.5, delay: index * 0.1 }}
             
             // Styling Kartu
-            className="group relative p-8 rounded-2xl bg-[#0f172a]/40 border border-white/5 hover:border-lara-blue/30 transition-all duration-300 hover:-translate-y-1"
+            className="group relative p-8 rounded-2xl bg-[#0f172a]/40 border border-white/5 hover:border-primary/30 transition-all duration-300 hover:-translate-y-1"
         >
             {/* Efek Glow */}
-            <div className="absolute top-8 left-8 w-12 h-12 bg-lara-blue/20 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <div
+                className="absolute top-8 left-8 w-12 h-12 bg-primary/20 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"/>
 
             {/* Icon Wrapper */}
-            <div className="relative mb-6 inline-flex items-center justify-center w-12 h-12 rounded-lg bg-white/5 text-slate-400 group-hover:text-lara-blue group-hover:bg-lara-blue/10 transition-colors duration-300">
+            <div
+                className="relative mb-6 inline-flex items-center justify-center w-12 h-12 rounded-lg bg-white/5 text-slate-400 group-hover:text-primary group-hover:bg-primary/10 transition-colors duration-300">
                 {/* 4. Render Icon sebagai Komponen dan atur ukurannya di sini */}
                 <Icon className="w-6 h-6" />
             </div>
 
             {/* Title */}
-            <h3 className="text-xl font-heading font-bold text-white mb-3 group-hover:text-lara-blue transition-colors">
+            <h3 className="text-xl font-heading font-bold text-white mb-3 group-hover:text-primary transition-colors">
                 {title}
             </h3>
 
