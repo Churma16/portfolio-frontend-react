@@ -184,9 +184,9 @@ export default function TechPhysicsBox({techStacks}: TechPhysicsBoxProps) {
                         <TechIcon
                             name={tech.name}
                             icon={tech.icon}
-                            className="w-8 h-8 text-slate-300 pointer-events-none"
+                            className="w-8 h-8 text-lara-text-tertiary pointer-events-none"
                         />
-                        <span className="text-[8px] text-slate-400 mt-1 pointer-events-none">
+                        <span className="text-[8px] text-lara-text-muted mt-1 pointer-events-none">
                         {tech.name}
                         </span>
                     </div>
@@ -203,7 +203,7 @@ export default function TechPhysicsBox({techStacks}: TechPhysicsBoxProps) {
             />
 
             <div
-                className="absolute top-4 w-full text-center pointer-events-none text-[10px] text-slate-500 font-mono tracking-widest uppercase animate-pulse z-0">
+                className="absolute top-4 w-full text-center pointer-events-none text-[10px] text-lara-text-muted-dark font-mono tracking-widest uppercase animate-pulse z-0">
                 Physics Playground: Move The Box!
             </div>
         </motion.div>

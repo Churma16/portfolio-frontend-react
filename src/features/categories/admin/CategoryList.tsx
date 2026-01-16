@@ -1,19 +1,12 @@
-import { useState } from "react";
-import { useCategories } from "@/features/categories/hooks/useCategories.ts";
+import {useState} from "react";
+import {useCategories} from "@/features/categories/hooks/useCategories.ts";
 import apiClient from "@/api/axios.ts";
 import CategoryDialog from "./components/CategoryDialog.tsx";
-import { Button } from "@/components/ui/button.tsx";
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table.tsx";
-import { HiOutlinePlus, HiOutlineTrash, HiOutlinePencil } from "react-icons/hi2";
-import { CgSpinner } from "react-icons/cg";
-import { Category } from "@/types";
+import {Button} from "@/components/ui/button.tsx";
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/components/ui/table.tsx";
+import {HiOutlinePencil, HiOutlinePlus, HiOutlineTrash} from "react-icons/hi2";
+import {CgSpinner} from "react-icons/cg";
+import {Category} from "@/types";
 
 export default function CategoryList() {
     const { data: categories = [], isLoading, refetch } = useCategories();
@@ -52,7 +45,7 @@ export default function CategoryList() {
             {/* Header */}
             <div className="flex justify-between items-start">
                 <div>
-                    <h1 className="text-3xl font-bold text-white mb-2">
+                    <h1 className="text-3xl font-bold text-lara-text-primary mb-2">
                         Categories
                     </h1>
                     <p className="text-lara-sky/60">
@@ -94,7 +87,7 @@ export default function CategoryList() {
                                     key={category.id}
                                     className="border-white/5 hover:bg-white/5"
                                 >
-                                    <TableCell className="font-medium text-white">
+                                    <TableCell className="font-medium text-lara-text-primary">
                                         {category.name}
                                     </TableCell>
                                     <TableCell className="text-lara-sky/80">

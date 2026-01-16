@@ -1,16 +1,10 @@
-import { useRef } from "react";
-import { useFormContext } from "react-hook-form"; // Import ini
-import {
-    Card,
-    CardContent,
-    CardHeader,
-    CardTitle,
-    CardDescription,
-} from "@/components/ui/card.tsx";
-import { Input } from "@/components/ui/input.tsx";
-import { Label } from "@/components/ui/label.tsx";
-import { HiPencil } from "react-icons/hi2";
-import { ProfileFormValues } from "../index.tsx"; // Import tipe jika perlu
+import {useRef} from "react";
+import {useFormContext} from "react-hook-form"; // Import ini
+import {Card, CardContent, CardDescription, CardHeader, CardTitle,} from "@/components/ui/card.tsx";
+import {Input} from "@/components/ui/input.tsx";
+import {Label} from "@/components/ui/label.tsx";
+import {HiPencil} from "react-icons/hi2";
+import {ProfileFormValues} from "../index.tsx"; // Import tipe jika perlu
 
 export default function IdentityCard() {
     const { register, watch, setValue } = useFormContext<ProfileFormValues>();
@@ -36,7 +30,7 @@ export default function IdentityCard() {
     };
 
     return (
-        <Card className="bg-card-bg-lara-admin border-card-border-lara-admin text-white shadow-lg">
+        <Card className="bg-card-bg-lara-admin border-card-border-lara-admin text-lara-text-primary shadow-lg">
             <CardHeader>
                 <CardTitle className="font-heading">Identity & Role</CardTitle>
                 <CardDescription>

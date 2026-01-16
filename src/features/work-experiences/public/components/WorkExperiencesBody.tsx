@@ -97,30 +97,30 @@ export default function WorkExperiencesBody({workExperiences}: { workExperiences
                                 {/* Header Card */}
                                 <div className="flex flex-col md:flex-row md:justify-between md:items-start mb-4 gap-3">
                                     <div>
-                                        <h3 className={`text-xl md:text-2xl font-bold transition-colors break-all ${hoveredIndex === index ? "text-blue-400" : "text-white"}`}>
+                                        <h3 className={`text-xl md:text-2xl font-bold transition-colors break-all ${hoveredIndex === index ? "text-lara-accent-blue-light" : "text-lara-text-primary"}`}>
                                             {workExperience.position}
                                         </h3>
 
                                         <div
-                                            className="text-slate-400 font-medium mt-1 flex items-center gap-2 text-sm md:text-base">
+                                            className="text-lara-text-muted font-medium mt-1 flex items-center gap-2 text-sm md:text-base">
                                             <span>{workExperience.company}</span>
                                             <span className="w-1 h-1 rounded-full bg-slate-600"></span>
                                             <span
-                                                className="text-slate-500 text-xs">{workExperience?.location || "Full-time"}</span>
+                                                className="text-lara-text-muted-dark text-xs">{workExperience?.location || "Full-time"}</span>
                                         </div>
                                     </div>
 
                                     <span className={`
                                         inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold border transition-colors
                                         ${hoveredIndex === index
-                                        ? "bg-blue-500/10 text-blue-300 border-blue-500/30"
-                                        : "bg-slate-800 text-slate-300 border-slate-700"}
+                                        ? "bg-blue-500/10 text-lara-accent-blue-lighter border-blue-500/30"
+                                        : "bg-slate-800 text-lara-text-tertiary border-slate-700"}
                                     `}>
                                         {workExperience.start_date}{" "} — {" "}{workExperience.end_date || "Present"}
                                     </span>
                                 </div>
 
-                                <p className="text-slate-400 mb-6 leading-relaxed text-sm md:text-base">
+                                <p className="text-lara-text-muted mb-6 leading-relaxed text-sm md:text-base">
                                     {workExperience.description}
                                 </p>
 

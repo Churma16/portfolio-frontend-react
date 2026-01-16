@@ -1,4 +1,4 @@
-import {useState, FormEvent} from "react";
+import {FormEvent, useState} from "react";
 import {motion} from "framer-motion";
 import {HiPaperAirplane} from "react-icons/hi2";
 import {CgSpinner} from "react-icons/cg";
@@ -160,7 +160,7 @@ export default function ContactSection() {
                                     } rounded-lg px-4 py-3 text-white outline-none transition-colors`}
                                 />
                                 {errors.name && (
-                                    <p className="text-xs text-red-400">
+                                    <p className="text-xs text-lara-accent-red-light">
                                         {errors.name}
                                     </p>
                                 )}
@@ -184,7 +184,7 @@ export default function ContactSection() {
                                     } rounded-lg px-4 py-3 text-white outline-none transition-colors`}
                                 />
                                 {errors.email && (
-                                    <p className="text-xs text-red-400">
+                                    <p className="text-xs text-lara-accent-red-light">
                                         {errors.email}
                                     </p>
                                 )}
@@ -209,7 +209,7 @@ export default function ContactSection() {
                                 } rounded-lg px-4 py-3 text-white outline-none transition-colors resize-none`}
                             />
                             {errors.content && (
-                                <p className="text-xs text-red-400">
+                                <p className="text-xs text-lara-accent-red-light">
                                     {errors.content}
                                 </p>
                             )}

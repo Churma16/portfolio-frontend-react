@@ -1,6 +1,6 @@
-import { motion } from "framer-motion";
+import {motion} from "framer-motion";
 import TechIcon from "../../../../components/common/TechIcon.tsx";
-import { TechStack } from "@/types";
+import {TechStack} from "@/types";
 
 interface TechMarqueeDesktopProps {
     techStacks: TechStack[];
@@ -28,9 +28,10 @@ export default function TechMarquee({ techStacks }: TechMarqueeDesktopProps) {
                         <TechIcon
                             name={tech.name}
                             icon={tech.icon}
-                            className="w-8 h-8 text-slate-600 transition-all duration-500 grayscale group-hover/item:grayscale-0 group-hover/item:scale-110 group-hover/item:text-lara-blue"
+                            className="w-8 h-8 text-lara-text-muted transition-all duration-500 grayscale group-hover/item:grayscale-0 group-hover/item:scale-110 group-hover/item:text-lara-blue"
                         />
-                        <span className="text-xl font-heading font-bold text-slate-700 transition-colors duration-300 group-hover/item:text-slate-200 whitespace-nowrap">
+                        <span
+                            className="text-xl font-heading font-bold text-lara-text-muted-dark transition-colors duration-300 group-hover/item:text-lara-text-secondary whitespace-nowrap">
                             {tech.name}
                         </span>
                     </div>
@@ -50,7 +51,7 @@ export default function TechMarquee({ techStacks }: TechMarqueeDesktopProps) {
                         <TechIcon
                             name={tech.name}
                             icon={tech.icon}
-                            className="w-8 h-8 text-slate-600 transition-all duration-500 grayscale group-hover/item:grayscale-0 group-hover/item:scale-110 group-hover/item:text-lara-blue"
+                            className="w-8 h-8 text-lara-text-muted transition-all duration-500 grayscale group-hover/item:grayscale-0 group-hover/item:scale-110 group-hover/item:text-lara-blue"
                         />
                         <span className="text-xl font-heading font-bold text-slate-700 transition-colors duration-300 group-hover/item:text-slate-200 whitespace-nowrap">
                             {tech.name}

@@ -36,7 +36,7 @@ export default function TagList() {
     // Helper warna (bisa dipindah ke utils)
     const getColorClass = (color: string) => {
         const map: any = {
-            blue: "bg-blue-500/20 text-blue-400 border-blue-500/30",
+            blue: "bg-blue-500/20 text-lara-accent-blue-light border-blue-500/30",
             green: "bg-green-500/20 text-green-400 border-green-500/30",
             red: "bg-red-500/20 text-red-400 border-red-500/30",
             purple: "bg-purple-500/20 text-purple-400 border-purple-500/30",
@@ -49,16 +49,16 @@ export default function TagList() {
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
-                    <h2 className="text-3xl font-heading font-bold text-white tracking-tight">
+                    <h2 className="text-3xl font-heading font-bold text-lara-text-primary tracking-tight">
                         Tags
                     </h2>
-                    <p className="text-slate-400 text-sm">
+                    <p className="text-lara-text-muted text-sm">
                         Manage your project tags here.
                     </p>
                 </div>
                 <Button
                     onClick={handleCreate}
-                    className="bg-lara-blue hover:bg-blue-600 text-white gap-2"
+                    className="bg-lara-blue hover:bg-blue-600 text-lara-text-primary gap-2"
                 >
                     <HiPlus className="w-4 h-4" />
                     Add New Tag
@@ -69,13 +69,13 @@ export default function TagList() {
                 <Table>
                     <TableHeader className="bg-white/5">
                         <TableRow className="border-white/5 hover:bg-transparent">
-                            <TableHead className="text-slate-300">
-                                Preview
-                            </TableHead>
-                            <TableHead className="text-slate-300">
+                            <TableHead className="text-lara-text-tertiary">
                                 Name
                             </TableHead>
-                            <TableHead className="text-right text-slate-300">
+                            <TableHead className="text-lara-text-tertiary">
+                                Category
+                            </TableHead>
+                            <TableHead className="text-right text-lara-text-tertiary">
                                 Actions
                             </TableHead>
                         </TableRow>
@@ -85,7 +85,7 @@ export default function TagList() {
                             <TableRow>
                                 <TableCell
                                     colSpan={3}
-                                    className="h-24 text-center text-slate-500 animate-pulse"
+                                    className="h-24 text-center text-lara-text-muted-dark animate-pulse"
                                 >
                                     Loading tags...
                                 </TableCell>
@@ -119,7 +119,7 @@ export default function TagList() {
                                             {item.name}
                                         </span>
                                     </TableCell>
-                                    <TableCell className="font-medium text-white">
+                                    <TableCell className="font-medium text-lara-text-primary">
                                         {item.name}
                                     </TableCell>
                                     <TableCell className="text-right">
@@ -128,7 +128,7 @@ export default function TagList() {
                                                 size="icon"
                                                 variant="ghost"
                                                 onClick={() => handleEdit(item)}
-                                                className="h-8 w-8 text-slate-400 hover:text-white hover:bg-white/10"
+                                                className="h-8 w-8 text-lara-text-muted hover:text-lara-text-primary hover:bg-white/10"
                                             >
                                                 <HiPencil className="w-4 h-4" />
                                             </Button>
@@ -138,7 +138,7 @@ export default function TagList() {
                                                 onClick={() =>
                                                     handleDelete(item.id)
                                                 }
-                                                className="h-8 w-8 text-slate-400 hover:text-red-400 hover:bg-red-500/10"
+                                                className="h-8 w-8 text-lara-text-muted hover:text-lara-accent-red-light hover:bg-red-500/10"
                                             >
                                                 <HiTrash className="w-4 h-4" />
                                             </Button>

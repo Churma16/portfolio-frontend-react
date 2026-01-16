@@ -1,13 +1,6 @@
 import {motion} from "framer-motion";
 import {HiShieldCheck} from "react-icons/hi2";
-import {
-    SiReact,
-    SiLaravel,
-    SiMysql,
-    SiDigitalocean,
-    SiUbuntu,
-    SiCloudflare,
-} from "react-icons/si";
+import {SiCloudflare, SiDigitalocean, SiLaravel, SiMysql, SiReact, SiUbuntu,} from "react-icons/si";
 
 // 1. Komponen Kotak Stack (Tidak Berubah)
 const StackBox = ({title, icon, items}: {
@@ -20,7 +13,7 @@ const StackBox = ({title, icon, items}: {
         className="flex-1 bg-[#0a101f] border border-white/10 p-5 rounded-xl relative z-10 w-full min-w-[200px] shadow-2xl shadow-black/50"
     >
         <div className="flex items-center gap-3 mb-4 border-b border-white/5 pb-3">
-            <div className="p-2 bg-blue-500/10 rounded-lg text-blue-400">
+            <div className="p-2 bg-blue-500/10 rounded-lg text-lara-accent-blue-light">
                 {icon}
             </div>
             <h4 className="font-heading font-bold text-white text-md">
@@ -191,7 +184,7 @@ export default function ArchitectureDiagram() {
                     className="absolute -top-4 left-6 bg-[#050914] px-4 py-1.5 border border-blue-500/30 rounded-full flex items-center gap-3 shadow-lg shadow-blue-500/10">
                     <SiDigitalocean className="text-[#0080FF] text-xl"/>
                     <div className="h-4 w-[1px] bg-white/10"></div>
-                    <div className="flex items-center gap-2 text-xs font-mono text-blue-100">
+                    <div className="flex items-center gap-2 text-xs font-mono text-lara-accent-blue-lighter">
                         <SiUbuntu className="text-orange-500"/>
                         <span>VPS (Docker)</span>
                     </div>

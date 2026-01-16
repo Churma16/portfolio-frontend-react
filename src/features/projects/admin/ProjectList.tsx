@@ -1,25 +1,11 @@
-import { useState } from "react";
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table.tsx";
-import { Button } from "@/components/ui/button.tsx";
+import {useState} from "react";
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/components/ui/table.tsx";
+import {Button} from "@/components/ui/button.tsx";
 // Tambahkan HiArrowUp dan HiArrowDown
-import {
-    HiPlus,
-    HiPencil,
-    HiTrash,
-    HiOutlineCube,
-    HiArrowUp,
-    HiArrowDown,
-} from "react-icons/hi2";
-import { Project } from "@/types";
+import {HiArrowDown, HiArrowUp, HiOutlineCube, HiPencil, HiPlus, HiTrash,} from "react-icons/hi2";
+import {Project} from "@/types";
 import ProjectDialog from "./components/ProjectDialog.tsx";
-import { useProjects } from "../hooks/useProjects.ts";
+import {useProjects} from "../hooks/useProjects.ts";
 import apiClient from "@/api/axios.ts";
 
 export default function ProjectList() {
@@ -66,7 +52,7 @@ export default function ProjectList() {
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
-                    <h2 className="text-3xl font-heading font-bold text-white tracking-tight">
+                    <h2 className="text-3xl font-heading font-bold text-lara-text-primary tracking-tight">
                         Projects
                     </h2>
                     <p className="text-slate-400 text-sm">
@@ -75,7 +61,7 @@ export default function ProjectList() {
                 </div>
                 <Button
                     onClick={handleCreate}
-                    className="bg-lara-blue hover:bg-blue-600 text-white gap-2"
+                    className="bg-lara-blue hover:bg-blue-600 text-lara-text-primary gap-2"
                 >
                     <HiPlus className="w-4 h-4" />
                     Add New Project
@@ -153,7 +139,7 @@ export default function ProjectList() {
                                             <Button
                                                 size="icon"
                                                 variant="ghost"
-                                                className="h-6 w-6 text-slate-400 hover:text-white hover:bg-white/10 disabled:opacity-30"
+                                                className="h-6 w-6 text-lara-text-muted hover:text-lara-text-primary hover:bg-white/10 disabled:opacity-30"
                                                 onClick={() =>
                                                     handleReorder(
                                                         project.id,
@@ -169,7 +155,7 @@ export default function ProjectList() {
                                             <Button
                                                 size="icon"
                                                 variant="ghost"
-                                                className="h-6 w-6 text-slate-400 hover:text-white hover:bg-white/10 disabled:opacity-30"
+                                                className="h-6 w-6 text-lara-text-muted hover:text-lara-text-primary hover:bg-white/10 disabled:opacity-30"
                                                 onClick={() =>
                                                     handleReorder(
                                                         project.id,
@@ -200,7 +186,7 @@ export default function ProjectList() {
                                                 />
                                             </div>
                                             <div>
-                                                <div className="font-bold text-white">
+                                                <div className="font-bold text-lara-text-primary">
                                                     {project.title}
                                                 </div>
                                                 <div className="text-xs text-slate-400 truncate max-w-[200px]">
@@ -212,7 +198,8 @@ export default function ProjectList() {
 
                                     <TableCell>
                                         <div className="flex flex-wrap gap-1.5">
-                                            <span className="px-2 py-0.5 rounded text-[10px] font-medium bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                                            <span
+                                                className="px-2 py-0.5 rounded text-[10px] font-medium bg-blue-500/10 text-lara-accent-blue-light border border-blue-500/20">
                                                 {project.category?.name}
                                             </span>
                                         </div>
@@ -225,7 +212,7 @@ export default function ProjectList() {
                                                 .map((stack) => (
                                                     <span
                                                         key={stack.id}
-                                                        className="px-2 py-0.5 rounded text-[10px] font-medium bg-blue-500/10 text-blue-400 border border-blue-500/20"
+                                                        className="px-2 py-0.5 rounded text-[10px] font-medium bg-blue-500/10 text-lara-accent-blue-light border border-blue-500/20"
                                                     >
                                                         {stack.name}
                                                     </span>
@@ -263,7 +250,7 @@ export default function ProjectList() {
                                                 onClick={() =>
                                                     handleEdit(project)
                                                 }
-                                                className="h-8 w-8 text-slate-400 hover:text-white hover:bg-white/10"
+                                                className="h-8 w-8 text-lara-text-muted hover:text-lara-text-primary hover:bg-white/10"
                                             >
                                                 <HiPencil className="w-4 h-4" />
                                             </Button>

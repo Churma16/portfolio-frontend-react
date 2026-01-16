@@ -1,4 +1,4 @@
-import { SiGithub, SiLinkedin, SiInstagram } from "react-icons/si";
+import {SiGithub, SiInstagram, SiLinkedin} from "react-icons/si";
 
 interface FooterSocialsProps {
     github?: string;
@@ -17,7 +17,7 @@ export default function FooterSocials({
                 href={github}
                 target="_blank"
                 rel="noreferrer"
-                className="text-slate-400 hover:text-white transition-colors"
+                className="text-lara-text-muted hover:text-lara-text-primary transition-colors"
             >
                 <SiGithub className="w-5 h-5" />
             </a>
@@ -25,7 +25,7 @@ export default function FooterSocials({
                 href={linkedin}
                 target="_blank"
                 rel="noreferrer"
-                className="text-slate-400 hover:text-blue-400 transition-colors"
+                className="text-lara-text-muted hover:text-lara-accent-blue-light transition-colors"
             >
                 <SiLinkedin className="w-5 h-5" />
             </a>
@@ -33,7 +33,7 @@ export default function FooterSocials({
                 href={instagram}
                 target="_blank"
                 rel="noreferrer"
-                className="text-slate-400 hover:text-pink-500 transition-colors"
+                className="text-lara-text-muted hover:text-pink-500 transition-colors"
             >
                 <SiInstagram className="w-5 h-5" />
             </a>

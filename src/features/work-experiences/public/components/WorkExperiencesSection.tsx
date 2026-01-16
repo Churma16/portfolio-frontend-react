@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import {motion} from "framer-motion";
 
 // --- DATA PLACEHOLDER ---
 const EXPERIENCE_DATA = [
@@ -34,7 +34,7 @@ const EXPERIENCE_DATA = [
 export default function ExperienceSection() {
     return (
         // BACKGROUND: Menggunakan Slate-950 (Biru Gelap Elegan) khas Laracasts, bukan Hitam Pekat
-        <section className="py-24 min-h-screen bg-slate-950 text-slate-200 relative overflow-hidden">
+        <section className="py-24 min-h-screen bg-slate-950 text-lara-text-secondary relative overflow-hidden">
 
             {/* Background Glow Halus (Bukan Grid Cyberpunk) */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[400px] bg-blue-600/20 blur-[120px] rounded-full pointer-events-none opacity-50"></div>
@@ -43,10 +43,10 @@ export default function ExperienceSection() {
 
                 {/* HEADER: Bersih, Sans-Serif, Professional */}
                 <div className="mb-20 text-center md:text-left">
-                    <h2 className="text-3xl md:text-5xl font-bold text-white mb-6 tracking-tight">
-                        Professional <span className="text-blue-500">Journey</span>
+                    <h2 className="text-3xl md:text-5xl font-bold text-lara-text-primary mb-6 tracking-tight">
+                        Professional <span className="text-lara-accent-blue">Journey</span>
                     </h2>
-                    <p className="text-slate-400 text-lg max-w-2xl leading-relaxed">
+                    <p className="text-lara-text-muted text-lg max-w-2xl leading-relaxed">
                         Rekam jejak pengalaman dalam membangun solusi perangkat lunak yang skalabel.
                     </p>
                 </div>
@@ -86,10 +86,11 @@ export default function ExperienceSection() {
                                 {/* Header Kartu */}
                                 <div className="flex flex-col md:flex-row md:justify-between md:items-start mb-4 gap-3">
                                     <div>
-                                        <h3 className="text-xl md:text-2xl font-bold text-white group-hover:text-blue-400 transition-colors">
+                                        <h3 className="text-xl md:text-2xl font-bold text-lara-text-primary group-hover:text-lara-accent-blue-light transition-colors">
                                             {exp.role}
                                         </h3>
-                                        <div className="text-slate-400 font-medium mt-1 flex items-center gap-2 text-sm md:text-base">
+                                        <div
+                                            className="text-lara-text-muted font-medium mt-1 flex items-center gap-2 text-sm md:text-base">
                                             <span>{exp.company}</span>
                                             <span className="w-1 h-1 rounded-full bg-slate-600"></span>
                                             <span>{exp.type}</span>
@@ -97,13 +98,14 @@ export default function ExperienceSection() {
                                     </div>
 
                                     {/* Badge Waktu (Simple Pill) */}
-                                    <span className="inline-flex items-center px-3 py-1 rounded-full bg-slate-800 text-slate-300 text-xs font-semibold border border-slate-700">
+                                    <span
+                                        className="inline-flex items-center px-3 py-1 rounded-full bg-slate-800 text-lara-text-tertiary text-xs font-semibold border border-slate-700">
                                         {exp.period}
                                     </span>
                                 </div>
 
                                 {/* Deskripsi (Font Sans, mudah dibaca) */}
-                                <p className="text-slate-400 mb-6 leading-relaxed text-sm md:text-base">
+                                <p className="text-lara-text-muted mb-6 leading-relaxed text-sm md:text-base">
                                     {exp.description}
                                 </p>
 
@@ -114,8 +116,8 @@ export default function ExperienceSection() {
                                             key={i}
                                             className="
                                                 px-3 py-1 text-xs font-semibold rounded-full
-                                                bg-slate-800 text-blue-300/80 border border-slate-700/50
-                                                group-hover:bg-blue-500/10 group-hover:text-blue-400 group-hover:border-blue-500/20
+                                                bg-slate-800 text-lara-accent-blue-lighter border border-slate-700/50
+                                                group-hover:bg-blue-500/10 group-hover:text-lara-accent-blue-light group-hover:border-blue-500/20
                                                 transition-all cursor-default
                                             "
                                         >

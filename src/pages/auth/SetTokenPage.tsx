@@ -74,7 +74,7 @@ export default function SetTokenPage() {
                                         <HiOutlineKey className="w-8 h-8 text-lara-blue" />
                                     </div>
                                 </div>
-                                <h1 className="text-4xl font-bold text-white mb-3 font-heading">
+                                <h1 className="text-4xl font-bold text-lara-text-primary mb-3 font-heading">
                                     Bearer Token
                                 </h1>
                                 <p className="text-lara-sky/80 text-lg max-w-md mx-auto">
@@ -155,7 +155,7 @@ export default function SetTokenPage() {
                                         disabled={
                                             !token.trim() || !isValidToken
                                         }
-                                        className="flex-1 py-4 px-6 rounded-xl font-bold text-white bg-lara-blue hover:bg-lara-blue/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center gap-2 group"
+                                        className="flex-1 py-4 px-6 rounded-xl font-bold text-lara-text-primary bg-lara-blue hover:bg-lara-blue/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center gap-2 group"
                                     >
                                         <HiCheck className="w-5 h-5 group-hover:scale-110 transition-transform" />
                                         Save & Continue
@@ -164,7 +164,7 @@ export default function SetTokenPage() {
                                         <button
                                             type="button"
                                             onClick={handleClearToken}
-                                            className="px-6 py-4 rounded-xl font-bold text-white bg-cat-framework/30 hover:bg-cat-framework/50 transition-colors border border-cat-framework/30 hover:border-cat-framework/50 flex items-center justify-center gap-2"
+                                            className="px-6 py-4 rounded-xl font-bold text-lara-text-primary bg-cat-framework/30 hover:bg-cat-framework/50 transition-colors border border-cat-framework/30 hover:border-cat-framework/50 flex items-center justify-center gap-2"
                                             title="Clear token"
                                         >
                                             <HiOutlineTrash className="w-5 h-5" />

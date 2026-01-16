@@ -1,17 +1,11 @@
-import { useRef } from "react";
-import { useFormContext, Controller } from "react-hook-form";
-import {
-    Card,
-    CardContent,
-    CardHeader,
-    CardTitle,
-    CardDescription,
-} from "@/components/ui/card.tsx";
-import { Textarea } from "@/components/ui/textarea.tsx";
-import { Label } from "@/components/ui/label.tsx";
-import { Button } from "@/components/ui/button.tsx";
-import { Switch } from "@/components/ui/switch.tsx";
-import { ProfileFormValues } from "../index.tsx"; // Import tipe jika perlu
+import {useRef} from "react";
+import {Controller, useFormContext} from "react-hook-form";
+import {Card, CardContent, CardDescription, CardHeader, CardTitle,} from "@/components/ui/card.tsx";
+import {Textarea} from "@/components/ui/textarea.tsx";
+import {Label} from "@/components/ui/label.tsx";
+import {Button} from "@/components/ui/button.tsx";
+import {Switch} from "@/components/ui/switch.tsx";
+import {ProfileFormValues} from "../index.tsx"; // Import tipe jika perlu
 
 export default function BioCard() {
     const { register, control, watch, setValue } =
@@ -37,7 +31,7 @@ export default function BioCard() {
     };
 
     return (
-        <Card className="bg-card-bg-lara-admin border-card-border-lara-admin text-white shadow-lg">
+        <Card className="bg-card-bg-lara-admin border-card-border-lara-admin text-lara-text-primary shadow-lg">
             <CardHeader>
                 <CardTitle className="font-heading">About You</CardTitle>
                 <CardDescription>

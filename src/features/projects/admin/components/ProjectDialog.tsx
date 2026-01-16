@@ -1,23 +1,23 @@
-import { useEffect, useState, FormEvent } from "react";
+import {FormEvent, useEffect, useState} from "react";
 import {
     Dialog,
     DialogContent,
-    DialogHeader,
-    DialogTitle,
     DialogDescription,
     DialogFooter,
+    DialogHeader,
+    DialogTitle,
 } from "@/components/ui/dialog.tsx";
-import { Button } from "@/components/ui/button.tsx";
-import { Input } from "@/components/ui/input.tsx";
-import { Textarea } from "@/components/ui/textarea.tsx";
-import { Label } from "@/components/ui/label.tsx";
-import { CgSpinner } from "react-icons/cg";
-import { Project } from "@/types";
+import {Button} from "@/components/ui/button.tsx";
+import {Input} from "@/components/ui/input.tsx";
+import {Textarea} from "@/components/ui/textarea.tsx";
+import {Label} from "@/components/ui/label.tsx";
+import {CgSpinner} from "react-icons/cg";
+import {Project} from "@/types";
 import TechIcon from "../../../../components/common/TechIcon.tsx";
-import { useTechStacks } from "@/features/tech-stacks/hooks/useTechStacks.ts";
-import { useTags } from "@/features/tags/hooks/useTags.ts";
-import { useCategories } from "@/features/categories/hooks/useCategories.ts";
-import { useProjectMutation } from "@/features/projects/hooks/useProjects.ts";
+import {useTechStacks} from "@/features/tech-stacks/hooks/useTechStacks.ts";
+import {useTags} from "@/features/tags/hooks/useTags.ts";
+import {useCategories} from "@/features/categories/hooks/useCategories.ts";
+import {useProjectMutation} from "@/features/projects/hooks/useProjects.ts";
 import apiClient from "@/api/axios.ts";
 
 interface ProjectDialogProps {
@@ -214,7 +214,8 @@ export default function ProjectDialog({
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="max-w-3xl w-[95vw] bg-[#0f172a] border border-white/10 text-white max-h-[90vh] overflow-y-auto">
+            <DialogContent
+                className="max-w-3xl w-[95vw] bg-card-bg-lara-admin border border-white/10 text-lara-text-primary max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
                     <DialogTitle>
                         {projectToEdit ? "Edit Project" : "Add New Project"}
@@ -329,7 +330,7 @@ export default function ProjectDialog({
 
                     {/* --- CATEGORY SELECTOR (Single Selection) --- */}
                     <div className="space-y-3">
-                        <Label className="text-purple-400 font-bold uppercase tracking-wider text-xs">
+                        <Label className="text-lara-accent-purple font-bold uppercase tracking-wider text-xs">
                             Select Category
                         </Label>
                         <div className="flex flex-wrap gap-2 p-4 rounded-xl bg-black/20 border border-white/5">
@@ -345,7 +346,7 @@ export default function ProjectDialog({
                                         className={`cursor-pointer px-4 py-2 rounded-lg border transition-all duration-200 select-none
                                             ${
                                                 isSelected
-                                                    ? "bg-purple-500/20 border-purple-500 text-white shadow-[0_0_10px_rgba(168,85,247,0.3)]"
+                                                    ? "bg-purple-500/20 border-purple-500 text-lara-text-primary shadow-[0_0_10px_rgba(168,85,247,0.3)]"
                                                     : "bg-white/5 border-transparent text-slate-400 hover:bg-white/10 hover:border-white/20"
                                             }
                                         `}
@@ -376,7 +377,7 @@ export default function ProjectDialog({
                                         className={`cursor-pointer flex items-center gap-2 px-3 py-2 rounded-lg border transition-all duration-200 select-none
                                             ${
                                                 isSelected
-                                                    ? "bg-lara-blue/20 border-lara-blue text-white shadow-[0_0_10px_rgba(59,130,246,0.3)]"
+                                                    ? "bg-lara-blue/20 border-lara-blue text-lara-text-primary shadow-[0_0_10px_rgba(59,130,246,0.3)]"
                                                     : "bg-white/5 border-transparent text-slate-400 hover:bg-white/10 hover:border-white/20"
                                             }
                                         `}
@@ -401,7 +402,7 @@ export default function ProjectDialog({
 
                     {/* --- TOGGLE AREA: TAGS --- */}
                     <div className="space-y-3">
-                        <Label className="text-green-400 font-bold uppercase tracking-wider text-xs">
+                        <Label className="text-lara-accent-green font-bold uppercase tracking-wider text-xs">
                             Select Tags
                         </Label>
                         <div className="flex flex-wrap gap-2 p-4 rounded-xl bg-black/20 border border-white/5">

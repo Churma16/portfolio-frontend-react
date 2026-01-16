@@ -16,7 +16,8 @@ export default function Footer() {
                 <div className="flex flex-col md:flex-row justify-between items-center gap-6">
                     <FooterCopyright/>
                     <div className="flex items-center gap-6 text-xs font-medium text-slate-500">
-                        <div className="flex items-center gap-2 hover:text-blue-400 transition-colors cursor-default">
+                        <div
+                            className="flex items-center gap-2 hover:text-lara-accent-blue-light transition-colors cursor-default">
                             <SiDigitalocean className="text-lg"/>
                             <span>Powered by DigitalOcean</span>
                         </div>

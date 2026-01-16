@@ -58,7 +58,7 @@ export default function TechStackDialog({
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="w-[95vw] bg-card-bg-lara-admin border-white/10 text-white">
+            <DialogContent className="w-[95vw] bg-card-bg-lara-admin border-white/10 text-lara-text-primary">
                 <DialogHeader>
                     <DialogTitle>
                         {dataToEdit ? "Edit Tech Stack" : "Add Tech Stack"}
@@ -93,12 +93,12 @@ export default function TechStackDialog({
                             placeholder="e.g. SiLaravel"
                             className="bg-black/20 border-white/10"
                         />
-                        <p className="text-[10px] text-slate-500">
+                        <p className="text-[10px] text-lara-text-muted-dark">
                             Use names from{" "}
                             <a
                                 href="https://react-icons.github.io/react-icons/icons/si/"
                                 target="_blank"
-                                className="text-blue-400 underline"
+                                className="text-lara-accent-blue-light underline"
                             >
                                 Simple Icons
                             </a>{" "}
@@ -106,7 +106,7 @@ export default function TechStackDialog({
                             <a
                                 href="https://react-icons.github.io/react-icons/icons/hi2/"
                                 target="_blank"
-                                className="text-blue-400 underline"
+                                className="text-lara-accent-blue-light underline"
                             >
                                 HeroIcons 2
                             </a>
@@ -116,12 +116,12 @@ export default function TechStackDialog({
                     {/* Preview Icon */}
                     {formData.icon && (
                         <div className="flex items-center gap-2 p-3 bg-white/5 rounded-lg">
-                            <span className="text-xs text-slate-400">
+                            <span className="text-xs text-lara-text-muted-dark">
                                 Preview:
                             </span>
                             <TechIcon
                                 name={formData.icon}
-                                className="w-6 h-6 text-white"
+                                className="w-6 h-6 text-lara-text-primary"
                             />
                         </div>
                     )}

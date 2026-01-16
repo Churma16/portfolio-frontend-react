@@ -1,5 +1,5 @@
-import { Project } from "@/types";
-import { motion } from "framer-motion";
+import {Project} from "@/types";
+import {motion} from "framer-motion";
 import TechIcon from "../../../../components/common/TechIcon.tsx";
 
 interface ProjectCardProps {
@@ -94,7 +94,7 @@ export default function ProjectCard({
                 )}
 
                 {/* Judul */}
-                <h3 className="font-heading text-xl font-bold text-white group-hover:text-lara-blue transition-colors leading-tight mb-2">
+                <h3 className="font-heading text-xl font-bold text-lara-text-primary group-hover:text-lara-blue transition-colors leading-tight mb-2">
                     {project.title}
                 </h3>
 
@@ -133,7 +133,8 @@ export default function ProjectCard({
                     </div>
 
                     {/* View Details Button */}
-                    <div className="flex items-center text-white font-medium text-sm group/link cursor-pointer hover:text-lara-blue transition-colors">
+                    <div
+                        className="flex items-center text-lara-text-primary font-medium text-sm group/link cursor-pointer hover:text-lara-blue transition-colors">
                         View Project Details
                         <svg
                             className="ml-2 w-4 h-4 transition-transform group-hover/link:translate-x-1"

@@ -43,7 +43,7 @@ export default function LiveStats() {
                 <div
                     className="flex items-center gap-2 bg-lara-dark/50 border border-white/5 px-4 py-2 rounded-full backdrop-blur-sm opacity-60">
                     <span>Network Latency:</span>
-                    <span className="font-bold text-slate-400">{ping}ms</span>
+                    <span className="font-bold text-lara-text-muted">{ping}ms</span>
                 </div>
 
                 {/* 2. REDIS PERFORMANCE (SHOW OFF ITEM!) */}
@@ -51,10 +51,10 @@ export default function LiveStats() {
                     className="flex items-center gap-2 bg-lara-dark/50 border border-green-500/30 px-4 py-2 rounded-full backdrop-blur-sm shadow-[0_0_15px_rgba(34,197,94,0.2)]">
                     <SiRedis
                         className={
-                            isRedisAlive ? "text-red-500" : "text-slate-500"
+                            isRedisAlive ? "text-lara-accent-red" : "text-lara-text-muted-dark"
                         }
                     />
-                    <span className="text-white font-medium">
+                    <span className="text-lara-text-primary font-medium">
                         Redis Response:
                     </span>
 
@@ -63,23 +63,23 @@ export default function LiveStats() {
                         key={redisTime}
                         initial={{scale: 1.2, color: "#fff"}}
                         animate={{scale: 1, color: "#4ade80"}}
-                        className="font-bold text-green-400 text-base"
+                        className="font-bold text-lara-accent-green text-base"
                     >
                         {isLoading ? "..." : `${redisTime} ms`} ⚡
                     </motion.span>
                 </div>
             </div>
             {isError && !isLoading && (
-                <p className="text-center text-[10px] text-slate-400 font-mono mt-12 uppercase tracking-widest opacity-50">
+                <p className="text-center text-[10px] text-lara-text-muted-dark font-mono mt-12 uppercase tracking-widest opacity-50">
                     System Status: 🔴 Systems Offline
                 </p>)}
 
             {isLoading ? (
-                <p className="text-center text-sm text-slate-400 mt-4 animate-pulse">
+                <p className="text-center text-sm text-lara-text-muted-dark mt-4 animate-pulse">
                     Fetching live stats...
                 </p>
             ) : (
-                <p className="text-center text-[10px] text-slate-400 font-mono mt-12 uppercase tracking-widest opacity-50">
+                <p className="text-center text-[10px] text-lara-text-muted-dark font-mono mt-12 uppercase tracking-widest opacity-50">
                     System Status: 🟢 All Systems Operational
                 </p>
             )}

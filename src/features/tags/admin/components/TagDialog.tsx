@@ -56,7 +56,7 @@ export default function TagDialog({
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="bg-card-bg-lara-admin w-[95vw] border-white/10 text-white">
+            <DialogContent className="bg-card-bg-lara-admin w-[95vw] border-white/10 text-lara-text-primary">
                 <DialogHeader>
                     <DialogTitle>
                         {dataToEdit ? "Edit Tag" : "Add Tag"}
@@ -86,10 +86,10 @@ export default function TagDialog({
                                 setFormData({ ...formData, color: val })
                             }
                         >
-                            <SelectTrigger className="bg-black/20 border-white/10 text-white">
+                            <SelectTrigger className="bg-black/20 border-white/10 text-lara-text-primary">
                                 <SelectValue placeholder="Select color" />
                             </SelectTrigger>
-                            <SelectContent className="bg-card-bg-lara-admin border-white/10 text-white">
+                            <SelectContent className="bg-card-bg-lara-admin border-white/10 text-lara-text-primary">
                                 <SelectItem value="blue">Blue</SelectItem>
                                 <SelectItem value="green">Green</SelectItem>
                                 <SelectItem value="red">Red</SelectItem>

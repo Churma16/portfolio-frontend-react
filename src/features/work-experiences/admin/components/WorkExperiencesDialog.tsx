@@ -161,7 +161,7 @@ export default function WorkExperiencesDialog({
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent
-                className="max-w-3xl w-[95vw] bg-card-bg-lara-admin border border-white/10 text-white max-h-[90vh] overflow-y-auto">
+                className="max-w-3xl w-[95vw] bg-card-bg-lara-admin border border-white/10 text-lara-text-primary max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
                     <DialogTitle>
                         {experienceToEdit
@@ -238,7 +238,7 @@ export default function WorkExperiencesDialog({
                                     }
                                     className="w-4 h-4 rounded border-white/10 bg-black/20 text-lara-blue cursor-pointer"
                                 />
-                                <span className="text-sm text-slate-300">
+                                <span className="text-sm text-lara-text-tertiary">
                                     Currently Working Here
                                 </span>
                             </label>
@@ -266,7 +266,7 @@ export default function WorkExperiencesDialog({
                             <Label>
                                 End Date
                                 {formData.is_current && (
-                                    <span className="text-xs text-slate-500 ml-2">
+                                    <span className="text-xs text-lara-text-muted-dark ml-2">
                                         (Disabled)
                                     </span>
                                 )}
@@ -321,8 +321,8 @@ export default function WorkExperiencesDialog({
                                         className={`cursor-pointer flex items-center gap-2 px-3 py-2 rounded-lg border transition-all duration-200 select-none
                                             ${
                                             isSelected
-                                                ? "bg-lara-blue/20 border-lara-blue text-white shadow-[0_0_10px_rgba(59,130,246,0.3)]"
-                                                : "bg-white/5 border-transparent text-slate-400 hover:bg-white/10 hover:border-white/20"
+                                                ? "bg-lara-blue/20 border-lara-blue text-lara-text-primary shadow-[0_0_10px_rgba(59,130,246,0.3)]"
+                                                : "bg-white/5 border-transparent text-lara-text-muted hover:bg-white/10 hover:border-white/20"
                                         }
                                         `}
                                     >
@@ -332,7 +332,7 @@ export default function WorkExperiencesDialog({
                                             className={`w-4 h-4 ${
                                                 isSelected
                                                     ? "text-lara-blue"
-                                                    : "text-slate-500"
+                                                    : "text-lara-text-muted-dark"
                                             }`}
                                         />
                                         <span className="text-xs font-medium">
@@ -346,7 +346,7 @@ export default function WorkExperiencesDialog({
 
                     {/* --- TOGGLE AREA: TAGS --- */}
                     <div className="space-y-3">
-                        <Label className="text-green-400 font-bold uppercase tracking-wider text-xs">
+                        <Label className="text-lara-accent-green font-bold uppercase tracking-wider text-xs">
                             Select Tags
                         </Label>
                         <div className="flex flex-wrap gap-2 p-4 rounded-xl bg-black/20 border border-white/5">
@@ -362,7 +362,7 @@ export default function WorkExperiencesDialog({
                                             ${
                                             isSelected
                                                 ? "bg-green-500/20 border-green-500 text-green-400"
-                                                : "bg-white/5 border-transparent text-slate-500 hover:bg-white/10"
+                                                : "bg-white/5 border-transparent text-lara-text-muted-dark hover:bg-white/10"
                                         }
                                         `}
                                     >

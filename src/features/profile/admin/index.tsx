@@ -1,7 +1,7 @@
-import { useEffect } from "react";
-import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useProfile } from "@/features/profile/hooks/useProfile.ts";
+import {useEffect} from "react";
+import {FormProvider, SubmitHandler, useForm} from "react-hook-form";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
+import {useProfile} from "@/features/profile/hooks/useProfile.ts";
 import apiClient from "@/api/axios.ts";
 
 import IdentityCard from "./components/IdentityCard.tsx";
@@ -165,12 +165,12 @@ export default function ProfileForm() {
         mutation.mutate(data);
     };
 
-    if (isLoading) return <div className="p-8 text-white">Loading...</div>;
+    if (isLoading) return <div className="p-8 text-lara-text-primary">Loading...</div>;
 
     return (
         <div className="max-w-5xl mx-auto pb-32 min-h-screen">
             <div className="mb-8">
-                <h2 className="text-3xl font-heading font-bold text-white">
+                <h2 className="text-3xl font-heading font-bold text-lara-text-primary">
                     Edit Profile
                 </h2>
                 <p className="text-lara-sky/80">

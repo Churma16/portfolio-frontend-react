@@ -1,15 +1,9 @@
-import { useFormContext, useFieldArray } from "react-hook-form";
-import {
-    Card,
-    CardContent,
-    CardHeader,
-    CardTitle,
-    CardDescription,
-} from "@/components/ui/card.tsx";
-import { Input } from "@/components/ui/input.tsx";
-import { Button } from "@/components/ui/button.tsx";
-import { HiPlus, HiTrash } from "react-icons/hi2";
-import { ProfileFormValues } from "../index.tsx"; // Import tipe jika perlu
+import {useFieldArray, useFormContext} from "react-hook-form";
+import {Card, CardContent, CardDescription, CardHeader, CardTitle,} from "@/components/ui/card.tsx";
+import {Input} from "@/components/ui/input.tsx";
+import {Button} from "@/components/ui/button.tsx";
+import {HiPlus, HiTrash} from "react-icons/hi2";
+import {ProfileFormValues} from "../index.tsx"; // Import tipe jika perlu
 
 export default function SocialCard() {
     const { control, register } = useFormContext<ProfileFormValues>();
@@ -20,7 +14,7 @@ export default function SocialCard() {
     });
 
     return (
-        <Card className="bg-card-bg-lara-admin border-card-border-lara-admin text-white shadow-lg">
+        <Card className="bg-card-bg-lara-admin border-card-border-lara-admin text-lara-text-primary shadow-lg">
             <CardHeader className="flex flex-row items-center justify-between">
                 <div>
                     <CardTitle className="font-heading">

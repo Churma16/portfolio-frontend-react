@@ -9,7 +9,8 @@ export default function WorkExperiencesLaracast() {
     const {data: workExperiences = [], isLoading} = useWorkExperiences();
 
     return (
-        <section className="py-24 min-h-screen bg-slate-950 text-slate-200 relative overflow-hidden" id="experiences">
+        <section className="py-24 min-h-screen bg-slate-950 text-lara-text-secondary relative overflow-hidden"
+                 id="experiences">
             <ExperienceHeader/>
             <AnimatePresence mode="wait">
                 {isLoading ? (

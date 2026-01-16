@@ -78,7 +78,7 @@ export default function Sidebar({
         <div className="p-4 border-t border-white/10">
             <button
                 onClick={handleLogout}
-                className="flex items-center gap-3 px-4 py-3 w-full text-left text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors hover:border hover:border-red-500/30"
+                className="flex items-center gap-3 px-4 py-3 w-full text-left text-lara-text-muted hover:text-lara-accent-red-light hover:bg-red-500/10 rounded-lg transition-colors hover:border hover:border-red-500/30"
             >
                 <HiArrowRightOnRectangle className="w-5 h-5"/>
                 Logout

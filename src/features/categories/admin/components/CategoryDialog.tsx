@@ -1,18 +1,12 @@
-import {useEffect, useState, FormEvent} from "react";
+import {FormEvent, useEffect, useState} from "react";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
-import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
-    DialogFooter,
-} from "@/components/ui/dialog.tsx";
+import {Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle,} from "@/components/ui/dialog.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {Label} from "@/components/ui/label.tsx";
 import {CgSpinner} from "react-icons/cg";
 import apiClient from "@/api/axios.ts";
-import {Category, ApiResponse} from "@/types";
+import {ApiResponse, Category} from "@/types";
 import axios from "axios";
 
 interface Props {
@@ -83,7 +77,7 @@ export default function CategoryDialog({
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className=" w-[90vw] bg-[#0f172a] border-white/10 text-white">
+            <DialogContent className=" w-[90vw] bg-card-bg-lara-admin border-white/10 text-lara-text-primary">
                 <DialogHeader>
                     <DialogTitle>
                         {dataToEdit ? "Edit Category" : "Add Category"}
