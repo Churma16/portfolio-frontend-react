@@ -1,9 +1,5 @@
 // File: src/constants/services.ts (Bisa tetap .ts)
-import {
-    HiOutlineServer,
-    HiOutlineComputerDesktop,
-    HiOutlineCircleStack,
-} from "react-icons/hi2";
+import {HiOutlineCircleStack, HiOutlineComputerDesktop, HiOutlineServer,} from "react-icons/hi2";
 import {IconType} from "react-icons"; // Import type khusus icon
 
 export interface Service {
@@ -15,7 +11,7 @@ export interface Service {
 export const SERVICES: Service[] = [
     {
         title: "Backend Development",
-        description: "Building secure and robust RESTful APIs using Laravel 11. I focus on maintainable code architecture, secure authentication with Sanctum, and reliability through Pest automated testing.",
+        description: "Building secure and robust RESTful APIs using Laravel. I focus on maintainable code architecture, secure authentication with Sanctum, and reliability through thorough testing practices.",
         icon: HiOutlineServer,
     },
     {
