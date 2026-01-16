@@ -1,17 +1,10 @@
-import { useState } from "react";
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table.tsx";
-import { Button } from "@/components/ui/button.tsx";
-import { HiPlus, HiPencil, HiTrash } from "react-icons/hi2";
-import { Tag } from "@/types";
+import {useState} from "react";
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/components/ui/table.tsx";
+import {Button} from "@/components/ui/button.tsx";
+import {HiPencil, HiPlus, HiTrash} from "react-icons/hi2";
+import {Tag} from "@/types";
 import TagDialog from "./components/TagDialog.tsx";
-import { useTags } from "@/features/tags/hooks/useTags.ts";
+import {useTags} from "@/features/tags/hooks/useTags.ts";
 import apiClient from "@/api/axios.ts";
 
 export default function TagList() {
@@ -72,7 +65,7 @@ export default function TagList() {
                 </Button>
             </div>
 
-            <div className="rounded-xl border border-white/10 bg-[#0a101f]/50 overflow-hidden">
+            <div className="rounded-xl border border-white/10 bg-lara-dark-blue/50 overflow-hidden">
                 <Table>
                     <TableHeader className="bg-white/5">
                         <TableRow className="border-white/5 hover:bg-transparent">

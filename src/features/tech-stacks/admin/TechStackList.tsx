@@ -1,18 +1,11 @@
-import { useState } from "react";
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table.tsx";
-import { Button } from "@/components/ui/button.tsx";
-import { HiPlus, HiPencil, HiTrash } from "react-icons/hi2";
-import { TechStack } from "@/types";
+import {useState} from "react";
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/components/ui/table.tsx";
+import {Button} from "@/components/ui/button.tsx";
+import {HiPencil, HiPlus, HiTrash} from "react-icons/hi2";
+import {TechStack} from "@/types";
 import TechStackDialog from "./components/TechStackDialog.tsx";
 import TechIcon from "../../../components/common/TechIcon.tsx";
-import { useTechStacks } from "@/features/tech-stacks/hooks/useTechStacks.ts";
+import {useTechStacks} from "@/features/tech-stacks/hooks/useTechStacks.ts";
 import apiClient from "@/api/axios.ts";
 
 export default function TechStackList() {
@@ -63,7 +56,7 @@ export default function TechStackList() {
                 </Button>
             </div>
 
-            <div className="rounded-xl border border-white/10 bg-[#0a101f]/50 overflow-hidden">
+            <div className="rounded-xl border border-white/10 bg-lara-dark-blue/50 overflow-hidden">
                 <Table>
                     <TableHeader className="bg-white/5">
                         <TableRow className="border-white/5 hover:bg-transparent">

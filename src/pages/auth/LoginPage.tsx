@@ -3,8 +3,8 @@ import PublicLayout from "../../components/layout/public/PublicLayout.tsx";
 import LoginForm from "@/features/auth/components/LoginForm.tsx";
 import GlitchBackground from "@/features/auth/components/GlitchBackground.tsx";
 import GlitchGhostElements from "@/features/auth/components/GlitchGhostElements.tsx";
-import { useLoginForm } from "@/features/auth/hooks/useLoginForm.ts";
-import { useGlitchEffect } from "@/features/auth/hooks/useGlitchEffect.ts";
+import {useLoginForm} from "@/features/auth/hooks/useLoginForm.ts";
+import {useGlitchEffect} from "@/features/auth/hooks/useGlitchEffect.ts";
 
 const GLITCH_STYLES = `
     @keyframes glitch-anim-1 {
@@ -18,22 +18,22 @@ const GLITCH_STYLES = `
     
     .hacked-effect {
         animation: glitch-anim-1 0.6s infinite linear alternate-reverse;
-        background-color: #000 !important;
-        border: 1px solid #0f0 !important;
-        color: #0f0 !important;
+        background-color: rgb(0 0 0) !important;
+        border: 1px solid rgb(0 255 0) !important;
+        color: rgb(0 255 0) !important;
         text-shadow: 2px 0 red, -2px 0 blue;
-        box-shadow: 0 0 15px #0f0;
+        box-shadow: 0 0 15px rgb(0 255 0);
         filter: contrast(200%) brightness(150%);
     }
     .hacked-effect input {
-        background-color: #000 !important;
-        color: #0f0 !important;
-        border-color: #0f0 !important;
+        background-color: rgb(0 0 0) !important;
+        color: rgb(0 255 0) !important;
+        border-color: rgb(0 255 0) !important;
         font-family: monospace;
     }
     .hacked-effect button {
-        background-color: #0f0 !important;
-        color: #000 !important;
+        background-color: rgb(0 255 0) !important;
+        color: rgb(0 0 0) !important;
         font-weight: 900;
         text-transform: uppercase;
     }

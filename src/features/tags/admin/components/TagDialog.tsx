@@ -1,23 +1,11 @@
-import { useEffect, useState, FormEvent } from "react";
-import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
-    DialogFooter,
-} from "@/components/ui/dialog.tsx";
-import { Button } from "@/components/ui/button.tsx";
-import { Input } from "@/components/ui/input.tsx";
-import { Label } from "@/components/ui/label.tsx";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select.tsx";
-import { CgSpinner } from "react-icons/cg";
-import { Tag } from "@/types";
+import {FormEvent, useEffect, useState} from "react";
+import {Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle,} from "@/components/ui/dialog.tsx";
+import {Button} from "@/components/ui/button.tsx";
+import {Input} from "@/components/ui/input.tsx";
+import {Label} from "@/components/ui/label.tsx";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue,} from "@/components/ui/select.tsx";
+import {CgSpinner} from "react-icons/cg";
+import {Tag} from "@/types";
 import apiClient from "@/api/axios.ts";
 
 interface Props {
@@ -68,7 +56,7 @@ export default function TagDialog({
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="bg-[#0f172a] w-[95vw] border-white/10 text-white">
+            <DialogContent className="bg-card-bg-lara-admin w-[95vw] border-white/10 text-white">
                 <DialogHeader>
                     <DialogTitle>
                         {dataToEdit ? "Edit Tag" : "Add Tag"}
@@ -101,7 +89,7 @@ export default function TagDialog({
                             <SelectTrigger className="bg-black/20 border-white/10 text-white">
                                 <SelectValue placeholder="Select color" />
                             </SelectTrigger>
-                            <SelectContent className="bg-[#0f172a] border-white/10 text-white">
+                            <SelectContent className="bg-card-bg-lara-admin border-white/10 text-white">
                                 <SelectItem value="blue">Blue</SelectItem>
                                 <SelectItem value="green">Green</SelectItem>
                                 <SelectItem value="red">Red</SelectItem>

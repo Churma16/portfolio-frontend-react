@@ -51,7 +51,7 @@ export default function SetTokenPage() {
                     border-radius: 1rem;
                 }
                 .gradient-border-inner {
-                    background: #010618;
+                    background: rgb(1 6 24);
                     border-radius: calc(1rem - 1px);
                     padding: 2rem;
                 }

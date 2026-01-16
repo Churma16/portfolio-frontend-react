@@ -1,11 +1,11 @@
-import {useEffect, useState, FormEvent} from "react";
+import {FormEvent, useEffect, useState} from "react";
 import {
     Dialog,
     DialogContent,
-    DialogHeader,
-    DialogTitle,
     DialogDescription,
     DialogFooter,
+    DialogHeader,
+    DialogTitle,
 } from "@/components/ui/dialog.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {Input} from "@/components/ui/input.tsx";
@@ -161,7 +161,7 @@ export default function WorkExperiencesDialog({
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent
-                className="max-w-3xl w-[95vw] bg-[#0f172a] border border-white/10 text-white max-h-[90vh] overflow-y-auto">
+                className="max-w-3xl w-[95vw] bg-card-bg-lara-admin border border-white/10 text-white max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
                     <DialogTitle>
                         {experienceToEdit

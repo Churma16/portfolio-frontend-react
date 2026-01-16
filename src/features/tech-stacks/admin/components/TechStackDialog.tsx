@@ -1,16 +1,10 @@
-import { useEffect, useState, FormEvent } from "react";
-import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
-    DialogFooter,
-} from "@/components/ui/dialog.tsx";
-import { Button } from "@/components/ui/button.tsx";
-import { Input } from "@/components/ui/input.tsx";
-import { Label } from "@/components/ui/label.tsx";
-import { CgSpinner } from "react-icons/cg";
-import { TechStack } from "@/types";
+import {FormEvent, useEffect, useState} from "react";
+import {Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle,} from "@/components/ui/dialog.tsx";
+import {Button} from "@/components/ui/button.tsx";
+import {Input} from "@/components/ui/input.tsx";
+import {Label} from "@/components/ui/label.tsx";
+import {CgSpinner} from "react-icons/cg";
+import {TechStack} from "@/types";
 import TechIcon from "@/components/common/TechIcon.tsx";
 import apiClient from "@/api/axios.ts";
 
@@ -64,7 +58,7 @@ export default function TechStackDialog({
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="w-[95vw] bg-[#0f172a] border-white/10 text-white">
+            <DialogContent className="w-[95vw] bg-card-bg-lara-admin border-white/10 text-white">
                 <DialogHeader>
                     <DialogTitle>
                         {dataToEdit ? "Edit Tech Stack" : "Add Tech Stack"}

@@ -66,7 +66,7 @@ export default function ProjectShowcase({ projects }: ProjectShowcaseProps) {
                                 // 1. max-h-[80dvh]: Menggunakan Dynamic Viewport Height agar aman dari address bar HP.
                                 // 2. w-full max-w-xl: Membatasi lebar agar tidak terlalu lebar di tablet.
                                 // 3. my-auto: Memastikan posisi vertikal di tengah.
-                                className="w-full max-w-xl bg-[#0f172a] border border-white/10 rounded-2xl overflow-hidden shadow-2xl pointer-events-auto flex flex-col max-h-[80dvh]"
+                                className="w-full max-w-xl bg-card-bg-lara-admin border border-white/10 rounded-2xl overflow-hidden shadow-2xl pointer-events-auto flex flex-col max-h-[80dvh]"
                             >
                                 {/* --- HEADER IMAGE --- */}
                                 {/* PERBAIKAN: Tinggi gambar dikurangi jadi h-40 (160px) di HP biar teks muat banyak */}
@@ -91,7 +91,8 @@ export default function ProjectShowcase({ projects }: ProjectShowcaseProps) {
 
                                 {/* --- SCROLLABLE CONTENT --- */}
                                 {/* overscroll-contain: Mencegah body belakang ikut scroll saat modal mentok */}
-                                <div className="flex-1 overflow-y-auto p-5 sm:p-6 bg-[#0f172a] overscroll-contain">
+                                <div
+                                    className="flex-1 overflow-y-auto p-5 sm:p-6 bg-card-bg-lara-admin overscroll-contain">
 
                                     {/* Title & Buttons */}
                                     <div className="flex flex-wrap justify-between items-start gap-4 mb-5">

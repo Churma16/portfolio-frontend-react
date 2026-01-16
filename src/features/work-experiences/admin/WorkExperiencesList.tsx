@@ -1,24 +1,10 @@
-import { useState } from "react";
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table.tsx";
-import { Button } from "@/components/ui/button.tsx";
-import {
-    HiPlus,
-    HiPencil,
-    HiTrash,
-    HiOutlineCube,
-    HiArrowUp,
-    HiArrowDown,
-} from "react-icons/hi2";
-import { WorkExperience } from "@/types";
+import {useState} from "react";
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/components/ui/table.tsx";
+import {Button} from "@/components/ui/button.tsx";
+import {HiArrowDown, HiArrowUp, HiOutlineCube, HiPencil, HiPlus, HiTrash,} from "react-icons/hi2";
+import {WorkExperience} from "@/types";
 import WorkExperiencesDialog from "@/features/work-experiences/admin/components/WorkExperiencesDialog.tsx";
-import { useWorkExperiences } from "@/features/work-experiences/hooks/useWorkExperiences.ts";
+import {useWorkExperiences} from "@/features/work-experiences/hooks/useWorkExperiences.ts";
 import apiClient from "@/api/axios.ts";
 
 export default function WorkExperiencesList() {
@@ -83,7 +69,7 @@ export default function WorkExperiencesList() {
                 </Button>
             </div>
 
-            <div className="rounded-xl border border-white/10 bg-[#0a101f]/50 overflow-hidden">
+            <div className="rounded-xl border border-white/10 bg-lara-dark-blue/50 overflow-hidden">
                 <Table>
                     <TableHeader className="bg-white/5">
                         <TableRow className="border-white/5 hover:bg-transparent">
