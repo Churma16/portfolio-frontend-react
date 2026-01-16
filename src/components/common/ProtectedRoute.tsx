@@ -1,7 +1,7 @@
 // src/components/ProtectedRoute.tsx
 import {Navigate, Outlet} from "react-router-dom";
 import {hasToken} from "@/lib/auth";
-import {useApi} from "@/contexts/ApiContext";
+import {useApi} from "@/contexts/useApi.ts";
 
 export default function ProtectedRoute() {
     const {activeBackend} = useApi();
