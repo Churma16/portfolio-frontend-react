@@ -20,7 +20,8 @@
     h6 {
         @apply font-heading;
     }
-  :root {
+
+    :root {
         --background: 0 0% 100%;
         --foreground: 222.2 84% 4.9%;
         --card: 0 0% 100%;
@@ -47,7 +48,8 @@
         --chart-5: 27 87% 67%;
         --radius: 0.5rem;
     }
-  .dark {
+
+    .dark {
         --background: 222.2 84% 4.9%;
         --foreground: 210 40% 98%;
         --card: 222.2 84% 4.9%;
@@ -74,6 +76,7 @@
         --chart-5: 340 75% 55%;
     }
 }
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -99,22 +102,87 @@
 ::-webkit-scrollbar {
     width: 8px;
 }
+
 ::-webkit-scrollbar-track {
     background: #0f172a;
 }
+
 ::-webkit-scrollbar-thumb {
     background: #334155;
     border-radius: 4px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
     background: #475569;
 }
 
 @layer base {
-  * {
-    @apply border-border;
+    * {
+        @apply border-border;
     }
-  body {
-    @apply bg-background text-foreground;
+
+    body {
+        @apply bg-background text-foreground;
     }
+}
+
+/* index.css */
+
+/* Efek Getar Layar */
+body.critical-error {
+    animation: shake 0.2s cubic-bezier(.36, .07, .19, .97) both infinite;
+    filter: invert(1) contrast(1.2); /* Membalik warna layar saat 0% health */
+}
+
+/* Keyframes Goncangan */
+@keyframes shake {
+    10%, 90% {
+        transform: translate3d(-1px, 0, 0);
+    }
+    20%, 80% {
+        transform: translate3d(2px, 0, 0);
+    }
+    30%, 50%, 70% {
+        transform: translate3d(-4px, 0, 0);
+    }
+    40%, 60% {
+        transform: translate3d(4px, 0, 0);
+    }
+}
+
+/* Kelas Glitch Text yang bisa dipakai di mana saja */
+.glitch-text {
+    position: relative;
+}
+
+/* Efek Bayangan RGB Split (Chromatic Aberration) */
+/* Semakin tinggi --glitch-intensity, semakin jauh jarak bayangannya */
+.glitch-active .glitch-layer {
+    position: relative;
+    display: inline-block;
+}
+
+.glitch-active .glitch-layer::before,
+.glitch-active .glitch-layer::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: calc(var(--glitch-intensity) * 0.8);
+}
+
+/* Layer Merah geser ke kiri */
+.glitch-active .glitch-layer::before {
+    color: #ff00c1;
+    z-index: -1;
+    transform: translate(calc(var(--glitch-intensity) * -5px), 0);
+}
+
+/* Layer Biru geser ke kanan */
+.glitch-active .glitch-layer::after {
+    color: #00fff9;
+    z-index: -2;
+    transform: translate(calc(var(--glitch-intensity) * 5px), 0);
 }
