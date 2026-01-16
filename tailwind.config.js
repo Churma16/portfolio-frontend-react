@@ -21,6 +21,20 @@ export default {
                     "glitch-magenta": "#ff00c1",
                     "glitch-cyan": "#00fff9",
                     "neon-green": "#0f0",
+                    // Text colors
+                    "text-primary": "#ffffff",
+                    "text-secondary": "#e2e8f0",
+                    "text-tertiary": "#cbd5e1",
+                    "text-muted": "#94a3b8",
+                    "text-muted-dark": "#64748b",
+                    "text-accent-blue": "#3b82f6",
+                    "text-accent-blue-light": "#60a5fa",
+                    "text-accent-blue-lighter": "#93c5fd",
+                    "text-accent-green": "#22c55e",
+                    "text-accent-red": "#ef4444",
+                    "text-accent-red-light": "#f87171",
+                    "text-accent-purple": "#a855f7",
+                    "text-accent-yellow": "#eab308",
                 },
                 cat: {
                     framework: {
