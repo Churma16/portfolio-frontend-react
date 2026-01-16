@@ -90,7 +90,7 @@
 
     body {
         /* Hapus display: flex bawaan tadi! */
-        @apply bg-[#0f172a] text-slate-100 antialiased;
+        @apply bg-card-bg-lara-admin text-slate-100 antialiased;
         margin: 0;
         padding: 0;
         width: 100%;
@@ -104,16 +104,16 @@
 }
 
 ::-webkit-scrollbar-track {
-    background: #0f172a;
+    background: rgb(15 23 42);
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #334155;
+    background: rgb(51 65 85);
     border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #475569;
+    background: rgb(71 85 105);
 }
 
 @layer base {
@@ -175,14 +175,14 @@ body.critical-error {
 
 /* Layer Merah geser ke kiri */
 .glitch-active .glitch-layer::before {
-    color: #ff00c1;
+    color: rgb(255 0 193);
     z-index: -1;
     transform: translate(calc(var(--glitch-intensity) * -5px), 0);
 }
 
 /* Layer Biru geser ke kanan */
 .glitch-active .glitch-layer::after {
-    color: #00fff9;
+    color: rgb(0 255 249);
     z-index: -2;
     transform: translate(calc(var(--glitch-intensity) * 5px), 0);
 }

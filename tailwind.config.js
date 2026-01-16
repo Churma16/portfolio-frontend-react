@@ -17,6 +17,10 @@ export default {
                     border: "#1b293d",
                     blue: "#328AF1",
                     sky: "#BAD9FC",
+                    "dark-blue": "#0a101f",
+                    "glitch-magenta": "#ff00c1",
+                    "glitch-cyan": "#00fff9",
+                    "neon-green": "#0f0",
                 },
                 cat: {
                     framework: {
