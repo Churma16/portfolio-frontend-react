@@ -1,4 +1,4 @@
-import {BrowserRouter, Routes, Route} from "react-router-dom";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
 
 // Import halaman-halaman kamu
 import Home from "./pages/public/Home.tsx";
@@ -14,16 +14,16 @@ import SetTokenPage from "./pages/auth/SetTokenPage.tsx";
 import ProfileForm from "./features/profile/admin";
 import WorkExperiencesList from "@/features/work-experiences/admin/WorkExperiencesList.tsx";
 
-// if (import.meta.env.PROD) {
-//     console.log = () => {
-//     };
-//     console.error = () => {
-//     };
-//     console.debug = () => {
-//     };
-//     console.warn = () => {
-//     };
-// }
+if (import.meta.env.PROD) {
+    console.log = () => {
+    };
+    console.error = () => {
+    };
+    console.debug = () => {
+    };
+    console.warn = () => {
+    };
+}
 
 function App() {
     return (
