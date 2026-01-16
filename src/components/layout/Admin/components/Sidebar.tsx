@@ -35,7 +35,7 @@ export default function Sidebar({
                 `}
     >
         <div className="p-6 flex items-center justify-between">
-            <h1 className="text-xl font-bold font-heading text-lara-blue">
+            <h1 className="text-xl font-bold font-heading text-primary">
                 Admin<span className="text-white">Panel</span>
             </h1>
             {/* Tombol Close di Mobile */}
@@ -65,7 +65,7 @@ export default function Sidebar({
                         isActive(item.to)
                             ? `bg-gradient-to-r from-${item.color}/30 to-${item.color}/10 text-white border border-${item.color}/50 shadow-lg` // Note: Tailwind might not parse dynamic colors perfectly without whitelist, but let's stick to logic first
                             : "bg-transparent text-slate-400 hover:text-white hover:bg-white/5 hover:border hover:border-white/10"
-                    } ${isActive(item.to) && item.to === "/admin" ? "from-lara-blue/30 border-lara-blue/50" : ""}`}
+                    } ${isActive(item.to) && item.to === "/admin" ? "from-lara-blue/30 border-primary/50" : ""}`}
                     // *Catatan: Cara terbaik menangani warna dinamis adalah conditional manual seperti kode asli Anda,
                     // tapi saya sederhanakan mapping di sini. Kembalikan ke manual jika warna hilang.
                 >
