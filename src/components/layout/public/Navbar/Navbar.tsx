@@ -1,6 +1,7 @@
 import NavLogo from "./NavLogo.tsx";
 import NavLinks from "./NavLinks.tsx";
-import { useNavbarState } from "@/components/layout/public/Navbar/useNavbarState.ts";
+import {useNavbarState} from "@/components/layout/public/Navbar/useNavbarState.ts";
+import {BackendToggle} from "@/components/common/BackendToggle";
 
 export default function Navbar() {
     const { underlineStyle, navRef, isActive } = useNavbarState();
@@ -17,6 +18,8 @@ export default function Navbar() {
                         activeHash=""
 
                     />
+                    {/* BackendToggle Button */}
+                    <BackendToggle/>
                 </div>
             </div>
         </nav>

@@ -11,6 +11,7 @@ import {useEffect, useState} from "react";
 import {HiArrowUp} from "react-icons/hi2";
 import {motion} from "framer-motion";
 import {SiApacherocketmq} from "react-icons/si";
+import {ApiProvider} from "@/contexts/ApiContext";
 
 const ReturnToTopButton = () => {
     const [isVisible, setIsVisible] = useState(false);
@@ -63,17 +64,19 @@ const ReturnToTopButton = () => {
 
 function App() {
     return (
-        <PublicLayout>
-            <Hero/>
-            <TechSection/>
-            <ProjectSection/>
-            <WorkExperienceLaracast/>
-            <AboutSection/>
-            <ServicesSection/>
-            <ArchitectureSection/>
-            <ContactSection/>
-            <ReturnToTopButton/>
-        </PublicLayout>
+        <ApiProvider>
+            <PublicLayout>
+                <Hero/>
+                <TechSection/>
+                <ProjectSection/>
+                <WorkExperienceLaracast/>
+                <AboutSection/>
+                <ServicesSection/>
+                <ArchitectureSection/>
+                <ContactSection/>
+                <ReturnToTopButton/>
+            </PublicLayout>
+        </ApiProvider>
     );
 }
 
