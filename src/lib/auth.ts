@@ -1,19 +1,29 @@
-export const logout = () => {
-    localStorage.removeItem("token");
+// src/lib/auth.ts
+
+// Define the keys we will use in localStorage
+export const TOKEN_KEYS = {
+    laravel: "laravel_token",
+    go: "go_token",
+};
+
+export type BackendType = "laravel" | "go";
+
+export const logout = (backend: BackendType = "laravel") => {
+    localStorage.removeItem(TOKEN_KEYS[backend]);
     window.location.href = "/";
 };
 
-// Untuk mendapatkan token dari localStorage
-export const getToken = () => {
-    return localStorage.getItem("token");
+// GET token based on which backend is active
+export const getToken = (backend: BackendType = "laravel") => {
+    return localStorage.getItem(TOKEN_KEYS[backend]);
 };
 
-// Utuk memeriksa apakah token ada di localStorage
-export const hasToken = () => {
-    return !!localStorage.getItem("token");
+// CHECK if token exists for the specific backend
+export const hasToken = (backend: BackendType = "laravel") => {
+    return !!localStorage.getItem(TOKEN_KEYS[backend]);
 };
 
-// Untuk menyimpan token ke localStorage
-export const setToken = (token: string) => {
-    localStorage.setItem("token", token);
+// SET token for the specific backend
+export const setToken = (token: string, backend: BackendType = "laravel") => {
+    localStorage.setItem(TOKEN_KEYS[backend], token);
 };

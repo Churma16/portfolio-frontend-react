@@ -1,44 +1,40 @@
+// src/api/axios.ts
 import axios from "axios";
-import {getToken} from "@/lib/auth";
 
-// Buat instance axios khusus untuk API Laravel
+// 1. Read the preference IMMEDIATELY (Before React even loads)
+const savedBackend = localStorage.getItem('preferred_backend');
+const isGo = savedBackend === 'go';
+
+// 2. Define the URLs here (so they are available instantly)
+// You can also use import.meta.env.VITE_LARAVEL_URL if you prefer
+const LARAVEL_URL = import.meta.env.VITE_LARAVEL_URL;
+const GO_URL = import.meta.env.VITE_GO_URL;
+
+// Create a blank instance. 
+// The Base URL and Headers will be injected dynamically by ApiContext.
 const apiClient = axios.create({
-    // URL ini harus sesuai dengan alamat server Laravel kamu (biasanya localhost:8000)
-    baseURL: import.meta.env.VITE_API_URL || "https://churma.codes/api/",
+    // If 'go' was saved, use Go URL. Otherwise default to Laravel.
+    baseURL: isGo ? GO_URL : LARAVEL_URL,
     headers: {
         Accept: "application/json",
     },
-    // Disable withCredentials untuk login (akan enable setelah login)
     withCredentials: false,
 });
 
-// Buat request interceptor untuk menambahkan token ke header Authorization
+// KEEP: Auto-detect FormData (don't break file uploads)
 apiClient.interceptors.request.use((config) => {
-    // Ambil token dari localStorage
-    const token = getToken();
-
-    if (token) {
-        // Tempelkan ke header: "Authorization: Bearer 12345abcde..."
-        config.headers.Authorization = `Bearer ${token}`;
-    }
-
-    // Jangan set Content-Type jika data adalah FormData
-    // Biarkan axios dan browser auto-detect sebagai multipart/form-data
     if (config.data instanceof FormData) {
         delete config.headers["Content-Type"];
     }
-
     return config;
 });
 
-// Response interceptor untuk handle error 401 (Unauthorized)
+// KEEP: Global Error Handling
 apiClient.interceptors.response.use(
     (response) => response,
     (error) => {
         if (error.response?.status === 401) {
-            console.error("❌ 401 Unauthorized - Token mungkin invalid/expired");
-            console.log("Token saat ini:", getToken());
-            console.log("Response error:", error.response?.data);
+            console.error("❌ 401 Unauthorized - Token Invalid/Expired");
         }
         return Promise.reject(error);
     }
