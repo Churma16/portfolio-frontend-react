@@ -1,10 +1,6 @@
-import { RefObject, useState } from "react";
-import {
-    Sheet,
-    SheetContent,
-    SheetTrigger,
-} from "@/components/ui/sheet";
-import { Menu } from "lucide-react";
+import {RefObject, useState} from "react";
+import {Sheet, SheetContent, SheetTrigger,} from "@/components/ui/sheet";
+import {Menu} from "lucide-react";
 
 interface NavLink {
     href: string;
@@ -23,6 +19,7 @@ const DEFAULT_LINKS: NavLink[] = [
     { href: "#home", label: "Home" },
     { href: "#tech-stacks", label: "Tech Stacks" },
     { href: "#projects", label: "Projects" },
+    {href: "#experiences", label: "Experiences"},
     { href: "#about", label: "About Me" },
     { href: "#architecture", label: "Architecture" },
     { href: "#contact", label: "Contact Me" },
