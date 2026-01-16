@@ -1,6 +1,7 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import apiClient from "../../../api/axios.ts";
-import { Project, ApiResponse } from "@/types";
+import {ApiResponse, Project} from "@/types";
+import {useApi} from "@/contexts/useApi.ts";
 
 const fetchProjects = async (): Promise<Project[]> => {
     // Ambil response dari Axios
@@ -23,8 +24,11 @@ interface ProjectPayload {
 }
 
 export const useProjects = () => {
+    const {activeBackend} = useApi(); // Get 'laravel' or 'go'
+
     return useQuery({
-        queryKey: ["projects"],
+        // 👇 ADD activeBackend TO THE KEY
+        queryKey: ["projects", activeBackend],
         queryFn: fetchProjects,
         staleTime: 1000 * 60 * 5,
     });
@@ -45,7 +49,7 @@ export const useProjectMutation = (projectId?: number) => {
             }
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["projects"] });
+            queryClient.invalidateQueries({queryKey: ["projects"]});
         },
         onError: (err: any) => {
             console.error("Error submitting project:", err);

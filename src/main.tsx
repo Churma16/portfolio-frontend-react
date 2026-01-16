@@ -1,17 +1,24 @@
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
+import {StrictMode} from "react";
+import {createRoot} from "react-dom/client";
 import "./index.css";
 import App from "./App.tsx";
 
 // 1. Import dari React Query
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 
-// 2. Buat instance client-nya
+// 2. Import ApiProvider
+import {ApiProvider} from "@/contexts/ApiContext";
+
+// 3. Buat instance client-nya
 const queryClient = new QueryClient();
 createRoot(document.getElementById("root")!).render(
     <StrictMode>
+        {/* 👇 QueryProvider MUST be the parent */}
         <QueryClientProvider client={queryClient}>
-            <App />
+            {/* 👇 ApiProvider is the child */}
+            <ApiProvider>
+                <App/>
+            </ApiProvider>
         </QueryClientProvider>
     </StrictMode>
 );
