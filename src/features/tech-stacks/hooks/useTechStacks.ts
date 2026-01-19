@@ -1,6 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
+import {useQuery} from "@tanstack/react-query";
 import apiClient from "../../../api/axios.ts";
-import { ApiResponse, TechStack } from "@/types";
+import {ApiResponse, TechStack} from "@/types";
+import {useApi} from "@/contexts/useApi.ts";
 
 const fetchTechStack = async (): Promise<TechStack[]> => {
     // Ambil response dari Axios
@@ -13,8 +14,10 @@ const fetchTechStack = async (): Promise<TechStack[]> => {
 };
 
 export const useTechStacks = () => {
+    const {activeBackend} = useApi(); // Get 'laravel' or 'go'
+
     return useQuery({
-        queryKey: ["tech-stacks"],
+        queryKey: ["tech-stacks", activeBackend],
         queryFn: fetchTechStack,
         staleTime: 1000 * 60 * 5,
     });
