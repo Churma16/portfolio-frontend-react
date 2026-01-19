@@ -1,20 +1,21 @@
-import {motion} from "framer-motion";
+// 👇 1. Tambahkan AnimatePresence
+import {AnimatePresence, motion} from "framer-motion";
 import {HiShieldCheck} from "react-icons/hi2";
 import {SiCloudflare, SiDigitalocean, SiGo, SiLaravel, SiMysql, SiPostgresql, SiReact, SiUbuntu,} from "react-icons/si";
 
-// 👇 IMPORT CONTEXT
 import {useApi} from "@/contexts/useApi.ts";
 
-// 1. Komponen Kotak Stack (Disesuaikan agar warna ikon dinamis)
-const StackBox = ({title, icon, items, themeColor = "text-blue-400"}: {
+// 2. Update StackBox agar bisa menerima props animasi (...props)
+const StackBox = ({title, icon, items, themeColor = "text-blue-400", ...props}: {
     title: string;
     icon: React.ReactNode;
     items: string[];
-    themeColor?: string; // Prop baru untuk warna teks ikon
+    themeColor?: string;
+    [key: string]: any; // Allow motion props
 }) => (
     <motion.div
-        whileHover={{y: -5}}
-        // Ubah bg-[#0a101f] jadi bg-card agar ikut tema gelap Go
+        {...props} // 👈 Spread props animasi di sini (initial, animate, exit)
+        whileHover={{y: -5}} // Tetap pertahankan hover effect
         className="flex-1 bg-card border border-white/10 p-5 rounded-xl relative z-10 w-full min-w-[200px] shadow-2xl shadow-black/50"
     >
         <div className="flex items-center gap-3 mb-4 border-b border-white/5 pb-3">
@@ -31,7 +32,7 @@ const StackBox = ({title, icon, items, themeColor = "text-blue-400"}: {
                     key={i}
                     className="text-muted-foreground text-xs font-mono flex items-center gap-2"
                 >
-                    <span className={`w-1.5 h-1.5 rounded-full ${themeColor.replace('text-', 'bg-')}`}/>
+                    <span className={`w-1.5 h-1.5 rounded-full ${themeColor.replace('text-', 'bg-')}/50`}/>
                     {item}
                 </li>
             ))}
@@ -39,7 +40,7 @@ const StackBox = ({title, icon, items, themeColor = "text-blue-400"}: {
     </motion.div>
 );
 
-// ... (Komponen DataFlow & VerticalDataFlow TIDAK BERUBAH, copy-paste saja dari kode lama Anda) ...
+// ... (DataFlow & VerticalDataFlow SAMA SEPERTI SEBELUMNYA - TIDAK BERUBAH) ...
 const DataFlow = ({label, width = "w-24"}: { label: string; width?: string }) => {
     const words = label.split(" ");
     return (
@@ -52,14 +53,14 @@ const DataFlow = ({label, width = "w-24"}: { label: string; width?: string }) =>
                     </span>
                 ))}
             </div>
-            <div className="relative w-full h-[2px] bg-border flex items-center"> {/* bg-border agar adaptif */}
+            <div className="relative w-full h-[2px] bg-border flex items-center">
                 <div
                     className="absolute top-1/2 -translate-y-1/2 left-0 w-0 h-0 border-y-[5px] border-y-transparent border-r-[8px] border-r-border"/>
                 <div className="relative w-full h-full overflow-hidden">
                     <motion.div
                         animate={{x: ["-100%", "400%"]}}
                         transition={{duration: 1.5, repeat: Infinity, ease: "linear"}}
-                        className="absolute top-0 left-0 w-1/4 h-full bg-gradient-to-r from-transparent via-primary to-transparent" // via-primary biar ikut warna tema
+                        className="absolute top-0 left-0 w-1/4 h-full bg-gradient-to-r from-transparent via-primary to-transparent"
                     />
                 </div>
                 <div
@@ -93,40 +94,52 @@ const VerticalDataFlow = ({label, height = "h-12"}: { label: string; height?: st
     );
 };
 
+// 3. Definisikan Animasi "Switch Card" (Pop In/Out)
+const switchAnimation = {
+    initial: {opacity: 0, y: 20, scale: 0.95},
+    animate: {opacity: 1, y: 0, scale: 1},
+    exit: {opacity: 0, y: -20, scale: 0.95},
+    transition: {duration: 0.2}
+};
+
 export default function ArchitectureDiagram() {
-    // 1. Ambil state Backend Aktif
     const {activeBackend} = useApi();
     const isGo = activeBackend === 'go';
 
-    // 2. Tentukan Data berdasarkan Backend
+    // Data Backend
     const backendData = isGo ? {
+        id: "go-api", // ID Unik untuk key
         title: "API Engine",
         icon: <SiGo className="w-6 h-6"/>,
         items: ["Gin Framework", "Go Routines", "High Performance"],
         themeColor: "text-cyan-400"
     } : {
+        id: "lara-api",
         title: "API Engine",
         icon: <SiLaravel className="w-6 h-6"/>,
         items: ["Laravel API", "Docker Container", "Queue Worker"],
-        themeColor: "text-red-500" // Laravel Red
+        themeColor: "text-red-500"
     };
 
+    // Data DB
     const dbData = isGo ? {
+        id: "go-db",
         title: "Storage & Cache",
         icon: <SiPostgresql className="w-6 h-6"/>,
         items: ["PostgreSQL 15", "Redis Cache", "Volume Storage"],
-        themeColor: "text-blue-500" // Postgres Blue
+        themeColor: "text-blue-300"
     } : {
+        id: "lara-db",
         title: "Storage & Cache",
         icon: <SiMysql className="w-6 h-6"/>,
         items: ["MySQL 8", "Redis Cache", "Volume Storage"],
-        themeColor: "text-blue-500" // MySQL Blue
+        themeColor: "text-blue-500"
     };
 
     return (
         <div
             className="flex flex-col lg:flex-row items-center justify-center gap-4 mt-12 w-full max-w-7xl mx-auto px-4 overflow-x-auto py-10">
-            {/* 1. ZONA CLIENT (USER) */}
+            {/* 1. ZONA CLIENT */}
             <div className="flex flex-col items-center gap-2 shrink-0">
                 <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold">
                     Client Side
@@ -139,19 +152,16 @@ export default function ArchitectureDiagram() {
                 />
             </div>
 
-            {/* Panah 1 */}
             <DataFlow label="HTTPS Request" width="w-24"/>
             <VerticalDataFlow label="HTTPS Request"/>
 
-            {/* 2. ZONA EDGE (CLOUDFLARE) */}
+            {/* 2. ZONA EDGE */}
             <div className="relative flex flex-col items-center gap-2 shrink-0 z-20">
                 <span className="text-[10px] text-[#F38020] uppercase tracking-widest font-bold">
                     Edge Network
                 </span>
-
                 <motion.div
                     whileHover={{scale: 1.05}}
-                    // Gunakan bg-card agar dinamis
                     className="w-48 bg-card border border-[#F38020]/30 p-4 rounded-2xl flex flex-col items-center text-center shadow-[0_0_30px_rgba(243,128,32,0.1)] relative"
                 >
                     <div className="absolute inset-0 bg-[#F38020]/5 rounded-2xl blur-xl -z-10"/>
@@ -174,14 +184,12 @@ export default function ArchitectureDiagram() {
                 </motion.div>
             </div>
 
-            {/* Panah 2 */}
             <DataFlow label="Proxied Traffic" width="w-24"/>
             <VerticalDataFlow label="Proxied Traffic"/>
 
-            {/* 3. ZONA SERVER (DYNAMIC) */}
+            {/* 3. ZONA SERVER (ANIMATED SWITCH) */}
             <div
                 className="relative border-2 border-dashed border-primary/20 bg-primary/5 rounded-3xl p-6 pt-10 flex flex-col items-center gap-4 shrink-0">
-                {/* Label Server */}
                 <div
                     className="absolute -top-4 left-6 bg-background px-4 py-1.5 border border-primary/30 rounded-full flex items-center gap-3 shadow-lg shadow-primary/10">
                     <SiDigitalocean className="text-[#0080FF] text-xl"/>
@@ -193,25 +201,34 @@ export default function ArchitectureDiagram() {
                 </div>
 
                 <div className="flex flex-col lg:flex-row gap-4">
-                    {/* DYNAMIC BACKEND BOX */}
-                    <StackBox
-                        title={backendData.title}
-                        icon={backendData.icon}
-                        items={backendData.items}
-                        themeColor={backendData.themeColor}
-                    />
 
-                    {/* Local Connection */}
+                    {/* 👇 4. WRAPPER ANIMATE PRESENCE UNTUK API ENGINE */}
+                    <AnimatePresence mode="wait">
+                        <StackBox
+                            key={backendData.id} // Key ini memicu animasi saat berubah
+                            {...switchAnimation} // Props animasi (initial, animate, exit)
+                            title={backendData.title}
+                            icon={backendData.icon}
+                            items={backendData.items}
+                            themeColor={backendData.themeColor}
+                        />
+                    </AnimatePresence>
+
                     <DataFlow label="" width="w-10"/>
                     <VerticalDataFlow label="Query & Hydrate" height="h-7"/>
 
-                    {/* DYNAMIC DB BOX */}
-                    <StackBox
-                        title={dbData.title}
-                        icon={dbData.icon}
-                        items={dbData.items}
-                        themeColor={dbData.themeColor}
-                    />
+                    {/* 👇 5. WRAPPER ANIMATE PRESENCE UNTUK DB */}
+                    <AnimatePresence mode="wait">
+                        <StackBox
+                            key={dbData.id} // Key ini memicu animasi saat berubah
+                            {...switchAnimation} // Props animasi (initial, animate, exit)
+                            title={dbData.title}
+                            icon={dbData.icon}
+                            items={dbData.items}
+                            themeColor={dbData.themeColor}
+                        />
+                    </AnimatePresence>
+
                 </div>
             </div>
         </div>
