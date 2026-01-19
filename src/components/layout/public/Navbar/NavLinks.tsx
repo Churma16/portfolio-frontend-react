@@ -1,7 +1,6 @@
 import {RefObject, useState} from "react";
 import {Sheet, SheetContent, SheetTrigger} from "@/components/ui/sheet";
 import {Menu} from "lucide-react";
-import {BackendToggle} from "@/components/common/BackendToggle.tsx";
 
 interface NavLink {
     href: string;
@@ -17,21 +16,21 @@ interface NavLinksProps {
 }
 
 const DEFAULT_LINKS: NavLink[] = [
-    { href: "#home", label: "Home" },
-    { href: "#tech-stacks", label: "Tech Stacks" },
-    { href: "#projects", label: "Projects" },
-    {href: "#experiences", label: "Experiences"},
-    { href: "#about", label: "About Me" },
-    { href: "#architecture", label: "Architecture" },
-    { href: "#contact", label: "Contact Me" },
+    {href: "#home", label: "Home"},
+    {href: "#tech-stacks", label: "Tech"}, // Lebih pendek
+    {href: "#projects", label: "Projects"},
+    {href: "#experiences", label: "Exp"}, // Opsional
+    {href: "#about", label: "About"}, // Hapus 'Me'
+    {href: "#architecture", label: "Arch"},
+    {href: "#contact", label: "Contact"}, // Hapus 'Me'
 ];
 
 export default function NavLinks({
-    links = DEFAULT_LINKS,
-    underlineStyle,
-    navRef,
-    isActive,
-}: NavLinksProps) {
+                                     links = DEFAULT_LINKS,
+                                     underlineStyle,
+                                     navRef,
+                                     isActive,
+                                 }: NavLinksProps) {
     const [open, setOpen] = useState(false);
 
     const handleLinkClick = () => {
@@ -66,7 +65,6 @@ export default function NavLinks({
                         {link.label}
                     </a>
                 ))}
-                <BackendToggle/>
             </div>
 
             {/* Mobile Navigation */}

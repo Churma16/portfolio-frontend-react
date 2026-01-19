@@ -1,6 +1,7 @@
 import NavLogo from "./NavLogo.tsx";
 import NavLinks from "./NavLinks.tsx";
 import {useNavbarState} from "@/components/layout/public/Navbar/useNavbarState.ts";
+import {BackendToggle} from "@/components/common/BackendToggle.tsx";
 
 export default function Navbar() {
     const {underlineStyle, navRef, isActive} = useNavbarState();
@@ -17,6 +18,10 @@ export default function Navbar() {
                         activeHash=""
 
                     />
+                    <div className="items-center gap-4 hidden md:block">
+
+                        <BackendToggle/>
+                    </div>
                 </div>
             </div>
         </nav>
