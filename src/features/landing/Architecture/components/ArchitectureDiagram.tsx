@@ -1,23 +1,19 @@
-// 👇 1. Tambahkan AnimatePresence
-import {AnimatePresence, motion} from "framer-motion";
+import {motion} from "framer-motion";
 import {HiShieldCheck} from "react-icons/hi2";
 import {SiCloudflare, SiDigitalocean, SiGo, SiLaravel, SiMysql, SiPostgresql, SiReact, SiUbuntu,} from "react-icons/si";
 
 import {useApi} from "@/contexts/useApi.ts";
 
-// 2. Update StackBox agar bisa menerima props animasi (...props)
-const StackBox = ({title, icon, items, themeColor = "text-blue-400", ...props}: {
+// 1. KOMPONEN KARTU (StackBox)
+const StackBox = ({title, icon, items, themeColor = "text-blue-400"}: {
     title: string;
     icon: React.ReactNode;
     items: string[];
     themeColor?: string;
-    [key: string]: any; // Allow motion props
 }) => (
-    <motion.div
-        {...props} // 👈 Spread props animasi di sini (initial, animate, exit)
-        whileHover={{y: -5}} // Tetap pertahankan hover effect
-        className="flex-1 bg-card border border-white/10 p-5 rounded-xl relative z-10 w-full min-w-[200px] shadow-2xl shadow-black/50"
-    >
+    // Hapus motion.div di sini, kita pindahkan animasinya ke parent (ShuffleStack)
+    // Gunakan div biasa agar tidak konflik dengan animasi parent
+    <div className="flex-1 bg-card border border-white/10 p-5 rounded-xl w-full h-full shadow-2xl shadow-black/50">
         <div className="flex items-center gap-3 mb-4 border-b border-white/5 pb-3">
             <div className={`p-2 bg-white/5 rounded-lg ${themeColor}`}>
                 {icon}
@@ -32,15 +28,50 @@ const StackBox = ({title, icon, items, themeColor = "text-blue-400", ...props}: 
                     key={i}
                     className="text-muted-foreground text-xs font-mono flex items-center gap-2"
                 >
-                    <span className={`w-1.5 h-1.5 rounded-full ${themeColor.replace('text-', 'bg-')}/50`}/>
+                    <span className={`w-1.5 h-1.5 rounded-full ${themeColor.replace('text-', 'bg-')}`}/>
                     {item}
                 </li>
             ))}
         </ul>
-    </motion.div>
+    </div>
 );
 
-// ... (DataFlow & VerticalDataFlow SAMA SEPERTI SEBELUMNYA - TIDAK BERUBAH) ...
+// 2. WRAPPER ANIMASI SHUFFLE (Grid Stacking)
+const ShuffleStack = ({activeId, children}: { activeId: string; children: React.ReactNode[] }) => {
+    return (
+        // Grid trick: menumpuk semua anak di satu sel yang sama
+        <div className="grid w-full min-w-[200px]" style={{gridTemplateAreas: "'stack'"}}>
+            {children.map((child: any) => {
+                const isActive = child.key === activeId;
+
+                return (
+                    <motion.div
+                        key={child.key}
+                        style={{gridArea: "stack"}} // Tumpuk di sini
+                        initial={false} // Hindari animasi saat mount pertama
+                        animate={{
+                            y: isActive ? 0 : -15,   // Aktif di tengah, Inaktif geser ke atas sedikit (efek tumpukan)
+                            scale: isActive ? 1 : 0.9, // Aktif normal, Inaktif mengecil
+                            zIndex: isActive ? 10 : 1, // Aktif di depan
+                            opacity: isActive ? 1 : 0.4, // Inaktif agak transparan
+                            rotateX: isActive ? 0 : 10,  // Sedikit miring untuk efek 3D
+                        }}
+                        transition={{
+                            type: "spring",
+                            stiffness: 260,
+                            damping: 20
+                        }}
+                        className="w-full origin-bottom" // Origin bottom agar scale-nya rapi
+                    >
+                        {child}
+                    </motion.div>
+                );
+            })}
+        </div>
+    );
+};
+
+// ... (DataFlow & VerticalDataFlow SAMA SEPERTI SEBELUMNYA - Copy Paste saja) ...
 const DataFlow = ({label, width = "w-24"}: { label: string; width?: string }) => {
     const words = label.split(" ");
     return (
@@ -94,62 +125,56 @@ const VerticalDataFlow = ({label, height = "h-12"}: { label: string; height?: st
     );
 };
 
-// 3. Definisikan Animasi "Switch Card" (Pop In/Out)
-const switchAnimation = {
-    initial: {opacity: 0, y: 20, scale: 0.95},
-    animate: {opacity: 1, y: 0, scale: 1},
-    exit: {opacity: 0, y: -20, scale: 0.95},
-    transition: {duration: 0.2}
-};
-
 export default function ArchitectureDiagram() {
     const {activeBackend} = useApi();
     const isGo = activeBackend === 'go';
 
-    // Data Backend
-    const backendData = isGo ? {
-        id: "go-api", // ID Unik untuk key
-        title: "API Engine",
-        icon: <SiGo className="w-6 h-6"/>,
-        items: ["Gin Framework", "Go Routines", "High Performance"],
-        themeColor: "text-cyan-400"
-    } : {
-        id: "lara-api",
-        title: "API Engine",
-        icon: <SiLaravel className="w-6 h-6"/>,
-        items: ["Laravel API", "Docker Container", "Queue Worker"],
-        themeColor: "text-red-500"
-    };
+    // KITA DEFINISIKAN SEMUA OPSI KARTU DI SINI
+    // (Agar ShuffleStack bisa merender keduanya sekaligus)
 
-    // Data DB
-    const dbData = isGo ? {
-        id: "go-db",
-        title: "Storage & Cache",
-        icon: <SiPostgresql className="w-6 h-6"/>,
-        items: ["PostgreSQL 15", "Redis Cache", "Volume Storage"],
-        themeColor: "text-blue-300"
-    } : {
-        id: "lara-db",
-        title: "Storage & Cache",
-        icon: <SiMysql className="w-6 h-6"/>,
-        items: ["MySQL 8", "Redis Cache", "Volume Storage"],
-        themeColor: "text-blue-500"
-    };
+    const apiCards = [
+        {
+            id: "laravel", // Key harus sesuai dengan activeBackend ('laravel')
+            title: "API Engine",
+            icon: <SiLaravel className="w-6 h-6"/>,
+            items: ["Laravel API", "Docker Container", "Queue Worker"],
+            themeColor: "text-red-500"
+        },
+        {
+            id: "go", // Key harus sesuai dengan activeBackend ('go')
+            title: "API Engine",
+            icon: <SiGo className="w-6 h-6"/>,
+            items: ["Gin Framework", "Go Routines", "High Performance"],
+            themeColor: "text-cyan-400"
+        }
+    ];
+
+    const dbCards = [
+        {
+            id: "laravel",
+            title: "Storage & Cache",
+            icon: <SiMysql className="w-6 h-6"/>,
+            items: ["MySQL 8", "Redis Cache", "Volume Storage"],
+            themeColor: "text-blue-500"
+        },
+        {
+            id: "go",
+            title: "Storage & Cache",
+            icon: <SiPostgresql className="w-6 h-6"/>,
+            items: ["PostgreSQL 15", "Redis Cache", "Volume Storage"],
+            themeColor: "text-blue-500"
+        }
+    ];
 
     return (
         <div
             className="flex flex-col lg:flex-row items-center justify-center gap-4 mt-12 w-full max-w-7xl mx-auto px-4 overflow-x-auto py-10">
             {/* 1. ZONA CLIENT */}
             <div className="flex flex-col items-center gap-2 shrink-0">
-                <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold">
-                    Client Side
-                </span>
-                <StackBox
-                    title="Frontend"
-                    icon={<SiReact className="w-6 h-6"/>}
-                    items={["React SPA", "Browser Runtime", "Axios Http"]}
-                    themeColor="text-blue-400"
-                />
+                <span
+                    className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold">Client Side</span>
+                <StackBox title="Frontend" icon={<SiReact className="w-6 h-6"/>}
+                          items={["React SPA", "Browser Runtime", "Axios Http"]} themeColor="text-blue-500"/>
             </div>
 
             <DataFlow label="HTTPS Request" width="w-24"/>
@@ -157,29 +182,18 @@ export default function ArchitectureDiagram() {
 
             {/* 2. ZONA EDGE */}
             <div className="relative flex flex-col items-center gap-2 shrink-0 z-20">
-                <span className="text-[10px] text-[#F38020] uppercase tracking-widest font-bold">
-                    Edge Network
-                </span>
-                <motion.div
-                    whileHover={{scale: 1.05}}
-                    className="w-48 bg-card border border-[#F38020]/30 p-4 rounded-2xl flex flex-col items-center text-center shadow-[0_0_30px_rgba(243,128,32,0.1)] relative"
-                >
+                <span className="text-[10px] text-[#F38020] uppercase tracking-widest font-bold">Edge Network</span>
+                <motion.div whileHover={{scale: 1.05}}
+                            className="w-48 bg-card border border-[#F38020]/30 p-4 rounded-2xl flex flex-col items-center text-center shadow-[0_0_30px_rgba(243,128,32,0.1)] relative">
                     <div className="absolute inset-0 bg-[#F38020]/5 rounded-2xl blur-xl -z-10"/>
                     <SiCloudflare className="text-[#F38020] text-5xl mb-3"/>
-                    <h4 className="font-bold text-foreground text-sm mb-2">
-                        Cloudflare CDN
-                    </h4>
+                    <h4 className="font-bold text-foreground text-sm mb-2">Cloudflare CDN</h4>
                     <div className="flex flex-wrap justify-center gap-2">
                         <span
-                            className="px-2 py-1 bg-[#F38020]/10 text-[#F38020] text-[10px] rounded-md font-mono flex items-center gap-1">
-                            <HiShieldCheck/> DDoS Guard
-                        </span>
-                        <span className="px-2 py-1 bg-[#F38020]/10 text-[#F38020] text-[10px] rounded-md font-mono">
-                            SSL / TLS
-                        </span>
-                        <span className="px-2 py-1 bg-[#F38020]/10 text-[#F38020] text-[10px] rounded-md font-mono">
-                            Cache
-                        </span>
+                            className="px-2 py-1 bg-[#F38020]/10 text-[#F38020] text-[10px] rounded-md font-mono flex items-center gap-1"><HiShieldCheck/> DDoS Guard</span>
+                        <span className="px-2 py-1 bg-[#F38020]/10 text-[#F38020] text-[10px] rounded-md font-mono">SSL / TLS</span>
+                        <span
+                            className="px-2 py-1 bg-[#F38020]/10 text-[#F38020] text-[10px] rounded-md font-mono">Cache</span>
                     </div>
                 </motion.div>
             </div>
@@ -187,7 +201,8 @@ export default function ArchitectureDiagram() {
             <DataFlow label="Proxied Traffic" width="w-24"/>
             <VerticalDataFlow label="Proxied Traffic"/>
 
-            {/* 3. ZONA SERVER (ANIMATED SWITCH) */}
+
+            {/* 3. ZONA SERVER (SHUFFLE STACKS) */}
             <div
                 className="relative border-2 border-dashed border-primary/20 bg-primary/5 rounded-3xl p-6 pt-10 flex flex-col items-center gap-4 shrink-0">
                 <div
@@ -202,32 +217,28 @@ export default function ArchitectureDiagram() {
 
                 <div className="flex flex-col lg:flex-row gap-4">
 
-                    {/* 👇 4. WRAPPER ANIMATE PRESENCE UNTUK API ENGINE */}
-                    <AnimatePresence mode="wait">
-                        <StackBox
-                            key={backendData.id} // Key ini memicu animasi saat berubah
-                            {...switchAnimation} // Props animasi (initial, animate, exit)
-                            title={backendData.title}
-                            icon={backendData.icon}
-                            items={backendData.items}
-                            themeColor={backendData.themeColor}
-                        />
-                    </AnimatePresence>
+                    {/* 👇 STACK API ENGINE */}
+                    <ShuffleStack activeId={activeBackend}>
+                        {apiCards.map(card => (
+                            <StackBox
+                                key={card.id}
+                                {...card}
+                            />
+                        ))}
+                    </ShuffleStack>
 
-                    <DataFlow label="" width="w-10"/>
+                    <DataFlow label="" width="w-20"/>
                     <VerticalDataFlow label="Query & Hydrate" height="h-7"/>
 
-                    {/* 👇 5. WRAPPER ANIMATE PRESENCE UNTUK DB */}
-                    <AnimatePresence mode="wait">
-                        <StackBox
-                            key={dbData.id} // Key ini memicu animasi saat berubah
-                            {...switchAnimation} // Props animasi (initial, animate, exit)
-                            title={dbData.title}
-                            icon={dbData.icon}
-                            items={dbData.items}
-                            themeColor={dbData.themeColor}
-                        />
-                    </AnimatePresence>
+                    {/* 👇 STACK DATABASE */}
+                    <ShuffleStack activeId={activeBackend}>
+                        {dbCards.map(card => (
+                            <StackBox
+                                key={card.id}
+                                {...card}
+                            />
+                        ))}
+                    </ShuffleStack>
 
                 </div>
             </div>
