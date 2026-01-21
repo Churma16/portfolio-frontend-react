@@ -5,6 +5,7 @@ import {SiGithub} from "react-icons/si";
 import TechIcon from "../../../../components/common/TechIcon.tsx";
 import {Project} from "@/types";
 import ProjectCard from "./ProjectCard.tsx";
+import {useApi} from "@/contexts/useApi.ts";
 
 interface ProjectShowcaseProps {
     projects: Project[];
@@ -13,7 +14,13 @@ interface ProjectShowcaseProps {
 export default function ProjectShowcase({ projects }: ProjectShowcaseProps) {
     const [selectedId, setSelectedId] = useState<number | null>(null);
     const selectedProject = projects.find((p) => p.id === selectedId);
+    const {activeBackend} = useApi();
 
+    const isGo = activeBackend === 'go';
+
+    const StoragePath = isGo
+        ? import.meta.env.VITE_GO_FILE_URL || '/files/'
+        : import.meta.env.VITE_LARAVEL_FILE_URL || '/files/';
     useEffect(() => {
         if (selectedId) {
             document.body.style.overflow = "hidden";
@@ -72,7 +79,7 @@ export default function ProjectShowcase({ projects }: ProjectShowcaseProps) {
                                 {/* PERBAIKAN: Tinggi gambar dikurangi jadi h-40 (160px) di HP biar teks muat banyak */}
                                 <div className="relative h-55 sm:h-55 shrink-0 bg-slate-900 group">
                                     <img
-                                        src={`${import.meta.env.VITE_FILE_URL}${selectedProject.thumbnail}`}
+                                        src={`${StoragePath}${selectedProject.thumbnail}`}
                                         alt={selectedProject.title}
                                         className="w-full h-full object-cover"
                                     />
