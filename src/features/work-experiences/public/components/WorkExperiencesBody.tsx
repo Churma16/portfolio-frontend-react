@@ -4,22 +4,16 @@ import {TechStack, WorkExperience} from "@/types";
 import TechIcon from "@/components/common/TechIcon.tsx";
 
 export default function WorkExperiencesBody({workExperiences}: { workExperiences: WorkExperience[] }) {
-    // Ambil data real
-
-    // State hover
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+    const [clickedIndex, setClickedIndex] = useState<number | null>(null);
 
-    // Fungsi Helper: Menghitung tinggi garis berdasarkan index
     const calculateHeight = (index: number) => {
         const total = workExperiences.length;
         if (total === 0) return "0%";
-
-        // Logika:
-        // Index 0 (Paling atas) = (3-0)/3 * 100 = 100%
-        // Index 2 (Paling bawah) = (3-2)/3 * 100 = 33%
         const percentage = ((total - index) / total) * 100;
         return `${percentage}%`;
     };
+
     return (
         <motion.div
             key="body"
@@ -29,22 +23,17 @@ export default function WorkExperiencesBody({workExperiences}: { workExperiences
             transition={{duration: 0.3}}
         >
             <div
-                className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[400px]  rounded-full pointer-events-none opacity-50"></div>
+                className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[400px] rounded-full pointer-events-none opacity-50"></div>
 
             <div className="container mx-auto lg:px-6 relative z-10 max-w-4xl">
-
                 <div className="relative space-y-12">
-
                     {/* === SISTEM GARIS TIMELINE === */}
                     <div
                         className="absolute left-[19px] top-2 bottom-0 w-[2px] bg-slate-800 rounded-full md:left-[27px] overflow-hidden">
-
-                        {/* GARIS LASER BIRU */}
                         <motion.div
                             className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-blue-600 via-cyan-400 to-blue-300 shadow-[0_0_15px_rgba(59,130,246,1)]"
                             initial={{height: "0%"}}
                             animate={{
-                                // PERBAIKAN DISINI: Gunakan fungsi calculateHeight
                                 height: hoveredIndex !== null ? calculateHeight(hoveredIndex) : "0%"
                             }}
                             transition={{type: "spring", stiffness: 60, damping: 15}}
@@ -54,9 +43,10 @@ export default function WorkExperiencesBody({workExperiences}: { workExperiences
                     {workExperiences.map((workExperience: WorkExperience, index: number) => (
                         <div
                             key={workExperience.id}
-                            className="relative pl-12 md:pl-20 group"
+                            className="relative pl-12 md:pl-20 group cursor-pointer"
                             onMouseEnter={() => setHoveredIndex(index)}
                             onMouseLeave={() => setHoveredIndex(null)}
+                            onClick={() => setClickedIndex(clickedIndex === index ? null : index)}
                         >
                             {/* DOT PENANDA */}
                             <motion.div
@@ -87,17 +77,21 @@ export default function WorkExperiencesBody({workExperiences}: { workExperiences
                                 viewport={{once: true, margin: "-50px"}}
                                 transition={{duration: 0.5, delay: index * 0.2}}
                                 className={`
-                                    relative p-6 md:p-8 rounded-3xl border transition-all duration-300 ease-out
-                                    ${hoveredIndex === index
-                                    ? "bg-slate-900 border-blue-500/50 shadow-2xl shadow-blue-500/10 -translate-y-2"
-                                    : "bg-slate-900/50 border-slate-800 hover:border-slate-700"
+                                    relative p-6 md:p-8 rounded-3xl border transition-all duration-300 ease-out backdrop-blur-sm
+                                    ${clickedIndex === index
+                                    ? "bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 border-blue-400/60 shadow-2xl shadow-blue-500/20 -translate-y-3 scale-[1.02]"
+                                    : hoveredIndex === index
+                                        ? "bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 border-blue-500/50 shadow-2xl shadow-blue-500/15 -translate-y-2"
+                                        : "bg-slate-900/40 border-slate-700/60 shadow-lg shadow-slate-950/30 hover:border-slate-700"
                                 }
                                 `}
                             >
                                 {/* Header Card */}
-                                <div className="flex flex-col md:flex-row md:justify-between md:items-start mb-4 gap-3">
-                                    <div>
-                                        <h3 className={`text-xl md:text-2xl font-bold transition-colors break-all ${hoveredIndex === index ? "text-lara-accent-blue-light" : "text-foreground"}`}>
+                                {/* PERUBAHAN 1: Tambahkan 'items-start' agar anak elemen tidak stretch full width di mobile */}
+                                <div
+                                    className="flex flex-col items-start md:flex-row md:justify-between md:items-start mb-4 gap-3">
+                                    <div className="flex-1">
+                                        <h3 className={`text-xl md:text-2xl font-bold transition-colors break-words ${clickedIndex === index ? "text-blue-300 drop-shadow-[0_0_10px_rgba(147,197,253,0.5)]" : hoveredIndex === index ? "text-lara-accent-blue-light" : "text-foreground"}`}>
                                             {workExperience.position}
                                         </h3>
 
@@ -110,11 +104,14 @@ export default function WorkExperiencesBody({workExperiences}: { workExperiences
                                         </div>
                                     </div>
 
+                                    {/* PERUBAHAN 2: Tambahkan 'w-fit' agar badge menyesuaikan konten */}
                                     <span className={`
-                                        inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold border transition-colors
-                                        ${hoveredIndex === index
-                                        ? "bg-blue-500/10 text-lara-accent-blue-lighter border-blue-500/30"
-                                        : "bg-slate-800 text-lara-text-tertiary border-slate-700"}
+                                        w-fit inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold border transition-colors whitespace-nowrap flex-shrink-0
+                                        ${clickedIndex === index
+                                        ? "bg-blue-500/20 text-blue-300 border-blue-400/50"
+                                        : hoveredIndex === index
+                                            ? "bg-blue-500/10 text-lara-accent-blue-lighter border-blue-500/30"
+                                            : "bg-slate-800 text-lara-text-tertiary border-slate-700"}
                                     `}>
                                         {workExperience.start_date}{" "} — {" "}{workExperience.end_date || "Present"}
                                     </span>
@@ -126,23 +123,19 @@ export default function WorkExperiencesBody({workExperiences}: { workExperiences
 
                                 {/* Tech Stack Tags */}
                                 <div className="flex flex-wrap gap-2 pt-4 border-t border-slate-800/50">
-                                    {/* Gunakan Optional Chaining (?.) untuk jaga-jaga kalau stacks kosong */}
                                     {workExperience.tech_stack?.map((stack: TechStack, i) => (
                                         <div
                                             key={stack.id}
                                             className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-primary/10 border border-primary/20 text-primary transition-colors hover:bg-primary/20"
                                         >
-                                            {/* 1. Icon Kecil */}
                                             <TechIcon
                                                 name={stack.name}
                                                 icon={stack.icon}
                                                 className="w-3.5 h-3.5"
                                             />
-
-                                            {/* 2. Teks Nama (Jelas & Terbaca) */}
                                             <span className="text-[11px] font-medium leading-none pb-[1px]">
-                                    {stack.name}
-                                </span>
+                                                {stack.name}
+                                            </span>
                                         </div>
                                     ))}
                                 </div>
