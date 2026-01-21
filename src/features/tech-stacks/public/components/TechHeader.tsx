@@ -1,6 +1,6 @@
 export default function TechHeader() {
     return (
-        <div className="text-center max-w-3xl mx-auto mb-10 space-y-4" >
+        <div className="text-center max-w-3xl mx-auto mb-10 space-y-4">
             <h2 className="text-3xl md:text-4xl font-heading font-bold text-foreground">
                 The Tech <span className="text-primary"> Stack</span>.
             </h2>

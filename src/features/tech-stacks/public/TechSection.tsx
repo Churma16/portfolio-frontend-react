@@ -3,11 +3,10 @@ import TechHeader from "@/features/tech-stacks/public/components/TechHeader.tsx"
 
 export default function TechSection() {
 
-
     return (
-        <div className="mt-10 mb-20 mx-4" id="tech-stacks">
+        <section id="tech-stacks" className="py-24 mx-4">
             <TechHeader/>
             <TechList/>
-        </div>
+        </section>
     )
 }
