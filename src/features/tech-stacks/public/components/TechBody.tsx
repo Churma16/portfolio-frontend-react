@@ -1,0 +1,36 @@
+import {AnimatePresence, motion} from "framer-motion";
+import {useTechStacks} from "@/features/tech-stacks/hooks/useTechStacks.ts";
+import TechPhysicsBox from "./TechPhysicsBox.tsx";
+import TechMarquee from "./TechMarquee.tsx";
+import TechSkeletonLoader from "./TechSkeletonLoader.tsx";
+import TechError from "@/features/tech-stacks/public/components/TechError.tsx";
+
+export default function TechBody() {
+    const {data: techStacks = [], isLoading, isError} = useTechStacks();
+
+
+    return (
+        <motion.section
+            initial={{opacity: 0, y: 40}}
+            whileInView={{opacity: 1, y: 0}}
+            viewport={{once: true, margin: "-100px"}}
+            transition={{duration: 0.8, ease: "easeOut"}}
+            className="border-y border-border bg-background/50 relative"
+        >
+            <AnimatePresence mode="wait">
+                {isError && <TechError/>}
+                {isLoading && <TechSkeletonLoader/>}
+                {!isError && !isLoading && (
+                    <>
+                        {/* Mobile: Physics Playground */}
+                        <TechPhysicsBox techStacks={techStacks}/>
+
+                        {/* Desktop: Infinite Marquee */}
+                        <TechMarquee techStacks={techStacks}/>
+                    </>
+                )}
+
+            </AnimatePresence>
+        </motion.section>
+    );
+}
