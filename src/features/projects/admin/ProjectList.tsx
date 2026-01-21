@@ -7,12 +7,21 @@ import {Project} from "@/types";
 import ProjectDialog from "./components/ProjectDialog.tsx";
 import {useProjects} from "../hooks/useProjects.ts";
 import apiClient from "@/api/axios.ts";
+import {useApi} from "@/contexts/useApi.ts";
 
 export default function ProjectList() {
-    const { data: projects = [], isLoading, refetch } = useProjects();
+    const {data: projects = [], isLoading, refetch} = useProjects();
 
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [projectToEdit, setProjectToEdit] = useState<Project | null>(null);
+    const {activeBackend} = useApi();
+
+    const isGo = activeBackend === 'go';
+
+    const StoragePath = isGo
+        ? import.meta.env.VITE_GO_FILE_URL || '/files/'
+        : import.meta.env.VITE_LARAVEL_FILE_URL || '/files/';
+
 
     // --- FUNGSI REORDER ---
     // Anda perlu menghubungkan ini ke API backend Anda nantinya
@@ -21,7 +30,7 @@ export default function ProjectList() {
 
         // Contoh Logika API (Sesuaikan dengan endpoint backend Anda):
         try {
-            await apiClient.post(`/projects/${id}/reorder`, { direction });
+            await apiClient.post(`/projects/${id}/reorder`, {direction});
             refetch(); // Refresh data agar urutan baru tampil
         } catch (error) {
             console.error("Gagal mengubah urutan", error);
@@ -63,7 +72,7 @@ export default function ProjectList() {
                     onClick={handleCreate}
                     className="bg-primary hover:bg-blue-600 text-foreground gap-2"
                 >
-                    <HiPlus className="w-4 h-4" />
+                    <HiPlus className="w-4 h-4"/>
                     Add New Project
                 </Button>
             </div>
@@ -113,7 +122,7 @@ export default function ProjectList() {
                                     className="h-32 text-center text-slate-500"
                                 >
                                     <div className="flex flex-col items-center justify-center gap-2">
-                                        <HiOutlineCube className="w-8 h-8 opacity-50" />
+                                        <HiOutlineCube className="w-8 h-8 opacity-50"/>
                                         <p>
                                             No projects found. Start by creating
                                             one!
@@ -148,7 +157,7 @@ export default function ProjectList() {
                                                 }
                                                 disabled={index === 0} // Disable jika item pertama
                                             >
-                                                <HiArrowUp className="w-3 h-3" />
+                                                <HiArrowUp className="w-3 h-3"/>
                                             </Button>
 
                                             {/* Tombol TURUN */}
@@ -167,7 +176,7 @@ export default function ProjectList() {
                                                     projects.length - 1
                                                 } // Disable jika item terakhir
                                             >
-                                                <HiArrowDown className="w-3 h-3" />
+                                                <HiArrowDown className="w-3 h-3"/>
                                             </Button>
                                         </div>
                                     </TableCell>
@@ -175,11 +184,11 @@ export default function ProjectList() {
 
                                     <TableCell>
                                         <div className="flex items-center gap-4">
-                                            <div className="w-12 h-12 rounded-lg bg-slate-800 overflow-hidden shrink-0 border border-white/10">
+                                            <div
+                                                className="w-12 h-12 rounded-lg bg-slate-800 overflow-hidden shrink-0 border border-white/10">
                                                 <img
                                                     src={`${
-                                                        import.meta.env
-                                                            .VITE_FILE_URL
+                                                        StoragePath
                                                     }${project.thumbnail}`}
                                                     alt={project.title}
                                                     className="w-full h-full object-cover"
@@ -219,7 +228,7 @@ export default function ProjectList() {
                                                 ))}
                                             {project.tech_stack &&
                                                 project.tech_stack.length >
-                                                    3 && (
+                                                3 && (
                                                     <span className="text-[10px] text-slate-500">
                                                         +
                                                         {project.tech_stack
@@ -252,7 +261,7 @@ export default function ProjectList() {
                                                 }
                                                 className="h-8 w-8 text-lara-text-muted hover:text-foreground hover:bg-white/10"
                                             >
-                                                <HiPencil className="w-4 h-4" />
+                                                <HiPencil className="w-4 h-4"/>
                                             </Button>
                                             <Button
                                                 size="icon"
@@ -262,7 +271,7 @@ export default function ProjectList() {
                                                 }
                                                 className="h-8 w-8 text-slate-400 hover:text-red-400 hover:bg-red-500/10"
                                             >
-                                                <HiTrash className="w-4 h-4" />
+                                                <HiTrash className="w-4 h-4"/>
                                             </Button>
                                         </div>
                                     </TableCell>

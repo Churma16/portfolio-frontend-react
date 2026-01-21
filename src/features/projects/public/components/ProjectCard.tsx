@@ -1,6 +1,7 @@
 import {Project} from "@/types";
 import {motion} from "framer-motion";
 import TechIcon from "../../../../components/common/TechIcon.tsx";
+import {useApi} from "@/contexts/useApi.ts";
 
 interface ProjectCardProps {
     project: Project;
@@ -10,27 +11,35 @@ interface ProjectCardProps {
 }
 
 export default function ProjectCard({
-    project,
-    index,
-    onClick, // <--- Terima prop
-    layoutId, // <--- Terima prop
-}: ProjectCardProps) {
+                                        project,
+                                        index,
+                                        onClick, // <--- Terima prop
+                                        layoutId, // <--- Terima prop
+                                    }: ProjectCardProps) {
+
+    const {activeBackend} = useApi();
+
+    const isGo = activeBackend === 'go';
+
+    const StoragePath = isGo
+        ? import.meta.env.VITE_GO_FILE_URL || '/files/'
+        : import.meta.env.VITE_LARAVEL_FILE_URL || '/files/';
     return (
         <motion.div
             // Pasang layoutId dari props (Penting buat animasi expand)
             layoutId={layoutId}
             // Pasang onClick handler
             onClick={onClick}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: index * 0.1 }}
+            initial={{opacity: 0, y: 20}}
+            animate={{opacity: 1, y: 0}}
+            transition={{duration: 0.4, delay: index * 0.1}}
             // Tambahkan cursor-pointer agar terlihat bisa diklik
-            className="group flex flex-col overflow-hidden rounded-2xl bg-[#0a101f] border border-border transition-all duration-300 hover:border-primary/50 hover:shadow-2xl hover:shadow-lara-blue/5 h-full cursor-pointer"
+            className="group flex flex-col overflow-hidden rounded-2xl bg-[#0a101f] border border-border/50 transition-all duration-300 hover:border-primary/50 hover:shadow-2xl hover:shadow-lara-blue/5 h-full cursor-pointer"
         >
             {/* Thumbnail */}
             <div className="relative aspect-video overflow-hidden bg-slate-800">
                 <img
-                    src={`${import.meta.env.VITE_FILE_URL}${project.thumbnail}`}
+                    src={`${StoragePath}${project.thumbnail}`}
                     alt={project.title}
                     onError={(e) => {
                         e.currentTarget.src =
@@ -38,38 +47,45 @@ export default function ProjectCard({
                     }}
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-lara-dark/90 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+                <div
+                    className="absolute inset-0 bg-gradient-to-t from-lara-dark/90 to-transparent opacity-0 transition-opacity group-hover:opacity-100"/>
 
                 {/* Category Badge - Top Left */}
                 {project.category && (
                     <div className="absolute top-4 left-4 z-10">
                         {project.category.color === "framework" && (
-                            <span className="inline-flex items-center px-3.5 py-1.5 rounded-full bg-cat-framework/20 text-cat-framework-light text-[11px] font-bold uppercase tracking-wider shadow-xl backdrop-blur-xl border border-cat-framework/40 group-hover:shadow-2xl group-hover:shadow-cat-framework/20 transition-all">
+                            <span
+                                className="inline-flex items-center px-3.5 py-1.5 rounded-full bg-cat-framework/20 text-cat-framework-light text-[11px] font-bold uppercase tracking-wider shadow-xl backdrop-blur-xl border border-cat-framework/40 group-hover:shadow-2xl group-hover:shadow-cat-framework/20 transition-all">
                                 #{project.category.name}
                             </span>
                         )}
                         {project.category.color === "technique" && (
-                            <span className="inline-flex items-center px-3.5 py-1.5 rounded-full bg-cat-technique/20 text-cat-technique-light text-[11px] font-bold uppercase tracking-wider shadow-xl backdrop-blur-xl border border-cat-technique/40 group-hover:shadow-2xl group-hover:shadow-cat-technique/20 transition-all">
+                            <span
+                                className="inline-flex items-center px-3.5 py-1.5 rounded-full bg-cat-technique/20 text-cat-technique-light text-[11px] font-bold uppercase tracking-wider shadow-xl backdrop-blur-xl border border-cat-technique/40 group-hover:shadow-2xl group-hover:shadow-cat-technique/20 transition-all">
                                 #{project.category.name}
                             </span>
                         )}
                         {project.category.color === "testing" && (
-                            <span className="inline-flex items-center px-3.5 py-1.5 rounded-full bg-cat-testing/20 text-cat-testing-light text-[11px] font-bold uppercase tracking-wider shadow-xl backdrop-blur-xl border border-cat-testing/40 group-hover:shadow-2xl group-hover:shadow-cat-testing/20 transition-all">
+                            <span
+                                className="inline-flex items-center px-3.5 py-1.5 rounded-full bg-cat-testing/20 text-cat-testing-light text-[11px] font-bold uppercase tracking-wider shadow-xl backdrop-blur-xl border border-cat-testing/40 group-hover:shadow-2xl group-hover:shadow-cat-testing/20 transition-all">
                                 #{project.category.name}
                             </span>
                         )}
                         {project.category.color === "language" && (
-                            <span className="inline-flex items-center px-3.5 py-1.5 rounded-full bg-cat-language/20 text-cat-language-light text-[11px] font-bold uppercase tracking-wider shadow-xl backdrop-blur-xl border border-cat-language/40 group-hover:shadow-2xl group-hover:shadow-cat-language/20 transition-all">
+                            <span
+                                className="inline-flex items-center px-3.5 py-1.5 rounded-full bg-cat-language/20 text-cat-language-light text-[11px] font-bold uppercase tracking-wider shadow-xl backdrop-blur-xl border border-cat-language/40 group-hover:shadow-2xl group-hover:shadow-cat-language/20 transition-all">
                                 #{project.category.name}
                             </span>
                         )}
                         {project.category.color === "tooling" && (
-                            <span className="inline-flex items-center px-3.5 py-1.5 rounded-full bg-cat-tooling/20 text-cat-tooling-light text-[11px] font-bold uppercase tracking-wider shadow-xl backdrop-blur-xl border border-cat-tooling/40 group-hover:shadow-2xl group-hover:shadow-cat-tooling/20 transition-all">
+                            <span
+                                className="inline-flex items-center px-3.5 py-1.5 rounded-full bg-cat-tooling/20 text-cat-tooling-light text-[11px] font-bold uppercase tracking-wider shadow-xl backdrop-blur-xl border border-cat-tooling/40 group-hover:shadow-2xl group-hover:shadow-cat-tooling/20 transition-all">
                                 #{project.category.name}
                             </span>
                         )}
                         {project.category.color === "devops" && (
-                            <span className="inline-flex items-center px-3.5 py-1.5 rounded-full bg-cat-devops/20 text-cat-devops-light text-[11px] font-bold uppercase tracking-wider shadow-xl backdrop-blur-xl border border-cat-devops/40 group-hover:shadow-2xl group-hover:shadow-cat-devops/20 transition-all">
+                            <span
+                                className="inline-flex items-center px-3.5 py-1.5 rounded-full bg-cat-devops/20 text-cat-devops-light text-[11px] font-bold uppercase tracking-wider shadow-xl backdrop-blur-xl border border-cat-devops/40 group-hover:shadow-2xl group-hover:shadow-cat-devops/20 transition-all">
                                 #{project.category.name}
                             </span>
                         )}
