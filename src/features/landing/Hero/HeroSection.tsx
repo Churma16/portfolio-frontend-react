@@ -1,15 +1,24 @@
 import HeroContent from "./components/HeroContent.tsx";
 import HeroAvatar from "./components/HeroAvatar.tsx";
 import {useProfile} from "../../profile/hooks/useProfile.ts";
+import {useApi} from "@/contexts/useApi.ts";
 
 export default function Hero() {
-    const { data: profile } = useProfile();
-    const cvFileUrl = profile?.cv_files
-        ? `${import.meta.env.VITE_FILE_URL}${profile.cv_files}`
-        : "";
-    const avatarUrl = profile?.avatar
-        ? `${import.meta.env.VITE_FILE_URL}${profile.avatar}`
-        : "";
+    const {data: profile} = useProfile();
+    // const cvFileUrl = profile?.cv_files
+    //     ? `${import.meta.env.VITE_FILE_URL}${profile.cv_files}`
+    //     : "";
+    // const avatarUrl = profile?.avatar
+    //     ? `${import.meta.env.VITE_FILE_URL}${profile.avatar}`
+    //     : "";
+
+    const {activeBackend} = useApi();
+
+    const isGo = activeBackend === 'go';
+
+    const StoragePath = isGo
+        ? import.meta.env.VITE_GO_FILE_URL || '/files/'
+        : import.meta.env.VITE_LARAVEL_FILE_URL || '/files/';
 
     return (
         <section className="relative overflow-hidden pt-10 pb-20 lg:pt-20 lg:pb-32">
@@ -21,9 +30,9 @@ export default function Hero() {
                     name={profile?.name}
                     bioShort={profile?.bio_short}
                     isHireable={profile?.is_hireable}
-                    cvFileUrl={cvFileUrl}
+                    cvFileUrl={`${StoragePath}${profile?.cv_files}`}
                 />
-                <HeroAvatar avatarUrl={avatarUrl} />
+                <HeroAvatar avatarUrl={`${StoragePath}${profile?.avatar}`}/>
             </div>
         </section>
     );
