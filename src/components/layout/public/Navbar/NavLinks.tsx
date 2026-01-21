@@ -1,6 +1,8 @@
 import {RefObject, useState} from "react";
 import {Sheet, SheetContent, SheetTrigger} from "@/components/ui/sheet";
 import {Menu} from "lucide-react";
+// 1. Import komponen BackendToggle
+import {BackendToggle} from "@/components/common/BackendToggle.tsx";
 
 interface NavLink {
     href: string;
@@ -17,12 +19,12 @@ interface NavLinksProps {
 
 const DEFAULT_LINKS: NavLink[] = [
     {href: "#home", label: "Home"},
-    {href: "#tech-stacks", label: "Tech"}, // Lebih pendek
+    {href: "#tech-stacks", label: "Tech"},
     {href: "#projects", label: "Projects"},
-    {href: "#experiences", label: "Exp"}, // Opsional
-    {href: "#about", label: "About"}, // Hapus 'Me'
+    {href: "#experiences", label: "Exp"},
+    {href: "#about", label: "About"},
     {href: "#architecture", label: "Arch"},
-    {href: "#contact", label: "Contact"}, // Hapus 'Me'
+    {href: "#contact", label: "Contact"},
 ];
 
 export default function NavLinks({
@@ -44,7 +46,6 @@ export default function NavLinks({
                 className="hidden md:flex gap-8 text-sm font-medium text-accent/80 relative items-center"
                 ref={navRef}
             >
-                {/* Animated Underline */}
                 <div
                     className="absolute bottom-0 h-[2px] bg-primary transition-all duration-300"
                     style={{
@@ -53,7 +54,6 @@ export default function NavLinks({
                     }}
                 />
 
-                {/* Navigation Links */}
                 {links.map((link) => (
                     <a
                         key={link.href}
@@ -74,8 +74,17 @@ export default function NavLinks({
                         <Menu size={24} className="text-accent"/>
                     </button>
                 </SheetTrigger>
-                <SheetContent side="right" className="w-72 bg-background border-border">
-                    <nav className="flex flex-col gap-4 mt-8">
+
+                {/* 2. Tambahkan flex flex-col dan h-full pada konten utama Sheet */}
+                <SheetContent side="right" className="w-72 bg-background border-border flex flex-col h-full">
+
+                    {/* Judul Menu (Opsional, agar tidak kosong di atas) */}
+                    <div className="mt-6 mb-2 px-2 text-lg font-bold text-white tracking-tight">
+                        Menu
+                    </div>
+
+                    {/* Container Links */}
+                    <nav className="flex flex-col gap-2">
                         {links.map((link) => (
                             <a
                                 key={link.href}
@@ -91,6 +100,18 @@ export default function NavLinks({
                             </a>
                         ))}
                     </nav>
+
+                    {/* 3. Footer Section (Backend Toggle) */}
+                    {/* mt-auto akan mendorong div ini ke paling bawah layar */}
+                    <div className="mt-auto mb-6 pt-6 border-t border-border/40">
+                        <div className="flex items-center justify-between px-2">
+                            <span className="text-sm font-medium text-accent/80">
+                                Switch Api
+                            </span>
+                            <BackendToggle/>
+                        </div>
+                    </div>
+
                 </SheetContent>
             </Sheet>
         </>

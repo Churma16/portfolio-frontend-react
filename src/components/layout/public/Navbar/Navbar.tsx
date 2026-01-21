@@ -7,7 +7,7 @@ export default function Navbar() {
     const {underlineStyle, navRef, isActive} = useNavbarState();
 
     return (
-        <nav className="border-b border-border bg-background sticky top-0 z-50">
+        <nav className="border-b border-border/60 bg-background sticky top-0 z-50">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="flex h-[74px] items-center justify-between relative">
                     <NavLogo/>
