@@ -8,7 +8,6 @@ import TechError from "@/features/tech-stacks/public/components/TechError.tsx";
 export default function TechBody() {
     const {data: techStacks = [], isLoading, isError} = useTechStacks();
 
-
     return (
         <motion.section
             initial={{opacity: 0, y: 40}}
