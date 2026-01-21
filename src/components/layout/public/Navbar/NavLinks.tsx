@@ -1,12 +1,15 @@
-import {RefObject, useState} from "react";
+// Ensure JSX.Element is recognized by importing React
+import React, {JSX, RefObject, useState} from "react";
 import {Sheet, SheetContent, SheetTrigger} from "@/components/ui/sheet";
-import {Menu} from "lucide-react";
+import {AtSign, Fingerprint, FolderGit2, Layers, Menu, Network, Terminal, TrendingUp} from "lucide-react";
 // 1. Import komponen BackendToggle
 import {BackendToggle} from "@/components/common/BackendToggle.tsx";
 
 interface NavLink {
     href: string;
     label: string;
+    labelMobile: string; // New property for mobile label
+    icon: JSX.Element; // Updated to accept JSX elements
 }
 
 interface NavLinksProps {
@@ -18,13 +21,13 @@ interface NavLinksProps {
 }
 
 const DEFAULT_LINKS: NavLink[] = [
-    {href: "#home", label: "Home"},
-    {href: "#tech-stacks", label: "Tech"},
-    {href: "#projects", label: "Projects"},
-    {href: "#experiences", label: "Exp"},
-    {href: "#about", label: "About"},
-    {href: "#architecture", label: "Arch"},
-    {href: "#contact", label: "Contact"},
+    {href: "#home", label: "Home", labelMobile: "Home", icon: <Terminal/>},
+    {href: "#tech-stacks", label: "Tech", labelMobile: "Tech Stacks", icon: <Layers/>},
+    {href: "#projects", label: "Projects", labelMobile: "Projects", icon: <FolderGit2/>},
+    {href: "#experiences", label: "Exp", labelMobile: "Experiences", icon: <TrendingUp/>},
+    {href: "#about", label: "About", labelMobile: "About", icon: <Fingerprint/>},
+    {href: "#architecture", label: "Arch", labelMobile: "Architecture", icon: <Network/>},
+    {href: "#contact", label: "Contact", labelMobile: "Contact", icon: <AtSign/>},
 ];
 
 export default function NavLinks({
@@ -96,7 +99,10 @@ export default function NavLinks({
                                         : "text-accent/80 hover:text-white hover:bg-primary/10"
                                 }`}
                             >
-                                {link.label}
+                                <span className="flex items-center gap-2">
+                                    {link.icon}
+                                    {link.labelMobile}
+                                </span>
                             </a>
                         ))}
                     </nav>
