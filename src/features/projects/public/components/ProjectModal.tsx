@@ -3,10 +3,11 @@ import {AnimatePresence, motion} from "framer-motion";
 import {HiOutlineGlobeAlt, HiXMark} from "react-icons/hi2";
 import {SiGithub} from "react-icons/si";
 import TechIcon from "@/components/common/TechIcon.tsx";
+import {Project} from "@/types";
 
 interface ProjectModalProps {
     selectedId: number | null;
-    selectedProject: any; // Replace `any` with the appropriate type for `selectedProject`
+    selectedProject: Project | undefined; // Replace `any` with the appropriate type for `selectedProject`
     setSelectedId: (id: number | null) => void;
     storagePath?: string;
 }

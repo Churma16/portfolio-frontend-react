@@ -10,7 +10,7 @@ interface ProjectShowcaseProps {
 
 export default function ProjectShowcase({projects}: ProjectShowcaseProps) {
     const [selectedId, setSelectedId] = useState<number | null>(null);
-    const selectedProject = projects.find((p) => p.id === selectedId);
+    const selectedProject: Project | undefined = projects.find((p) => p.id === selectedId);
     const {activeBackend} = useApi();
 
     const isGo = activeBackend === 'go';
@@ -44,13 +44,14 @@ export default function ProjectShowcase({projects}: ProjectShowcaseProps) {
                     />
                 ))}
             </div>
+
+            {/* --- MODAL POP-UP --- */}
             <ProjectModal
                 selectedId={selectedId}
                 selectedProject={selectedProject}
                 setSelectedId={setSelectedId}
                 storagePath={StoragePath}
             />
-            {/* --- MODAL POP-UP --- */}
         </div>
     );
 }
