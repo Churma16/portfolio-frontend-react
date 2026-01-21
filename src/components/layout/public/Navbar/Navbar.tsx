@@ -4,7 +4,7 @@ import {useNavbarState} from "@/components/layout/public/Navbar/useNavbarState.t
 import {BackendToggle} from "@/components/common/BackendToggle.tsx";
 
 export default function Navbar() {
-    const {underlineStyle, navRef, isActive} = useNavbarState();
+    const {activeHash, underlineStyle, navRef, isActive} = useNavbarState();
 
     return (
         <nav className="border-b border-border/60 bg-background sticky top-0 z-50">
@@ -15,7 +15,7 @@ export default function Navbar() {
                         underlineStyle={underlineStyle}
                         navRef={navRef}
                         isActive={isActive}
-                        activeHash=""
+                        activeHash={activeHash}
 
                     />
                     <div className="items-center gap-4 hidden md:block">
