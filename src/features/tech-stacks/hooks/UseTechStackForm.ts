@@ -43,7 +43,7 @@ export const useTechStackForm = ({
                         icon: "",
                     });
                 }
-            })
+            }, 0);
         }
     }, [open, techStackToEdit]);
 
@@ -63,13 +63,12 @@ export const useTechStackForm = ({
         }
 
         if (techStackToEdit) {
-            updateMutation.mutate({
-                id: techStackToEdit.id,
-                data: payload,
-                ...callbacks,
-            });
+            updateMutation.mutate(
+                {id: techStackToEdit.id, data: payload},
+                callbacks
+            );
         } else {
-            createMutation.mutate({payload, callbacks});
+            createMutation.mutate(payload, callbacks);
         }
     };
 
