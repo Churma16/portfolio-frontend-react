@@ -1,4 +1,3 @@
-import {FormEvent, useEffect, useState} from "react";
 import {Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle,} from "@/components/ui/dialog.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {Input} from "@/components/ui/input.tsx";
@@ -6,9 +5,9 @@ import {Label} from "@/components/ui/label.tsx";
 import {CgSpinner} from "react-icons/cg";
 import {TechStack} from "@/types";
 import TechIcon from "@/components/common/TechIcon.tsx";
-import apiClient from "@/api/axios.ts";
+import {useTechStackForm} from "@/features/tech-stacks/hooks/UseTechStackForm.ts";
 
-interface Props {
+interface TechStackDialogProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
     dataToEdit?: TechStack | null;
@@ -16,45 +15,23 @@ interface Props {
 }
 
 export default function TechStackDialog({
-    open,
-    onOpenChange,
-    dataToEdit,
-    onSuccess,
-}: Props) {
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [formData, setFormData] = useState({ name: "", icon: "" });
+                                            open,
+                                            onOpenChange,
+                                            dataToEdit,
+                                            onSuccess,
+                                        }: TechStackDialogProps) {
+    const {
+        formData,
+        handleInputChange,
+        handleSubmit,
+        isSubmitting
+    } = useTechStackForm({
+        techStackToEdit: dataToEdit,
+        open,
+        onSuccess,
+        onClose: () => onOpenChange(false),
+    });
 
-    useEffect(() => {
-        if (open) {
-            setFormData({
-                name: dataToEdit?.name || "",
-                icon: dataToEdit?.icon || "",
-            });
-        }
-    }, [open, dataToEdit]);
-
-    const handleSubmit = async (e: FormEvent) => {
-        e.preventDefault();
-        setIsSubmitting(true);
-        const url = dataToEdit
-            ? `/tech-stacks/${dataToEdit.id}`
-            : "/tech-stacks";
-
-        try {
-            if (dataToEdit) {
-                await apiClient.put(url, formData);
-            } else {
-                await apiClient.post(url, formData);
-            }
-            onSuccess();
-            onOpenChange(false);
-        } catch (error) {
-            console.error("Error saving tech stack:", error);
-            alert("Gagal menyimpan tech stack!");
-        } finally {
-            setIsSubmitting(false);
-        }
-    };
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
@@ -70,11 +47,7 @@ export default function TechStackDialog({
                         <Input
                             value={formData.name}
                             onChange={(e) =>
-                                setFormData({
-                                    ...formData,
-                                    name: e.target.value,
-                                })
-                            }
+                                handleInputChange("name", e.target.value)}
                             placeholder="e.g. Laravel"
                             className="bg-black/20 border-white/10"
                             required
@@ -85,11 +58,7 @@ export default function TechStackDialog({
                         <Input
                             value={formData.icon}
                             onChange={(e) =>
-                                setFormData({
-                                    ...formData,
-                                    icon: e.target.value,
-                                })
-                            }
+                                handleInputChange("icon", e.target.value)}
                             placeholder="e.g. SiLaravel"
                             className="bg-black/20 border-white/10"
                         />
@@ -120,7 +89,8 @@ export default function TechStackDialog({
                                 Preview:
                             </span>
                             <TechIcon
-                                name={formData.icon}
+                                name={formData.name}
+                                icon={formData.icon}
                                 className="w-6 h-6 text-foreground"
                             />
                         </div>
@@ -132,7 +102,7 @@ export default function TechStackDialog({
                             disabled={isSubmitting}
                         >
                             {isSubmitting && (
-                                <CgSpinner className="animate-spin mr-2" />
+                                <CgSpinner className="animate-spin mr-2"/>
                             )}{" "}
                             Save
                         </Button>

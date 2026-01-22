@@ -1,4 +1,4 @@
-import {useQuery} from "@tanstack/react-query";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import apiClient from "../../../api/axios.ts";
 import {ApiResponse, TechStack} from "@/types";
 import {useApi} from "@/contexts/useApi.ts";
@@ -22,3 +22,29 @@ export const useTechStacks = () => {
         staleTime: 1000 * 60 * 5,
     });
 };
+
+export const useCreateTechStack = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (newData: any) => {
+            return await apiClient.post("/tech-stacks", newData);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({queryKey: ["tech-stacks"]});
+        },
+    })
+}
+
+export const useUpdateTechStack = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async ({id, data}: { id: number; data: any }) => {
+            return await apiClient.put(`/tech-stacks/${id}`, data);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({queryKey: ["tech-stacks"]});
+        }
+    })
+}
