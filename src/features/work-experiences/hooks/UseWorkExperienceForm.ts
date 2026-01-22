@@ -1,7 +1,10 @@
 import {FormEvent, useEffect, useState} from "react";
 import dayjs from "dayjs";
 import {WorkExperience} from "@/types";
-import {useCreateWorkExperience, useUpdateWorkExperience} from "@/features/work-experiences/hooks/useWorkExperiences";
+import {
+    useCreateWorkExperience,
+    useUpdateWorkExperience
+} from "@/features/work-experiences/hooks/useWorkExperiences.ts";
 
 interface UseWorkExperienceFormProps {
     experienceToEdit?: WorkExperience | null;
