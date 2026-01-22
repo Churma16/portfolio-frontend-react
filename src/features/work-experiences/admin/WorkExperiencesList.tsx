@@ -1,11 +1,13 @@
 import {useState} from "react";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/components/ui/table.tsx";
 import {Button} from "@/components/ui/button.tsx";
-import {HiArrowDown, HiArrowUp, HiOutlineCube, HiPencil, HiPlus, HiTrash,} from "react-icons/hi2";
+import {HiArrowDown, HiArrowUp, HiOutlineCube, HiPlus,} from "react-icons/hi2";
 import {WorkExperience} from "@/types";
 import WorkExperiencesDialog from "@/features/work-experiences/admin/components/WorkExperiencesDialog.tsx";
 import {useWorkExperiences} from "@/features/work-experiences/hooks/useWorkExperiences.ts";
 import apiClient from "@/api/axios.ts";
+import DeleteButton from "@/components/common/DeleteButton.tsx";
+import EditButton from "@/components/common/EditButton.tsx";
 
 export default function WorkExperiencesList() {
     const { data: experiences = [], isLoading, refetch } =
@@ -242,26 +244,8 @@ export default function WorkExperiencesList() {
 
                                     <TableCell className="text-right">
                                         <div className="flex items-center justify-end gap-2">
-                                            <Button
-                                                size="icon"
-                                                variant="ghost"
-                                                onClick={() =>
-                                                    handleEdit(experience)
-                                                }
-                                                className="h-8 w-8 text-lara-text-muted hover:text-foreground hover:bg-white/10"
-                                            >
-                                                <HiPencil className="w-4 h-4" />
-                                            </Button>
-                                            <Button
-                                                size="icon"
-                                                variant="ghost"
-                                                onClick={() =>
-                                                    handleDelete(experience)
-                                                }
-                                                className="h-8 w-8 text-lara-text-muted hover:text-lara-accent-red-light hover:bg-red-500/10"
-                                            >
-                                                <HiTrash className="w-4 h-4" />
-                                            </Button>
+                                            <EditButton<WorkExperience> item={experience} onEdit={handleEdit}/>
+                                            <DeleteButton<WorkExperience> item={experience} onDelete={handleDelete}/>
                                         </div>
                                     </TableCell>
                                 </TableRow>
