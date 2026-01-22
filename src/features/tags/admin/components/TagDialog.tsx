@@ -1,4 +1,3 @@
-import {FormEvent, useEffect, useState} from "react";
 import {Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle,} from "@/components/ui/dialog.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {Input} from "@/components/ui/input.tsx";
@@ -6,9 +5,9 @@ import {Label} from "@/components/ui/label.tsx";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue,} from "@/components/ui/select.tsx";
 import {CgSpinner} from "react-icons/cg";
 import {Tag} from "@/types";
-import apiClient from "@/api/axios.ts";
+import {useTagForm} from "@/features/tags/hooks/useTagForm.ts";
 
-interface Props {
+interface TagProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
     dataToEdit?: Tag | null;
@@ -16,43 +15,23 @@ interface Props {
 }
 
 export default function TagDialog({
-    open,
-    onOpenChange,
-    dataToEdit,
-    onSuccess,
-}: Props) {
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [formData, setFormData] = useState({ name: "", color: "blue" });
-
-    useEffect(() => {
-        if (open) {
-            setFormData({
-                name: dataToEdit?.name || "",
-                color: dataToEdit?.color || "blue",
-            });
-        }
-    }, [open, dataToEdit]);
-
-    const handleSubmit = async (e: FormEvent) => {
-        e.preventDefault();
-        setIsSubmitting(true);
-        const url = dataToEdit ? `/tags/${dataToEdit.id}` : "/tags";
-
-        try {
-            if (dataToEdit) {
-                await apiClient.put(url, formData);
-            } else {
-                await apiClient.post(url, formData);
-            }
-            onSuccess();
-            onOpenChange(false);
-        } catch (error) {
-            console.error("Error saving tag:", error);
-            alert("Gagal menyimpan tag!");
-        } finally {
-            setIsSubmitting(false);
-        }
-    };
+                                      open,
+                                      onOpenChange,
+                                      dataToEdit,
+                                      onSuccess,
+                                  }: TagProps) {
+    const {
+        formData,
+        handleInputChange,
+        handleSubmit,
+        isSubmitting,
+        availableCategories
+    } = useTagForm({
+        tagToEdit: dataToEdit,
+        open,
+        onSuccess,
+        onClose: () => onOpenChange(false),
+    });
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
@@ -68,11 +47,7 @@ export default function TagDialog({
                         <Input
                             value={formData.name}
                             onChange={(e) =>
-                                setFormData({
-                                    ...formData,
-                                    name: e.target.value,
-                                })
-                            }
+                                handleInputChange("name", e.target.value)}
                             placeholder="e.g. Mobile"
                             className="bg-black/20 border-white/10"
                             required
@@ -82,12 +57,10 @@ export default function TagDialog({
                         <Label>Color Theme</Label>
                         <Select
                             value={formData.color}
-                            onValueChange={(val) =>
-                                setFormData({ ...formData, color: val })
-                            }
+                            onValueChange={(value) => handleInputChange("color", value)}
                         >
                             <SelectTrigger className="bg-black/20 border-white/10 text-foreground">
-                                <SelectValue placeholder="Select color" />
+                                <SelectValue placeholder="Select color"/>
                             </SelectTrigger>
                             <SelectContent className="bg-admin-card border-white/10 text-foreground">
                                 <SelectItem value="blue">Blue</SelectItem>
@@ -98,6 +71,27 @@ export default function TagDialog({
                             </SelectContent>
                         </Select>
                     </div>
+                    <div className="space-y-2">
+                        <Label>Category</Label>
+                        <Select
+                            value={formData.category_id ? String(formData.category_id) : undefined}
+                            onValueChange={(value) => handleInputChange("category_id", value)}
+                        >
+                            <SelectTrigger className="bg-black/20 border-white/10 text-foreground">
+                                <SelectValue placeholder="Select a category"/>
+                            </SelectTrigger>
+                            <SelectContent className="bg-admin-card border-white/10 text-foreground">
+                                {availableCategories && availableCategories.length > 0 &&
+                                    availableCategories.map((category, index) => (
+                                        <SelectItem key={index} value={String(category.id)}>
+                                            {category.name}
+                                        </SelectItem>
+                                    ))
+                                }
+                            </SelectContent>
+                        </Select>
+                    </div>
+
                     <DialogFooter>
                         <Button
                             type="submit"
@@ -105,7 +99,7 @@ export default function TagDialog({
                             disabled={isSubmitting}
                         >
                             {isSubmitting && (
-                                <CgSpinner className="animate-spin mr-2" />
+                                <CgSpinner className="animate-spin mr-2"/>
                             )}{" "}
                             Save
                         </Button>
@@ -113,5 +107,6 @@ export default function TagDialog({
                 </form>
             </DialogContent>
         </Dialog>
-    );
+    )
+        ;
 }
