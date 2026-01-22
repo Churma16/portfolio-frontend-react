@@ -14,8 +14,8 @@ import {CgSpinner} from "react-icons/cg";
 import {WorkExperience} from "@/types";
 import {useTechStacks} from "@/features/tech-stacks/hooks/useTechStacks.ts";
 import {useTags} from "@/features/tags/hooks/useTags.ts";
-import {useWorkExperienceForm} from "@/features/projects/hooks/UseWorkExperienceForm.ts";
-import {TagSelector, TechStackSelector} from "@/features/projects/admin/components/WorkExperienceSelectors.tsx";
+import {useWorkExperienceForm} from "@/features/work-experiences/hooks/UseWorkExperienceForm.ts";
+import {TagSelector, TechStackSelector} from "@/features/work-experiences/admin/components/WorkExperienceSelectors.tsx";
 
 interface WorkExperiencesDialogProps {
     open: boolean;

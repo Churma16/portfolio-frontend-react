@@ -1,5 +1,5 @@
-import {Label} from "@/components/ui/label";
-import TechIcon from "@/components/common/TechIcon";
+import {Label} from "@/components/ui/label.tsx";
+import TechIcon from "@/components/common/TechIcon.tsx";
 import {Tag, TechStack} from "@/types"; // Sesuaikan import type kamu
 
 // --- COMPONENT 1: TECH STACK SELECTOR ---
