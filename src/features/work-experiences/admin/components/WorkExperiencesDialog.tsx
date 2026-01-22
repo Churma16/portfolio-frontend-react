@@ -1,11 +1,10 @@
-import {FormEvent, useEffect, useState} from "react";
 import {
     Dialog,
     DialogContent,
     DialogDescription,
     DialogFooter,
     DialogHeader,
-    DialogTitle,
+    DialogTitle
 } from "@/components/ui/dialog.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {Input} from "@/components/ui/input.tsx";
@@ -13,15 +12,12 @@ import {Textarea} from "@/components/ui/textarea.tsx";
 import {Label} from "@/components/ui/label.tsx";
 import {CgSpinner} from "react-icons/cg";
 import {WorkExperience} from "@/types";
-import TechIcon from "@/components/common/TechIcon.tsx";
+
+// Hooks & Components
 import {useTechStacks} from "@/features/tech-stacks/hooks/useTechStacks.ts";
 import {useTags} from "@/features/tags/hooks/useTags.ts";
-import {
-    useCreateWorkExperience,
-    useUpdateWorkExperience,
-} from "@/features/work-experiences/hooks/useWorkExperiences.ts";
-
-import dayjs from "dayjs";
+import {useWorkExperienceForm} from "@/features/projects/hooks/UseWorkExperienceForm.ts";
+import {TagSelector, TechStackSelector} from "@/features/projects/admin/components/WorkExperienceSelectors.tsx";
 
 interface WorkExperiencesDialogProps {
     open: boolean;
@@ -36,156 +32,34 @@ export default function WorkExperiencesDialog({
                                                   experienceToEdit,
                                                   onSuccess,
                                               }: WorkExperiencesDialogProps) {
-    // Use custom hooks for master data
+    // 1. Fetch Master Data (Mata-mata eksternal)
     const {data: availableStacks = []} = useTechStacks();
     const {data: availableTags = []} = useTags();
 
-    // PANGGIL PARA ALGOJO (Mutation Hooks)
-    const createMutation = useCreateWorkExperience();
-    const updateMutation = useUpdateWorkExperience();
-
-    // Gabungkan status loading mereka
-    const isSubmitting = createMutation.isPending || updateMutation.isPending;
-
-    // Form State
-    const [formData, setFormData] = useState({
-        company: "",
-        position: "",
-        location: "",
-        start_date: "",
-        end_date: "",
-        description: "",
-        is_current: false,
+    // 2. Init Logic Form (Strategist)
+    const {
+        formData,
+        handleInputChange,
+        selectedStackIds,
+        toggleStack,
+        selectedTagIds,
+        toggleTag,
+        handleSubmit,
+        isSubmitting
+    } = useWorkExperienceForm({
+        experienceToEdit,
+        open,
+        onSuccess,
+        onClose: () => onOpenChange(false),
     });
-
-    // Toggle State (Array ID yang dipilih)
-    const [selectedStackIds, setSelectedStackIds] = useState<number[]>([]);
-    const [selectedTagIds, setSelectedTagIds] = useState<number[]>([]);
-
-    // Format Date Helper
-    const formatDateToYYYYMM = (dateStr: string) => {
-        return dayjs(dateStr, "MMM YYYY").format("YYYY-MM");
-    };
-
-    // Reset atau Isi Form saat Modal Dibuka
-    useEffect(() => {
-        if (open) {
-            setTimeout(() => {
-                if (experienceToEdit) {
-                    setFormData({
-                        company: experienceToEdit.company,
-                        position: experienceToEdit.position,
-                        location: experienceToEdit.location,
-                        start_date: experienceToEdit.start_date
-                            ? formatDateToYYYYMM(experienceToEdit.start_date)
-                            : "",
-                        end_date: experienceToEdit.end_date
-                            ? formatDateToYYYYMM(experienceToEdit.end_date)
-                            : "",
-                        description: experienceToEdit.description,
-                        is_current: experienceToEdit.is_current,
-                    });
-                    // Isi toggle yang sudah terpilih
-                    setSelectedStackIds(
-                        experienceToEdit.tech_stack?.map((s) => s.id) || []
-                    );
-                    setSelectedTagIds(experienceToEdit.tags?.map((t) => t.id) || []);
-                } else {
-                    // Reset Form (Mode Create)
-                    setFormData({
-                        company: "",
-                        position: "",
-                        location: "",
-                        start_date: "",
-                        end_date: "",
-                        description: "",
-                        is_current: false,
-                    });
-                    setSelectedStackIds([]);
-                    setSelectedTagIds([]);
-                }
-            }, 0);
-        }
-    }, [open, experienceToEdit]);
-
-    // 2. Logic Toggle (Klik untuk Pilih/Hapus)
-    const toggleStack = (id: number) => {
-        setSelectedStackIds((prev) =>
-            prev.includes(id)
-                ? prev.filter((item) => item !== id)
-                : [...prev, id]
-        );
-    };
-
-    const toggleTag = (id: number) => {
-        setSelectedTagIds((prev) =>
-            prev.includes(id)
-                ? prev.filter((item) => item !== id)
-                : [...prev, id]
-        );
-    };
-
-    // --- HANDLE SUBMIT YANG BARU (LEBIH BERSIH) ---
-    const handleSubmit = (e: FormEvent) => {
-        e.preventDefault();
-
-        // Siapkan Payload (Barang Bukti)
-        const payload = {
-            company: formData.company,
-            position: formData.position,
-            location: formData.location,
-            start_date: formData.start_date,
-            end_date: formData.end_date || null,
-            description: formData.description,
-            is_current: formData.is_current,
-            tech_stack_ids: selectedStackIds,
-            tag_ids: selectedTagIds,
-        };
-
-        // Callback apa yang dilakukan kalau Misi Sukses
-        const handleMissionSuccess = () => {
-            onSuccess(); // Refresh table (trigger refetch dari parent)
-            onOpenChange(false); // Tutup pintu dialog
-        };
-
-        // Callback kalau Gagal
-        const handleMissionError = (error: any) => {
-            console.error("Gagal bos!", error);
-            // Bisa tambah toast notification disini
-        };
-
-        if (experienceToEdit) {
-            // Perintah UPDATE
-            updateMutation.mutate(
-                {id: experienceToEdit.id, data: payload},
-                {
-                    onSuccess: handleMissionSuccess,
-                    onError: handleMissionError,
-                }
-            );
-        } else {
-            // Perintah CREATE
-            createMutation.mutate(payload, {
-                onSuccess: handleMissionSuccess,
-                onError: handleMissionError,
-            });
-        }
-    };
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent
                 className="max-w-3xl w-[95vw] bg-admin-card border border-white/10 text-foreground max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
-                    <DialogTitle>
-                        {experienceToEdit
-                            ? "Edit Work Experience"
-                            : "Add New Work Experience"}
-                    </DialogTitle>
-                    <DialogDescription>
-                        Fill in the details below. Click on Tech Stacks and Tags
-                        to toggle them.
-                    </DialogDescription>
+                    <DialogTitle>{experienceToEdit ? "Edit Work Experience" : "Add New Work Experience"}</DialogTitle>
+                    <DialogDescription>Fill in the details below.</DialogDescription>
                 </DialogHeader>
 
                 <form onSubmit={handleSubmit} className="space-y-6 mt-4">
@@ -195,12 +69,7 @@ export default function WorkExperiencesDialog({
                             <Label>Company Name</Label>
                             <Input
                                 value={formData.company}
-                                onChange={(e) =>
-                                    setFormData({
-                                        ...formData,
-                                        company: e.target.value,
-                                    })
-                                }
+                                onChange={(e) => handleInputChange("company", e.target.value)}
                                 placeholder="E.g. Tech Company Inc."
                                 className="bg-black/20 border-white/10"
                                 required
@@ -210,12 +79,7 @@ export default function WorkExperiencesDialog({
                             <Label>Position</Label>
                             <Input
                                 value={formData.position}
-                                onChange={(e) =>
-                                    setFormData({
-                                        ...formData,
-                                        position: e.target.value,
-                                    })
-                                }
+                                onChange={(e) => handleInputChange("position", e.target.value)}
                                 placeholder="E.g. Senior Developer"
                                 className="bg-black/20 border-white/10"
                                 required
@@ -229,13 +93,7 @@ export default function WorkExperiencesDialog({
                             <Label>Location</Label>
                             <Input
                                 value={formData.location}
-                                onChange={(e) =>
-                                    setFormData({
-                                        ...formData,
-                                        location: e.target.value,
-                                    })
-                                }
-                                placeholder="E.g. Jakarta, Indonesia"
+                                onChange={(e) => handleInputChange("location", e.target.value)}
                                 className="bg-black/20 border-white/10"
                             />
                         </div>
@@ -244,17 +102,10 @@ export default function WorkExperiencesDialog({
                                 <input
                                     type="checkbox"
                                     checked={formData.is_current}
-                                    onChange={(e) =>
-                                        setFormData({
-                                            ...formData,
-                                            is_current: e.target.checked,
-                                        })
-                                    }
-                                    className="w-4 h-4 rounded border-white/10 bg-black/20 text-primary cursor-pointer"
+                                    onChange={(e) => handleInputChange("is_current", e.target.checked)}
+                                    className="w-4 h-4 rounded border-white/10 bg-black/20 text-primary"
                                 />
-                                <span className="text-sm text-lara-text-tertiary">
-                                    Currently Working Here
-                                </span>
+                                <span className="text-sm text-lara-text-tertiary">Currently Working Here</span>
                             </label>
                         </div>
                     </div>
@@ -266,34 +117,17 @@ export default function WorkExperiencesDialog({
                             <Input
                                 type="month"
                                 value={formData.start_date}
-                                onChange={(e) =>
-                                    setFormData({
-                                        ...formData,
-                                        start_date: e.target.value,
-                                    })
-                                }
+                                onChange={(e) => handleInputChange("start_date", e.target.value)}
                                 className="bg-black/20 border-white/10"
                                 required
                             />
                         </div>
                         <div className="space-y-2">
-                            <Label>
-                                End Date
-                                {formData.is_current && (
-                                    <span className="text-xs text-lara-text-muted-dark ml-2">
-                                        (Disabled)
-                                    </span>
-                                )}
-                            </Label>
+                            <Label>End Date</Label>
                             <Input
                                 type="month"
                                 value={formData.end_date}
-                                onChange={(e) =>
-                                    setFormData({
-                                        ...formData,
-                                        end_date: e.target.value,
-                                    })
-                                }
+                                onChange={(e) => handleInputChange("end_date", e.target.value)}
                                 className="bg-black/20 border-white/10"
                                 disabled={formData.is_current}
                             />
@@ -305,107 +139,32 @@ export default function WorkExperiencesDialog({
                         <Label>Description</Label>
                         <Textarea
                             value={formData.description}
-                            onChange={(e) =>
-                                setFormData({
-                                    ...formData,
-                                    description: e.target.value,
-                                })
-                            }
-                            placeholder="Tell a story about this experience..."
+                            onChange={(e) => handleInputChange("description", e.target.value)}
                             className="bg-black/20 border-white/10"
                             rows={4}
                             required
                         />
                     </div>
 
-                    {/* --- TOGGLE AREA: TECH STACKS --- */}
-                    <div className="space-y-3">
-                        <Label className="text-primary font-bold uppercase tracking-wider text-xs">
-                            Select Tech Stacks
-                        </Label>
-                        <div className="flex flex-wrap gap-2 p-4 rounded-xl bg-black/20 border border-white/5">
-                            {availableStacks.map((stack) => {
-                                const isSelected = selectedStackIds.includes(
-                                    stack.id
-                                );
-                                return (
-                                    <div
-                                        key={stack.id}
-                                        onClick={() => toggleStack(stack.id)}
-                                        className={`cursor-pointer flex items-center gap-2 px-3 py-2 rounded-lg border transition-all duration-200 select-none
-                                            ${
-                                            isSelected
-                                                ? "bg-primary/20 border-primary text-foreground shadow-[0_0_10px_rgba(59,130,246,0.3)]"
-                                                : "bg-white/5 border-transparent text-lara-text-muted hover:bg-white/10 hover:border-white/20"
-                                        }
-                                        `}
-                                    >
-                                        <TechIcon
-                                            name={stack.name}
-                                            icon={stack.icon}
-                                            className={`w-4 h-4 ${
-                                                isSelected
-                                                    ? "text-primary"
-                                                    : "text-lara-text-muted-dark"
-                                            }`}
-                                        />
-                                        <span className="text-xs font-medium">
-                                            {stack.name}
-                                        </span>
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    </div>
+                    {/* --- THE SPECIALISTS --- */}
+                    <TechStackSelector
+                        options={availableStacks}
+                        selectedIds={selectedStackIds}
+                        onToggle={toggleStack}
+                    />
 
-                    {/* --- TOGGLE AREA: TAGS --- */}
-                    <div className="space-y-3">
-                        <Label className="text-lara-accent-green font-bold uppercase tracking-wider text-xs">
-                            Select Tags
-                        </Label>
-                        <div className="flex flex-wrap gap-2 p-4 rounded-xl bg-black/20 border border-white/5">
-                            {availableTags.map((tag) => {
-                                const isSelected = selectedTagIds.includes(
-                                    tag.id
-                                );
-                                return (
-                                    <div
-                                        key={tag.id}
-                                        onClick={() => toggleTag(tag.id)}
-                                        className={`cursor-pointer px-3 py-1.5 rounded-full border text-[11px] font-bold uppercase tracking-wide transition-all duration-200 select-none
-                                            ${
-                                            isSelected
-                                                ? "bg-green-500/20 border-green-500 text-green-400"
-                                                : "bg-white/5 border-transparent text-lara-text-muted-dark hover:bg-white/10"
-                                        }
-                                        `}
-                                    >
-                                        #{tag.name}
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    </div>
+                    <TagSelector
+                        options={availableTags}
+                        selectedIds={selectedTagIds}
+                        onToggle={toggleTag}
+                    />
 
                     <DialogFooter>
-                        <Button
-                            type="button"
-                            variant="ghost"
-                            onClick={() => onOpenChange(false)}
-                        >
-                            Cancel
-                        </Button>
-                        <Button
-                            type="submit"
-                            className="bg-primary hover:bg-blue-600 min-w-[120px]"
-                            disabled={isSubmitting}
-                        >
-                            {isSubmitting ? (
-                                <CgSpinner className="animate-spin mr-2"/>
-                            ) : null}
-                            {experienceToEdit
-                                ? "Update Experience"
-                                : "Create Experience"}
+                        <Button type="button" variant="ghost" onClick={() => onOpenChange(false)}>Cancel</Button>
+                        <Button type="submit" className="bg-primary hover:bg-blue-600 min-w-[120px]"
+                                disabled={isSubmitting}>
+                            {isSubmitting ? <CgSpinner className="animate-spin mr-2"/> : null}
+                            {experienceToEdit ? "Update Experience" : "Create Experience"}
                         </Button>
                     </DialogFooter>
                 </form>
