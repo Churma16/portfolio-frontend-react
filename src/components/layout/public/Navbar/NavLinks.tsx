@@ -21,13 +21,13 @@ interface NavLinksProps {
 }
 
 const DEFAULT_LINKS: NavLink[] = [
-    {href: "#home", label: "Home", labelMobile: "Home", icon: <Terminal/>},
-    {href: "#tech-stacks", label: "Tech", labelMobile: "Tech Stacks", icon: <Layers/>},
-    {href: "#projects", label: "Projects", labelMobile: "Projects", icon: <FolderGit2/>},
-    {href: "#experiences", label: "Exp", labelMobile: "Experiences", icon: <TrendingUp/>},
-    {href: "#about", label: "About", labelMobile: "About", icon: <Fingerprint/>},
-    {href: "#architecture", label: "Arch", labelMobile: "Architecture", icon: <Network/>},
-    {href: "#contact", label: "Contact", labelMobile: "Contact", icon: <AtSign/>},
+    {href: "#home", label: "Home", labelMobile: "Home", icon: <Terminal size={18}/>},
+    {href: "#tech-stacks", label: "Tech", labelMobile: "Tech Stacks", icon: <Layers size={18}/>},
+    {href: "#projects", label: "Projects", labelMobile: "Projects", icon: <FolderGit2 size={18}/>},
+    {href: "#experiences", label: "Exp", labelMobile: "Experiences", icon: <TrendingUp size={18}/>},
+    {href: "#about", label: "About", labelMobile: "About", icon: <Fingerprint size={18}/>},
+    {href: "#architecture", label: "Arch", labelMobile: "Architecture", icon: <Network size={18}/>},
+    {href: "#contact", label: "Contact", labelMobile: "Contact", icon: <AtSign size={18}/>},
 ];
 
 export default function NavLinks({
