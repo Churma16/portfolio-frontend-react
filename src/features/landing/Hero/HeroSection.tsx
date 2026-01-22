@@ -21,7 +21,7 @@ export default function Hero() {
         : import.meta.env.VITE_LARAVEL_FILE_URL || '/files/';
 
     return (
-        <section className="relative overflow-hidden pt-10 pb-20 lg:pt-20 lg:pb-32">
+        <section className="relative overflow-hidden pt-10 pb-20 lg:pt-8 lg:pb-32">
             <div
                 className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[120px] -z-10 opacity-50"/>
 
