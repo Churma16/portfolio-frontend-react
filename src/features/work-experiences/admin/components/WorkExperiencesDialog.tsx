@@ -12,8 +12,6 @@ import {Textarea} from "@/components/ui/textarea.tsx";
 import {Label} from "@/components/ui/label.tsx";
 import {CgSpinner} from "react-icons/cg";
 import {WorkExperience} from "@/types";
-
-// Hooks & Components
 import {useTechStacks} from "@/features/tech-stacks/hooks/useTechStacks.ts";
 import {useTags} from "@/features/tags/hooks/useTags.ts";
 import {useWorkExperienceForm} from "@/features/projects/hooks/UseWorkExperienceForm.ts";

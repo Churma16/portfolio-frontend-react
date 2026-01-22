@@ -23,7 +23,7 @@ export default function WorkExperiencesList() {
             await apiClient.post(`/work-experiences/${id}/reorder`, {
                 direction,
             });
-            refetch(); // Refresh data agar urutan baru tampil
+            await refetch(); // Refresh data agar urutan baru tampil
         } catch (error) {
             console.error("Gagal mengubah urutan", error);
         }
