@@ -107,6 +107,5 @@ export default function TagDialog({
                 </form>
             </DialogContent>
         </Dialog>
-    )
-        ;
+    );
 }
