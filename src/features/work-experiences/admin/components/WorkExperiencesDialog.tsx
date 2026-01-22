@@ -16,8 +16,11 @@ import {WorkExperience} from "@/types";
 import TechIcon from "@/components/common/TechIcon.tsx";
 import {useTechStacks} from "@/features/tech-stacks/hooks/useTechStacks.ts";
 import {useTags} from "@/features/tags/hooks/useTags.ts";
-import {useWorkExperiencesMutation} from "@/features/work-experiences/hooks/useWorkExperiences.ts";
-import apiClient from "@/api/axios.ts";
+import {
+    useCreateWorkExperience,
+    useUpdateWorkExperience,
+} from "@/features/work-experiences/hooks/useWorkExperiences.ts";
+
 import dayjs from "dayjs";
 
 interface WorkExperiencesDialogProps {
@@ -34,12 +37,15 @@ export default function WorkExperiencesDialog({
                                                   onSuccess,
                                               }: WorkExperiencesDialogProps) {
     // Use custom hooks for master data
-    const {data: availableStacks = [], isLoading: stacksLoading} =
-        useTechStacks();
-    const {data: availableTags = [], isLoading: tagsLoading} = useTags();
+    const {data: availableStacks = []} = useTechStacks();
+    const {data: availableTags = []} = useTags();
 
-    // Use mutation hook
-    const mutation = useWorkExperiencesMutation();
+    // PANGGIL PARA ALGOJO (Mutation Hooks)
+    const createMutation = useCreateWorkExperience();
+    const updateMutation = useUpdateWorkExperience();
+
+    // Gabungkan status loading mereka
+    const isSubmitting = createMutation.isPending || updateMutation.isPending;
 
     // Form State
     const [formData, setFormData] = useState({
@@ -51,8 +57,6 @@ export default function WorkExperiencesDialog({
         description: "",
         is_current: false,
     });
-
-    const [isSubmitting, setIsSubmitting] = useState(false);
 
     // Toggle State (Array ID yang dipilih)
     const [selectedStackIds, setSelectedStackIds] = useState<number[]>([]);
@@ -66,39 +70,41 @@ export default function WorkExperiencesDialog({
     // Reset atau Isi Form saat Modal Dibuka
     useEffect(() => {
         if (open) {
-            if (experienceToEdit) {
-                setFormData({
-                    company: experienceToEdit.company,
-                    position: experienceToEdit.position,
-                    location: experienceToEdit.location,
-                    start_date: experienceToEdit.start_date
-                        ? formatDateToYYYYMM(experienceToEdit.start_date)
-                        : "",
-                    end_date: experienceToEdit.end_date
-                        ? formatDateToYYYYMM(experienceToEdit.end_date)
-                        : "",
-                    description: experienceToEdit.description,
-                    is_current: experienceToEdit.is_current,
-                });
-                // Isi toggle yang sudah terpilih
-                setSelectedStackIds(
-                    experienceToEdit.tech_stack?.map((s) => s.id) || []
-                );
-                setSelectedTagIds(experienceToEdit.tags?.map((t) => t.id) || []);
-            } else {
-                // Reset Form (Mode Create)
-                setFormData({
-                    company: "",
-                    position: "",
-                    location: "",
-                    start_date: "",
-                    end_date: "",
-                    description: "",
-                    is_current: false,
-                });
-                setSelectedStackIds([]);
-                setSelectedTagIds([]);
-            }
+            setTimeout(() => {
+                if (experienceToEdit) {
+                    setFormData({
+                        company: experienceToEdit.company,
+                        position: experienceToEdit.position,
+                        location: experienceToEdit.location,
+                        start_date: experienceToEdit.start_date
+                            ? formatDateToYYYYMM(experienceToEdit.start_date)
+                            : "",
+                        end_date: experienceToEdit.end_date
+                            ? formatDateToYYYYMM(experienceToEdit.end_date)
+                            : "",
+                        description: experienceToEdit.description,
+                        is_current: experienceToEdit.is_current,
+                    });
+                    // Isi toggle yang sudah terpilih
+                    setSelectedStackIds(
+                        experienceToEdit.tech_stack?.map((s) => s.id) || []
+                    );
+                    setSelectedTagIds(experienceToEdit.tags?.map((t) => t.id) || []);
+                } else {
+                    // Reset Form (Mode Create)
+                    setFormData({
+                        company: "",
+                        position: "",
+                        location: "",
+                        start_date: "",
+                        end_date: "",
+                        description: "",
+                        is_current: false,
+                    });
+                    setSelectedStackIds([]);
+                    setSelectedTagIds([]);
+                }
+            }, 0);
         }
     }, [open, experienceToEdit]);
 
@@ -119,42 +125,50 @@ export default function WorkExperiencesDialog({
         );
     };
 
-    // Handle Submit
-    const handleSubmit = async (e: FormEvent) => {
+    // --- HANDLE SUBMIT YANG BARU (LEBIH BERSIH) ---
+    const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
-        setIsSubmitting(true);
 
-        try {
-            const payload: any = {
-                company: formData.company,
-                position: formData.position,
-                location: formData.location,
-                start_date: formData.start_date,
-                end_date: formData.end_date || null,
-                description: formData.description,
-                is_current: formData.is_current,
-                tech_stack_ids: selectedStackIds,
-                tag_ids: selectedTagIds,
-            };
+        // Siapkan Payload (Barang Bukti)
+        const payload = {
+            company: formData.company,
+            position: formData.position,
+            location: formData.location,
+            start_date: formData.start_date,
+            end_date: formData.end_date || null,
+            description: formData.description,
+            is_current: formData.is_current,
+            tech_stack_ids: selectedStackIds,
+            tag_ids: selectedTagIds,
+        };
 
-            if (experienceToEdit) {
-                // PUT request untuk update
-                await apiClient.put(
-                    `/work-experiences/${experienceToEdit.id}`,
-                    payload
-                );
-            } else {
-                // POST request untuk create
-                await apiClient.post("/work-experiences", payload);
-            }
+        // Callback apa yang dilakukan kalau Misi Sukses
+        const handleMissionSuccess = () => {
+            onSuccess(); // Refresh table (trigger refetch dari parent)
+            onOpenChange(false); // Tutup pintu dialog
+        };
 
-            onSuccess();
-            onOpenChange(false);
-        } catch (error) {
-            console.error("Error submitting work experience:", error);
-            alert("Gagal menyimpan pengalaman kerja!");
-        } finally {
-            setIsSubmitting(false);
+        // Callback kalau Gagal
+        const handleMissionError = (error: any) => {
+            console.error("Gagal bos!", error);
+            // Bisa tambah toast notification disini
+        };
+
+        if (experienceToEdit) {
+            // Perintah UPDATE
+            updateMutation.mutate(
+                {id: experienceToEdit.id, data: payload},
+                {
+                    onSuccess: handleMissionSuccess,
+                    onError: handleMissionError,
+                }
+            );
+        } else {
+            // Perintah CREATE
+            createMutation.mutate(payload, {
+                onSuccess: handleMissionSuccess,
+                onError: handleMissionError,
+            });
         }
     };
 
@@ -399,4 +413,3 @@ export default function WorkExperiencesDialog({
         </Dialog>
     );
 }
-

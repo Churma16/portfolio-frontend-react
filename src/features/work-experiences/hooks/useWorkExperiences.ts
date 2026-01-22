@@ -1,4 +1,4 @@
-import {useQuery} from "@tanstack/react-query";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import apiClient from "@/api/axios.ts";
 import {ApiResponse, WorkExperience} from "@/types";
 
@@ -24,10 +24,38 @@ export const useWorkExperiencesMutation = () => {
     // This is a placeholder mutation hook that doesn't do anything
     // The actual mutations are handled in the dialog component
     return {
-        mutate: () => {},
+        mutate: () => {
+        },
         isPending: false,
         isSuccess: false,
         isError: false,
     };
 }
+
+export const useCreateWorkExperience = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (newData: any) => {
+            return await apiClient.post("/work-experiences", newData);
+        },
+        onSuccess: () => {
+            // Setelah sukses, suruh mata-mata update data di papan tulis (Cache)
+            queryClient.invalidateQueries({queryKey: ["work-experiences"]});
+        },
+    });
+};
+
+export const useUpdateWorkExperience = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async ({id, data}: { id: number; data: any }) => {
+            return await apiClient.put(`/work-experiences/${id}`, data);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({queryKey: ["work-experiences"]});
+        },
+    });
+};
 
