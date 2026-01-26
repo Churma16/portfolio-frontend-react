@@ -5,7 +5,7 @@ import {Input} from "@/components/ui/input.tsx";
 import {Label} from "@/components/ui/label.tsx";
 import {HiPencil} from "react-icons/hi2";
 import {ProfileFormValues} from "../ProfileDialog.tsx";
-import {useStoragePath} from "@/features/projects/hooks/useStoragePath.ts"; // Import tipe jika perlu
+import {useStoragePath} from "@/hooks/useStoragePath.ts"; // Import tipe jika perlu
 
 export default function IdentityCard() {
     const {register, watch, setValue} = useFormContext<ProfileFormValues>();
