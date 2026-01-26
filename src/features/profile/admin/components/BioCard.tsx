@@ -15,6 +15,10 @@ export default function BioCard() {
     const cvFileList = watch("cv_file");
     const existingCv = watch("cv_files"); // string url
 
+    // Watch bio fields for live preview
+    const bioShort = watch("bio_short");
+    const bioLong = watch("bio_long");
+
     // Nama file untuk display
     const fileName =
         cvFileList && cvFileList.length > 0
@@ -31,7 +35,7 @@ export default function BioCard() {
     };
 
     return (
-        <Card className="bg-admin-card border-admin-border text-foreground shadow-lg">
+        <Card className="bg-admin-card border-admin-border/30 text-foreground shadow-lg">
             <CardHeader>
                 <CardTitle className="font-heading">About You</CardTitle>
                 <CardDescription>
@@ -39,30 +43,68 @@ export default function BioCard() {
                 </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-                <div className="grid grid-cols-1 gap-6">
-                    <div className="space-y-2">
-                        <Label>Short Bio</Label>
-                        <Textarea
-                            {...register("bio_short")}
-                            className="bg-admin-field min-h-[80px]"
-                        />
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    {/* Left Column: Text Inputs */}
+                    <div className="space-y-4">
+                        <div className="space-y-2">
+                            <Label>Short Bio</Label>
+                            <Textarea
+                                {...register("bio_short")}
+                                className="bg-admin-field/10 min-h-[80px]"
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <Label>Full Biography</Label>
+                            <Textarea
+                                {...register("bio_long")}
+                                className="bg-admin-field/10 min-h-[200px] font-mono text-sm"
+                            />
+                        </div>
                     </div>
-                    <div className="space-y-2">
-                        <Label>Full Biography</Label>
-                        <Textarea
-                            {...register("bio_long")}
-                            className="bg-admin-field min-h-[200px] font-mono text-sm"
-                        />
+
+                    {/* Right Column: Live Preview */}
+                    <div className="space-y-4">
+                        {/* Short Bio Preview */}
+                        <div className="space-y-2">
+                            <Label className="text-primary">Short Bio Preview</Label>
+                            <div
+                                className="bg-admin-field/10 p-4 rounded-lg min-h-[80px] border border-admin-border/30 text-sm leading-relaxed prose prose-invert max-w-none">
+                                {bioShort ? (
+                                    <div
+                                        dangerouslySetInnerHTML={{__html: bioShort}}
+                                        className="text-foreground"
+                                    />
+                                ) : (
+                                    <span className="text-accent/50 italic">Preview will appear here...</span>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* Full Biography Preview */}
+                        <div className="space-y-2">
+                            <Label className="text-primary">Full Biography Preview</Label>
+                            <div
+                                className="bg-admin-field/10 p-4 rounded-lg min-h-[200px] border border-admin-border/30 text-sm leading-relaxed overflow-y-auto prose prose-invert max-w-none">
+                                {bioLong ? (
+                                    <div
+                                        dangerouslySetInnerHTML={{__html: bioLong}}
+                                        className="text-foreground"
+                                    />
+                                ) : (
+                                    <span className="text-accent/50 italic">Preview will appear here...</span>
+                                )}
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <div className="flex flex-col md:flex-row gap-6 pt-4 border-t border-white/10">
                     {/* Switch dengan Controller */}
                     <div
-                        className="flex-1 flex items-center justify-between p-4 rounded-lg bg-admin-field border border-admin-border">
+                        className="flex-1 flex items-center justify-between p-4 rounded-lg border border-admin-border/30">
                         <div>
                             <Label>Open to Work?</Label>
-                            <p className="text-xs text-accent/60 mt-1">
+                            <p className="text-xs text-accent mt-1">
                                 Shows a "Hire Me" badge.
                             </p>
                         </div>
