@@ -56,3 +56,42 @@ export const useProjectMutation = (projectId?: number) => {
         },
     });
 };
+
+export const useCreateProject = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (newData: any) => {
+            return await apiClient.post("/projects", newData);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({queryKey: ["projects"]});
+        }
+    });
+}
+
+export const useUpdateProject = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async ({id, data}: { id: number; data: any }) => {
+            // Check if data contains File object (will be converted to FormData by interceptor)
+            const hasFile = Object.values(data).some(
+                (value) => value instanceof File
+            );
+
+            if (hasFile) {
+                // For FormData with Laravel, use POST with _method: PUT
+                // The _method field is already in the payload
+                return await apiClient.post(`/projects/${id}`, data);
+            } else {
+                // For regular JSON, use PUT
+                return await apiClient.put(`/projects/${id}`, data);
+            }
+        }
+        ,
+        onSuccess: () => {
+            queryClient.invalidateQueries({queryKey: ["projects"]});
+        }
+    });
+}
