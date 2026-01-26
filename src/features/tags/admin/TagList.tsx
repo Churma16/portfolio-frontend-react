@@ -1,11 +1,13 @@
 import {useState} from "react";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/components/ui/table.tsx";
 import {Button} from "@/components/ui/button.tsx";
-import {HiPencil, HiPlus, HiTrash} from "react-icons/hi2";
+import {HiPlus} from "react-icons/hi2";
 import {Tag} from "@/types";
 import TagDialog from "./components/TagDialog.tsx";
 import {useTags} from "@/features/tags/hooks/useTags.ts";
 import apiClient from "@/api/axios.ts";
+import EditButton from "@/components/common/EditButton.tsx";
+import DeleteButton from "@/components/common/DeleteButton.tsx";
 
 export default function TagList() {
     const { data: tags = [], isLoading, refetch } = useTags();
@@ -23,10 +25,10 @@ export default function TagList() {
         setIsDialogOpen(true);
     };
 
-    const handleDelete = async (id: number) => {
+    const handleDelete = async (tag: Tag) => {
         if (!confirm("Are you sure?")) return;
         try {
-            await apiClient.delete(`/tags/${id}`);
+            await apiClient.delete(`/tags/${tag.id}`);
             refetch();
         } catch (error) {
             console.error("Delete error:", error);
@@ -105,43 +107,27 @@ export default function TagList() {
                                 </TableCell>
                             </TableRow>
                         ) : (
-                            tags.map((item) => (
+                            tags.map((tag) => (
                                 <TableRow
-                                    key={item.id}
+                                    key={tag.id}
                                     className="border-white/5 hover:bg-white/5 transition-colors"
                                 >
                                     <TableCell>
                                         <span
                                             className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border ${getColorClass(
-                                                item.color ?? "blue"
+                                                tag.color ?? "blue"
                                             )}`}
                                         >
-                                            {item.name}
+                                            {tag.name}
                                         </span>
                                     </TableCell>
                                     <TableCell className="font-medium text-foreground">
-                                        {item.name}
+                                        {tag.name}
                                     </TableCell>
                                     <TableCell className="text-right">
                                         <div className="flex items-center justify-end gap-2">
-                                            <Button
-                                                size="icon"
-                                                variant="ghost"
-                                                onClick={() => handleEdit(item)}
-                                                className="h-8 w-8 text-lara-text-muted hover:text-foreground hover:bg-white/10"
-                                            >
-                                                <HiPencil className="w-4 h-4" />
-                                            </Button>
-                                            <Button
-                                                size="icon"
-                                                variant="ghost"
-                                                onClick={() =>
-                                                    handleDelete(item.id)
-                                                }
-                                                className="h-8 w-8 text-lara-text-muted hover:text-lara-accent-red-light hover:bg-red-500/10"
-                                            >
-                                                <HiTrash className="w-4 h-4" />
-                                            </Button>
+                                            <EditButton<Tag> item={tag} onEdit={handleEdit}/>
+                                            <DeleteButton<Tag> item={tag} onDelete={handleDelete}/>
                                         </div>
                                     </TableCell>
                                 </TableRow>
