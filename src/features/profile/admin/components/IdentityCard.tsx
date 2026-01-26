@@ -11,6 +11,8 @@ export default function IdentityCard() {
     const { register, watch, setValue } = useFormContext<ProfileFormValues>();
     const avatarInputRef = useRef<HTMLInputElement>(null);
 
+    const storagePath = useStoragePath();
+
     // Watch values untuk preview
     const avatarUrl = watch("avatar");
     const avatarFileList = watch("avatar_file");
@@ -31,7 +33,7 @@ export default function IdentityCard() {
     };
 
     return (
-        <Card className="bg-admin-card border-admin-border text-foreground shadow-lg">
+        <Card className="bg-admin-card/50 border-lara-border text-foreground shadow-lg">
             <CardHeader>
                 <CardTitle className="font-heading">Identity & Role</CardTitle>
                 <CardDescription>
@@ -41,16 +43,14 @@ export default function IdentityCard() {
             <CardContent>
                 <div className="flex flex-col md:flex-row gap-8 items-start">
                     {/* Avatar Upload */}
-                    <div className="flex flex-col items-center space-y-3">
+                    <div className="flex flex-col items-center space-y-3 ">
                         <div
                             className="relative group w-32 h-32 rounded-full bg-background border-2 border-dashed border-primary/30 overflow-hidden cursor-pointer"
                             onClick={() => avatarInputRef.current?.click()}
                         >
                             {previewImage ? (
                                 <img
-                                    src={`${import.meta.env.VITE_FILE_URL}${
-                                    previewImage
-                                }`}
+                                    src={previewImage.startsWith("blob:") ? previewImage : `${storagePath}${previewImage}`}
                                     className="w-full h-full object-cover"
                                     alt="Avatar"
                                 />
