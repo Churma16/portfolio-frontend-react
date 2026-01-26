@@ -3,7 +3,7 @@ import {Card, CardContent, CardDescription, CardHeader, CardTitle,} from "@/comp
 import {Input} from "@/components/ui/input.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {HiPlus, HiTrash} from "react-icons/hi2";
-import {ProfileFormValues} from "../index.tsx"; // Import tipe jika perlu
+import {ProfileFormValues} from "../ProfileDialog.tsx"; // Import tipe jika perlu
 
 export default function SocialCard() {
     const { control, register } = useFormContext<ProfileFormValues>();

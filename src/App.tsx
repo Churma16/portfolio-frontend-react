@@ -11,7 +11,7 @@ import TechStackList from "./features/tech-stacks/admin/TechStackList.tsx";
 import TagList from "./features/tags/admin/TagList.tsx";
 import CategoryList from "./features/categories/admin/CategoryList.tsx";
 import SetTokenPage from "./pages/auth/SetTokenPage.tsx";
-import ProfileForm from "./features/profile/admin";
+import ProfileForm from "./features/profile/admin/ProfileDialog.tsx";
 import WorkExperiencesList from "@/features/work-experiences/admin/WorkExperiencesList.tsx";
 
 if (import.meta.env.PROD) {

@@ -5,7 +5,7 @@ import {Textarea} from "@/components/ui/textarea.tsx";
 import {Label} from "@/components/ui/label.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {Switch} from "@/components/ui/switch.tsx";
-import {ProfileFormValues} from "../index.tsx"; // Import tipe jika perlu
+import {ProfileFormValues} from "../ProfileDialog.tsx"; // Import tipe jika perlu
 
 export default function BioCard() {
     const { register, control, watch, setValue } =
