@@ -43,3 +43,16 @@ export const useUpdateCategory = () => {
         }
     });
 }
+
+export const useDeleteCategory = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (id: number) => {
+            return await apiClient.delete(`/categories/${id}`);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({queryKey: ["categories"]});
+        }
+    });
+}

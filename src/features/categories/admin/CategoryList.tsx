@@ -10,6 +10,7 @@ import EmptyData from "@/components/common/EmptyData.tsx";
 
 export default function CategoryList() {
     const {data: categories = [], isLoading, refetch} = useCategories();
+    const {mutate: deleteCategory} = useDeleteCategory();
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [categoryToEdit, setCategoryToEdit] = useState<Category | null>(null);
 
@@ -23,21 +24,15 @@ export default function CategoryList() {
         setIsDialogOpen(true);
     };
 
-    const handleDelete = async (id: number) => {
-        if (
-            !window.confirm(
-                "Are you sure you want to delete this category?"
-            )
-        )
-            return;
+    const handleDelete = (id: number) => {
+        if (!window.confirm("Are you sure you want to delete this category?")) return;
 
-        try {
-            await apiClient.delete(`/categories/${id}`);
-            refetch();
-        } catch (err) {
-            console.error(err);
-            alert("Failed to delete category");
-        }
+        deleteCategory(id, {
+            onError: (err) => {
+                console.error(err);
+                alert("Failed to delete category");
+            },
+        });
     };
 
     return (
