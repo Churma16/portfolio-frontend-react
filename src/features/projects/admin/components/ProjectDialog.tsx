@@ -1,4 +1,3 @@
-import {FormEvent, useEffect, useState} from "react";
 import {
     Dialog,
     DialogContent,
@@ -17,8 +16,7 @@ import TechIcon from "../../../../components/common/TechIcon.tsx";
 import {useTechStacks} from "@/features/tech-stacks/hooks/useTechStacks.ts";
 import {useTags} from "@/features/tags/hooks/useTags.ts";
 import {useCategories} from "@/features/categories/hooks/useCategories.ts";
-import {useProjectMutation} from "@/features/projects/hooks/useProjects.ts";
-import apiClient from "@/api/axios.ts";
+import {useProjectForm} from "@/features/projects/hooks/useProjectForm.ts";
 
 interface ProjectDialogProps {
     open: boolean;
@@ -28,189 +26,35 @@ interface ProjectDialogProps {
 }
 
 export default function ProjectDialog({
-    open,
-    onOpenChange,
-    projectToEdit,
-    onSuccess,
-}: ProjectDialogProps) {
+                                          open,
+                                          onOpenChange,
+                                          projectToEdit,
+                                          onSuccess,
+                                      }: ProjectDialogProps) {
     // Use custom hooks for master data
-    const { data: availableStacks = [], isLoading: stacksLoading } =
-        useTechStacks();
-    const { data: availableTags = [], isLoading: tagsLoading } = useTags();
-    const { data: availableCategories = [], isLoading: categoriesLoading } =
-        useCategories();
+    const {data: availableStacks = []} = useTechStacks();
+    const {data: availableTags = []} = useTags();
+    const {data: availableCategories = []} = useCategories();
 
-    // Use mutation hook with projectId parameter
-    const mutation = useProjectMutation(projectToEdit?.id);
-
-    // Form State
-    const [formData, setFormData] = useState({
-        title: "",
-        content: "",
-        thumbnail: "",
-        repo_url: "",
-        demo_url: "",
+    const {
+        formData,
+        handleInputChange,
+        thumbnailPreview,
+        handleThumbnailChange,
+        selectedStackIds,
+        toggleStack,
+        selectedTagIds,
+        toggleTag,
+        selectedCategoryId,
+        setSelectedCategoryId,
+        handleSubmit,
+        isSubmitting,
+    } = useProjectForm({
+        projectToEdit,
+        open,
+        onSuccess,
+        onClose: () => onOpenChange(false),
     });
-
-    // File upload state
-    const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
-    const [thumbnailPreview, setThumbnailPreview] = useState<string>("");
-    const [isSubmitting, setIsSubmitting] = useState(false);
-
-    // Category State (Single selection)
-    const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
-        null
-    );
-
-    // Toggle State (Array ID yang dipilih)
-    const [selectedStackIds, setSelectedStackIds] = useState<number[]>([]);
-    const [selectedTagIds, setSelectedTagIds] = useState<number[]>([]);
-
-    // Reset atau Isi Form saat Modal Dibuka
-    useEffect(() => {
-        if (open) {
-            if (projectToEdit) {
-                setFormData({
-                    title: projectToEdit.title,
-                    content: projectToEdit.content,
-                    thumbnail: projectToEdit.thumbnail,
-                    repo_url: projectToEdit.repo_url || "",
-                    demo_url: projectToEdit.demo_url || "",
-                });
-                setThumbnailPreview(
-                    `${import.meta.env.VITE_FILE_URL}${projectToEdit.thumbnail}`
-                );
-                setThumbnailFile(null);
-                // Set selected category
-                setSelectedCategoryId(projectToEdit.category?.id || null);
-                // Isi toggle yang sudah terpilih
-                setSelectedStackIds(
-                    projectToEdit.tech_stack?.map((s) => s.id) || []
-                );
-                setSelectedTagIds(projectToEdit.tags?.map((t) => t.id) || []);
-            } else {
-                // Reset Form (Mode Create)
-                setFormData({
-                    title: "",
-                    content: "",
-                    thumbnail: "",
-                    repo_url: "",
-                    demo_url: "",
-                });
-                setThumbnailFile(null);
-                setThumbnailPreview("");
-                setSelectedCategoryId(null);
-                setSelectedStackIds([]);
-                setSelectedTagIds([]);
-            }
-        }
-    }, [open, projectToEdit]);
-
-    // 2. Logic Toggle (Klik untuk Pilih/Hapus)
-    const toggleStack = (id: number) => {
-        setSelectedStackIds((prev) =>
-            prev.includes(id)
-                ? prev.filter((item) => item !== id)
-                : [...prev, id]
-        );
-    };
-
-    const toggleTag = (id: number) => {
-        setSelectedTagIds((prev) =>
-            prev.includes(id)
-                ? prev.filter((item) => item !== id)
-                : [...prev, id]
-        );
-    };
-
-    // Handle Thumbnail File Upload
-    const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            setThumbnailFile(file);
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setThumbnailPreview(reader.result as string);
-            };
-            reader.readAsDataURL(file);
-        }
-    };
-
-    // Handle Submit
-    const handleSubmit = async (e: FormEvent) => {
-        e.preventDefault();
-        setIsSubmitting(true);
-
-        try {
-            if (thumbnailFile) {
-                // Jika ada file thumbnail, gunakan FormData
-                const formDataToSend = new FormData();
-                formDataToSend.append("title", formData.title);
-                formDataToSend.append("content", formData.content);
-                formDataToSend.append("repo_url", formData.repo_url);
-                formDataToSend.append("demo_url", formData.demo_url);
-                formDataToSend.append("thumbnail", thumbnailFile);
-                formDataToSend.append(
-                    "tech_stack_ids",
-                    JSON.stringify(selectedStackIds)
-                );
-                formDataToSend.append(
-                    "tag_ids",
-                    JSON.stringify(selectedTagIds)
-                );
-                if (selectedCategoryId) {
-                    formDataToSend.append(
-                        "category_id",
-                        selectedCategoryId.toString()
-                    );
-                }
-
-                // Hit /projects endpoint (create atau update)
-                if (projectToEdit) {
-                    // PUT request untuk update
-                    formDataToSend.append("_method", "PUT");
-                    await apiClient.post(
-                        `/projects/${projectToEdit.id}`,
-                        formDataToSend
-                    );
-                } else {
-                    // POST request untuk create
-                    await apiClient.post("/projects", formDataToSend);
-                }
-
-                onSuccess();
-                onOpenChange(false);
-            } else {
-                // Jika tidak ada file, gunakan JSON payload biasa
-                const payload: any = {
-                    title: formData.title,
-                    content: formData.content,
-                    repo_url: formData.repo_url,
-                    demo_url: formData.demo_url,
-                    tech_stack_ids: selectedStackIds,
-                    tag_ids: selectedTagIds,
-                    category_id: selectedCategoryId,
-                };
-
-                // Jangan include thumbnail jika tidak ada file baru
-
-                mutation.mutate(payload, {
-                    onSuccess: () => {
-                        onSuccess();
-                        onOpenChange(false);
-                    },
-                    onError: () => {
-                        alert("Gagal menyimpan project!");
-                    },
-                });
-            }
-        } catch (error) {
-            console.error("Error submitting project:", error);
-            alert("Gagal menyimpan project!");
-        } finally {
-            setIsSubmitting(false);
-        }
-    };
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
@@ -233,21 +77,18 @@ export default function ProjectDialog({
                             <Label>Project Title</Label>
                             <Input
                                 value={formData.title}
-                                onChange={(e) =>
-                                    setFormData({
-                                        ...formData,
-                                        title: e.target.value,
-                                    })
-                                }
+                                onChange={(e) => handleInputChange("title", e.target.value)}
                                 placeholder="E.g. E-Commerce App"
                                 className="bg-black/20 border-white/10"
                                 required
                             />
                         </div>
+
                         <div className="space-y-2">
                             <Label>Thumbnail Image</Label>
                             <div className="space-y-2">
-                                <div className="relative border-2 border-dashed border-white/20 rounded-lg p-4 text-center hover:border-white/40 transition-colors cursor-pointer group">
+                                <div
+                                    className="relative border-2 border-dashed border-white/20 rounded-lg p-4 text-center hover:border-white/40 transition-colors cursor-pointer group">
                                     <input
                                         type="file"
                                         accept="image/*"
@@ -285,12 +126,7 @@ export default function ProjectDialog({
                             <Label>Repo URL (GitHub)</Label>
                             <Input
                                 value={formData.repo_url}
-                                onChange={(e) =>
-                                    setFormData({
-                                        ...formData,
-                                        repo_url: e.target.value,
-                                    })
-                                }
+                                onChange={(e) => handleInputChange("repo_url", e.target.value)}
                                 placeholder="https://github.com/..."
                                 className="bg-black/20 border-white/10"
                             />
@@ -299,12 +135,7 @@ export default function ProjectDialog({
                             <Label>Live Demo URL</Label>
                             <Input
                                 value={formData.demo_url}
-                                onChange={(e) =>
-                                    setFormData({
-                                        ...formData,
-                                        demo_url: e.target.value,
-                                    })
-                                }
+                                onChange={(e) => handleInputChange("demo_url", e.target.value)}
                                 placeholder="https://..."
                                 className="bg-black/20 border-white/10"
                             />
@@ -316,12 +147,7 @@ export default function ProjectDialog({
                         <Label>Description</Label>
                         <Textarea
                             value={formData.content}
-                            onChange={(e) =>
-                                setFormData({
-                                    ...formData,
-                                    content: e.target.value,
-                                })
-                            }
+                            onChange={(e) => handleInputChange("content", e.target.value)}
                             placeholder="Tell a story about this project..."
                             className="bg-black/20 border-white/10"
                             rows={4}
@@ -345,10 +171,10 @@ export default function ProjectDialog({
                                         }
                                         className={`cursor-pointer px-4 py-2 rounded-lg border transition-all duration-200 select-none
                                             ${
-                                                isSelected
-                                                    ? "bg-purple-500/20 border-purple-500 text-foreground shadow-[0_0_10px_rgba(168,85,247,0.3)]"
-                                                    : "bg-white/5 border-transparent text-slate-400 hover:bg-white/10 hover:border-white/20"
-                                            }
+                                            isSelected
+                                                ? "bg-purple-500/20 border-purple-500 text-foreground shadow-[0_0_10px_rgba(168,85,247,0.3)]"
+                                                : "bg-white/5 border-transparent text-slate-400 hover:bg-white/10 hover:border-white/20"
+                                        }
                                         `}
                                     >
                                         <span className="text-sm font-medium">
@@ -376,10 +202,10 @@ export default function ProjectDialog({
                                         onClick={() => toggleStack(stack.id)}
                                         className={`cursor-pointer flex items-center gap-2 px-3 py-2 rounded-lg border transition-all duration-200 select-none
                                             ${
-                                                isSelected
-                                                    ? "bg-primary/20 border-primary text-foreground shadow-[0_0_10px_rgba(59,130,246,0.3)]"
-                                                    : "bg-white/5 border-transparent text-slate-400 hover:bg-white/10 hover:border-white/20"
-                                            }
+                                            isSelected
+                                                ? "bg-primary/20 border-primary text-foreground shadow-[0_0_10px_rgba(59,130,246,0.3)]"
+                                                : "bg-white/5 border-transparent text-slate-400 hover:bg-white/10 hover:border-white/20"
+                                        }
                                         `}
                                     >
                                         <TechIcon
@@ -416,10 +242,10 @@ export default function ProjectDialog({
                                         onClick={() => toggleTag(tag.id)}
                                         className={`cursor-pointer px-3 py-1.5 rounded-full border text-[11px] font-bold uppercase tracking-wide transition-all duration-200 select-none
                                             ${
-                                                isSelected
-                                                    ? "bg-green-500/20 border-green-500 text-green-400"
-                                                    : "bg-white/5 border-transparent text-slate-500 hover:bg-white/10"
-                                            }
+                                            isSelected
+                                                ? "bg-green-500/20 border-green-500 text-green-400"
+                                                : "bg-white/5 border-transparent text-slate-500 hover:bg-white/10"
+                                        }
                                         `}
                                     >
                                         #{tag.name}
@@ -440,11 +266,9 @@ export default function ProjectDialog({
                         <Button
                             type="submit"
                             className="bg-primary hover:bg-blue-600 min-w-[120px]"
-                            disabled={mutation.isPending || isSubmitting}
+                            disabled={isSubmitting}
                         >
-                            {mutation.isPending || isSubmitting ? (
-                                <CgSpinner className="animate-spin mr-2" />
-                            ) : null}
+                            {isSubmitting ? (<CgSpinner className="animate-spin mr-2"/>) : null}
                             {projectToEdit
                                 ? "Update Project"
                                 : "Create Project"}
