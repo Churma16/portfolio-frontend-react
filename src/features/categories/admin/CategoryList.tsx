@@ -1,12 +1,12 @@
 import {useState} from "react";
-import {useCategories} from "@/features/categories/hooks/useCategories.ts";
-import apiClient from "@/api/axios.ts";
+import {useCategories, useDeleteCategory} from "@/features/categories/hooks/useCategories.ts";
 import CategoryDialog from "./components/CategoryDialog.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/components/ui/table.tsx";
 import {HiOutlinePencil, HiOutlinePlus, HiOutlineTrash} from "react-icons/hi2";
-import {CgSpinner} from "react-icons/cg";
 import {Category} from "@/types";
+import LoadingSpinner from "@/components/common/LoadingSpinner.tsx";
+import EmptyData from "@/components/common/EmptyData.tsx";
 
 export default function CategoryList() {
     const {data: categories = [], isLoading, refetch} = useCategories();
@@ -62,15 +62,11 @@ export default function CategoryList() {
 
             {/* Table */}
             <div className="rounded-lg border border-white/10 overflow-hidden bg-black/20">
-                {isLoading ? (
-                    <div className="flex items-center justify-center py-12">
-                        <CgSpinner className="animate-spin w-8 h-8 text-primary"/>
-                    </div>
-                ) : categories.length === 0 ? (
-                    <div className="flex items-center justify-center py-12 text-accent/60">
-                        No categories yet. Create one to get started!
-                    </div>
-                ) : (
+                {isLoading && <LoadingSpinner/>}
+
+                {!isLoading && !categories.length && <EmptyData itemName={"categories"}/>}
+
+                {!isLoading &&
                     <Table>
                         <TableHeader>
                             <TableRow className="border-white/10">
@@ -88,10 +84,16 @@ export default function CategoryList() {
                                     className="border-white/5 hover:bg-white/5"
                                 >
                                     <TableCell className="font-medium text-foreground">
+
                                         {category.name}
                                     </TableCell>
-                                    <TableCell className="text-accent/80">
-                                        {category.color || "-"}
+                                    <TableCell className="text-lara-text-primary">
+                                        <span
+                                            className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border bg-cat-${category.color || "-"}`}
+                                        >
+                                            {category.color || "-"}
+                                        </span>
+
                                     </TableCell>
                                     <TableCell className="text-right space-x-2">
                                         <Button
@@ -117,7 +119,7 @@ export default function CategoryList() {
                             ))}
                         </TableBody>
                     </Table>
-                )}
+                }
             </div>
 
             {/* Dialog */}
