@@ -1,4 +1,4 @@
-import {useApi} from "@/contexts/useApi";
+import {useApi} from "@/contexts/useApi.ts";
 
 /**
  * Custom hook to get the active storage path based on the current backend
