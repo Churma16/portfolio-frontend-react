@@ -6,7 +6,7 @@ import {CgSpinner} from "react-icons/cg";
 import {useCategoryForm} from "@/features/categories/admin/components/useCategoryForm.ts";
 import {Category} from "@/types";
 
-interface Props {
+interface CategoryProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
     dataToEdit?: Category | null;
@@ -19,7 +19,7 @@ export default function CategoryDialog({
                                            onOpenChange,
                                            dataToEdit,
                                            onSuccess,
-                                       }: Props) {
+                                       }: CategoryProps) {
     const {
         formData,
         handleInputChange,
