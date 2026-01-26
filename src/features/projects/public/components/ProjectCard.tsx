@@ -1,7 +1,7 @@
 import {Project} from "@/types";
 import {motion} from "framer-motion";
 import TechIcon from "../../../../components/common/TechIcon.tsx";
-import {useStoragePath} from "../../hooks/useStoragePath";
+import {useStoragePath} from "@/hooks/useStoragePath.ts";
 
 interface ProjectCardProps {
     project: Project;
