@@ -8,7 +8,7 @@ interface SaveButtonProps {
 
 export default function SaveButton({ isSubmitting }: SaveButtonProps) {
     return (
-        <div className="fixed bottom-6 right-8 z-50">
+        <div className="sticky bottom-6 right-8 z-50"> {/* Ensure 'right-8' is applied correctly */}
             <Button
                 type="submit"
                 size="lg"

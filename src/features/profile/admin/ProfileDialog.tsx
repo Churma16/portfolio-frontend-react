@@ -168,25 +168,27 @@ export default function ProfileForm() {
     if (isLoading) return <div className="p-8 text-foreground">Loading...</div>;
 
     return (
-        <div className="max-w-5xl mx-auto pb-32 min-h-screen">
-            <div className="mb-8">
-                <h2 className="text-3xl font-heading font-bold text-foreground">
-                    Edit Profile
-                </h2>
-                <p className="text-accent/80">
-                    Manage your public presence and bio.
-                </p>
+        <div className="min-h-screen  pb-32">
+            <div className="max-w-5xl mx-auto px-4 pt-8">
+                <div className="mb-12">
+                    <h2 className="text-4xl font-heading font-bold text-foreground">
+                        Edit Profile
+                    </h2>
+                    <p className="text-accent/70 mt-2 text-lg">
+                        Manage your public presence and bio.
+                    </p>
+                </div>
+                <FormProvider {...methods}>
+                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+                        {/* Perhatikan: Tidak ada props yang dikirim! Bersih! */}
+                        <IdentityCard/>
+                        <BioCard/>
+                        <SocialCard/>
+                        <HeroCodeCard/>
+                        <SaveButton isSubmitting={mutation.isPending}/>
+                    </form>
+                </FormProvider>
             </div>
-            <FormProvider {...methods}>
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-                    {/* Perhatikan: Tidak ada props yang dikirim! Bersih! */}
-                    <IdentityCard />
-                    <BioCard />
-                    <SocialCard />
-                    <HeroCodeCard />
-                    <SaveButton isSubmitting={mutation.isPending} />
-                </form>
-            </FormProvider>
         </div>
     );
 }

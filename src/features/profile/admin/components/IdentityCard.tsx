@@ -8,7 +8,7 @@ import {ProfileFormValues} from "../ProfileDialog.tsx";
 import {useStoragePath} from "@/features/projects/hooks/useStoragePath.ts"; // Import tipe jika perlu
 
 export default function IdentityCard() {
-    const { register, watch, setValue } = useFormContext<ProfileFormValues>();
+    const {register, watch, setValue} = useFormContext<ProfileFormValues>();
     const avatarInputRef = useRef<HTMLInputElement>(null);
 
     const storagePath = useStoragePath();
@@ -22,8 +22,8 @@ export default function IdentityCard() {
         avatarFileList && avatarFileList.length > 0
             ? URL.createObjectURL(avatarFileList[0])
             : avatarUrl
-            ? `${avatarUrl}`
-            : null;
+                ? `${avatarUrl}`
+                : null;
 
     const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
@@ -59,7 +59,8 @@ export default function IdentityCard() {
                                     Upload
                                 </div>
                             )}
-                            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/40 transition-opacity">
+                            <div
+                                className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/40 transition-opacity">
                                 <HiPencil className="w-6 h-6 text-primary"/>
                             </div>
                         </div>
@@ -83,28 +84,24 @@ export default function IdentityCard() {
                             <Label>Full Name</Label>
                             <Input
                                 {...register("name")}
-                                className="bg-admin-field"
                             />
                         </div>
                         <div className="space-y-2">
                             <Label>Headline</Label>
                             <Input
                                 {...register("headline")}
-                                className="bg-admin-field"
                             />
                         </div>
                         <div className="space-y-2">
                             <Label>Current Role</Label>
                             <Input
                                 {...register("role")}
-                                className="bg-admin-field"
                             />
                         </div>
                         <div className="space-y-2">
                             <Label>Location</Label>
                             <Input
                                 {...register("location")}
-                                className="bg-admin-field"
                             />
                         </div>
                     </div>

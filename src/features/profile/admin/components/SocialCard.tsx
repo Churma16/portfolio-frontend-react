@@ -14,7 +14,7 @@ export default function SocialCard() {
     });
 
     return (
-        <Card className="bg-admin-card border-admin-border text-foreground shadow-lg">
+        <Card className="bg-admin-card/50 border-lara-border text-foreground shadow-lg">
             <CardHeader className="flex flex-row items-center justify-between">
                 <div>
                     <CardTitle className="font-heading">
@@ -35,13 +35,12 @@ export default function SocialCard() {
             </CardHeader>
             <CardContent className="space-y-4">
                 {fields.map((field, idx) => (
-                    <div key={field.id} className="flex gap-3 items-center">
+                    <div key={field.id} className="flex gap-3 items-end">
                         <div className="w-1/3 max-w-[200px]">
                             {/* Input untuk Key (Platform) */}
                             <Input
-                                placeholder="Platform"
+                                placeholder="Platform (e.g., github)"
                                 {...register(`socialsArray.${idx}.platform`)}
-                                className="bg-admin-field"
                             />
                         </div>
                         <div className="flex-1">
@@ -49,7 +48,6 @@ export default function SocialCard() {
                             <Input
                                 placeholder="https://..."
                                 {...register(`socialsArray.${idx}.url`)}
-                                className="bg-admin-field"
                             />
                         </div>
                         <Button
@@ -57,13 +55,15 @@ export default function SocialCard() {
                             size="icon"
                             variant="ghost"
                             onClick={() => remove(idx)}
+                            className="text-red-400 hover:text-red-300 hover:bg-red-500/10"
                         >
                             <HiTrash className="w-4 h-4" />
                         </Button>
                     </div>
                 ))}
                 {fields.length === 0 && (
-                    <div className="text-center py-8 text-accent/50 border border-dashed border-white/10 rounded-lg">
+                    <div
+                        className="text-center py-8 text-accent/50 border border-dashed border-admin-border rounded-lg">
                         No social links added yet.
                     </div>
                 )}

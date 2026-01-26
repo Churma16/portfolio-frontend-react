@@ -15,7 +15,7 @@ export default function HeroCodeCard() {
     });
 
     return (
-        <Card className="bg-admin-card border-admin-border text-foreground shadow-lg">
+        <Card className="bg-admin-card/50 border-lara-border text-foreground shadow-lg">
             <CardHeader className="flex flex-row items-center justify-between">
                 <div>
                     <CardTitle className="font-heading">
@@ -43,13 +43,15 @@ export default function HeroCodeCard() {
                         {/* Register array index yang spesifik */}
                         <Input
                             {...register(`hero_image_codes.${idx}.value`)}
-                            className="bg-admin-field font-mono text-sm border-l-2 border-l-lara-blue/30"
+                            className="font-mono text-sm"
+                            placeholder="const code = 'hero';"
                         />
                         <Button
                             type="button"
                             size="icon"
                             variant="ghost"
-                            onClick={() => remove(idx)} // Hapus item
+                            onClick={() => remove(idx)}
+                            className="text-red-400 hover:text-red-300 hover:bg-red-500/10"
                         >
                             <HiTrash className="w-4 h-4" />
                         </Button>
