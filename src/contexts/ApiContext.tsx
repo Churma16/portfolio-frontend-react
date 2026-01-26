@@ -7,10 +7,12 @@ import {useQueryClient} from '@tanstack/react-query';
 const API_CONFIG = {
     laravel: {
         baseURL: import.meta.env.VITE_LARAVEL_URL || "http://localhost:8000/api",
+        storageURL: import.meta.env.VITE_LARAVEL_FILE_URL || "http://localhost:8000/files/",
         label: "Laravel",
     },
     go: {
         baseURL: import.meta.env.VITE_GO_URL || "http://localhost:8080/api",
+        storageURL: import.meta.env.VITE_GO_FILE_URL || "http://localhost:8080/files/",
         label: "Go",
     }
 };
