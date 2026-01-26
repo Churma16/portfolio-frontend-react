@@ -1,7 +1,7 @@
 import {Project} from "@/types";
 import {motion} from "framer-motion";
 import TechIcon from "../../../../components/common/TechIcon.tsx";
-import {useApi} from "@/contexts/useApi.ts";
+import {useStoragePath} from "../../hooks/useStoragePath";
 
 interface ProjectCardProps {
     project: Project;
@@ -17,13 +17,7 @@ export default function ProjectCard({
                                         layoutId, // <--- Terima prop
                                     }: ProjectCardProps) {
 
-    const {activeBackend} = useApi();
-
-    const isGo = activeBackend === 'go';
-
-    const StoragePath = isGo
-        ? import.meta.env.VITE_GO_FILE_URL || '/files/'
-        : import.meta.env.VITE_LARAVEL_FILE_URL || '/files/';
+    const storagePath = useStoragePath();
     return (
         <motion.div
             // Pasang layoutId dari props (Penting buat animasi expand)
@@ -39,7 +33,7 @@ export default function ProjectCard({
             {/* Thumbnail */}
             <div className="relative aspect-video overflow-hidden bg-slate-800">
                 <img
-                    src={`${StoragePath}${project.thumbnail}`}
+                    src={`${storagePath}${project.thumbnail}`}
                     alt={project.title}
                     onError={(e) => {
                         e.currentTarget.src =
