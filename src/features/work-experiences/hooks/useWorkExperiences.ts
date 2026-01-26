@@ -20,18 +20,6 @@ export const useWorkExperiences = () => {
     });
 }
 
-export const useWorkExperiencesMutation = () => {
-    // This is a placeholder mutation hook that doesn't do anything
-    // The actual mutations are handled in the dialog component
-    return {
-        mutate: () => {
-        },
-        isPending: false,
-        isSuccess: false,
-        isError: false,
-    };
-}
-
 export const useCreateWorkExperience = () => {
     const queryClient = useQueryClient();
 
