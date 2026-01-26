@@ -77,7 +77,7 @@ export default function ProjectList() {
                 </Button>
             </div>
 
-            <div className="rounded-xl border border-white/10 bg-[#0a101f]/50 overflow-hidden">
+            <div className="rounded-xl border border-white/10 bg-background-blue/50 overflow-hidden">
                 <Table>
                     <TableHeader className="bg-white/5">
                         <TableRow className="border-white/5 hover:bg-transparent">
