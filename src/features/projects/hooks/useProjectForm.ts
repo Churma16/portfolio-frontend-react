@@ -1,7 +1,9 @@
 import {FormEvent, useEffect, useState} from "react";
 import {useCreateProject, useUpdateProject} from "@/features/projects/hooks/useProjects.ts";
+import {useApi} from "@/contexts/useApi.ts";
 import {Project} from "@/types";
 import {useStoragePath} from "@/hooks/useStoragePath.ts";
+import {useThumbnailUpload} from "@/hooks/useThumbnailUpload.ts";
 
 // ============================================================================
 // Types
@@ -24,13 +26,23 @@ export const useProjectForm = ({
                                    onSuccess,
                                    onClose,
                                }: UseProjectFormProps) => {
-
+    const {activeBackend} = useApi(); // Get 'laravel' or 'go'
     const StoragePath = useStoragePath();
 
     // --- Mutations ---
     const createMutation = useCreateProject();
     const updateMutation = useUpdateProject();
     const isSubmitting = createMutation.isPending || updateMutation.isPending;
+
+    // --- Thumbnail Upload Hook ---
+    const {
+        thumbnailFile,
+        thumbnailPreview,
+        handleThumbnailChange,
+        resetThumbnail,
+        setThumbnailFile,
+        setThumbnailPreview,
+    } = useThumbnailUpload();
 
     // --- Form Data State ---
     const [formData, setFormData] = useState({
@@ -40,12 +52,6 @@ export const useProjectForm = ({
         repo_url: "",
         demo_url: "",
     });
-
-    // --- Thumbnail State ---
-    const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
-    const [thumbnailPreview, setThumbnailPreview] = useState<string>("");
-
-    // --- Selection State ---
     const [selectedStackIds, setSelectedStackIds] = useState<number[]>([]);
     const [selectedTagIds, setSelectedTagIds] = useState<number[]>([]);
     const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
@@ -67,17 +73,6 @@ export const useProjectForm = ({
         );
     };
 
-    const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            setThumbnailFile(file);
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setThumbnailPreview(reader.result as string);
-            };
-            reader.readAsDataURL(file);
-        }
-    };
 
     const resetForm = () => {
         setFormData({
@@ -87,8 +82,7 @@ export const useProjectForm = ({
             repo_url: "",
             demo_url: "",
         });
-        setThumbnailFile(null);
-        setThumbnailPreview("");
+        resetThumbnail();
         setSelectedCategoryId(null);
         setSelectedStackIds([]);
         setSelectedTagIds([]);
@@ -123,20 +117,24 @@ export const useProjectForm = ({
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
 
+        // Explicitly exclude thumbnail from spread, we'll add it conditionally below
+        const {thumbnail: _, ...formDataWithoutThumbnail} = formData;
+
         const payload: any = {
-            ...formData,
+            ...formDataWithoutThumbnail,
             tech_stack_ids: selectedStackIds,
             tag_ids: selectedTagIds,
             category_id: selectedCategoryId,
         };
 
-        // Only include thumbnail if it's a new file (File object)
-        // Not the string path from database
+        // Only include thumbnail if:
+        // 1. There's an actual File object selected (thumbnailFile is not null)
         if (thumbnailFile) {
             payload.thumbnail = thumbnailFile;
 
             // For Laravel PUT requests with FormData, add _method field
-            if (projectToEdit) {
+            // Go API doesn't need this because it supports PUT with FormData directly
+            if (projectToEdit && activeBackend === 'laravel') {
                 payload._method = "PUT";
             }
         }
@@ -147,6 +145,8 @@ export const useProjectForm = ({
             content: payload.content,
             repo_url: payload.repo_url,
             demo_url: payload.demo_url,
+            activeBackend,
+            hasThumbnailPayload: !!payload.thumbnail,
             allKeys: Object.keys(payload),
         });
 
