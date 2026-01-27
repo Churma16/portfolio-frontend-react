@@ -1,18 +1,27 @@
-import {useFieldArray, useFormContext} from "react-hook-form";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle,} from "@/components/ui/card.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {HiPlus, HiTrash} from "react-icons/hi2";
-import {ProfileFormValues} from "../ProfileDialog.tsx"; // Import tipe jika perlu
 
-export default function HeroCodeCard() {
-    const { control, register } = useFormContext<ProfileFormValues>();
+interface HeroCodeCardProps {
+    heroCodesArray: Array<{ value: string }>;
+    setHeroCodesArray: (codes: Array<{ value: string }>) => void;
+}
 
-    // Array Magic di sini
-    const { fields, append, remove } = useFieldArray({
-        control,
-        name: "hero_image_codes", // Sesuai nama field di ProfileFormValues
-    });
+export default function HeroCodeCard({heroCodesArray, setHeroCodesArray}: HeroCodeCardProps) {
+    const handleAddCode = () => {
+        setHeroCodesArray([...heroCodesArray, {value: ""}]);
+    };
+
+    const handleUpdateCode = (idx: number, value: string) => {
+        const updated = [...heroCodesArray];
+        updated[idx] = {...updated[idx], value};
+        setHeroCodesArray(updated);
+    };
+
+    const handleRemoveCode = (idx: number) => {
+        setHeroCodesArray(heroCodesArray.filter((_, i) => i !== idx));
+    };
 
     return (
         <Card className="bg-admin-card/50 border-lara-border text-foreground shadow-lg">
@@ -29,20 +38,21 @@ export default function HeroCodeCard() {
                     type="button"
                     size="sm"
                     variant="secondary"
-                    onClick={() => append({ value: "" })} // Tambah item baru
+                    onClick={handleAddCode}
                 >
                     <HiPlus className="w-4 h-4 mr-2" /> Add Line
                 </Button>
             </CardHeader>
             <CardContent className="space-y-2">
-                {fields.map((field, idx) => (
-                    <div key={field.id} className="flex gap-3 items-center">
+                {heroCodesArray.map((code, idx) => (
+                    <div key={idx} className="flex gap-3 items-center">
                         <span className="text-accent/40 font-mono text-xs w-6 text-right">
                             {idx + 1}
                         </span>
-                        {/* Register array index yang spesifik */}
+                        {/* Input for code */}
                         <Input
-                            {...register(`hero_image_codes.${idx}.value`)}
+                            value={code.value}
+                            onChange={(e) => handleUpdateCode(idx, e.target.value)}
                             className="font-mono text-sm"
                             placeholder="const code = 'hero';"
                         />
@@ -50,7 +60,7 @@ export default function HeroCodeCard() {
                             type="button"
                             size="icon"
                             variant="ghost"
-                            onClick={() => remove(idx)}
+                            onClick={() => handleRemoveCode(idx)}
                             className="text-red-400 hover:text-red-300 hover:bg-red-500/10"
                         >
                             <HiTrash className="w-4 h-4" />

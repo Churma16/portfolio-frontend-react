@@ -1,39 +1,25 @@
-import {useRef} from "react";
-import {Controller, useFormContext} from "react-hook-form";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle,} from "@/components/ui/card.tsx";
 import {Textarea} from "@/components/ui/textarea.tsx";
 import {Label} from "@/components/ui/label.tsx";
-import {Button} from "@/components/ui/button.tsx";
 import {Switch} from "@/components/ui/switch.tsx";
-import {ProfileFormValues} from "../ProfileDialog.tsx"; // Import tipe jika perlu
 
-export default function BioCard() {
-    const { register, control, watch, setValue } =
-        useFormContext<ProfileFormValues>();
-    const cvInputRef = useRef<HTMLInputElement>(null);
-
-    const cvFileList = watch("cv_file");
-    const existingCv = watch("cv_files"); // string url
-
-    // Watch bio fields for live preview
-    const bioShort = watch("bio_short");
-    const bioLong = watch("bio_long");
-
-    // Nama file untuk display
-    const fileName =
-        cvFileList && cvFileList.length > 0
-            ? cvFileList[0].name
-            : existingCv
-            ? existingCv.split("/").pop()
-            : "No file uploaded";
-
-    const handleCvChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files) {
-            // Manually set FileList ke form state
-            setValue("cv_file", e.target.files);
-        }
+interface BioCardProps {
+    formData: {
+        bio_short: string;
+        bio_long: string;
+        is_hireable: boolean;
     };
+    handleInputChange: (field: string, value: any) => void;
+    cvFile: File | null;
+    handleCVChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
 
+export default function BioCard({
+                                    formData,
+                                    handleInputChange,
+                                    cvFile,
+                                    handleCVChange,
+                                }: BioCardProps) {
     return (
         <Card className="bg-admin-card/50 border-lara-border text-foreground shadow-lg">
             <CardHeader>
@@ -48,7 +34,8 @@ export default function BioCard() {
                     <div className="space-y-2">
                         <Label>Short Bio</Label>
                         <Textarea
-                            {...register("bio_short")}
+                            value={formData.bio_short}
+                            onChange={(e) => handleInputChange("bio_short", e.target.value)}
                             className="min-h-[100px] resize-none"
                             placeholder="Enter your short bio with HTML tags..."
                         />
@@ -56,7 +43,8 @@ export default function BioCard() {
                     <div className="space-y-2">
                         <Label>Full Biography</Label>
                         <Textarea
-                            {...register("bio_long")}
+                            value={formData.bio_long}
+                            onChange={(e) => handleInputChange("bio_long", e.target.value)}
                             className="min-h-[250px] font-mono text-sm resize-none"
                             placeholder="Enter your full biography with HTML tags..."
                         />
@@ -72,9 +60,9 @@ export default function BioCard() {
                             <Label className="text-primary text-sm">Short Bio Preview</Label>
                             <div
                                 className="bg-admin-field/50 p-4 rounded-lg min-h-[120px] border border-admin-border text-sm leading-relaxed prose prose-invert max-w-none">
-                                {bioShort ? (
+                                {formData.bio_short ? (
                                     <div
-                                        dangerouslySetInnerHTML={{__html: bioShort}}
+                                        dangerouslySetInnerHTML={{__html: formData.bio_short}}
                                         className="text-foreground"
                                     />
                                 ) : (
@@ -88,9 +76,9 @@ export default function BioCard() {
                             <Label className="text-primary text-sm">Full Biography Preview</Label>
                             <div
                                 className="bg-admin-field/50 p-4 rounded-lg min-h-[120px] max-h-[300px] border border-admin-border text-sm leading-relaxed overflow-y-auto prose prose-invert max-w-none">
-                                {bioLong ? (
+                                {formData.bio_long ? (
                                     <div
-                                        dangerouslySetInnerHTML={{__html: bioLong}}
+                                        dangerouslySetInnerHTML={{__html: formData.bio_long}}
                                         className="text-foreground"
                                     />
                                 ) : (
@@ -111,16 +99,10 @@ export default function BioCard() {
                                 Shows a "Hire Me" badge on your profile.
                             </p>
                         </div>
-                        <Controller
-                            control={control}
-                            name="is_hireable"
-                            render={({ field }) => (
-                                <Switch
-                                    checked={field.value}
-                                    onCheckedChange={field.onChange}
-                                    className="data-[state=checked]:bg-green-500"
-                                />
-                            )}
+                        <Switch
+                            checked={formData.is_hireable}
+                            onCheckedChange={(value) => handleInputChange("is_hireable", value)}
+                            className="data-[state=checked]:bg-green-500"
                         />
                     </div>
 
@@ -129,26 +111,28 @@ export default function BioCard() {
                         className="flex flex-col justify-center p-4 rounded-lg border border-admin-border bg-admin-field/20">
                         <Label className="font-semibold mb-3">Resume / CV (PDF)</Label>
                         <div className="flex items-center gap-2">
-                            <Button
-                                type="button"
-                                variant="outline"
-                                onClick={() => cvInputRef.current?.click()}
-                                className="bg-primary/10 border-primary/30 text-primary hover:bg-primary/20"
-                            >
-                                {cvFileList ? "Change File" : "Select PDF"}
-                            </Button>
+                            <label>
+                                <button
+                                    type="button"
+                                    className="px-4 py-2 bg-primary/10 border border-primary/30 text-primary hover:bg-primary/20 rounded-md text-sm font-medium transition-colors whitespace-nowrap"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        const input = document.querySelector('input[type="file"][accept=".pdf"]') as HTMLInputElement;
+                                        input?.click();
+                                    }}
+                                >
+                                    {cvFile ? "Change File" : "Select PDF"}
+                                </button>
+                                <input
+                                    type="file"
+                                    className="hidden"
+                                    accept=".pdf"
+                                    onChange={handleCVChange}
+                                />
+                            </label>
                             <span className="text-xs text-accent/60 truncate flex-1">
-                                {fileName}
+                                {cvFile ? cvFile.name : "No file uploaded"}
                             </span>
-                            <input
-                                type="file"
-                                className="hidden"
-                                accept=".pdf"
-                                ref={(e) => {
-                                    cvInputRef.current = e;
-                                }}
-                                onChange={handleCvChange}
-                            />
                         </div>
                     </div>
                 </div>

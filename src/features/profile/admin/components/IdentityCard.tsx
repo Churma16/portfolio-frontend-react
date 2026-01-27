@@ -1,36 +1,28 @@
-import {useRef} from "react";
-import {useFormContext} from "react-hook-form"; // Import ini
 import {Card, CardContent, CardDescription, CardHeader, CardTitle,} from "@/components/ui/card.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {Label} from "@/components/ui/label.tsx";
 import {HiPencil} from "react-icons/hi2";
-import {ProfileFormValues} from "../ProfileDialog.tsx";
-import {useStoragePath} from "@/hooks/useStoragePath.ts"; // Import tipe jika perlu
+import {useStoragePath} from "@/hooks/useStoragePath.ts";
 
-export default function IdentityCard() {
-    const {register, watch, setValue} = useFormContext<ProfileFormValues>();
-    const avatarInputRef = useRef<HTMLInputElement>(null);
-
-    const storagePath = useStoragePath();
-
-    // Watch values untuk preview
-    const avatarUrl = watch("avatar");
-    const avatarFileList = watch("avatar_file");
-
-    // Logic Preview Image
-    const previewImage =
-        avatarFileList && avatarFileList.length > 0
-            ? URL.createObjectURL(avatarFileList[0])
-            : avatarUrl
-                ? `${avatarUrl}`
-                : null;
-
-    const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files) {
-            // Manually set FileList ke form state
-            setValue("avatar_file", e.target.files);
-        }
+interface IdentityCardProps {
+    formData: {
+        name: string;
+        headline: string;
+        role: string;
+        location: string;
     };
+    handleInputChange: (field: string, value: any) => void;
+    avatarPreview: string;
+    handleAvatarChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+export default function IdentityCard({
+                                         formData,
+                                         handleInputChange,
+                                         avatarPreview,
+                                         handleAvatarChange,
+                                     }: IdentityCardProps) {
+    const storagePath = useStoragePath();
 
     return (
         <Card className="bg-admin-card/50 border-lara-border text-foreground shadow-lg">
@@ -41,16 +33,15 @@ export default function IdentityCard() {
                 </CardDescription>
             </CardHeader>
             <CardContent>
-                <div className="flex flex-col md:flex-row gap-8 items-start">
+                <div className="flex flex-col md:flex-row gap-8 items-center">
                     {/* Avatar Upload */}
                     <div className="flex flex-col items-center space-y-3 ">
-                        <div
+                        <label
                             className="relative group w-32 h-32 rounded-full bg-background border-2 border-dashed border-primary/30 overflow-hidden cursor-pointer"
-                            onClick={() => avatarInputRef.current?.click()}
                         >
-                            {previewImage ? (
+                            {avatarPreview ? (
                                 <img
-                                    src={previewImage.startsWith("blob:") ? previewImage : `${storagePath}${previewImage}`}
+                                    src={avatarPreview}
                                     className="w-full h-full object-cover"
                                     alt="Avatar"
                                 />
@@ -63,19 +54,14 @@ export default function IdentityCard() {
                                 className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/40 transition-opacity">
                                 <HiPencil className="w-6 h-6 text-primary"/>
                             </div>
-                        </div>
 
-                        {/* Hidden Input connected to RHF */}
-                        <input
-                            type="file"
-                            className="hidden"
-                            accept="image/*"
-                            ref={(e) => {
-                                // Simpan ref lokal untuk click handler
-                                avatarInputRef.current = e;
-                            }}
-                            onChange={handleAvatarChange}
-                        />
+                            <input
+                                type="file"
+                                className="hidden"
+                                accept="image/*"
+                                onChange={handleAvatarChange}
+                            />
+                        </label>
                     </div>
 
                     {/* Text Inputs */}
@@ -83,25 +69,29 @@ export default function IdentityCard() {
                         <div className="space-y-2">
                             <Label>Full Name</Label>
                             <Input
-                                {...register("name")}
+                                value={formData.name}
+                                onChange={(e) => handleInputChange("name", e.target.value)}
                             />
                         </div>
                         <div className="space-y-2">
                             <Label>Headline</Label>
                             <Input
-                                {...register("headline")}
+                                value={formData.headline}
+                                onChange={(e) => handleInputChange("headline", e.target.value)}
                             />
                         </div>
                         <div className="space-y-2">
                             <Label>Current Role</Label>
                             <Input
-                                {...register("role")}
+                                value={formData.role}
+                                onChange={(e) => handleInputChange("role", e.target.value)}
                             />
                         </div>
                         <div className="space-y-2">
                             <Label>Location</Label>
                             <Input
-                                {...register("location")}
+                                value={formData.location}
+                                onChange={(e) => handleInputChange("location", e.target.value)}
                             />
                         </div>
                     </div>
