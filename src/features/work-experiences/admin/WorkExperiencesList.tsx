@@ -8,6 +8,7 @@ import {useWorkExperiences} from "@/features/work-experiences/hooks/useWorkExper
 import apiClient from "@/api/axios.ts";
 import DeleteButton from "@/components/common/DeleteButton.tsx";
 import EditButton from "@/components/common/EditButton.tsx";
+import AdminHeader from "@/components/common/AdminHeader.tsx";
 
 export default function WorkExperiencesList() {
     const { data: experiences = [], isLoading, refetch } =
@@ -55,12 +56,8 @@ export default function WorkExperiencesList() {
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
-                    <h2 className="text-3xl font-heading font-bold text-foreground tracking-tight">
-                        Work Experiences
-                    </h2>
-                    <p className="text-lara-text-muted text-sm">
-                        Manage your professional experience history here.
-                    </p>
+                    <AdminHeader title={"Work Experiences"} subtitle={" Manage your professional experience history" +
+                        " here."}/>
                 </div>
                 <Button
                     onClick={handleCreate}

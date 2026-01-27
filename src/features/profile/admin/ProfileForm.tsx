@@ -46,14 +46,6 @@ export default function ProfileForm() {
                 <AdminHeader title={"Edit Profile"} subtitle={"Manage your public presence and bio."}/>
             </div>
             <div className="max-w-5xl mx-auto px-4 pt-8">
-                <div className="mb-12">
-                    <h2 className="text-4xl font-heading font-bold text-foreground">
-                        Edit Profile
-                    </h2>
-                    <p className="text-accent/70 mt-2 text-lg">
-                        Manage your public presence and bio.
-                    </p>
-                </div>
                 <form onSubmit={handleSubmit} className="space-y-8">
                     <IdentityCard
                         formData={formData}

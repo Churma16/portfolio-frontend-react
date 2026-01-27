@@ -8,6 +8,7 @@ import {useTags} from "@/features/tags/hooks/useTags.ts";
 import apiClient from "@/api/axios.ts";
 import EditButton from "@/components/common/EditButton.tsx";
 import DeleteButton from "@/components/common/DeleteButton.tsx";
+import AdminHeader from "@/components/common/AdminHeader.tsx";
 
 export default function TagList() {
     const { data: tags = [], isLoading, refetch } = useTags();
@@ -51,12 +52,7 @@ export default function TagList() {
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
-                    <h2 className="text-3xl font-heading font-bold text-foreground tracking-tight">
-                        Tags
-                    </h2>
-                    <p className="text-lara-text-muted text-sm">
-                        Manage your project tags here.
-                    </p>
+                    <AdminHeader title={"Tags"} subtitle={"Manage your project tags here."}/>
                 </div>
                 <Button
                     onClick={handleCreate}

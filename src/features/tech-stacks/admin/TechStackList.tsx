@@ -7,6 +7,7 @@ import TechStackDialog from "./components/TechStackDialog.tsx";
 import TechIcon from "../../../components/common/TechIcon.tsx";
 import {useTechStacks} from "@/features/tech-stacks/hooks/useTechStacks.ts";
 import apiClient from "@/api/axios.ts";
+import AdminHeader from "@/components/common/AdminHeader.tsx";
 
 export default function TechStackList() {
     const { data: techStacks = [], isLoading, refetch } = useTechStacks();
@@ -40,12 +41,7 @@ export default function TechStackList() {
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
-                    <h2 className="text-3xl font-heading font-bold text-foreground tracking-tight">
-                        Tech Stacks
-                    </h2>
-                    <p className="text-lara-text-muted text-sm">
-                        Manage your technology stack here.
-                    </p>
+                    <AdminHeader title={"Tech Stacks"} subtitle={"Manage your technology stack here."}/>
                 </div>
                 <Button
                     onClick={handleCreate}

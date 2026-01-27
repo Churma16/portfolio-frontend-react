@@ -8,6 +8,7 @@ import ProjectDialog from "./components/ProjectDialog.tsx";
 import {useProjects} from "../hooks/useProjects.ts";
 import apiClient from "@/api/axios.ts";
 import {useApi} from "@/contexts/useApi.ts";
+import AdminHeader from "@/components/common/AdminHeader.tsx";
 
 export default function ProjectList() {
     const {data: projects = [], isLoading, refetch} = useProjects();
@@ -61,12 +62,7 @@ export default function ProjectList() {
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
-                    <h2 className="text-3xl font-heading font-bold text-foreground tracking-tight">
-                        Projects
-                    </h2>
-                    <p className="text-slate-400 text-sm">
-                        Manage your portfolio showcase here.
-                    </p>
+                    <AdminHeader title={"Projects"} subtitle={"Manage your portfolio showcase here."}/>
                 </div>
                 <Button
                     onClick={handleCreate}

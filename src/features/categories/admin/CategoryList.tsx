@@ -7,6 +7,7 @@ import {HiOutlinePencil, HiOutlinePlus, HiOutlineTrash} from "react-icons/hi2";
 import {Category} from "@/types";
 import LoadingSpinner from "@/components/common/LoadingSpinner.tsx";
 import EmptyData from "@/components/common/EmptyData.tsx";
+import AdminHeader from "@/components/common/AdminHeader.tsx";
 
 export default function CategoryList() {
     const {data: categories = [], isLoading, refetch} = useCategories();
@@ -40,12 +41,7 @@ export default function CategoryList() {
             {/* Header */}
             <div className="flex justify-between items-start">
                 <div>
-                    <h1 className="text-3xl font-bold text-foreground mb-2">
-                        Categories
-                    </h1>
-                    <p className="text-accent/60">
-                        Manage your project categories
-                    </p>
+                    <AdminHeader title={"Categories"} subtitle={"Manage your project categories"}/>
                 </div>
                 <Button
                     onClick={handleCreate}
