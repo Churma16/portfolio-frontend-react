@@ -72,6 +72,7 @@ export const useCreateProject = () => {
 
 export const useUpdateProject = () => {
     const queryClient = useQueryClient();
+    const {activeBackend} = useApi(); // Get 'laravel' or 'go'
 
     return useMutation({
         mutationFn: async ({id, data}: { id: number; data: any }) => {
@@ -81,15 +82,20 @@ export const useUpdateProject = () => {
             );
 
             if (hasFile) {
-                // For FormData with Laravel, use POST with _method: PUT
-                // The _method field is already in the payload
-                return await apiClient.post(`/projects/${id}`, data);
+                // When there's a file, we need different approaches for different backends
+                if (activeBackend === 'go') {
+                    // Go API supports PUT with FormData directly
+                    return await apiClient.put(`/projects/${id}`, data);
+                } else {
+                    // Laravel requires POST with _method: PUT for FormData
+                    // The _method field is already in the payload from useProjectForm
+                    return await apiClient.post(`/projects/${id}`, data);
+                }
             } else {
-                // For regular JSON, use PUT
+                // For regular JSON (no file), always use PUT
                 return await apiClient.put(`/projects/${id}`, data);
             }
-        }
-        ,
+        },
         onSuccess: () => {
             queryClient.invalidateQueries({queryKey: ["projects"]});
         }
