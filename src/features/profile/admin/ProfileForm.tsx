@@ -6,7 +6,7 @@ import HeroCodeCard from "./components/HeroCodeCard.tsx";
 import SaveButton from "./components/SaveButton.tsx";
 import AdminHeader from "@/components/common/AdminHeader.tsx";
 
-export default function ProfileDialog() {
+export default function ProfileForm() {
     const {
         isLoading,
         isSubmitting,
