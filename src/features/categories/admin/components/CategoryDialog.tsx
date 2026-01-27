@@ -3,7 +3,7 @@ import {Button} from "@/components/ui/button.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {Label} from "@/components/ui/label.tsx";
 import {CgSpinner} from "react-icons/cg";
-import {useCategoryForm} from "@/features/categories/admin/components/useCategoryForm.ts";
+import {useCategoryForm} from "@/features/categories/hooks/useCategoryForm.ts";
 import {Category} from "@/types";
 
 interface CategoryProps {
