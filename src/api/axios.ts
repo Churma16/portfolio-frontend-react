@@ -21,11 +21,59 @@ const apiClient = axios.create({
     withCredentials: false,
 });
 
-// KEEP: Auto-detect FormData (don't break file uploads)
+// KEEP: Auto-detect File objects and convert to FormData
 apiClient.interceptors.request.use((config) => {
+    // Check if data is already FormData
     if (config.data instanceof FormData) {
         delete config.headers["Content-Type"];
+        return config;
     }
+
+    // Check if data contains File object
+    if (config.data && typeof config.data === 'object') {
+        const hasFile = Object.values(config.data).some(
+            (value) => value instanceof File || (Array.isArray(value) && value.some(v => v instanceof File))
+        );
+
+        if (hasFile) {
+            // Convert object with File to FormData
+            const formData = new FormData();
+
+            Object.entries(config.data).forEach(([key, value]) => {
+                // Skip null/undefined/empty values
+                if (value === null || value === undefined) {
+                    return;
+                }
+
+                // Handle arrays - stringify them
+                if (Array.isArray(value)) {
+                    formData.append(key, JSON.stringify(value));
+                    return;
+                }
+
+                // Skip empty strings
+                if (typeof value === 'string' && value.trim() === '') {
+                    return;
+                }
+
+                // Handle File objects
+                if (value instanceof File) {
+                    formData.append(key, value);
+                    return;
+                }
+
+                // Handle all other values - convert to string
+                formData.append(key, String(value));
+            });
+
+            console.log("📦 FormData Payload:", Array.from(formData.entries()));
+
+            config.data = formData;
+            delete config.headers["Content-Type"];
+            return config;
+        }
+    }
+
     return config;
 });
 
