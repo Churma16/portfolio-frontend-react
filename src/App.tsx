@@ -3,6 +3,7 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 // Import halaman-halaman kamu
 import Home from "./pages/public/Home.tsx";
 import LoginPage from "./pages/auth/LoginPage.tsx";
+import NotFoundPage from "./pages/public/NotFoundPage.tsx";
 // Import Satpam tadi
 import ProtectedRoute from "./components/common/ProtectedRoute";
 import DashboardLayout from "@/components/layout/admin/DashboardLayout.tsx"; // Kita buat habis ini
@@ -48,6 +49,9 @@ function App() {
                         {/* Nanti tambah route lain di sini: Create, Edit, dll */}
                     </Route>
                 </Route>
+
+                {/* 404 - Catch all undefined routes */}
+                <Route path="*" element={<NotFoundPage/>}/>
             </Routes>
         </BrowserRouter>
     );

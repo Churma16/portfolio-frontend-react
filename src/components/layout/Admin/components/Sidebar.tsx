@@ -2,6 +2,7 @@ import {
     HiArrowRightOnRectangle,
     HiBriefcase,
     HiCommandLine,
+    HiKey,
     HiListBullet,
     HiMiniUser,
     HiOutlineCube,
@@ -75,6 +76,16 @@ const MENU_ITEMS = [
         hoverBg: "hover:bg-pink-500/15",
         hoverIcon: "group-hover:text-pink-400"
     },
+    {
+        to: "/admin/change-password",
+        label: "Change Password",
+        icon: HiKey,
+        bgColor: "bg-yellow-500/10",
+        borderColor: "border-yellow-500/30",
+        textColor: "text-yellow-400",
+        hoverBg: "hover:bg-yellow-500/15",
+        hoverIcon: "group-hover:text-yellow-400"
+    }
 ];
 
 export default function Sidebar({
