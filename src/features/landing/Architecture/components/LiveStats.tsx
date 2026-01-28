@@ -1,39 +1,11 @@
-import {useQuery} from "@tanstack/react-query";
 import {motion} from "framer-motion";
 import {SiRedis} from "react-icons/si";
-import apiClient from "../../../../api/axios.ts";
+import useHealth from "@/hooks/useHealth.ts";
 
-// Definisikan tipe respon dari API Health kita
-interface HealthResponse {
-    status: string;
-    redis_alive: boolean;
-    server_time: number;
-    redis_processing_time: number; // <--- Field baru dari backend
-}
 
 export default function LiveStats() {
-    const {data, isLoading, isError} = useQuery({
-        queryKey: ["health-check"],
-        queryFn: async () => {
-            const start = Date.now();
-            const response = await apiClient.get<HealthResponse>("/health");
-            const end = Date.now();
-            const latency = end - start;
 
-            return {
-                ping: latency, // Latency Jaringan (Gede)
-                redis: response.data.redis_alive,
-                // Ambil waktu proses asli dari server (Kecil banget)
-                redisTime: response.data.redis_processing_time,
-            };
-        },
-        refetchInterval: 3000, // Cek tiap 3 detik biar seru
-        refetchOnWindowFocus: false,
-    });
-
-    const ping = data?.ping ?? 0;
-    const redisTime = data?.redisTime ?? 0; // Default 0
-    const isRedisAlive = data?.redis ?? false;
+    const {ping, redisTime, isRedisAlive, isLoading, isError} = useHealth();
 
     return (
         <>
@@ -69,20 +41,25 @@ export default function LiveStats() {
                     </motion.span>
                 </div>
             </div>
+
             {isError && !isLoading && (
                 <p className="text-center text-[10px] text-lara-text-muted-dark font-mono mt-12 uppercase tracking-widest opacity-50">
                     System Status: 🔴 Systems Offline
-                </p>)}
+                </p>)
+            }
 
-            {isLoading ? (
+            {isLoading &&
                 <p className="text-center text-sm text-lara-text-muted-dark mt-4 animate-pulse">
                     Fetching live stats...
                 </p>
-            ) : (
+            }
+
+            {!isLoading && !isError &&
                 <p className="text-center text-[10px] text-lara-text-muted-dark font-mono mt-12 uppercase tracking-widest opacity-50">
                     System Status: 🟢 All Systems Operational
                 </p>
-            )}
+            }
+
         </>
     );
 }
