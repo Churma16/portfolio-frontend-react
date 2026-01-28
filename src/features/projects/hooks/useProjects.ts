@@ -76,6 +76,19 @@ export const useUpdateProject = () => {
 
     return useMutation({
         mutationFn: async ({id, data}: { id: number; data: any }) => {
+            // Check if data is FormData
+            const isFormData = data instanceof FormData;
+
+            if (isFormData) {
+                // When it's FormData, use POST for Laravel (has _method: PUT), PUT for Go
+                if (activeBackend === 'go') {
+                    return await apiClient.put(`/projects/${id}`, data);
+                } else {
+                    // Laravel with _method: PUT in FormData
+                    return await apiClient.post(`/projects/${id}`, data);
+                }
+            }
+
             // Check if data contains File object (will be converted to FormData by interceptor)
             const hasFile = Object.values(data).some(
                 (value) => value instanceof File

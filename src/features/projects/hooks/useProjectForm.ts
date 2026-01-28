@@ -127,28 +127,64 @@ export const useProjectForm = ({
             category_id: selectedCategoryId,
         };
 
-        // Only include thumbnail if:
-        // 1. There's an actual File object selected (thumbnailFile is not null)
-        if (thumbnailFile) {
-            payload.thumbnail = thumbnailFile;
+        // When updating, always use FormData to ensure server receives multipart/form-data
+        // This prevents "request Content-Type isn't multipart/form-data" errors
+        if (projectToEdit) {
+            const formDataPayload = new FormData();
 
-            // For Laravel PUT requests with FormData, add _method field
-            // Go API doesn't need this because it supports PUT with FormData directly
-            if (projectToEdit && activeBackend === 'laravel') {
-                payload._method = "PUT";
+            // Add all form fields
+            Object.entries(payload).forEach(([key, value]) => {
+                if (value === null || value === undefined) {
+                    return;
+                }
+
+                if (Array.isArray(value)) {
+                    formDataPayload.append(key, JSON.stringify(value));
+                } else if (value instanceof File) {
+                    formDataPayload.append(key, value);
+                } else {
+                    formDataPayload.append(key, String(value));
+                }
+            });
+
+            // Add thumbnail if a new one was selected
+            if (thumbnailFile) {
+                formDataPayload.append('thumbnail', thumbnailFile);
             }
-        }
 
-        console.log("📝 Payload before mutation:", {
-            hasThumbnailFile: !!thumbnailFile,
-            title: payload.title,
-            content: payload.content,
-            repo_url: payload.repo_url,
-            demo_url: payload.demo_url,
-            activeBackend,
-            hasThumbnailPayload: !!payload.thumbnail,
-            allKeys: Object.keys(payload),
-        });
+            // For Laravel, add _method field
+            if (activeBackend === 'laravel') {
+                formDataPayload.append('_method', 'PUT');
+            }
+
+            console.log("📝 Payload before mutation (UPDATE):", {
+                hasThumbnailFile: !!thumbnailFile,
+                title: payload.title,
+                content: payload.content,
+                repo_url: payload.repo_url,
+                demo_url: payload.demo_url,
+                activeBackend,
+                formDataEntries: Array.from(formDataPayload.entries()).map(([k, v]) => [k, v instanceof File ? `[File: ${(v as File).name}]` : v]),
+            });
+
+            payload.__formDataPayload = formDataPayload;
+        } else {
+            // For creating, only use FormData if there's a file
+            if (thumbnailFile) {
+                payload.thumbnail = thumbnailFile;
+            }
+
+            console.log("📝 Payload before mutation (CREATE):", {
+                hasThumbnailFile: !!thumbnailFile,
+                title: payload.title,
+                content: payload.content,
+                repo_url: payload.repo_url,
+                demo_url: payload.demo_url,
+                activeBackend,
+                hasThumbnailPayload: !!payload.thumbnail,
+                allKeys: Object.keys(payload),
+            });
+        }
 
         const callbacks = {
             onSuccess: () => {
@@ -162,8 +198,10 @@ export const useProjectForm = ({
         };
 
         if (projectToEdit) {
+            // Use the FormData payload we prepared
+            const dataToSend = payload.__formDataPayload || payload;
             updateMutation.mutate(
-                {id: projectToEdit.id, data: payload},
+                {id: projectToEdit.id, data: dataToSend},
                 callbacks
             );
         } else {
