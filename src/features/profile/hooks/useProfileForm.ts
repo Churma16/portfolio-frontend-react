@@ -1,10 +1,8 @@
 import {FormEvent, useEffect, useState} from "react";
-import {useMutation, useQueryClient} from "@tanstack/react-query";
-import {useProfile} from "@/features/profile/hooks/useProfile.ts";
+import {useProfile, useUpdateProfile} from "@/features/profile/hooks/useProfile.ts";
 import {useApi} from "@/contexts/useApi.ts";
 import {useStoragePath} from "@/hooks/useStoragePath.ts";
 import {useThumbnailUpload} from "@/hooks/useThumbnailUpload.ts";
-import apiClient from "@/api/axios.ts";
 
 // ============================================================================
 // Types
@@ -107,9 +105,9 @@ export const useProfileForm = ({
                                    onClose,
                                }: UseProfileFormProps) => {
     const {activeBackend} = useApi();
-    const queryClient = useQueryClient();
     const StoragePath = useStoragePath();
     const {data: profileData, isLoading} = useProfile();
+    const updateMutation = useUpdateProfile();
 
     // --- Avatar Upload Hook ---
     const {
@@ -140,68 +138,7 @@ export const useProfileForm = ({
     const [socialsArray, setSocialsArray] = useState<Array<{ platform: string; url: string }>>([]);
     const [heroCodesArray, setHeroCodesArray] = useState<Array<{ value: string }>>([]);
 
-    // --- Mutation ---
-    const mutation = useMutation({
-        mutationFn: async (data: any) => {
-            if (!profileData?.id) {
-                throw new Error("Profile ID not found");
-            }
-
-            const payload: any = {
-                name: data.name.trim(),
-                headline: cleanText(data.headline) || "",
-                role: data.role.trim() || "",
-                location: data.location.trim() || "",
-                bio_short: cleanText(data.bio_short) || "",
-                bio_long: cleanText(data.bio_long) || "",
-                is_hireable: data.is_hireable ? "1" : "0",
-                socials: data.socials,
-                hero_image_codes: data.hero_image_codes,
-            };
-
-            // Only include avatar if file is selected
-            if (avatarFile) {
-                payload.avatar = avatarFile;
-            }
-
-            // Only include cv if file is selected
-            if (cvFile) {
-                payload.cv_files = cvFile;
-            }
-
-            // For Laravel PUT requests with FormData, add _method field
-            if (activeBackend === "laravel") {
-                payload._method = "PUT";
-            }
-
-            console.log("📝 Profile Payload:", {
-                hasAvatarFile: !!avatarFile,
-                hasCvFile: !!cvFile,
-                activeBackend,
-                ...payload,
-            });
-
-            // Use PUT method for updates
-            if (activeBackend === "go") {
-                return await apiClient.put(`/profiles/${profileData.id}`, payload);
-            } else {
-                // Laravel requires POST with _method: PUT for FormData
-                return await apiClient.post(`/profiles/${profileData.id}`, payload);
-            }
-        },
-        onSuccess: () => {
-            queryClient.invalidateQueries({queryKey: ["profile"]});
-            onSuccess();
-            onClose();
-            alert("Profile Updated!");
-        },
-        onError: (err: any) => {
-            console.error("Error submitting profile:", err);
-            alert("Failed to save profile. Please try again.");
-        },
-    });
-
-    const isSubmitting = mutation.isPending;
+    const isSubmitting = updateMutation.isPending;
 
     // --- Helper Functions ---
     const handleInputChange = (field: string, value: any) => {
@@ -262,13 +199,77 @@ export const useProfileForm = ({
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
 
-        const payload = {
-            ...formData,
+        if (!profileData?.id) {
+            alert("Profile ID not found");
+            return;
+        }
+
+        const basePayload: any = {
+            name: formData.name.trim(),
+            headline: cleanText(formData.headline) || "",
+            role: formData.role.trim() || "",
+            location: formData.location.trim() || "",
+            bio_short: cleanText(formData.bio_short) || "",
+            bio_long: cleanText(formData.bio_long) || "",
+            is_hireable: formData.is_hireable ? "1" : "0",
             socials: transformSocialsToDb(socialsArray),
             hero_image_codes: transformHeroCodesToDb(heroCodesArray),
         };
 
-        mutation.mutate(payload);
+        // Always use FormData for updates to ensure multipart/form-data content-type
+        const formDataPayload = new FormData();
+
+        // Add all form fields
+        Object.entries(basePayload).forEach(([key, value]) => {
+            if (value === null || value === undefined) {
+                return;
+            }
+
+            if (Array.isArray(value)) {
+                formDataPayload.append(key, JSON.stringify(value));
+            } else if (value instanceof File) {
+                formDataPayload.append(key, value);
+            } else {
+                formDataPayload.append(key, String(value));
+            }
+        });
+
+        // Add avatar if file is selected
+        if (avatarFile) {
+            formDataPayload.append('avatar', avatarFile);
+        }
+
+        // Add cv if file is selected
+        if (cvFile) {
+            formDataPayload.append('cv_files', cvFile);
+        }
+
+        // For Laravel, add _method field
+        if (activeBackend === "laravel") {
+            formDataPayload.append('_method', 'PUT');
+        }
+
+        console.log("📝 Profile Payload:", {
+            hasAvatarFile: !!avatarFile,
+            hasCvFile: !!cvFile,
+            activeBackend,
+            formDataEntries: Array.from(formDataPayload.entries()).map(([k, v]) => [k, v instanceof File ? `[File: ${(v as File).name}]` : v]),
+        });
+
+        updateMutation.mutate(
+            {id: profileData.id, data: formDataPayload},
+            {
+                onSuccess: () => {
+                    onSuccess();
+                    onClose();
+                    alert("Profile Updated!");
+                },
+                onError: (err: any) => {
+                    console.error("Error submitting profile:", err);
+                    alert("Failed to save profile. Please try again.");
+                },
+            }
+        );
     };
 
     // --- Return ---
