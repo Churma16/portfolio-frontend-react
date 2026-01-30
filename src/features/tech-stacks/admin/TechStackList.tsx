@@ -1,16 +1,18 @@
 import {useState} from "react";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/components/ui/table.tsx";
 import {Button} from "@/components/ui/button.tsx";
-import {HiPencil, HiPlus, HiTrash} from "react-icons/hi2";
+import {HiArrowDown, HiArrowUp, HiPencil, HiPlus, HiTrash} from "react-icons/hi2";
 import {TechStack} from "@/types";
 import TechStackDialog from "./components/TechStackDialog.tsx";
 import TechIcon from "../../../components/common/TechIcon.tsx";
 import {useTechStacks} from "@/features/tech-stacks/hooks/useTechStacks.ts";
 import apiClient from "@/api/axios.ts";
 import AdminHeader from "@/components/common/AdminHeader.tsx";
+import TableDataLoading from "@/components/common/TableDataLoading.tsx";
+import TableNoData from "@/components/common/TableNoData.tsx";
 
 export default function TechStackList() {
-    const { data: techStacks = [], isLoading, refetch } = useTechStacks();
+    const {data: techStacks = [], isLoading, refetch} = useTechStacks();
 
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [techStackToEdit, setTechStackToEdit] = useState<TechStack | null>(
@@ -59,7 +61,7 @@ export default function TechStackList() {
                     onClick={handleCreate}
                     className="bg-primary hover:bg-blue-600 text-foreground gap-2"
                 >
-                    <HiPlus className="w-4 h-4" />
+                    <HiPlus className="w-4 h-4"/>
                     Add New Stack
                 </Button>
             </div>
@@ -86,31 +88,12 @@ export default function TechStackList() {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {isLoading ? (
-                            <TableRow>
-                                <TableCell
-                                    colSpan={3}
-                                    className="h-24 text-center text-lara-text-muted-dark animate-pulse"
-                                >
-                                    Loading tech stacks data...
-                                </TableCell>
-                            </TableRow>
-                        ) : techStacks.length === 0 ? (
-                            <TableRow>
-                                <TableCell
-                                    colSpan={3}
-                                    className="h-32 text-center text-lara-text-muted-dark"
-                                >
-                                    <div className="flex flex-col items-center justify-center gap-2">
-                                        <p>
-                                            No tech stacks found. Start by
-                                            creating one!
-                                        </p>
-                                    </div>
-                                </TableCell>
-                            </TableRow>
-                        ) : (
-                            techStacks.map((item) => (
+                        {isLoading && <TableDataLoading data="tech stacks"/>}
+
+                        {!isLoading && techStacks.length === 0 && <TableNoData data="tech stacks"/>}
+
+                        {!isLoading && techStacks.length > 0 &&
+                            techStacks.map((item, index) => (
                                 <TableRow
                                     key={item.id}
                                     className="border-white/5 hover:bg-white/5 transition-colors"
@@ -160,7 +143,7 @@ export default function TechStackList() {
                                         <TechIcon
                                             name={item.name}
                                             icon={item.icon}
-                                            className="w-6 h-6 text-lara-text-tertiary"
+                                            className="w-6 h-6 text-lara-text-tertiary mx-auto"
                                         />
                                     </TableCell>
                                     <TableCell className="font-medium text-foreground">
@@ -174,7 +157,7 @@ export default function TechStackList() {
                                                 onClick={() => handleEdit(item)}
                                                 className="h-8 w-8 text-lara-text-muted hover:text-foreground hover:bg-white/10"
                                             >
-                                                <HiPencil className="w-4 h-4" />
+                                                <HiPencil className="w-4 h-4"/>
                                             </Button>
                                             <Button
                                                 size="icon"
@@ -184,13 +167,14 @@ export default function TechStackList() {
                                                 }
                                                 className="h-8 w-8 text-lara-text-muted hover:text-lara-accent-red-light hover:bg-red-500/10"
                                             >
-                                                <HiTrash className="w-4 h-4" />
+                                                <HiTrash className="w-4 h-4"/>
                                             </Button>
                                         </div>
                                     </TableCell>
                                 </TableRow>
                             ))
-                        )}
+                        }
+
                     </TableBody>
                 </Table>
             </div>
