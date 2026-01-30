@@ -14,6 +14,7 @@ import CategoryList from "./features/categories/admin/CategoryList.tsx";
 import SetTokenPage from "./pages/auth/SetTokenPage.tsx";
 import ProfileForm from "./features/profile/admin/ProfileForm.tsx";
 import WorkExperiencesList from "@/features/work-experiences/admin/WorkExperiencesList.tsx";
+import ChangePasswordForm from "@/features/auth/Public/ChangePasswordForm.tsx";
 
 if (import.meta.env.PROD) {
     console.log = () => {
@@ -46,6 +47,7 @@ function App() {
                         <Route path="tags" element={<TagList/>}/>
                         <Route path="categories" element={<CategoryList/>}/>
                         <Route path="profile" element={<ProfileForm/>}/>
+                        <Route path="change-password" element={<ChangePasswordForm/>}/>
                         {/* Nanti tambah route lain di sini: Create, Edit, dll */}
                     </Route>
                 </Route>
