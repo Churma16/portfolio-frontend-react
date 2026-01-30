@@ -1,11 +1,11 @@
 import {TableCell, TableRow} from "@/components/ui/table.tsx";
 
 
-export default function TableDataLoading({data}: { data: string }) {
+export default function TableDataLoading({data, colspan = 7}: { data: string, colspan?: number }) {
     return (
         <TableRow>
             <TableCell
-                colSpan={3}
+                colSpan={colspan}
                 className="h-32 text-center"
             >
                 <div className="flex flex-col items-center justify-center gap-3 text-lara-text-muted-dark/80">
