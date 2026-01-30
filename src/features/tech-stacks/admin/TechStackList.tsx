@@ -5,14 +5,15 @@ import {HiArrowDown, HiArrowUp, HiPencil, HiPlus, HiTrash} from "react-icons/hi2
 import {TechStack} from "@/types";
 import TechStackDialog from "./components/TechStackDialog.tsx";
 import TechIcon from "../../../components/common/TechIcon.tsx";
-import {useTechStacks} from "@/features/tech-stacks/hooks/useTechStacks.ts";
 import apiClient from "@/api/axios.ts";
+import {useReorderTechStack, useTechStacks} from "@/features/tech-stacks/hooks/useTechStacks.ts";
 import AdminHeader from "@/components/common/AdminHeader.tsx";
 import TableDataLoading from "@/components/common/TableDataLoading.tsx";
 import TableNoData from "@/components/common/TableNoData.tsx";
 
 export default function TechStackList() {
     const {data: techStacks = [], isLoading, refetch} = useTechStacks();
+    const reorderMutation = useReorderTechStack();
 
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [techStackToEdit, setTechStackToEdit] = useState<TechStack | null>(
@@ -39,16 +40,8 @@ export default function TechStackList() {
         }
     };
 
-    const handleReorder = async (id: number, direction: "up" | "down") => {
-        console.log(`Memindahkan project ${id} ke arah ${direction}`);
-
-        // Contoh Logika API (Sesuaikan dengan endpoint backend Anda):
-        try {
-            await apiClient.post(`/tech-stacks/${id}/reorder`, {direction});
-            refetch(); // Refresh data agar urutan baru tampil
-        } catch (error) {
-            console.error("Gagal mengubah urutan", error);
-        }
+    const handleReorder = (id: number, direction: "up" | "down") => {
+        reorderMutation.mutate({id, direction});
     };
 
     return (

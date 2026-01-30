@@ -5,7 +5,7 @@ import {Button} from "@/components/ui/button.tsx";
 import {HiArrowDown, HiArrowUp, HiPencil, HiPlus, HiTrash,} from "react-icons/hi2";
 import {Project} from "@/types";
 import ProjectDialog from "./components/ProjectDialog.tsx";
-import {useProjects} from "../hooks/useProjects.ts";
+import {useProjects, useReorderProject} from "../hooks/useProjects.ts";
 import apiClient from "@/api/axios.ts";
 import {useApi} from "@/contexts/useApi.ts";
 import AdminHeader from "@/components/common/AdminHeader.tsx";
@@ -14,6 +14,7 @@ import TableNoData from "@/components/common/TableNoData.tsx";
 
 export default function ProjectList() {
     const {data: projects = [], isLoading, refetch} = useProjects();
+    const reorderMutation = useReorderProject();
 
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [projectToEdit, setProjectToEdit] = useState<Project | null>(null);
@@ -29,15 +30,7 @@ export default function ProjectList() {
     // --- FUNGSI REORDER ---
     // Anda perlu menghubungkan ini ke API backend Anda nantinya
     const handleReorder = async (id: number, direction: "up" | "down") => {
-        console.log(`Memindahkan project ${id} ke arah ${direction}`);
-
-        // Contoh Logika API (Sesuaikan dengan endpoint backend Anda):
-        try {
-            await apiClient.post(`/projects/${id}/reorder`, {direction});
-            refetch(); // Refresh data agar urutan baru tampil
-        } catch (error) {
-            console.error("Gagal mengubah urutan", error);
-        }
+        reorderMutation.mutate({id, direction});
     };
 
     const handleEdit = (project: Project) => {
@@ -193,23 +186,20 @@ export default function ProjectList() {
 
                                     <TableCell>
                                         <div className="flex flex-wrap gap-1.5">
-                                            {project.tech_stack
-                                                ?.slice(0, 3)
-                                                .map((stack) => (
-                                                    <span
-                                                        key={stack.id}
-                                                        className="px-2 py-0.5 rounded text-[10px] font-medium bg-blue-500/10 text-lara-accent-blue-light border border-blue-500/20"
-                                                    >
+                                            {project.tech_stack?.slice(0, 3).map((stack) => (
+                                                <span
+                                                    key={stack.id}
+                                                    className="px-2 py-0.5 rounded text-[10px] font-medium bg-blue-500/10 text-lara-accent-blue-light border border-blue-500/20"
+                                                >
                                                         {stack.name}
                                                     </span>
-                                                ))}
+                                            ))}
                                             {project.tech_stack &&
                                                 project.tech_stack.length >
                                                 3 && (
                                                     <span className="text-[10px] text-slate-500">
                                                         +
-                                                        {project.tech_stack
-                                                            .length - 3}
+                                                        {project.tech_stack.length - 3}
                                                     </span>
                                                 )}
                                         </div>
