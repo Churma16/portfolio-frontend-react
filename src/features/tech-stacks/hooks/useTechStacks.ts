@@ -48,3 +48,16 @@ export const useUpdateTechStack = () => {
         }
     })
 }
+
+export const useReorderTechStack = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async ({id, direction}: { id: number; direction: "up" | "down" }) => {
+            return await apiClient.post(`/tech-stacks/${id}/reorder`, {direction});
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({queryKey: ["tech-stacks"]});
+        },
+    })
+}

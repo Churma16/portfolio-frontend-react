@@ -114,3 +114,16 @@ export const useUpdateProject = () => {
         }
     });
 }
+
+export const useReorderProject = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async ({id, direction}: { id: number; direction: "up" | "down" }) => {
+            return await apiClient.post(`/projects/${id}/reorder`, {direction});
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({queryKey: ["projects"]});
+        },
+    })
+}
