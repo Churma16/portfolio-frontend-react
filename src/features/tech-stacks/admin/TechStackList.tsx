@@ -37,6 +37,18 @@ export default function TechStackList() {
         }
     };
 
+    const handleReorder = async (id: number, direction: "up" | "down") => {
+        console.log(`Memindahkan project ${id} ke arah ${direction}`);
+
+        // Contoh Logika API (Sesuaikan dengan endpoint backend Anda):
+        try {
+            await apiClient.post(`/tech-stacks/${id}/reorder`, {direction});
+            refetch(); // Refresh data agar urutan baru tampil
+        } catch (error) {
+            console.error("Gagal mengubah urutan", error);
+        }
+    };
+
     return (
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -56,6 +68,12 @@ export default function TechStackList() {
                 <Table>
                     <TableHeader className="bg-white/5">
                         <TableRow className="border-white/5 hover:bg-transparent">
+                            <TableHead className="text-slate-300 w-[50px]">
+                                ID
+                            </TableHead>
+                            <TableHead className="text-slate-300 w-[80px] text-center">
+                                Order
+                            </TableHead>
                             <TableHead className="text-lara-text-tertiary">
                                 Icon
                             </TableHead>
@@ -97,6 +115,47 @@ export default function TechStackList() {
                                     key={item.id}
                                     className="border-white/5 hover:bg-white/5 transition-colors"
                                 >
+                                    <TableCell className="font-mono text-slate-500">
+                                        #{item.id}
+                                    </TableCell>
+                                    <TableCell>
+                                        <div className="flex flex-col items-center gap-1">
+                                            {/* Tombol NAIK */}
+                                            <Button
+                                                size="icon"
+                                                variant="ghost"
+                                                className="h-6 w-6 text-lara-text-muted hover:text-foreground hover:bg-white/10 disabled:opacity-30"
+                                                onClick={() =>
+                                                    handleReorder(
+                                                        item.id,
+                                                        "up"
+                                                    )
+                                                }
+                                                disabled={index === 0} // Disable jika item pertama
+                                            >
+                                                <HiArrowUp className="w-3 h-3"/>
+                                            </Button>
+
+                                            {/* Tombol TURUN */}
+                                            <Button
+                                                size="icon"
+                                                variant="ghost"
+                                                className="h-6 w-6 text-lara-text-muted hover:text-foreground hover:bg-white/10 disabled:opacity-30"
+                                                onClick={() =>
+                                                    handleReorder(
+                                                        item.id,
+                                                        "down"
+                                                    )
+                                                }
+                                                disabled={
+                                                    index ===
+                                                    techStacks.length - 1
+                                                } // Disable jika item terakhir
+                                            >
+                                                <HiArrowDown className="w-3 h-3"/>
+                                            </Button>
+                                        </div>
+                                    </TableCell>
                                     <TableCell>
                                         <TechIcon
                                             name={item.name}
