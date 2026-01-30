@@ -5,9 +5,9 @@ import {Button} from "@/components/ui/button.tsx";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/components/ui/table.tsx";
 import {HiOutlinePencil, HiOutlinePlus, HiOutlineTrash} from "react-icons/hi2";
 import {Category} from "@/types";
-import LoadingSpinner from "@/components/common/LoadingSpinner.tsx";
-import EmptyData from "@/components/common/EmptyData.tsx";
 import AdminHeader from "@/components/common/AdminHeader.tsx";
+import TableDataLoading from "@/components/common/TableDataLoading.tsx";
+import TableNoData from "@/components/common/TableNoData.tsx";
 
 export default function CategoryList() {
     const {data: categories = [], isLoading, refetch} = useCategories();
@@ -53,11 +53,11 @@ export default function CategoryList() {
 
             {/* Table */}
             <div className="rounded-lg border border-white/10 overflow-hidden bg-black/20">
-                {isLoading && <LoadingSpinner/>}
+                {isLoading && <TableDataLoading data="categories"/>}
 
-                {!isLoading && !categories.length && <EmptyData itemName={"categories"}/>}
+                {!isLoading && !categories.length && <TableNoData data="categories"/>}
 
-                {!isLoading &&
+                {!isLoading && categories.length > 0 &&
                     <Table>
                         <TableHeader>
                             <TableRow className="border-white/10">

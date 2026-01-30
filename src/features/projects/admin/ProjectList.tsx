@@ -2,13 +2,15 @@ import {useState} from "react";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/components/ui/table.tsx";
 import {Button} from "@/components/ui/button.tsx";
 // Tambahkan HiArrowUp dan HiArrowDown
-import {HiArrowDown, HiArrowUp, HiOutlineCube, HiPencil, HiPlus, HiTrash,} from "react-icons/hi2";
+import {HiArrowDown, HiArrowUp, HiPencil, HiPlus, HiTrash,} from "react-icons/hi2";
 import {Project} from "@/types";
 import ProjectDialog from "./components/ProjectDialog.tsx";
 import {useProjects} from "../hooks/useProjects.ts";
 import apiClient from "@/api/axios.ts";
 import {useApi} from "@/contexts/useApi.ts";
 import AdminHeader from "@/components/common/AdminHeader.tsx";
+import TableDataLoading from "@/components/common/TableDataLoading.tsx";
+import TableNoData from "@/components/common/TableNoData.tsx";
 
 export default function ProjectList() {
     const {data: projects = [], isLoading, refetch} = useProjects();
@@ -102,32 +104,11 @@ export default function ProjectList() {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {isLoading ? (
-                            <TableRow>
-                                <TableCell
-                                    colSpan={7}
-                                    className="h-24 text-center text-slate-500 animate-pulse"
-                                >
-                                    Loading projects data...
-                                </TableCell>
-                            </TableRow>
-                        ) : projects.length === 0 ? (
-                            <TableRow>
-                                <TableCell
-                                    colSpan={7}
-                                    className="h-32 text-center text-slate-500"
-                                >
-                                    <div className="flex flex-col items-center justify-center gap-2">
-                                        <HiOutlineCube className="w-8 h-8 opacity-50"/>
-                                        <p>
-                                            No projects found. Start by creating
-                                            one!
-                                        </p>
-                                    </div>
-                                </TableCell>
-                            </TableRow>
-                        ) : (
-                            // Tambahkan parameter index di sini untuk logika disable tombol
+                        {isLoading && <TableDataLoading data="projects"/>}
+
+                        {!isLoading && projects.length === 0 && <TableNoData data="projects"/>}
+
+                        {!isLoading && projects.length > 0 &&
                             projects.map((project, index) => (
                                 <TableRow
                                     key={project.id}
@@ -273,16 +254,17 @@ export default function ProjectList() {
                                     </TableCell>
                                 </TableRow>
                             ))
-                        )}
+                        }
                     </TableBody>
                 </Table>
-                <ProjectDialog
-                    open={isDialogOpen}
-                    onOpenChange={setIsDialogOpen}
-                    projectToEdit={projectToEdit}
-                    onSuccess={refetch}
-                />
             </div>
+
+            <ProjectDialog
+                open={isDialogOpen}
+                onOpenChange={setIsDialogOpen}
+                projectToEdit={projectToEdit}
+                onSuccess={refetch}
+            />
         </div>
     );
 }

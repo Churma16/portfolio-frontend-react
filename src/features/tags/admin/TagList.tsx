@@ -9,6 +9,8 @@ import apiClient from "@/api/axios.ts";
 import EditButton from "@/components/common/EditButton.tsx";
 import DeleteButton from "@/components/common/DeleteButton.tsx";
 import AdminHeader from "@/components/common/AdminHeader.tsx";
+import TableDataLoading from "@/components/common/TableDataLoading.tsx";
+import TableNoData from "@/components/common/TableNoData.tsx";
 
 export default function TagList() {
     const { data: tags = [], isLoading, refetch } = useTags();
@@ -31,14 +33,14 @@ export default function TagList() {
         try {
             await apiClient.delete(`/tags/${tag.id}`);
             refetch();
-        } catch (error) {
+        } catch (error: unknown) {
             console.error("Delete error:", error);
         }
     };
 
     // Helper warna (bisa dipindah ke utils)
-    const getColorClass = (color: string) => {
-        const map: any = {
+    const getColorClass = (color: string): string => {
+        const map: Record<string, string> = {
             blue: "bg-blue-500/20 text-lara-accent-blue-light border-blue-500/30",
             green: "bg-green-500/20 text-green-400 border-green-500/30",
             red: "bg-red-500/20 text-red-400 border-red-500/30",
@@ -79,30 +81,11 @@ export default function TagList() {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {isLoading ? (
-                            <TableRow>
-                                <TableCell
-                                    colSpan={3}
-                                    className="h-24 text-center text-lara-text-muted-dark animate-pulse"
-                                >
-                                    Loading tags...
-                                </TableCell>
-                            </TableRow>
-                        ) : tags.length === 0 ? (
-                            <TableRow>
-                                <TableCell
-                                    colSpan={3}
-                                    className="h-32 text-center text-slate-500"
-                                >
-                                    <div className="flex flex-col items-center justify-center gap-2">
-                                        <p>
-                                            No tags found. Start by creating
-                                            one!
-                                        </p>
-                                    </div>
-                                </TableCell>
-                            </TableRow>
-                        ) : (
+                        {isLoading && <TableDataLoading data="tags"/>}
+
+                        {!isLoading && tags.length === 0 && <TableNoData data="tags"/>}
+
+                        {!isLoading && tags.length > 0 &&
                             tags.map((tag) => (
                                 <TableRow
                                     key={tag.id}
@@ -128,7 +111,7 @@ export default function TagList() {
                                     </TableCell>
                                 </TableRow>
                             ))
-                        )}
+                        }
                     </TableBody>
                 </Table>
             </div>

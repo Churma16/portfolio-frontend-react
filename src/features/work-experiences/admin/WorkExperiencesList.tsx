@@ -1,7 +1,7 @@
 import {useState} from "react";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/components/ui/table.tsx";
 import {Button} from "@/components/ui/button.tsx";
-import {HiArrowDown, HiArrowUp, HiOutlineCube, HiPlus,} from "react-icons/hi2";
+import {HiArrowDown, HiArrowUp, HiPlus,} from "react-icons/hi2";
 import {WorkExperience} from "@/types";
 import WorkExperiencesDialog from "@/features/work-experiences/admin/components/WorkExperiencesDialog.tsx";
 import {useWorkExperiences} from "@/features/work-experiences/hooks/useWorkExperiences.ts";
@@ -9,6 +9,8 @@ import apiClient from "@/api/axios.ts";
 import DeleteButton from "@/components/common/DeleteButton.tsx";
 import EditButton from "@/components/common/EditButton.tsx";
 import AdminHeader from "@/components/common/AdminHeader.tsx";
+import TableDataLoading from "@/components/common/TableDataLoading.tsx";
+import TableNoData from "@/components/common/TableNoData.tsx";
 
 export default function WorkExperiencesList() {
     const { data: experiences = [], isLoading, refetch } =
@@ -97,31 +99,11 @@ export default function WorkExperiencesList() {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {isLoading ? (
-                            <TableRow>
-                                <TableCell
-                                    colSpan={7}
-                                    className="h-24 text-center text-lara-text-muted-dark animate-pulse"
-                                >
-                                    Loading experiences data...
-                                </TableCell>
-                            </TableRow>
-                        ) : experiences.length === 0 ? (
-                            <TableRow>
-                                <TableCell
-                                    colSpan={7}
-                                    className="h-32 text-center text-lara-text-muted-dark"
-                                >
-                                    <div className="flex flex-col items-center justify-center gap-2">
-                                        <HiOutlineCube className="w-8 h-8 opacity-50" />
-                                        <p>
-                                            No work experiences found. Start by
-                                            creating one!
-                                        </p>
-                                    </div>
-                                </TableCell>
-                            </TableRow>
-                        ) : (
+                        {isLoading && <TableDataLoading data="work experiences"/>}
+
+                        {!isLoading && experiences.length === 0 && <TableNoData data="work experiences"/>}
+
+                        {!isLoading && experiences.length > 0 &&
                             experiences.map((experience, index) => (
                                 <TableRow
                                     key={experience.id}
@@ -247,7 +229,7 @@ export default function WorkExperiencesList() {
                                     </TableCell>
                                 </TableRow>
                             ))
-                        )}
+                        }
                     </TableBody>
                 </Table>
                 <WorkExperiencesDialog
