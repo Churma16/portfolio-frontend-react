@@ -1,8 +1,8 @@
 // src/pages/LoginPage.tsx
 import PublicLayout from "../../components/layout/public/PublicLayout.tsx";
-import LoginForm from "@/features/auth/components/LoginForm.tsx";
-import GlitchBackground from "@/features/auth/components/GlitchBackground.tsx";
-import GlitchGhostElements from "@/features/auth/components/GlitchGhostElements.tsx";
+import LoginForm from "@/features/auth/Admin/LoginForm.tsx";
+import GlitchBackground from "@/features/auth/Admin/components/GlitchBackground.tsx";
+import GlitchGhostElements from "@/features/auth/Admin/components/GlitchGhostElements.tsx";
 import {useLoginForm} from "@/features/auth/hooks/useLoginForm.ts";
 import {useGlitchEffect} from "@/features/auth/hooks/useGlitchEffect.ts";
 
