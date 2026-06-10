@@ -8,8 +8,9 @@ export const TOKEN_KEYS = {
 
 export type BackendType = "laravel" | "go";
 
-export const logout = (backend: BackendType = "laravel") => {
-    localStorage.removeItem(TOKEN_KEYS[backend]);
+export const logout = () => {
+    localStorage.removeItem(TOKEN_KEYS.laravel);
+    localStorage.removeItem(TOKEN_KEYS.go);
     window.location.href = "/";
 };
 

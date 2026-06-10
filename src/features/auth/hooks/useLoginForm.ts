@@ -1,6 +1,7 @@
 // src/hooks/useLoginForm.ts
 import {FormEvent, useState} from "react";
 import {useNavigate} from "react-router-dom";
+import axios from "axios";
 import apiClient from "@/api/axios.ts";
 import {setToken} from "@/lib/auth.ts";
 import {useApi} from "@/contexts/useApi.ts";
@@ -35,6 +36,25 @@ export const useLoginForm = () => {
             // PASS THE BACKEND TYPE to setToken!
             setToken(token, activeBackend);
             console.log(`Token saved to ${activeBackend}_token`);
+
+            // Attempt to login to the other backend in parallel/background so both stay logged in
+            const otherBackend = activeBackend === "laravel" ? "go" : "laravel";
+            const otherURL = otherBackend === "laravel"
+                ? (import.meta.env.VITE_LARAVEL_URL || "http://localhost:8000/api")
+                : (import.meta.env.VITE_GO_URL || "http://localhost:8080/api");
+
+            try {
+                const otherResponse = await axios.post(`${otherURL}/login`, {email, password}, {
+                    headers: { Accept: "application/json" }
+                });
+                const otherToken = otherResponse.data.access_token || otherResponse.data.token || otherResponse.data.data?.access_token;
+                if (otherToken) {
+                    setToken(otherToken, otherBackend);
+                    console.log(`Token automatically saved to secondary backend: ${otherBackend}_token`);
+                }
+            } catch (err) {
+                console.warn(`Could not automatically login to secondary backend (${otherBackend}):`, err);
+            }
 
             setStatus("success");
             setTimeout(() => navigate("/admin"), 1500);
