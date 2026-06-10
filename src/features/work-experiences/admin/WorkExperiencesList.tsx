@@ -5,7 +5,7 @@ import {HiArrowDown, HiArrowUp, HiPlus,} from "react-icons/hi2";
 import {WorkExperience} from "@/types";
 import WorkExperiencesDialog from "@/features/work-experiences/admin/components/WorkExperiencesDialog.tsx";
 import {useWorkExperiences} from "@/features/work-experiences/hooks/useWorkExperiences.ts";
-import apiClient from "@/api/axios.ts";
+import apiClient, {requestBothBackends} from "@/api/axios.ts";
 import DeleteButton from "@/components/common/DeleteButton.tsx";
 import EditButton from "@/components/common/EditButton.tsx";
 import AdminHeader from "@/components/common/AdminHeader.tsx";
@@ -25,7 +25,7 @@ export default function WorkExperiencesList() {
         console.log(`Memindahkan experience ${id} ke arah ${direction}`);
 
         try {
-            await apiClient.post(`/work-experiences/${id}/reorder`, {
+            await requestBothBackends("post", `/work-experiences/${id}/reorder`, {
                 direction,
             });
             await refetch(); // Refresh data agar urutan baru tampil
@@ -47,7 +47,7 @@ export default function WorkExperiencesList() {
     const handleDelete = async (experience: WorkExperience) => {
         if (!confirm("Are you sure?")) return;
         try {
-            await apiClient.delete(`/work-experiences/${experience.id}`);
+            await requestBothBackends("delete", `/work-experiences/${experience.id}`);
             refetch();
         } catch (error) {
             console.error("Delete error:", error);

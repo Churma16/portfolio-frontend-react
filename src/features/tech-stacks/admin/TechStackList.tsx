@@ -5,7 +5,7 @@ import {HiArrowDown, HiArrowUp, HiPencil, HiPlus, HiTrash} from "react-icons/hi2
 import {TechStack} from "@/types";
 import TechStackDialog from "./components/TechStackDialog.tsx";
 import TechIcon from "../../../components/common/TechIcon.tsx";
-import apiClient from "@/api/axios.ts";
+import {requestBothBackends} from "@/api/axios.ts";
 import {useReorderTechStack, useTechStacks} from "@/features/tech-stacks/hooks/useTechStacks.ts";
 import AdminHeader from "@/components/common/AdminHeader.tsx";
 import TableDataLoading from "@/components/common/TableDataLoading.tsx";
@@ -33,7 +33,7 @@ export default function TechStackList() {
     const handleDelete = async (id: number) => {
         if (!confirm("Are you sure?")) return;
         try {
-            await apiClient.delete(`/tech-stacks/${id}`);
+            await requestBothBackends("delete", `/tech-stacks/${id}`);
             refetch();
         } catch (error) {
             console.error("Delete error:", error);

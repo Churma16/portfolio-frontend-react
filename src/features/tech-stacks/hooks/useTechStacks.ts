@@ -1,5 +1,5 @@
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import apiClient from "../../../api/axios.ts";
+import apiClient, {requestBothBackends} from "../../../api/axios.ts";
 import {ApiResponse, TechStack} from "@/types";
 import {useApi} from "@/contexts/useApi.ts";
 
@@ -28,7 +28,7 @@ export const useCreateTechStack = () => {
 
     return useMutation({
         mutationFn: async (newData: any) => {
-            return await apiClient.post("/tech-stacks", newData);
+            return await requestBothBackends("post", "/tech-stacks", newData);
         },
         onSuccess: () => {
             queryClient.invalidateQueries({queryKey: ["tech-stacks"]});
@@ -41,7 +41,7 @@ export const useUpdateTechStack = () => {
 
     return useMutation({
         mutationFn: async ({id, data}: { id: number; data: any }) => {
-            return await apiClient.put(`/tech-stacks/${id}`, data);
+            return await requestBothBackends("put", `/tech-stacks/${id}`, data);
         },
         onSuccess: () => {
             queryClient.invalidateQueries({queryKey: ["tech-stacks"]});
@@ -54,7 +54,7 @@ export const useReorderTechStack = () => {
 
     return useMutation({
         mutationFn: async ({id, direction}: { id: number; direction: "up" | "down" }) => {
-            return await apiClient.post(`/tech-stacks/${id}/reorder`, {direction});
+            return await requestBothBackends("post", `/tech-stacks/${id}/reorder`, {direction});
         },
         onSuccess: () => {
             queryClient.invalidateQueries({queryKey: ["tech-stacks"]});

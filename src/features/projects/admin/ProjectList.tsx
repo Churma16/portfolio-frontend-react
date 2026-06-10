@@ -6,7 +6,7 @@ import {HiArrowDown, HiArrowUp, HiPencil, HiPlus, HiTrash,} from "react-icons/hi
 import {Project} from "@/types";
 import ProjectDialog from "./components/ProjectDialog.tsx";
 import {useProjects, useReorderProject} from "../hooks/useProjects.ts";
-import apiClient from "@/api/axios.ts";
+import apiClient, {requestBothBackends} from "@/api/axios.ts";
 import {useApi} from "@/contexts/useApi.ts";
 import AdminHeader from "@/components/common/AdminHeader.tsx";
 import TableDataLoading from "@/components/common/TableDataLoading.tsx";
@@ -46,7 +46,7 @@ export default function ProjectList() {
     const handleDelete = async (project: Project) => {
         if (!confirm("Are you sure?")) return;
         try {
-            await apiClient.delete(`/projects/${project.id}`);
+            await requestBothBackends("delete", `/projects/${project.id}`);
             refetch();
         } catch (error) {
             console.error("Delete error:", error);

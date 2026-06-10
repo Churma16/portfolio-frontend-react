@@ -1,5 +1,5 @@
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import apiClient from "@/api/axios.ts";
+import apiClient, {requestBothBackends} from "@/api/axios.ts";
 import {ApiResponse, WorkExperience} from "@/types";
 
 const fetchWorkExperiences = async (): Promise<WorkExperience[]> => {
@@ -25,7 +25,7 @@ export const useCreateWorkExperience = () => {
 
     return useMutation({
         mutationFn: async (newData: any) => {
-            return await apiClient.post("/work-experiences", newData);
+            return await requestBothBackends("post", "/work-experiences", newData);
         },
         onSuccess: () => {
             // Setelah sukses, suruh mata-mata update data di papan tulis (Cache)
@@ -39,7 +39,7 @@ export const useUpdateWorkExperience = () => {
 
     return useMutation({
         mutationFn: async ({id, data}: { id: number; data: any }) => {
-            return await apiClient.put(`/work-experiences/${id}`, data);
+            return await requestBothBackends("put", `/work-experiences/${id}`, data);
         },
         onSuccess: () => {
             queryClient.invalidateQueries({queryKey: ["work-experiences"]});
