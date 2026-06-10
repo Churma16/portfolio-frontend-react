@@ -141,7 +141,7 @@ src/features/
     ├── hooks/
     │   └── useProfile.ts            ← useQuery
     └── admin/
-        └── index.tsx                ← useMutation
+        └── ProfileForm.tsx                ← useMutation
 ```
 
 ---

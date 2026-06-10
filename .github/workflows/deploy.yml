@@ -26,12 +26,12 @@ jobs:
       - name: Inject Environment Variables
         run: |
           echo 'VITE_PROD=true' >> .env
-          echo 'VITE_API_URL="https://churma.codes"' >> .env
-          echo 'VITE_FILE_URL="https://churma.codes"' >> .env
-          echo 'VITE_LARAVEL_URL="https://churma.codes"' >> .env
-          echo 'VITE_LARAVEL_FILE_URL="https://churma.codes"' >> .env
-          echo 'VITE_GO_URL="https://churma.codes"' >> .env
-          echo 'VITE_GO_FILE_URL="https://churma.codes"' >> .env
+          echo 'VITE_API_URL="https://churma.codes/api/"' >> .env
+          echo 'VITE_FILE_URL="https://churma.codes/storage/"' >> .env
+          echo 'VITE_LARAVEL_URL="https://churma.codes/api/"' >> .env
+          echo 'VITE_LARAVEL_FILE_URL="https://churma.codes/storage/"' >> .env
+          echo 'VITE_GO_URL="https://api-go.churma.codes/api/"' >> .env
+          echo 'VITE_GO_FILE_URL="https://api-go.churma.codes/storage/"' >> .env
 
       - name: Build Application
         run: npm run build
