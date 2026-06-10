@@ -25,3 +25,4 @@ dist-ssr
 *.sw?
 
 src/features/work-experiences/public/unused
+/docs
