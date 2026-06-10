@@ -36,6 +36,7 @@ export const useWorkExperienceForm = ({
     });
     const [selectedStackIds, setSelectedStackIds] = useState<number[]>([]);
     const [selectedTagIds, setSelectedTagIds] = useState<number[]>([]);
+    const [achievements, setAchievements] = useState<string[]>([]);
 
     // 3. Helper Functions
     const formatDateToYYYYMM = (dateStr: string) => dayjs(dateStr, "MMM YYYY").format("YYYY-MM");
@@ -50,6 +51,22 @@ export const useWorkExperienceForm = ({
 
     const handleInputChange = (field: keyof typeof formData, value: string | boolean) => {
         setFormData((prev) => ({...prev, [field]: value}));
+    };
+
+    const handleAddAchievement = () => {
+        setAchievements((prev) => [...prev, ""]);
+    };
+
+    const handleRemoveAchievement = (index: number) => {
+        setAchievements((prev) => prev.filter((_, i) => i !== index));
+    };
+
+    const handleAchievementChange = (index: number, value: string) => {
+        setAchievements((prev) => {
+            const copy = [...prev];
+            copy[index] = value;
+            return copy;
+        });
     };
 
     // 4. Reset / Populate Logic
@@ -68,6 +85,18 @@ export const useWorkExperienceForm = ({
                     });
                     setSelectedStackIds(experienceToEdit.tech_stack?.map((s) => s.id) || []);
                     setSelectedTagIds(experienceToEdit.tags?.map((t) => t.id) || []);
+                    
+                    let parsedAchievements: string[] = [];
+                    if (experienceToEdit.achievements) {
+                        try {
+                            parsedAchievements = typeof experienceToEdit.achievements === 'string'
+                                ? JSON.parse(experienceToEdit.achievements)
+                                : experienceToEdit.achievements;
+                        } catch (e) {
+                            console.error("Failed to parse achievements:", e);
+                        }
+                    }
+                    setAchievements(Array.isArray(parsedAchievements) ? parsedAchievements : []);
                 } else {
                     setFormData({
                         company: "",
@@ -80,6 +109,7 @@ export const useWorkExperienceForm = ({
                     });
                     setSelectedStackIds([]);
                     setSelectedTagIds([]);
+                    setAchievements([]);
                 }
             }, 0);
         }
@@ -94,6 +124,7 @@ export const useWorkExperienceForm = ({
             end_date: formData.end_date || null,
             tech_stack_ids: selectedStackIds,
             tag_ids: selectedTagIds,
+            achievements: achievements.filter(a => a.trim() !== ""),
         };
 
         const callbacks = {
@@ -121,6 +152,10 @@ export const useWorkExperienceForm = ({
         toggleStack,
         selectedTagIds,
         toggleTag,
+        achievements,
+        handleAddAchievement,
+        handleRemoveAchievement,
+        handleAchievementChange,
         handleSubmit,
         isSubmitting
     };

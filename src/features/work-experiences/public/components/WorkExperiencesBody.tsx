@@ -117,9 +117,36 @@ export default function WorkExperiencesBody({workExperiences}: { workExperiences
                                     </span>
                                 </div>
 
-                                <p className="text-lara-text-muted mb-6 leading-relaxed text-sm md:text-base">
+                                <p className="text-lara-text-muted mb-4 leading-relaxed text-sm md:text-base italic border-l-2 border-slate-700 pl-3">
                                     {workExperience.description}
                                 </p>
+
+                                {/* Achievements List */}
+                                {workExperience.achievements && (() => {
+                                    let parsed: string[] = [];
+                                    try {
+                                        parsed = typeof workExperience.achievements === 'string'
+                                            ? JSON.parse(workExperience.achievements)
+                                            : workExperience.achievements;
+                                    } catch (e) {
+                                        console.error("Failed to parse achievements:", e);
+                                    }
+                                    if (!Array.isArray(parsed) || parsed.length === 0) return null;
+                                    return (
+                                        <ul className="space-y-3 mb-6">
+                                            {parsed.map((ach, idx) => (
+                                                <li key={idx} className="flex items-start gap-3 text-sm md:text-base text-slate-300">
+                                                    <span className="flex-shrink-0 text-blue-500 mt-0.5">
+                                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <span>{ach}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    );
+                                })()}
 
                                 {/* Tech Stack Tags */}
                                 <div className="flex flex-wrap gap-2 pt-4 border-t border-slate-800/50">

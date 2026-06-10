@@ -42,6 +42,10 @@ export default function WorkExperiencesDialog({
         toggleStack,
         selectedTagIds,
         toggleTag,
+        achievements,
+        handleAddAchievement,
+        handleRemoveAchievement,
+        handleAchievementChange,
         handleSubmit,
         isSubmitting
     } = useWorkExperienceForm({
@@ -134,14 +138,57 @@ export default function WorkExperiencesDialog({
 
                     {/* Description */}
                     <div className="space-y-2">
-                        <Label>Description</Label>
+                        <Label>Short Description</Label>
                         <Textarea
                             value={formData.description}
                             onChange={(e) => handleInputChange("description", e.target.value)}
                             className="bg-black/20 border-white/10"
-                            rows={4}
+                            rows={3}
                             required
                         />
+                    </div>
+
+                    {/* Achievements */}
+                    <div className="space-y-3">
+                        <div className="flex justify-between items-center">
+                            <Label>Achievements (Poin Pencapaian)</Label>
+                            <Button 
+                                type="button" 
+                                size="sm" 
+                                variant="outline" 
+                                onClick={handleAddAchievement}
+                                className="h-8 border-white/10 hover:bg-white/5 text-xs text-slate-300"
+                            >
+                                + Add Achievement
+                            </Button>
+                        </div>
+                        {achievements.length === 0 ? (
+                            <div className="text-xs text-slate-500 italic py-2">
+                                No achievements added yet. Click "+ Add Achievement" to add one.
+                            </div>
+                        ) : (
+                            <div className="space-y-2">
+                                {achievements.map((achievement, index) => (
+                                    <div key={index} className="flex items-center gap-2">
+                                        <Input
+                                            value={achievement}
+                                            onChange={(e) => handleAchievementChange(index, e.target.value)}
+                                            placeholder={`Achievement #${index + 1}`}
+                                            className="bg-black/20 border-white/10 flex-1 text-sm"
+                                        />
+                                        <Button
+                                            type="button"
+                                            size="sm"
+                                            variant="ghost"
+                                            onClick={() => handleRemoveAchievement(index)}
+                                            className="h-9 w-9 text-red-400 hover:text-red-300 hover:bg-red-500/10"
+                                        >
+                                            ✕
+                                        </Button>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
                     </div>
 
                     {/* --- THE SPECIALISTS --- */}
