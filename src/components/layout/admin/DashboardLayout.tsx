@@ -1,7 +1,7 @@
 import {useState} from "react"; // Tambah useState
 import {Outlet, useLocation} from "react-router-dom";
 import {HiBars3,} from "react-icons/hi2";
-import Sidebar from "@/components/layout/admin/components/Sidebar.tsx";
+import Sidebar from '@/components/layout/admin/components/Sidebar.tsx'
 
 export default function DashboardLayout() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false); // State untuk mobile menu

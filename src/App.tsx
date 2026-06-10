@@ -4,10 +4,9 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Home from "./pages/public/Home.tsx";
 import LoginPage from "./pages/auth/LoginPage.tsx";
 import NotFoundPage from "./pages/public/NotFoundPage.tsx";
-// Import Satpam tadi
 import ProtectedRoute from "./components/common/ProtectedRoute";
-import DashboardLayout from "@/components/layout/admin/DashboardLayout.tsx"; // Kita buat habis ini
-import ProjectList from "@/features/projects/admin/ProjectList.tsx"; // Halaman CRUD nanti
+import DashboardLayout from '@/components/layout/admin/DashboardLayout.tsx'
+import ProjectList from "@/features/projects/admin/ProjectList.tsx";
 import TechStackList from "./features/tech-stacks/admin/TechStackList.tsx";
 import TagList from "./features/tags/admin/TagList.tsx";
 import CategoryList from "./features/categories/admin/CategoryList.tsx";
