@@ -1,0 +1,50 @@
+name: Deploy Frontend
+
+on:
+  push:
+    branches:
+      - master
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '25'
+
+      - name: Install Dependencies
+        working-directory: ./frontend
+        run: npm install
+
+      - name: Inject Environment Variables
+        working-directory: ./frontend
+        run: |
+          echo 'VITE_PROD=true' >> .env
+          echo 'VITE_API_URL="https://churma.codes"' >> .env
+          echo 'VITE_FILE_URL="https://churma.codes"' >> .env
+          echo 'VITE_LARAVEL_URL="https://churma.codes"' >> .env
+          echo 'VITE_LARAVEL_FILE_URL="https://churma.codes"' >> .env
+          echo 'VITE_GO_URL="https://churma.codes"' >> .env
+          echo 'VITE_GO_FILE_URL="https://churma.codes"' >> .env
+
+      - name: Build Application
+        working-directory: ./frontend
+        run: npm run build
+
+      - name: Deploy to VPS
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          source: "frontend/dist/"
+          target: "/root/my-app/frontend"
+          strip_components: 1
