@@ -13,21 +13,23 @@ interface ProjectCardProps {
 export default function ProjectCard({
                                         project,
                                         index,
-                                        onClick, // <--- Terima prop
-                                        layoutId, // <--- Terima prop
+                                        onClick,
+                                        layoutId,
                                     }: ProjectCardProps) {
-
     const storagePath = useStoragePath();
+
+    // Membatasi tech stack untuk menghindari Cognitive Overload (Maks 3 item)
+    const MAX_TECH_DISPLAY = 3;
+    const displayTechs = project.tech_stack?.slice(0, MAX_TECH_DISPLAY) || [];
+    const extraTechCount = (project.tech_stack?.length || 0) - MAX_TECH_DISPLAY;
+
     return (
         <motion.div
-            // Pasang layoutId dari props (Penting buat animasi expand)
             layoutId={layoutId}
-            // Pasang onClick handler
             onClick={onClick}
             initial={{opacity: 0, y: 20}}
             animate={{opacity: 1, y: 0}}
             transition={{duration: 0.4, delay: index * 0.1}}
-            // Tambahkan cursor-pointer agar terlihat bisa diklik
             className="group flex flex-col overflow-hidden rounded-2xl bg-[#0a101f] border border-border/50 transition-all duration-300 hover:border-primary/50 hover:shadow-2xl hover:shadow-lara-blue/5 h-full cursor-pointer"
         >
             {/* Thumbnail */}
@@ -89,49 +91,31 @@ export default function ProjectCard({
 
             {/* Content */}
             <div className="flex flex-1 flex-col p-5">
-                {/* Tags Kategori (Optional: bisa ditaruh di atas gambar juga) */}
-                {project.tags && project.tags.length > 0 && (
-                    <div className="mb-4 flex flex-wrap gap-2">
-                        {project.tags.map((tag) => (
-                            <span
-                                key={tag.id}
-                                className="text-[9px] font-bold tracking-widest uppercase text-slate-500 bg-slate-900/40 px-2.5 py-1 rounded-md border border-slate-700/40 hover:border-slate-600/60 transition-colors"
-                            >
-                                #{tag.name}
-                            </span>
-                        ))}
-                    </div>
-                )}
-
                 {/* Judul */}
                 <h3 className="font-heading text-xl font-bold text-foreground group-hover:text-primary transition-colors leading-tight mb-2">
                     {project.title}
                 </h3>
 
-                {/* Deskripsi */}
-                <p className="font-body text-sm leading-relaxed text-slate-400 line-clamp-2 mb-4">
+                {/* Deskripsi - Mengubah line-clamp menjadi 3 agar tinggi kartu lebih konsisten */}
+                <p className="font-body text-sm leading-relaxed text-slate-400 line-clamp-3 mb-6">
                     {project.content}
                 </p>
 
                 {/* Footer: Tech Stack & Link */}
-                <div className="mt-auto pt-4 border-t border-white/5">
-                    {/* LABEL: Biar HRD tau ini apa */}
-                    <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3">
-                        Built With
-                    </p>
-
+                <div className="mt-auto pt-4 border-t border-white/5 flex flex-col gap-5">
                     {/* --- TECH STACK (CHIP STYLE) --- */}
-                    <div className="flex flex-wrap gap-2 mb-4">
-                        {project.tech_stack?.map((stack) => (
+                    {/* Teks "Built With" dihapus karena visual sudah jelas */}
+                    <div className="flex flex-wrap items-center gap-2">
+                        {displayTechs.map((stack) => (
                             <div
                                 key={stack.id}
-                                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-primary/10 border border-primary/20 text-primary transition-colors hover:bg-primary/20"
+                                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-800/50 border border-slate-700/50 text-slate-300 transition-colors hover:border-slate-600/70 hover:bg-slate-800"
                             >
                                 {/* 1. Icon Kecil */}
                                 <TechIcon
                                     name={stack.name}
                                     icon={stack.icon}
-                                    className="w-3.5 h-3.5"
+                                    className="w-3.5 h-3.5 opacity-90"
                                 />
 
                                 {/* 2. Teks Nama (Jelas & Terbaca) */}
@@ -140,14 +124,24 @@ export default function ProjectCard({
                                 </span>
                             </div>
                         ))}
+
+                        {/* Indikator sisa teknologi jika melebihi MAX_TECH_DISPLAY */}
+                        {extraTechCount > 0 && (
+                            <span
+                                className="inline-flex items-center justify-center px-2 py-1 text-[11px] font-medium text-slate-500 bg-transparent rounded-md border border-dashed border-slate-700/60"
+                                title={`And ${extraTechCount} more technologies`}
+                            >
+                                +{extraTechCount}
+                            </span>
+                        )}
                     </div>
 
                     {/* View Details Button */}
                     <div
-                        className="flex items-center text-foreground font-medium text-sm group/link cursor-pointer hover:text-primary transition-colors">
+                        className="flex items-center text-slate-300 font-semibold text-sm group/link cursor-pointer hover:text-primary transition-colors">
                         View Project Details
                         <svg
-                            className="ml-2 w-4 h-4 transition-transform group-hover/link:translate-x-1"
+                            className="ml-2 w-4 h-4 transition-transform duration-300 group-hover/link:translate-x-1.5"
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
