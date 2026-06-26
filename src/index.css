@@ -12,16 +12,15 @@
        We set the values to match "Slate 900" here.
        ========================================== */
     :root {
-        /* Base Background: #010618 */
-        /* Converted to HSL: 227deg 92% 5% */
-        --background: 227 92% 5%;
+        /* Base Background */
+        --background: 227 80% 4%;
         --foreground: 210 40% 98%; /* White text */
 
         /* Cards match the background or go slightly lighter */
-        --card: 227 92% 5%;
+        --card: 227 50% 10%;
         --card-foreground: 210 40% 98%;
 
-        --popover: 227 92% 5%;
+        --popover: 227 50% 10%;
         --popover-foreground: 210 40% 98%;
 
         /* Brand Primary: Laravel Blue (#328AF1) */
@@ -88,10 +87,10 @@
         --background: 0 0% 0%;
         --foreground: 0 0% 100%;
 
-        --card: 0 0% 5%; /* Slightly lighter than black */
+        --card: 192 10% 8%; /* Slightly lighter with a very subtle cyan tint */
         --card-foreground: 0 0% 100%;
 
-        --popover: 0 0% 5%;
+        --popover: 192 10% 8%;
         --popover-foreground: 0 0% 100%;
 
         /* Brand Primary: Gopher Blue (#00ADD8) */
