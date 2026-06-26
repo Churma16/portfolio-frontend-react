@@ -12,7 +12,7 @@ export const BackendToggle = () => {
     const {activeBackend, switchBackend} = useApi();
 
     return (
-        <div className="flex items-center p-1.5 rounded-full bg-background/60 backdrop-blur-xl border border-border/50 shadow-inner relative gap-1">
+        <div className="flex items-center p-1 rounded-full bg-background/60 backdrop-blur-xl border border-border/50 shadow-inner relative gap-0.5">
             {backends.map((backend) => {
                 const isActive = activeBackend === backend.id;
                 
@@ -20,7 +20,7 @@ export const BackendToggle = () => {
                     <button
                         key={backend.id}
                         onClick={() => switchBackend(backend.id as any)}
-                        className={`relative w-12 h-10 flex items-center justify-center rounded-full transition-colors duration-300 z-10 group ${
+                        className={`relative w-9 h-8 flex items-center justify-center rounded-full transition-colors duration-300 z-10 group ${
                             isActive ? "text-white" : "text-muted-foreground hover:text-foreground"
                         }`}
                         aria-label={`Switch to ${backend.id}`}
@@ -38,7 +38,7 @@ export const BackendToggle = () => {
                         <TechIcon
                             name={backend.id}
                             icon={backend.icon}
-                            className={`w-5 h-5 transition-all duration-300 relative z-10 ${
+                            className={`w-4 h-4 transition-all duration-300 relative z-10 ${
                                 isActive 
                                     ? "text-white grayscale-0 opacity-100 drop-shadow-md" 
                                     : "grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-110"
