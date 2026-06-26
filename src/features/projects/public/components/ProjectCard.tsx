@@ -1,5 +1,6 @@
 import {Project} from "@/types";
 import {motion} from "framer-motion";
+import {useState} from "react";
 import TechIcon from "../../../../components/common/TechIcon.tsx";
 import {useStoragePath} from "@/hooks/useStoragePath.ts";
 
@@ -15,8 +16,9 @@ export default function ProjectCard({
                                         index,
                                         onClick,
                                         layoutId,
-                                    }: ProjectCardProps) {
+    }: ProjectCardProps) {
     const storagePath = useStoragePath();
+    const [imgError, setImgError] = useState(false);
 
     // Membatasi tech stack untuk menghindari Cognitive Overload (Maks 3 item)
     const MAX_TECH_DISPLAY = 3;
@@ -33,16 +35,23 @@ export default function ProjectCard({
             className="group flex flex-col overflow-hidden rounded-2xl bg-card border border-border/50 transition-all duration-300 hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/10 h-full cursor-pointer"
         >
             {/* Thumbnail */}
-            <div className="relative aspect-video overflow-hidden bg-slate-800">
-                <img
-                    src={`${storagePath}${project.thumbnail}`}
-                    alt={project.title}
-                    onError={(e) => {
-                        e.currentTarget.src =
-                            "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Crect x='3' y='3' width='18' height='18' rx='2'/%3E%3Ccircle cx='8.5' cy='8.5' r='1.5'/%3E%3Cpath d='M21 15l-5-5L5 21'/%3E%3C/svg%3E";
-                    }}
-                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
+            <div className="relative aspect-video overflow-hidden bg-secondary/30 flex items-center justify-center">
+                {!imgError ? (
+                    <img
+                        src={`${storagePath}${project.thumbnail}`}
+                        alt={project.title}
+                        onError={() => setImgError(true)}
+                        className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                ) : (
+                    <div className="absolute inset-0 flex items-center justify-center bg-secondary/30 transition-transform duration-500 group-hover:scale-105">
+                        <svg className="w-16 h-16 text-primary/50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                            <circle cx="8.5" cy="8.5" r="1.5"/>
+                            <polyline points="21 15 16 10 5 21"/>
+                        </svg>
+                    </div>
+                )}
                 <div
                     className="absolute inset-0 bg-gradient-to-t from-card/90 to-transparent opacity-0 transition-opacity group-hover:opacity-100"/>
 
