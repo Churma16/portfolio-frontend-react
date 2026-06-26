@@ -26,7 +26,7 @@ export default function HeroContent({
                 className="text-4xl sm:text-5xl lg:text-7xl font-heading font-extrabold text-white leading-tight"
             >
                 Ready to Build <br className="hidden lg:block" />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-lara-blue to-cat-technique-light">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-hero-start to-hero-end">
                     Scalable Apps.
                 </span>
             </motion.h1>

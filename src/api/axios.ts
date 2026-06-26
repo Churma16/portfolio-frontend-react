@@ -4,17 +4,19 @@ import axios from "axios";
 // 1. Read the preference IMMEDIATELY (Before React even loads)
 const savedBackend = localStorage.getItem('preferred_backend');
 const isGo = savedBackend === 'go';
+const isExpress = savedBackend === 'express';
 
 // 2. Define the URLs here (so they are available instantly)
 // You can also use import.meta.env.VITE_LARAVEL_URL if you prefer
 const LARAVEL_URL = import.meta.env.VITE_LARAVEL_URL;
 const GO_URL = import.meta.env.VITE_GO_URL;
+const EXPRESS_URL = import.meta.env.VITE_LARAVEL_URL || "http://localhost:8000/api"; // Placeholder
 
 // Create a blank instance. 
 // The Base URL and Headers will be injected dynamically by ApiContext.
 const apiClient = axios.create({
-    // If 'go' was saved, use Go URL. Otherwise default to Laravel.
-    baseURL: isGo ? GO_URL : LARAVEL_URL,
+    // If 'go' or 'express' was saved, use their URL. Otherwise default to Laravel.
+    baseURL: isGo ? GO_URL : isExpress ? EXPRESS_URL : LARAVEL_URL,
     headers: {
         Accept: "application/json",
     },
@@ -98,7 +100,7 @@ export const requestBothBackends = async (
     data?: any,
     config?: any
 ) => {
-    const backends = ['laravel', 'go'] as const;
+    const backends = ['laravel', 'go', 'express'] as const;
     const activeBackend = localStorage.getItem('preferred_backend') || 'laravel';
     
     let activeResult: any = null;
@@ -107,7 +109,9 @@ export const requestBothBackends = async (
     const promises = backends.map(async (backend) => {
         const baseURL = backend === 'laravel' 
             ? (import.meta.env.VITE_LARAVEL_URL || "http://localhost:8000/api")
-            : (import.meta.env.VITE_GO_URL || "http://localhost:8080/api");
+            : backend === 'express'
+                ? (import.meta.env.VITE_LARAVEL_URL || "http://localhost:8000/api") // Placeholder
+                : (import.meta.env.VITE_GO_URL || "http://localhost:8080/api");
             
         const token = getToken(backend);
         

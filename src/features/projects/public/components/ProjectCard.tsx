@@ -30,7 +30,7 @@ export default function ProjectCard({
             initial={{opacity: 0, y: 20}}
             animate={{opacity: 1, y: 0}}
             transition={{duration: 0.4, delay: index * 0.1}}
-            className="group flex flex-col overflow-hidden rounded-2xl bg-[#0a101f] border border-border/50 transition-all duration-300 hover:border-primary/50 hover:shadow-2xl hover:shadow-lara-blue/5 h-full cursor-pointer"
+            className="group flex flex-col overflow-hidden rounded-2xl bg-card border border-border/50 transition-all duration-300 hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/10 h-full cursor-pointer"
         >
             {/* Thumbnail */}
             <div className="relative aspect-video overflow-hidden bg-slate-800">
@@ -44,7 +44,7 @@ export default function ProjectCard({
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 <div
-                    className="absolute inset-0 bg-gradient-to-t from-lara-dark/90 to-transparent opacity-0 transition-opacity group-hover:opacity-100"/>
+                    className="absolute inset-0 bg-gradient-to-t from-card/90 to-transparent opacity-0 transition-opacity group-hover:opacity-100"/>
 
                 {/* Category Badge - Top Left */}
                 {project.category && (
@@ -109,7 +109,7 @@ export default function ProjectCard({
                         {displayTechs.map((stack) => (
                             <div
                                 key={stack.id}
-                                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-800/50 border border-slate-700/50 text-slate-300 transition-colors hover:border-slate-600/70 hover:bg-slate-800"
+                                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-tech-bg/50 border border-tech-border/50 text-tech-text transition-colors hover:border-tech-hover-border/70 hover:bg-tech-bg"
                             >
                                 {/* 1. Icon Kecil */}
                                 <TechIcon
@@ -128,7 +128,7 @@ export default function ProjectCard({
                         {/* Indikator sisa teknologi jika melebihi MAX_TECH_DISPLAY */}
                         {extraTechCount > 0 && (
                             <span
-                                className="inline-flex items-center justify-center px-2 py-1 text-[11px] font-medium text-slate-500 bg-transparent rounded-md border border-dashed border-slate-700/60"
+                                className="inline-flex items-center justify-center px-2 py-1 text-[11px] font-medium text-tech-text bg-transparent rounded-md border border-dashed border-tech-border/60"
                                 title={`And ${extraTechCount} more technologies`}
                             >
                                 +{extraTechCount}

@@ -26,7 +26,17 @@
 
         /* Brand Primary: Laravel Blue (#328AF1) */
         --primary: 217 91% 60%;
-        --primary-foreground: 222 47.4% 11.2%;
+        --primary-foreground: 0 0% 100%; /* White text */
+        --primary-hover: 217 91% 50%;
+        --primary-shadow: 224 64% 33%;
+        --hero-gradient-start: 212 89% 57%;
+        --hero-gradient-end: 211 87% 85%;
+
+        /* Subtle Tech Badges (Slate) */
+        --tech-bg: 215 28% 17%;
+        --tech-border: 215 28% 27%;
+        --tech-text: 213 27% 84%;
+        --tech-hover-border: 214 18% 35%;
 
         /* Secondary */
         --secondary: 217 19% 27%;
@@ -87,6 +97,16 @@
         /* Brand Primary: Gopher Blue (#00ADD8) */
         --primary: 192 100% 42%;
         --primary-foreground: 0 0% 0%; /* Black text on Cyan button */
+        --primary-hover: 192 100% 32%;
+        --primary-shadow: 192 100% 20%;
+        --hero-gradient-start: 192 100% 42%;
+        --hero-gradient-end: 190 73% 60%;
+
+        /* Subtle Tech Badges (Cyan-Slate) */
+        --tech-bg: 192 35% 15%;
+        --tech-border: 192 35% 25%;
+        --tech-text: 192 25% 82%;
+        --tech-hover-border: 192 25% 35%;
 
         /* Secondary: Aqua (#00A29C) */
         --secondary: 178 100% 32%;
@@ -123,6 +143,71 @@
         --admin-field-bg: 0, 173, 216;
     }
 
+    /* ==========================================
+       THEME 3: EXPRESS (Minimalist Monochrome & Node Accent)
+       Activated via <html data-theme="express">
+       ========================================== */
+    [data-theme="express"] {
+        /* Base App Colors: Very dark, neutral gray (hampir hitam murni) */
+        --background: 0 0% 10%;
+        --foreground: 0 0% 98%;
+
+        --card: 0 0% 14%;
+        --card-foreground: 0 0% 98%;
+
+        --popover: 0 0% 14%;
+        --popover-foreground: 0 0% 98%;
+
+        /* Brand Primary: Node.js Green (#68A063 roughly HSL(114, 25%, 51%), we use a bit more vibrant for UI) */
+        --primary: 114 30% 51%; 
+        --primary-foreground: 0 0% 100%;
+        --primary-hover: 114 30% 41%;
+        --primary-shadow: 114 30% 20%;
+        --hero-gradient-start: 114 30% 51%;
+        --hero-gradient-end: 114 50% 70%;
+
+        /* Subtle Tech Badges (Green-Slate) */
+        --tech-bg: 142 20% 14%;
+        --tech-border: 142 20% 24%;
+        --tech-text: 142 20% 82%;
+        --tech-hover-border: 142 20% 35%;
+
+        /* Secondary: Abu-abu gelap untuk elemen sekunder */
+        --secondary: 0 0% 20%;
+        --secondary-foreground: 0 0% 98%;
+
+        /* Muted: Teks dan elemen yang diredupkan */
+        --muted: 0 0% 20%;
+        --muted-foreground: 0 0% 65%;
+
+        /* Accent: Subtil Node.js Green (#68A063) untuk state hover atau badge */
+        --accent: 114 30% 51%;
+        --accent-foreground: 0 0% 100%;
+
+        /* Destructive: Merah standar */
+        --destructive: 0 62.8% 50%;
+        --destructive-foreground: 0 0% 100%;
+
+        /* Borders: Abu-abu netral, tidak mencolok */
+        --border: 0 0% 25%;
+        --input: 0 0% 20%;
+
+        /* Ring: Fokus input menggunakan aksen hijau Node.js */
+        --ring: 114 30% 51%;
+
+        /* FONTS: Express identik dengan gaya sans-serif yang bersih dan lugas */
+        --font-body: 'Work Sans', sans-serif;
+        --font-heading: 'Roboto', sans-serif;
+        --font-code: 'Source Code Pro', monospace;
+
+        /* ADMIN VARIABLES (RGB) */
+        /* Latar belakang kartu admin yang sedikit lebih terang dari background */
+        --admin-card-bg: 36, 36, 36;
+        /* Border monokrom */
+        --admin-card-border: 64, 64, 64;
+        /* Aksen hijau Node untuk field aktif */
+        --admin-field-bg: 104, 160, 99;
+    }
     /* Ensure glitch intensity is defined globally */
     --glitch-intensity: 1;
 }

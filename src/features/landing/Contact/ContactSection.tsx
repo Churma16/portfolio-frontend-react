@@ -76,7 +76,7 @@ export default function ContactSection() {
                     className="absolute inset-0 opacity-[0.3]" // Opacity dinaikkan biar kelihatan
                     style={{
                         backgroundImage:
-                            "radial-gradient(#94a3b8 1px, transparent 1px)", // Warna titik lebih terang (Slate-400)
+                            "radial-gradient(hsl(var(--border)) 1px, transparent 1px)", // Semantic border color
                         backgroundSize: "32px 32px", // Jarak antar titik
                         // Masking lebih lebar supaya tidak habis di pinggir
                         maskImage:
@@ -94,11 +94,11 @@ export default function ContactSection() {
             <div className="container mx-auto px-4 max-w-4xl relative z-10">
                 {/* Header */}
                 <div className="text-center mb-16 space-y-4">
-                    <h2 className="text-3xl md:text-4xl font-heading font-bold text-white">
+                    <h2 className="text-3xl md:text-4xl font-heading font-bold text-foreground">
                         Let's Work{" "}
                         <span className="text-primary">Together</span>.
                     </h2>
-                    <p className="text-slate-400">
+                    <p className="text-muted-foreground">
                         I’m currently available for full-time positions or freelance projects. If you have a question or
                         just want to say hi, my inbox is always open!
                     </p>
@@ -110,11 +110,11 @@ export default function ContactSection() {
                     whileInView={{opacity: 1, y: 0}}
                     viewport={{once: true}}
                     // 2. Ubah background kartu jadi semi-transparan + blur biar nyatu
-                    className="bg-[#0a101f]/80 backdrop-blur-md border border-white/5 p-8 md:p-10 rounded-2xl shadow-2xl relative overflow-hidden"
+                    className="bg-card/80 backdrop-blur-md border border-border p-8 md:p-10 rounded-2xl shadow-2xl relative overflow-hidden"
                 >
                     {/* Spotlight Effect Top Border */}
                     <div
-                        className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-lara-blue to-transparent opacity-50"/>
+                        className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary to-transparent opacity-50"/>
 
                     <form
                         onSubmit={handleSubmit}
@@ -143,7 +143,7 @@ export default function ContactSection() {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             {/* Input Name */}
                             <div className="space-y-2">
-                                <label className="text-sm font-medium text-slate-300">
+                                <label className="text-sm font-medium text-muted-foreground">
                                     Name
                                 </label>
                                 <input
@@ -153,14 +153,14 @@ export default function ContactSection() {
                                     onChange={handleChange}
                                     placeholder="John Doe"
                                     // Input bg transparan gelap
-                                    className={`w-full bg-[#050914]/50 border ${
+                                    className={`w-full bg-background/50 border ${
                                         errors.name
-                                            ? "border-red-500/50 focus:border-red-500"
-                                            : "border-white/10 focus:border-primary"
-                                    } rounded-lg px-4 py-3 text-white outline-none transition-colors`}
+                                            ? "border-destructive/50 focus:border-destructive"
+                                            : "border-border focus:border-primary"
+                                    } rounded-lg px-4 py-3 text-foreground outline-none transition-colors`}
                                 />
                                 {errors.name && (
-                                    <p className="text-xs text-lara-accent-red-light">
+                                    <p className="text-xs text-destructive">
                                         {errors.name}
                                     </p>
                                 )}
@@ -168,7 +168,7 @@ export default function ContactSection() {
 
                             {/* Input Email */}
                             <div className="space-y-2">
-                                <label className="text-sm font-medium text-slate-300">
+                                <label className="text-sm font-medium text-muted-foreground">
                                     Email
                                 </label>
                                 <input
@@ -177,14 +177,14 @@ export default function ContactSection() {
                                     value={formData.email}
                                     onChange={handleChange}
                                     placeholder="john@example.com"
-                                    className={`w-full bg-[#050914]/50 border ${
+                                    className={`w-full bg-background/50 border ${
                                         errors.email
-                                            ? "border-red-500/50 focus:border-red-500"
-                                            : "border-white/10 focus:border-primary"
-                                    } rounded-lg px-4 py-3 text-white outline-none transition-colors`}
+                                            ? "border-destructive/50 focus:border-destructive"
+                                            : "border-border focus:border-primary"
+                                    } rounded-lg px-4 py-3 text-foreground outline-none transition-colors`}
                                 />
                                 {errors.email && (
-                                    <p className="text-xs text-lara-accent-red-light">
+                                    <p className="text-xs text-destructive">
                                         {errors.email}
                                     </p>
                                 )}
@@ -193,7 +193,7 @@ export default function ContactSection() {
 
                         {/* Message */}
                         <div className="space-y-2">
-                            <label className="text-sm font-medium text-slate-300">
+                            <label className="text-sm font-medium text-muted-foreground">
                                 Message
                             </label>
                             <textarea
@@ -202,11 +202,11 @@ export default function ContactSection() {
                                 value={formData.content}
                                 onChange={handleChange}
                                 placeholder="Hi Fathan! I have an idea for a web app and I'd love to discuss how your Laravel and React skills can help. Let's talk!"
-                                className={`w-full bg-[#050914]/50 border ${
+                                className={`w-full bg-background/50 border ${
                                     errors.content
-                                        ? "border-red-500/50 focus:border-red-500"
-                                        : "border-white/10 focus:border-primary"
-                                } rounded-lg px-4 py-3 text-white outline-none transition-colors resize-none`}
+                                        ? "border-destructive/50 focus:border-destructive"
+                                        : "border-border focus:border-primary"
+                                } rounded-lg px-4 py-3 text-foreground outline-none transition-colors resize-none`}
                             />
                             {errors.content && (
                                 <p className="text-xs text-lara-accent-red-light">
@@ -219,11 +219,11 @@ export default function ContactSection() {
                         <button
                             type="submit"
                             disabled={mutation.isPending || mutation.isSuccess}
-                            className={`w-full py-4 rounded-lg font-bold text-white transition-all duration-300 flex items-center justify-center gap-2
+                            className={`w-full py-4 rounded-lg font-bold text-primary-foreground transition-all duration-300 flex items-center justify-center gap-2
                                 ${
                                 mutation.isSuccess
                                     ? "bg-green-500 hover:bg-green-600"
-                                    : "bg-gradient-to-r from-lara-blue to-blue-600 hover:shadow-[0_0_20px_rgba(59,130,246,0.5)]"
+                                    : "bg-primary hover:bg-primary-hover hover:shadow-lg hover:shadow-primary/50"
                             }
                                 disabled:opacity-70 disabled:cursor-not-allowed
                             `}

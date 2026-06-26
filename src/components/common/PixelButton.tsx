@@ -22,9 +22,9 @@ export default function PixelButton({
         "inline-flex items-center gap-3 px-6 py-3 font-heading font-bold text-sm tracking-wide transition-transform active:translate-y-1";
 
     const variants = {
-        // Style Biru (Discussions)
+        // Style Utama (Primary)
         primary:
-            "bg-primary text-white shadow-[4px_4px_0_0_#1e3a8a] hover:bg-blue-500",
+            "bg-primary text-primary-foreground shadow-[4px_4px_0_0_hsl(var(--primary-shadow))] hover:bg-primary-hover",
 
         // Style Gelap (Discover)
         dark: "bg-[#1e293b] text-white shadow-[4px_4px_0_0_#0f172a] hover:bg-[#334155]",

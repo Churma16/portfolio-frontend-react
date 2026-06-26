@@ -1,4 +1,4 @@
-export type BackendType = 'laravel' | 'go';
+export type BackendType = 'laravel' | 'go' | 'express';
 
 export const API_CONFIG = {
     laravel: {
@@ -10,5 +10,10 @@ export const API_CONFIG = {
         baseURL: "http://localhost:8080/api", // Change to your actual Go URL
         tokenKey: "go_token",
         label: "Go (Golang)",
+    },
+    express: {
+        baseURL: "http://localhost:8000/api", // Placeholder: using Laravel URL for now
+        tokenKey: "express_token",
+        label: "Express (Node.js)",
     }
-};
+};

@@ -17,7 +17,7 @@ export default function FooterSocials({
                 href={github}
                 target="_blank"
                 rel="noreferrer"
-                className="text-lara-text-muted hover:text-foreground transition-colors"
+                className="text-muted-foreground hover:text-foreground transition-colors"
             >
                 <SiGithub className="w-5 h-5" />
             </a>
@@ -25,7 +25,7 @@ export default function FooterSocials({
                 href={linkedin}
                 target="_blank"
                 rel="noreferrer"
-                className="text-lara-text-muted hover:text-lara-accent-blue-light transition-colors"
+                className="text-muted-foreground hover:text-primary transition-colors"
             >
                 <SiLinkedin className="w-5 h-5" />
             </a>
@@ -33,7 +33,7 @@ export default function FooterSocials({
                 href={instagram}
                 target="_blank"
                 rel="noreferrer"
-                className="text-lara-text-muted hover:text-pink-500 transition-colors"
+                className="text-muted-foreground hover:text-pink-500 transition-colors"
             >
                 <SiInstagram className="w-5 h-5" />
             </a>

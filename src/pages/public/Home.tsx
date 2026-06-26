@@ -41,7 +41,7 @@ const ReturnToTopButton = () => {
             exit={{opacity: 0, scale: 0}}
             transition={{duration: 0.3}}
             disabled={false}
-            className="return-to-top fixed bottom-8 right-8 z-50 p-3 rounded-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-foreground shadow-lg shadow-blue-500/50 border border-blue-400/20 backdrop-blur-sm transition-all duration-300 hover:shadow-blue-500/70 hover:-translate-y-1 disabled:cursor-not-allowed"
+            className="return-to-top fixed bottom-8 right-8 z-50 p-3 rounded-full bg-primary text-primary-foreground hover:bg-primary-hover shadow-lg shadow-primary/50 border border-primary/20 backdrop-blur-sm transition-all duration-300 hover:shadow-primary/70 hover:-translate-y-1 disabled:cursor-not-allowed"
         >
             <motion.div
                 animate={

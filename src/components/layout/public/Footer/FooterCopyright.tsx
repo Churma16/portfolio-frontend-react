@@ -2,9 +2,9 @@ export default function FooterCopyright() {
     const currentYear = new Date().getFullYear();
 
     return (
-        <div className="text-slate-500 text-sm font-mono">
+        <div className="text-muted-foreground text-sm font-mono">
             &copy; {currentYear}{" "}
-            <span className="text-white font-bold">Churma.codes</span>. All rights
+            <span className="text-foreground font-bold">Churma.codes</span>. All rights
             reserved.
         </div>
     );

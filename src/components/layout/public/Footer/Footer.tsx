@@ -8,16 +8,16 @@ export default function Footer() {
     const {data: profile} = useProfile();
 
     return (
-        <footer className="py-8 border-t border-white/5 bg-[#050914] relative overflow-hidden">
+        <footer className="py-8 border-t border-border bg-background relative overflow-hidden">
             <div
                 className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-24 bg-primary/5 blur-[100px] pointer-events-none"/>
             <div className="container mx-auto px-4"></div>
             <div className="container mx-auto px-4">
                 <div className="flex flex-col md:flex-row justify-between items-center gap-6">
                     <FooterCopyright/>
-                    <div className="flex items-center gap-6 text-xs font-medium text-slate-500">
+                    <div className="flex items-center gap-6 text-xs font-medium text-muted-foreground">
                         <div
-                            className="flex items-center gap-2 hover:text-lara-accent-blue-light transition-colors cursor-default">
+                            className="flex items-center gap-2 hover:text-primary transition-colors cursor-default">
                             <SiDigitalocean className="text-lg"/>
                             <span>Powered by DigitalOcean</span>
                         </div>

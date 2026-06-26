@@ -29,9 +29,9 @@ export default function WorkExperiencesBody({workExperiences}: { workExperiences
                 <div className="relative space-y-12">
                     {/* === SISTEM GARIS TIMELINE === */}
                     <div
-                        className="absolute left-[19px] top-2 bottom-0 w-[2px] bg-slate-800 rounded-full md:left-[27px] overflow-hidden">
+                        className="absolute left-[19px] top-2 bottom-0 w-[2px] bg-border rounded-full md:left-[27px] overflow-hidden">
                         <motion.div
-                            className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-blue-600 via-cyan-400 to-blue-300 shadow-[0_0_15px_rgba(59,130,246,1)]"
+                            className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-primary via-accent to-primary shadow-lg shadow-primary/50"
                             initial={{height: "0%"}}
                             animate={{
                                 height: hoveredIndex !== null ? calculateHeight(hoveredIndex) : "0%"
@@ -59,14 +59,14 @@ export default function WorkExperiencesBody({workExperiences}: { workExperiences
                                     rounded-full flex items-center justify-center z-10 
                                     border-4 transition-colors duration-300
                                     ${hoveredIndex !== null && index >= hoveredIndex
-                                    ? "bg-slate-950 border-blue-500 shadow-[0_0_20px_rgba(59,130,246,0.5)]"
-                                    : "bg-slate-950 border-slate-800"
+                                    ? "bg-background border-primary shadow-lg shadow-primary/30"
+                                    : "bg-background border-border"
                                 }
                                 `}
                             >
                                 <div className={`
                                     w-3 h-3 md:w-4 md:h-4 rounded-full transition-colors duration-300
-                                    ${hoveredIndex !== null && index >= hoveredIndex ? "bg-cyan-400 shadow-[0_0_10px_#22d3ee]" : "bg-slate-600"}
+                                    ${hoveredIndex !== null && index >= hoveredIndex ? "bg-primary shadow-[0_0_10px_theme(colors.primary.DEFAULT)]" : "bg-muted-foreground"}
                                 `}></div>
                             </motion.div>
 
@@ -79,10 +79,10 @@ export default function WorkExperiencesBody({workExperiences}: { workExperiences
                                 className={`
                                     relative p-6 md:p-8 rounded-3xl border transition-all duration-300 ease-out backdrop-blur-sm
                                     ${clickedIndex === index
-                                    ? "bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 border-blue-400/60 shadow-2xl shadow-blue-500/20 -translate-y-3 scale-[1.02]"
+                                    ? "bg-card border-primary/60 shadow-2xl shadow-primary/20 -translate-y-3 scale-[1.02]"
                                     : hoveredIndex === index
-                                        ? "bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 border-blue-500/50 shadow-2xl shadow-blue-500/15 -translate-y-2"
-                                        : "bg-slate-900/40 border-slate-700/60 shadow-lg shadow-slate-950/30 hover:border-slate-700"
+                                        ? "bg-card border-primary/50 shadow-2xl shadow-primary/15 -translate-y-2"
+                                        : "bg-card border-border/60 shadow-lg shadow-black/30 hover:border-border"
                                 }
                                 `}
                             >
@@ -91,16 +91,16 @@ export default function WorkExperiencesBody({workExperiences}: { workExperiences
                                 <div
                                     className="flex flex-col items-start md:flex-row md:justify-between md:items-start mb-4 gap-3">
                                     <div className="flex-1">
-                                        <h3 className={`text-xl md:text-2xl font-bold transition-colors break-words ${clickedIndex === index ? "text-blue-300 drop-shadow-[0_0_10px_rgba(147,197,253,0.5)]" : hoveredIndex === index ? "text-lara-accent-blue-light" : "text-foreground"}`}>
+                                        <h3 className={`text-xl md:text-2xl font-bold transition-colors break-words ${clickedIndex === index ? "text-primary drop-shadow-[0_0_8px_theme(colors.primary.DEFAULT)]" : hoveredIndex === index ? "text-primary" : "text-foreground"}`}>
                                             {workExperience.position}
                                         </h3>
 
                                         <div
-                                            className="text-lara-text-muted font-medium mt-1 flex items-center gap-2 text-sm md:text-base">
+                                            className="text-muted-foreground font-medium mt-1 flex items-center gap-2 text-sm md:text-base">
                                             <span>{workExperience.company}</span>
-                                            <span className="w-1 h-1 rounded-full bg-slate-600"></span>
+                                            <span className="w-1 h-1 rounded-full bg-muted-foreground"></span>
                                             <span
-                                                className="text-lara-text-muted-dark text-xs">{workExperience?.location || "Full-time"}</span>
+                                                className="text-muted-foreground/80 text-xs">{workExperience?.location || "Full-time"}</span>
                                         </div>
                                     </div>
 
@@ -108,16 +108,16 @@ export default function WorkExperiencesBody({workExperiences}: { workExperiences
                                     <span className={`
                                         w-fit inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold border transition-colors whitespace-nowrap flex-shrink-0
                                         ${clickedIndex === index
-                                        ? "bg-blue-500/20 text-blue-300 border-blue-400/50"
+                                        ? "bg-primary/20 text-primary border-primary/50"
                                         : hoveredIndex === index
-                                            ? "bg-blue-500/10 text-lara-accent-blue-lighter border-blue-500/30"
-                                            : "bg-slate-800 text-lara-text-tertiary border-slate-700"}
+                                            ? "bg-primary/10 text-primary border-primary/30"
+                                            : "bg-muted text-muted-foreground border-border"}
                                     `}>
                                         {workExperience.start_date}{" "} — {" "}{workExperience.end_date || "Present"}
                                     </span>
                                 </div>
 
-                                <p className="text-lara-text-muted mb-4 leading-relaxed text-sm md:text-base italic border-l-2 border-slate-700 pl-3">
+                                <p className="text-muted-foreground mb-4 leading-relaxed text-sm md:text-base italic border-l-2 border-border pl-3">
                                     {workExperience.description}
                                 </p>
 
@@ -135,8 +135,8 @@ export default function WorkExperiencesBody({workExperiences}: { workExperiences
                                     return (
                                         <ul className="space-y-3 mb-6">
                                             {parsed.map((ach, idx) => (
-                                                <li key={idx} className="flex items-start gap-3 text-sm md:text-base text-slate-300">
-                                                    <span className="flex-shrink-0 text-blue-500 mt-0.5">
+                                                <li key={idx} className="flex items-start gap-3 text-sm md:text-base text-foreground/80">
+                                                    <span className="flex-shrink-0 text-primary mt-0.5">
                                                         <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                                             <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                                         </svg>
@@ -149,11 +149,11 @@ export default function WorkExperiencesBody({workExperiences}: { workExperiences
                                 })()}
 
                                 {/* Tech Stack Tags */}
-                                <div className="flex flex-wrap gap-2 pt-4 border-t border-slate-800/50">
+                                <div className="flex flex-wrap gap-2 pt-4 border-t border-border/50">
                                     {workExperience.tech_stack?.map((stack: TechStack, i) => (
                                         <div
                                             key={stack.id}
-                                            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-primary/10 border border-primary/20 text-primary transition-colors hover:bg-primary/20"
+                                            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-tech-bg/50 border border-tech-border/50 text-tech-text transition-colors hover:border-tech-hover-border/70 hover:bg-tech-bg"
                                         >
                                             <TechIcon
                                                 name={stack.name}

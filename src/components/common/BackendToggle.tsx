@@ -42,6 +42,24 @@ export const BackendToggle = () => {
                     className="w-8 h-8 text-white transition-all duration-500 grayscale group-hover/item:grayscale-0 group-hover/item:scale-110 group-hover/item:text-primary"
                 />
             </Button>
+
+            {/* Express Button */}
+            <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => switchBackend("express")}
+                className={`relative z-10 text-xs font-bold transition-all duration-300 ${
+                    activeBackend === "express"
+                        ? "bg-[#68A063] text-white hover:bg-[#53824e] shadow-md"
+                        : "text-muted-foreground hover:text-foreground"
+                }`}
+            >
+                <TechIcon
+                    name="express"
+                    icon="SiExpress"
+                    className="w-8 h-8 text-white transition-all duration-500 grayscale group-hover/item:grayscale-0 group-hover/item:scale-110 group-hover/item:text-primary"
+                />
+            </Button>
         </div>
     );
 };

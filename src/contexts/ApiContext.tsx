@@ -14,6 +14,11 @@ const API_CONFIG = {
         baseURL: import.meta.env.VITE_GO_URL || "http://localhost:8080/api",
         storageURL: import.meta.env.VITE_GO_FILE_URL || "http://localhost:8080/files/",
         label: "Go",
+    },
+    express: {
+        baseURL: import.meta.env.VITE_LARAVEL_URL || "http://localhost:8000/api", // Placeholder
+        storageURL: import.meta.env.VITE_LARAVEL_FILE_URL || "http://localhost:8000/files/", // Placeholder
+        label: "Express",
     }
 };
 

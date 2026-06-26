@@ -28,8 +28,8 @@ export function useUpdateProfile() {
             const isFormData = data instanceof FormData;
 
             if (isFormData) {
-                // When it's FormData, use POST for Laravel (has _method: PUT), PUT for Go
-                if (activeBackend === 'go') {
+                // When it's FormData, use POST for Laravel (has _method: PUT), PUT for Go/Express
+                if (activeBackend !== 'laravel') {
                     return await apiClient.put(`/profiles/${id}`, data);
                 } else {
                     // Laravel with _method: PUT in FormData
@@ -44,8 +44,8 @@ export function useUpdateProfile() {
 
             if (hasFile) {
                 // When there's a file, we need different approaches for different backends
-                if (activeBackend === 'go') {
-                    // Go API supports PUT with FormData directly
+                if (activeBackend !== 'laravel') {
+                    // Go/Express API supports PUT with FormData directly
                     return await apiClient.put(`/profiles/${id}`, data);
                 } else {
                     // Laravel requires POST with _method: PUT for FormData

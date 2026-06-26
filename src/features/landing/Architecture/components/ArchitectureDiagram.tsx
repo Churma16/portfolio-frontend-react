@@ -1,6 +1,6 @@
 import {motion} from "framer-motion";
 import {HiShieldCheck} from "react-icons/hi2";
-import {SiCloudflare, SiDigitalocean, SiGo, SiLaravel, SiMysql, SiPostgresql, SiReact, SiUbuntu,} from "react-icons/si";
+import {SiCloudflare, SiDigitalocean, SiGo, SiLaravel, SiMysql, SiPostgresql, SiReact, SiUbuntu, SiExpress} from "react-icons/si";
 
 import {useApi} from "@/contexts/useApi.ts";
 
@@ -146,6 +146,13 @@ export default function ArchitectureDiagram() {
             icon: <SiGo className="w-6 h-6"/>,
             items: ["Gin Framework", "Go Routines", "High Performance"],
             themeColor: "text-cyan-400"
+        },
+        {
+            id: "express",
+            title: "API Engine",
+            icon: <SiExpress className="w-6 h-6"/>,
+            items: ["Express.js", "Node.js", "Sequelize ORM"],
+            themeColor: "text-green-500"
         }
     ];
 
@@ -163,6 +170,13 @@ export default function ArchitectureDiagram() {
             icon: <SiPostgresql className="w-6 h-6"/>,
             items: ["PostgreSQL 15", "Redis Cache", "Volume Storage"],
             themeColor: "text-blue-500"
+        },
+        {
+            id: "express",
+            title: "Storage & Cache",
+            icon: <SiMysql className="w-6 h-6"/>,
+            items: ["MySQL 8", "Redis Cache", "Volume Storage"],
+            themeColor: "text-green-500"
         }
     ];
 
