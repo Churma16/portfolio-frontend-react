@@ -10,7 +10,7 @@ const isExpress = savedBackend === 'express';
 // You can also use import.meta.env.VITE_LARAVEL_URL if you prefer
 const LARAVEL_URL = import.meta.env.VITE_LARAVEL_URL;
 const GO_URL = import.meta.env.VITE_GO_URL;
-const EXPRESS_URL = import.meta.env.VITE_LARAVEL_URL || "http://localhost:8000/api"; // Placeholder
+const EXPRESS_URL = import.meta.env.VITE_EXPRESS_URL || "http://localhost:4000/api";
 
 // Create a blank instance. 
 // The Base URL and Headers will be injected dynamically by ApiContext.
@@ -110,7 +110,7 @@ export const requestBothBackends = async (
         const baseURL = backend === 'laravel' 
             ? (import.meta.env.VITE_LARAVEL_URL || "http://localhost:8000/api")
             : backend === 'express'
-                ? (import.meta.env.VITE_LARAVEL_URL || "http://localhost:8000/api") // Placeholder
+                ? (import.meta.env.VITE_EXPRESS_URL || "http://localhost:4000/api")
                 : (import.meta.env.VITE_GO_URL || "http://localhost:8080/api");
             
         const token = getToken(backend);
