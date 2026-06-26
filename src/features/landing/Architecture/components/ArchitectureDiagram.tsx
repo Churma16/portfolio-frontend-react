@@ -5,11 +5,12 @@ import {SiCloudflare, SiDigitalocean, SiGo, SiLaravel, SiMysql, SiPostgresql, Si
 import {useApi} from "@/contexts/useApi.ts";
 
 // 1. KOMPONEN KARTU (StackBox)
-const StackBox = ({title, icon, items, themeColor = "text-blue-400"}: {
+const StackBox = ({title, icon, items, themeColor = "text-blue-400", bgColor = "bg-blue-400"}: {
     title: string;
     icon: React.ReactNode;
     items: string[];
     themeColor?: string;
+    bgColor?: string;
 }) => (
     // Hapus motion.div di sini, kita pindahkan animasinya ke parent (ShuffleStack)
     // Gunakan div biasa agar tidak konflik dengan animasi parent
@@ -28,7 +29,7 @@ const StackBox = ({title, icon, items, themeColor = "text-blue-400"}: {
                     key={i}
                     className="text-muted-foreground text-xs font-mono flex items-center gap-2"
                 >
-                    <span className={`w-1.5 h-1.5 rounded-full ${themeColor.replace('text-', 'bg-')}`}/>
+                    <span className={`w-1.5 h-1.5 rounded-full ${bgColor}`}/>
                     {item}
                 </li>
             ))}
@@ -38,11 +39,48 @@ const StackBox = ({title, icon, items, themeColor = "text-blue-400"}: {
 
 // 2. WRAPPER ANIMASI SHUFFLE (Grid Stacking)
 const ShuffleStack = ({activeId, children}: { activeId: string; children: React.ReactNode[] }) => {
+    const order = ['laravel', 'go', 'express'];
+
     return (
         // Grid trick: menumpuk semua anak di satu sel yang sama
         <div className="grid w-full min-w-[200px]" style={{gridTemplateAreas: "'stack'"}}>
             {children.map((child: any) => {
-                const isActive = child.key === activeId;
+                // We use child.props.id because we spread {...card} which contains id
+                const childId = child.props.id || child.key?.replace('.$', '');
+                
+                const activeIndex = order.indexOf(activeId) !== -1 ? order.indexOf(activeId) : 0;
+                const childIndex = order.indexOf(childId) !== -1 ? order.indexOf(childId) : 0;
+                
+                // Hitung posisi relatif (0 = depan, 1 = tengah, 2 = belakang)
+                const position = (childIndex - activeIndex + 3) % 3;
+
+                let y = 0;
+                let x = 0;
+                let scale = 1;
+                let zIndex = 30;
+                let opacity = 1;
+                let rotateZ = 0;
+                let rotateX = 0;
+
+                if (position === 1) {
+                    // Item yang indeksnya "setelah" active (misal active Go, ini Express)
+                    y = -20;
+                    x = 25; // geser ke KANAN
+                    scale = 0.9;
+                    zIndex = 20;
+                    opacity = 0.8;
+                    rotateZ = 4; // miring kanan
+                    rotateX = 5;
+                } else if (position === 2) {
+                    // Item yang indeksnya "sebelum" active (misal active Go, ini Laravel)
+                    y = -40;
+                    x = -25; // geser ke KIRI
+                    scale = 0.8;
+                    zIndex = 10;
+                    opacity = 0.4;
+                    rotateZ = -4; // miring kiri
+                    rotateX = 10;
+                }
 
                 return (
                     <motion.div
@@ -50,16 +88,18 @@ const ShuffleStack = ({activeId, children}: { activeId: string; children: React.
                         style={{gridArea: "stack"}} // Tumpuk di sini
                         initial={false} // Hindari animasi saat mount pertama
                         animate={{
-                            y: isActive ? 0 : -15,   // Aktif di tengah, Inaktif geser ke atas sedikit (efek tumpukan)
-                            scale: isActive ? 1 : 0.9, // Aktif normal, Inaktif mengecil
-                            zIndex: isActive ? 10 : 1, // Aktif di depan
-                            opacity: isActive ? 1 : 0.4, // Inaktif agak transparan
-                            rotateX: isActive ? 0 : 10,  // Sedikit miring untuk efek 3D
+                            y,
+                            x,
+                            scale,
+                            zIndex,
+                            opacity,
+                            rotateZ,
+                            rotateX
                         }}
                         transition={{
                             type: "spring",
                             stiffness: 260,
-                            damping: 20
+                            damping: 25
                         }}
                         className="w-full origin-bottom" // Origin bottom agar scale-nya rapi
                     >
@@ -138,21 +178,24 @@ export default function ArchitectureDiagram() {
             title: "API Engine",
             icon: <SiLaravel className="w-6 h-6"/>,
             items: ["Laravel API", "Docker Container", "Queue Worker"],
-            themeColor: "text-red-500"
+            themeColor: "text-red-500",
+            bgColor: "bg-red-500"
         },
         {
             id: "go", // Key harus sesuai dengan activeBackend ('go')
             title: "API Engine",
             icon: <SiGo className="w-6 h-6"/>,
             items: ["Gin Framework", "Go Routines", "High Performance"],
-            themeColor: "text-cyan-400"
+            themeColor: "text-cyan-400",
+            bgColor: "bg-cyan-400"
         },
         {
             id: "express",
             title: "API Engine",
             icon: <SiExpress className="w-6 h-6"/>,
             items: ["Express.js", "Node.js", "Sequelize ORM"],
-            themeColor: "text-green-500"
+            themeColor: "text-green-500",
+            bgColor: "bg-green-500"
         }
     ];
 
@@ -162,21 +205,24 @@ export default function ArchitectureDiagram() {
             title: "Storage & Cache",
             icon: <SiMysql className="w-6 h-6"/>,
             items: ["MySQL 8", "Redis Cache", "Volume Storage"],
-            themeColor: "text-blue-500"
+            themeColor: "text-blue-500",
+            bgColor: "bg-blue-500"
         },
         {
             id: "go",
             title: "Storage & Cache",
             icon: <SiPostgresql className="w-6 h-6"/>,
             items: ["PostgreSQL 15", "Redis Cache", "Volume Storage"],
-            themeColor: "text-blue-500"
+            themeColor: "text-blue-500",
+            bgColor: "bg-blue-500"
         },
         {
             id: "express",
             title: "Storage & Cache",
             icon: <SiMysql className="w-6 h-6"/>,
             items: ["MySQL 8", "Redis Cache", "Volume Storage"],
-            themeColor: "text-green-500"
+            themeColor: "text-green-500",
+            bgColor: "bg-green-500"
         }
     ];
 
