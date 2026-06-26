@@ -11,8 +11,8 @@ export default function TechSkeletonLoader() {
         >
             {[1, 2, 3, 4, 5, 6].map((i) => (
                 <div key={i} className="flex flex-col items-center gap-3 opacity-50">
-                    <div className="w-8 sm:w-10 md:w-12 h-8 sm:h-10 md:h-12 bg-slate-700/50 rounded-lg animate-pulse" />
-                    <div className="w-12 h-3 bg-slate-700/50 rounded animate-pulse" />
+                    <div className="w-8 sm:w-10 md:w-12 h-8 sm:h-10 md:h-12 bg-muted rounded-lg animate-pulse" />
+                    <div className="w-12 h-3 bg-muted rounded animate-pulse" />
                 </div>
             ))}
         </motion.div>

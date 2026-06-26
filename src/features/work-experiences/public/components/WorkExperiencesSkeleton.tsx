@@ -42,30 +42,30 @@ export default function WorkExperiencesSkeleton() {
                 >
                     {/* === SISTEM GARIS TIMELINE === */}
                     <div
-                        className="absolute left-[19px] top-2 bottom-0 w-[2px] bg-slate-800 rounded-full md:left-[27px] overflow-hidden"></div>
+                        className="absolute left-[19px] top-2 bottom-0 w-[2px] bg-border rounded-full md:left-[27px] overflow-hidden"></div>
 
                     {/* Skeleton Items */}
-                    {[...Array(5)].map((_, index) => (
+                    {[...Array(3)].map((_, index) => (
                         <motion.div key={index} className="relative pl-12 md:pl-20 group" variants={itemVariants}>
                             {/* Dot Skeleton */}
                             <motion.div
                                 initial={{scale: 0}}
                                 animate={{scale: 1}}
                                 transition={{duration: 0.4, delay: index * 0.1}}
-                                className="absolute left-0 top-1 w-10 h-10 md:w-14 md:h-14 bg-slate-800 rounded-full border-4 border-slate-700"
+                                className="absolute left-0 top-1 w-10 h-10 md:w-14 md:h-14 bg-background rounded-full border-4 border-border"
                             ></motion.div>
 
                             {/* Card Skeleton */}
                             <motion.div
-                                className="relative p-6 md:p-8 rounded-3xl border border-slate-700 bg-slate-900/50"
+                                className="relative p-6 md:p-8 rounded-3xl border border-border/60 bg-card"
                                 variants={itemVariants}
                             >
-                                <motion.div className="h-6 bg-slate-700 rounded w-1/2 mb-4 animate-pulse"></motion.div>
-                                <motion.div className="h-4 bg-slate-700 rounded w-1/3 mb-2 animate-pulse"></motion.div>
-                                <motion.div className="h-4 bg-slate-700 rounded w-1/4 mb-6 animate-pulse"></motion.div>
-                                <motion.div className="h-4 bg-slate-700 rounded w-full mb-2 animate-pulse"></motion.div>
-                                <motion.div className="h-4 bg-slate-700 rounded w-5/6 mb-2 animate-pulse"></motion.div>
-                                <motion.div className="h-4 bg-slate-700 rounded w-3/4 animate-pulse"></motion.div>
+                                <motion.div className="h-6 bg-muted rounded w-1/2 mb-4 animate-pulse"></motion.div>
+                                <motion.div className="h-4 bg-muted rounded w-1/3 mb-2 animate-pulse"></motion.div>
+                                <motion.div className="h-4 bg-muted rounded w-1/4 mb-6 animate-pulse"></motion.div>
+                                <motion.div className="h-4 bg-muted rounded w-full mb-2 animate-pulse"></motion.div>
+                                <motion.div className="h-4 bg-muted rounded w-5/6 mb-2 animate-pulse"></motion.div>
+                                <motion.div className="h-4 bg-muted rounded w-3/4 animate-pulse"></motion.div>
                             </motion.div>
                         </motion.div>
                     ))}
