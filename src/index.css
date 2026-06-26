@@ -123,8 +123,8 @@
         --destructive: 341 61% 50%;
         --destructive-foreground: 0 0% 100%;
 
-        /* Borders: High Contrast Cyan */
-        --border: 192 100% 42%;
+        /* Borders: Dark Gray-Cyan */
+        --border: 192 20% 20%;
         --input: 210 2% 20%;
         --ring: 192 100% 42%;
 
