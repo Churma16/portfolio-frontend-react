@@ -7,9 +7,13 @@ import {useApi} from "@/contexts/useApi.ts";
 export function useStoragePath(): string {
     const {activeBackend} = useApi();
 
-    const isGoOrExpress = activeBackend === 'go' || activeBackend === 'express';
+    if (activeBackend === 'express') {
+        return import.meta.env.VITE_GO_FILE_URL || '/files/';
+    }
+    
+    if (activeBackend === 'go') {
+        return import.meta.env.VITE_GO_FILE_URL || '/files/';
+    }
 
-    return isGoOrExpress
-        ? import.meta.env.VITE_GO_FILE_URL || '/files/'
-        : import.meta.env.VITE_LARAVEL_FILE_URL || '/files/';
+    return import.meta.env.VITE_LARAVEL_FILE_URL || '/files/';
 }
