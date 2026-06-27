@@ -32,6 +32,7 @@ jobs:
           echo 'VITE_LARAVEL_FILE_URL="https://churma.codes/storage/"' >> .env
           echo 'VITE_GO_URL="https://api-go.churma.codes/api/"' >> .env
           echo 'VITE_GO_FILE_URL="https://api-go.churma.codes/storage/"' >> .env
+          echo 'VITE_EXPRESS_URL="https://api-express.churma.codes/api/"' >> .env
 
       - name: Build Application
         run: npm run build
