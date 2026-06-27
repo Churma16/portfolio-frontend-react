@@ -28,7 +28,7 @@ export const BackendToggle = () => {
                         {isActive && (
                             <motion.div
                                 layoutId="activeBackendIndicator"
-                                className={`absolute inset-0 rounded-full shadow-lg ${backend.shadow} -z-10 ${backend.color}`}
+                                className={`absolute inset-0 rounded-full shadow-[0_0_12px_var(--tw-shadow-color)] ${backend.shadow} -z-10 ${backend.color}`}
                                 transition={{ type: "spring", stiffness: 500, damping: 30 }}
                             >
                                 {/* Inner glow effect for premium feel */}
