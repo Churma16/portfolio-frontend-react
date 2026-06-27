@@ -2,6 +2,7 @@ import HeroContent from "./components/HeroContent.tsx";
 import HeroAvatar from "./components/HeroAvatar.tsx";
 import {useProfile} from "../../profile/hooks/useProfile.ts";
 import {useApi} from "@/contexts/useApi.ts";
+import {useStoragePath} from "@/hooks/useStoragePath.ts";
 
 export default function Hero() {
     const {data: profile} = useProfile();
@@ -13,12 +14,7 @@ export default function Hero() {
     //     : "";
 
     const {activeBackend} = useApi();
-
-    const isGo = activeBackend === 'go';
-
-    const StoragePath = isGo
-        ? import.meta.env.VITE_GO_FILE_URL || '/files/'
-        : import.meta.env.VITE_LARAVEL_FILE_URL || '/files/';
+    const storagePath = useStoragePath();
 
     return (
         <section className="relative overflow-hidden pt-10 pb-20 lg:pt-8 lg:pb-32">
@@ -30,9 +26,9 @@ export default function Hero() {
                     name={profile?.name}
                     bioShort={profile?.bio_short}
                     isHireable={profile?.is_hireable}
-                    cvFileUrl={`${StoragePath}${profile?.cv_files}`}
+                    cvFileUrl={profile?.cv_files ? `${storagePath}${profile.cv_files}` : undefined}
                 />
-                <HeroAvatar avatarUrl={`${StoragePath}${profile?.avatar}`}/>
+                <HeroAvatar avatarUrl={profile?.avatar ? `${storagePath}${profile.avatar}` : undefined}/>
             </div>
         </section>
     );

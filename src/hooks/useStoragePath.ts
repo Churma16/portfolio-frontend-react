@@ -7,9 +7,9 @@ import {useApi} from "@/contexts/useApi.ts";
 export function useStoragePath(): string {
     const {activeBackend} = useApi();
 
-    const isGo = activeBackend === 'go';
+    const isGoOrExpress = activeBackend === 'go' || activeBackend === 'express';
 
-    return isGo
+    return isGoOrExpress
         ? import.meta.env.VITE_GO_FILE_URL || '/files/'
         : import.meta.env.VITE_LARAVEL_FILE_URL || '/files/';
 }
