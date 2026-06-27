@@ -1,6 +1,6 @@
 import {Project} from "@/types";
 import {motion} from "framer-motion";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import TechIcon from "../../../../components/common/TechIcon.tsx";
 import {useStoragePath} from "@/hooks/useStoragePath.ts";
 
@@ -19,6 +19,10 @@ export default function ProjectCard({
     }: ProjectCardProps) {
     const storagePath = useStoragePath();
     const [imgError, setImgError] = useState(false);
+
+    useEffect(() => {
+        setImgError(false);
+    }, [project.thumbnail, storagePath]);
 
     // Membatasi tech stack untuk menghindari Cognitive Overload (Maks 3 item)
     const MAX_TECH_DISPLAY = 3;
