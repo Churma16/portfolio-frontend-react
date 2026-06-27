@@ -7,8 +7,8 @@ interface AboutCodeWindowProps {
 
 export default function AboutCodeWindow({ profile }: AboutCodeWindowProps) {
     return (
-        <div className="relative">
-            <div className="absolute -inset-4 bg-gradient-to-r from-lara-blue to-purple-600 rounded-xl opacity-20 blur-lg rotate-2" />
+        <div className="relative w-full max-w-lg mx-auto">
+            <div className="absolute -inset-2 bg-gradient-to-r from-primary to-accent/50 rounded-xl opacity-40 blur-lg rotate-2 transition-colors duration-500" />
             <CodeWindow profile={profile} />
         </div>
     );

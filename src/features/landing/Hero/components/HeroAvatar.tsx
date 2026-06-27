@@ -13,7 +13,7 @@ export default function HeroAvatar({ avatarUrl }: HeroAvatarProps) {
             className="flex-1 relative"
         >
             <div className="relative w-64 h-64 sm:w-80 sm:h-80 lg:w-[400px] lg:h-[400px] mx-auto">
-                <div className="absolute inset-0 bg-gradient-to-tr from-lara-blue to-purple-500 rounded-full blur-2xl opacity-20 animate-pulse"></div>
+
 
                 <div className="relative w-full h-full rounded-3xl bg-slate-800 border border-white/10 overflow-hidden shadow-2xl rotate-3 hover:rotate-0 transition-all duration-500">
                     <AnimatePresence mode="wait">

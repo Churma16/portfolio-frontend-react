@@ -153,7 +153,7 @@ export default function WorkExperiencesBody({workExperiences}: { workExperiences
                                     {workExperience.tech_stack?.map((stack: TechStack, i) => (
                                         <div
                                             key={stack.id}
-                                            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-tech-bg/50 border border-tech-border/50 text-tech-text transition-colors hover:border-tech-hover-border/70 hover:bg-tech-bg"
+                                            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-primary/[0.08] border border-primary/20 text-primary transition-all duration-300 hover:bg-primary/20 hover:border-primary/50 hover:shadow-md hover:shadow-primary/20"
                                         >
                                             <TechIcon
                                                 name={stack.name}
