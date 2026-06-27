@@ -26,7 +26,7 @@ export default function HeroAvatar({ avatarUrl }: HeroAvatarProps) {
                                 transition={{ duration: 0.6 }}
                                 src={avatarUrl}
                                 alt="Profile"
-                                className="w-full h-full object-cover opacity-80 hover:opacity-100 transition-opacity"
+                                className="w-full h-full object-cover rounded-3xl opacity-80 hover:opacity-100 transition-opacity"
                             />
                         ) : (
                             <motion.div
@@ -35,7 +35,7 @@ export default function HeroAvatar({ avatarUrl }: HeroAvatarProps) {
                                 animate={{ opacity: 1 }}
                                 exit={{ opacity: 0 }}
                                 transition={{ duration: 0.3 }}
-                                className="w-full h-full bg-gradient-to-br from-slate-700 to-slate-800 animate-pulse"
+                                className="w-full h-full rounded-3xl bg-gradient-to-br from-slate-700 to-slate-800 animate-pulse"
                             />
                         )}
                     </AnimatePresence>
