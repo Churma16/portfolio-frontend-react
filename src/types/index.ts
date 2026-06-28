@@ -12,10 +12,18 @@ export interface Category extends BaseEntity {
     color: string;
 }
 
+export interface TechStackCategory extends BaseEntity {
+    name: string;
+    slug: string;
+    color?: string;
+}
+
 export interface TechStack extends BaseEntity {
     name: string;
     slug?: string;
     icon?: string;
+    tech_stack_category_id?: number;
+    tech_stack_category?: TechStackCategory;
 }
 
 export interface Tag extends BaseEntity {

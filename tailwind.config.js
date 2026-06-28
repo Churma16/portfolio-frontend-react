@@ -116,7 +116,10 @@ export default {
                 },
             },
             // ... animation & keyframes ...
-            animation: {"infinite-scroll": "infinite-scroll 40s linear infinite"},
+            animation: {
+                "infinite-scroll": "infinite-scroll 40s linear infinite",
+                "infinite-scroll-slow": "infinite-scroll 80s linear infinite"
+            },
             keyframes: {
                 "infinite-scroll": {
                     from: {transform: "translateX(0)"},

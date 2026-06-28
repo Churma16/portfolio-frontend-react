@@ -26,6 +26,8 @@ if (import.meta.env.PROD) {
     };
 }
 
+import TechStackCategoryList from "./features/tech-stacks/admin/TechStackCategoryList.tsx";
+
 function App() {
     return (
         <BrowserRouter>
@@ -43,6 +45,7 @@ function App() {
                         <Route index element={<ProjectList/>}/>
                         <Route path="work-experiences" element={<WorkExperiencesList/>}/>
                         <Route path="tech-stacks" element={<TechStackList/>}/>
+                        <Route path="tech-stack-categories" element={<TechStackCategoryList/>}/>
                         <Route path="tags" element={<TagList/>}/>
                         <Route path="categories" element={<CategoryList/>}/>
                         <Route path="profile" element={<ProfileForm/>}/>

@@ -11,8 +11,11 @@ import AdminHeader from "@/components/common/AdminHeader.tsx";
 import TableDataLoading from "@/components/common/TableDataLoading.tsx";
 import TableNoData from "@/components/common/TableNoData.tsx";
 
+import {useTechStackCategories} from "@/features/tech-stacks/hooks/useTechStackCategories.ts";
+
 export default function TechStackList() {
     const {data: techStacks = [], isLoading, refetch} = useTechStacks();
+    const {data: categories = []} = useTechStackCategories();
     const reorderMutation = useReorderTechStack();
 
     const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -74,6 +77,9 @@ export default function TechStackList() {
                             </TableHead>
                             <TableHead className="text-lara-text-tertiary">
                                 Name
+                            </TableHead>
+                            <TableHead className="text-lara-text-tertiary">
+                                Category
                             </TableHead>
                             <TableHead className="text-right text-lara-text-tertiary">
                                 Actions
@@ -141,6 +147,9 @@ export default function TechStackList() {
                                     </TableCell>
                                     <TableCell className="font-medium text-foreground">
                                         {item.name}
+                                    </TableCell>
+                                    <TableCell className="text-foreground">
+                                        {categories.find(c => c.id === item.tech_stack_category_id)?.name || "-"}
                                     </TableCell>
                                     <TableCell className="text-right">
                                         <div className="flex items-center justify-end gap-2">

@@ -67,6 +67,16 @@ const MENU_ITEMS = [
         hoverIcon: "group-hover:text-purple-400"
     },
     {
+        to: "/admin/tech-stack-categories",
+        label: "Tech Stack Categories",
+        icon: HiListBullet,
+        bgColor: "bg-indigo-500/10",
+        borderColor: "border-indigo-500/30",
+        textColor: "text-indigo-400",
+        hoverBg: "hover:bg-indigo-500/15",
+        hoverIcon: "group-hover:text-indigo-400"
+    },
+    {
         to: "/admin/profile",
         label: "Edit Profile",
         icon: HiMiniUser,

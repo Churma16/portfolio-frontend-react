@@ -23,9 +23,10 @@ export const useTechStackForm = ({
     const [formData, setFormData] = useState({
         name: "",
         icon: "",
+        tech_stack_category_id: "" as string | number,
     })
 
-    const handleInputChange = (field: keyof typeof formData, value: string | boolean) => {
+    const handleInputChange = (field: keyof typeof formData, value: string | boolean | number) => {
         setFormData((prev) => ({...prev, [field]: value}));
     };
 
@@ -36,11 +37,13 @@ export const useTechStackForm = ({
                     setFormData({
                         name: techStackToEdit.name,
                         icon: techStackToEdit.icon || "",
+                        tech_stack_category_id: techStackToEdit.tech_stack_category_id || "",
                     });
                 } else {
                     setFormData({
                         name: "",
                         icon: "",
+                        tech_stack_category_id: "",
                     });
                 }
             }, 0);
@@ -51,7 +54,9 @@ export const useTechStackForm = ({
         e.preventDefault();
 
         const payload = {
-            ...formData
+            name: formData.name,
+            icon: formData.icon,
+            tech_stack_category_id: formData.tech_stack_category_id === "" ? null : Number(formData.tech_stack_category_id)
         };
 
         const callbacks = {

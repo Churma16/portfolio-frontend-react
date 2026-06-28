@@ -7,6 +7,8 @@ import {TechStack} from "@/types";
 import TechIcon from "@/components/common/TechIcon.tsx";
 import {useTechStackForm} from "@/features/tech-stacks/hooks/UseTechStackForm.ts";
 
+import {useTechStackCategories} from "@/features/tech-stacks/hooks/useTechStackCategories.ts";
+
 interface TechStackDialogProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
@@ -15,11 +17,11 @@ interface TechStackDialogProps {
 }
 
 export default function TechStackDialog({
-                                            open,
-                                            onOpenChange,
-                                            dataToEdit,
-                                            onSuccess,
-                                        }: TechStackDialogProps) {
+                                             open,
+                                             onOpenChange,
+                                             dataToEdit,
+                                             onSuccess,
+                                         }: TechStackDialogProps) {
     const {
         formData,
         handleInputChange,
@@ -32,6 +34,7 @@ export default function TechStackDialog({
         onClose: () => onOpenChange(false),
     });
 
+    const {data: categories = []} = useTechStackCategories();
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
@@ -53,6 +56,23 @@ export default function TechStackDialog({
                             required
                         />
                     </div>
+                    
+                    <div className="space-y-2">
+                        <Label>Tech Stack Category</Label>
+                        <select
+                            value={formData.tech_stack_category_id}
+                            onChange={(e) => handleInputChange("tech_stack_category_id", e.target.value)}
+                            className="w-full rounded-md border border-admin-border/30 bg-black/20 text-foreground h-10 px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                        >
+                            <option value="" className="bg-admin-card text-foreground">Select a Category</option>
+                            {categories.map((cat) => (
+                                <option key={cat.id} value={cat.id} className="bg-admin-card text-foreground">
+                                    {cat.name}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
                     <div className="space-y-2">
                         <Label>Icon Name (React Icons)</Label>
                         <Input
