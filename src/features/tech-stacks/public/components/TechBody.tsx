@@ -1,7 +1,7 @@
 import {AnimatePresence, motion} from "framer-motion";
 import {useTechStacks} from "@/features/tech-stacks/hooks/useTechStacks.ts";
 import TechPhysicsBox from "./TechPhysicsBox.tsx";
-import TechMarquee from "./TechMarquee.tsx";
+import TechGrid from "./TechGrid.tsx";
 import TechSkeletonLoader from "./TechSkeletonLoader.tsx";
 import TechError from "@/features/tech-stacks/public/components/TechError.tsx";
 import { TechStack } from "@/types";
@@ -40,8 +40,8 @@ export default function TechBody() {
                         {/* Mobile: Physics Playground */}
                         <TechPhysicsBox techStacks={displayStacks}/>
 
-                        {/* Desktop: Infinite Marquee */}
-                        <TechMarquee techStacks={displayStacks}/>
+                        {/* Desktop: Categorized Grid */}
+                        <TechGrid techStacks={displayStacks}/>
                     </>
                 )}
 

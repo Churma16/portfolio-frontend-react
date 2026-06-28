@@ -16,7 +16,7 @@ export default function ChangePasswordForm() {
             </div>
 
             <div className="max-w-5xl mx-auto px-4 pt-8">
-                <Card className="bg-admin-card/50 border-lara-border text-foreground shadow-lg">
+                <Card className="bg-admin-card/50 border-admin-border/50 text-foreground shadow-lg">
                     <CardHeader>
                         <CardTitle className="font-heading">Change Password</CardTitle>
                         <CardDescription>

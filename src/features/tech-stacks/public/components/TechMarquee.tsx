@@ -4,15 +4,20 @@ import {TechStack} from "@/types";
 
 interface TechMarqueeDesktopProps {
     techStacks: TechStack[];
+    variant?: "default" | "decorative";
 }
 
-export default function TechMarquee({techStacks}: TechMarqueeDesktopProps) {
+export default function TechMarquee({techStacks, variant = "default"}: TechMarqueeDesktopProps) {
+    const isDecorative = variant === "decorative";
+
     return (
         <motion.div
             initial={{opacity: 0, filter: "blur(10px)"}}
             animate={{opacity: 1, filter: "blur(0px)"}}
             transition={{duration: 0.8}}
-            className="hidden md:flex overflow-hidden relative min-h-[120px] items-center"
+            className={`hidden md:flex overflow-hidden relative items-center w-full ${
+                isDecorative ? "min-h-[80px] opacity-30" : "min-h-[120px]"
+            }`}
         >
             {/* Gradient Masking */}
             <div
@@ -21,7 +26,7 @@ export default function TechMarquee({techStacks}: TechMarqueeDesktopProps) {
                 className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none"/>
 
             {/* Marquee List 1 */}
-            <div className="inline-flex animate-infinite-scroll gap-16 items-center pr-16">
+            <div className={`inline-flex gap-16 items-center pr-16 ${isDecorative ? "animate-infinite-scroll-slow" : "animate-infinite-scroll"}`}>
                 {techStacks.map((tech, index) => (
                     <div
                         key={`list1-${index}`}
@@ -30,19 +35,23 @@ export default function TechMarquee({techStacks}: TechMarqueeDesktopProps) {
                         <TechIcon
                             name={tech.name}
                             icon={tech.icon}
-                            className="w-8 h-8 text-muted-foreground transition-all duration-500 grayscale group-hover/item:grayscale-0 group-hover/item:scale-110 group-hover/item:text-primary"
+                            className={`w-8 h-8 text-muted-foreground transition-all duration-500 grayscale ${
+                                !isDecorative && "group-hover/item:grayscale-0 group-hover/item:scale-110 group-hover/item:text-primary"
+                            }`}
                         />
-                        <span
-                            className="text-xl font-heading font-bold text-muted-foreground transition-colors duration-300 group-hover/item:text-foreground whitespace-nowrap">
-                            {tech.name}
-                        </span>
+                        {!isDecorative && (
+                            <span
+                                className="text-xl font-heading font-bold text-muted-foreground transition-colors duration-300 group-hover/item:text-foreground whitespace-nowrap">
+                                {tech.name}
+                            </span>
+                        )}
                     </div>
                 ))}
             </div>
 
             {/* Marquee List 2 - Duplicate for seamless loop */}
             <div
-                className="inline-flex animate-infinite-scroll gap-16 items-center pr-16"
+                className={`inline-flex gap-16 items-center pr-16 ${isDecorative ? "animate-infinite-scroll-slow" : "animate-infinite-scroll"}`}
                 aria-hidden="true"
             >
                 {techStacks.map((tech, index) => (
@@ -53,12 +62,16 @@ export default function TechMarquee({techStacks}: TechMarqueeDesktopProps) {
                         <TechIcon
                             name={tech.name}
                             icon={tech.icon}
-                            className="w-8 h-8 text-muted-foreground transition-all duration-500 grayscale group-hover/item:grayscale-0 group-hover/item:scale-110 group-hover/item:text-primary"
+                            className={`w-8 h-8 text-muted-foreground transition-all duration-500 grayscale ${
+                                !isDecorative && "group-hover/item:grayscale-0 group-hover/item:scale-110 group-hover/item:text-primary"
+                            }`}
                         />
-                        <span
-                            className="text-xl font-heading font-bold text-muted-foreground transition-colors duration-300 group-hover/item:text-foreground whitespace-nowrap">
-                            {tech.name}
-                        </span>
+                        {!isDecorative && (
+                            <span
+                                className="text-xl font-heading font-bold text-muted-foreground transition-colors duration-300 group-hover/item:text-foreground whitespace-nowrap">
+                                {tech.name}
+                            </span>
+                        )}
                     </div>
                 ))}
             </div>
