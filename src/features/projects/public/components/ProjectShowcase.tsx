@@ -1,8 +1,8 @@
 import {useEffect, useState} from "react";
 import {Project} from "@/types";
 import ProjectCard from "./ProjectCard.tsx";
-import {useApi} from "@/contexts/useApi.ts";
 import ProjectModal from "@/features/projects/public/components/ProjectModal.tsx";
+import {useStoragePath} from "@/hooks/useStoragePath.ts";
 
 interface ProjectShowcaseProps {
     projects: Project[];
@@ -11,14 +11,8 @@ interface ProjectShowcaseProps {
 export default function ProjectShowcase({projects}: ProjectShowcaseProps) {
     const [selectedId, setSelectedId] = useState<number | null>(null);
     const selectedProject: Project | undefined = projects.find((p) => p.id === selectedId);
-    const {activeBackend} = useApi();
-
-    const isGo = activeBackend === 'go';
-
-    const StoragePath = isGo
-        ? import.meta.env.VITE_GO_FILE_URL || '/files/'
-        : import.meta.env.VITE_LARAVEL_FILE_URL || '/files/';
-
+    
+    const StoragePath = useStoragePath();
 
     useEffect(() => {
         if (selectedId) {
