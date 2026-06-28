@@ -1,6 +1,6 @@
 import {motion} from "framer-motion";
 import {HiShieldCheck} from "react-icons/hi2";
-import {SiCloudflare, SiDigitalocean, SiGo, SiLaravel, SiMysql, SiPostgresql, SiReact, SiUbuntu, SiExpress} from "react-icons/si";
+import {SiCloudflare, SiDigitalocean, SiGo, SiLaravel, SiMysql, SiPostgresql, SiReact, SiUbuntu, SiExpress, SiDocker} from "react-icons/si";
 
 import {useApi} from "@/contexts/useApi.ts";
 
@@ -12,8 +12,7 @@ const StackBox = ({title, icon, items, themeColor = "text-blue-400", bgColor = "
     themeColor?: string;
     bgColor?: string;
 }) => (
-    // Hapus motion.div di sini, kita pindahkan animasinya ke parent (ShuffleStack)
-    // Gunakan div biasa agar tidak konflik dengan animasi parent
+
     <div className="flex-1 bg-card border border-white/10 p-5 rounded-xl w-full h-full shadow-2xl shadow-black/50">
         <div className="flex items-center gap-3 mb-4 border-b border-white/5 pb-3">
             <div className={`p-2 bg-white/5 rounded-lg ${themeColor}`}>
@@ -42,16 +41,13 @@ const ShuffleStack = ({activeId, children}: { activeId: string; children: React.
     const order = ['laravel', 'go', 'express'];
 
     return (
-        // Grid trick: menumpuk semua anak di satu sel yang sama
         <div className="grid w-full min-w-[200px]" style={{gridTemplateAreas: "'stack'"}}>
             {children.map((child: any) => {
-                // We use child.props.id because we spread {...card} which contains id
                 const childId = child.props.id || child.key?.replace('.$', '');
                 
                 const activeIndex = order.indexOf(activeId) !== -1 ? order.indexOf(activeId) : 0;
                 const childIndex = order.indexOf(childId) !== -1 ? order.indexOf(childId) : 0;
                 
-                // Hitung posisi relatif (0 = depan, 1 = tengah, 2 = belakang)
                 const position = (childIndex - activeIndex + 3) % 3;
 
                 let y = 0;
@@ -169,15 +165,13 @@ export default function ArchitectureDiagram() {
     const {activeBackend} = useApi();
     const isGo = activeBackend === 'go';
 
-    // KITA DEFINISIKAN SEMUA OPSI KARTU DI SINI
-    // (Agar ShuffleStack bisa merender keduanya sekaligus)
 
     const apiCards = [
         {
             id: "laravel", // Key harus sesuai dengan activeBackend ('laravel')
             title: "API Engine",
             icon: <SiLaravel className="w-6 h-6"/>,
-            items: ["Laravel API", "Docker Container", "Queue Worker"],
+            items: ["Laravel Framework", "Eloquent ORM", "Sanctum Auth"],
             themeColor: "text-red-500",
             bgColor: "bg-red-500"
         },
@@ -185,7 +179,7 @@ export default function ArchitectureDiagram() {
             id: "go", // Key harus sesuai dengan activeBackend ('go')
             title: "API Engine",
             icon: <SiGo className="w-6 h-6"/>,
-            items: ["Gin Framework", "Go Routines", "High Performance"],
+            items: ["Gin Framework", "PGX Database Driver", "High Performance"],
             themeColor: "text-cyan-400",
             bgColor: "bg-cyan-400"
         },
@@ -193,7 +187,7 @@ export default function ArchitectureDiagram() {
             id: "express",
             title: "API Engine",
             icon: <SiExpress className="w-6 h-6"/>,
-            items: ["Express.js", "Node.js", "Sequelize ORM"],
+            items: ["Express.js (Node)", "Domain-Driven Design", "Sequelize ORM"],
             themeColor: "text-green-500",
             bgColor: "bg-green-500"
         }
@@ -204,7 +198,7 @@ export default function ArchitectureDiagram() {
             id: "laravel",
             title: "Storage & Cache",
             icon: <SiMysql className="w-6 h-6"/>,
-            items: ["MySQL 8", "Redis Cache", "Volume Storage"],
+            items: ["MySQL 8", "Redis Cache", "Bind Mount Storage"],
             themeColor: "text-blue-500",
             bgColor: "bg-blue-500"
         },
@@ -212,15 +206,15 @@ export default function ArchitectureDiagram() {
             id: "go",
             title: "Storage & Cache",
             icon: <SiPostgresql className="w-6 h-6"/>,
-            items: ["PostgreSQL 15", "Redis Cache", "Volume Storage"],
+            items: ["PostgreSQL 15", "Redis Cache", "Bind Mount Storage"],
             themeColor: "text-blue-500",
             bgColor: "bg-blue-500"
         },
         {
             id: "express",
             title: "Storage & Cache",
-            icon: <SiMysql className="w-6 h-6"/>,
-            items: ["MySQL 8", "Redis Cache", "Volume Storage"],
+            icon: <SiPostgresql className="w-6 h-6"/>,
+            items: ["PostgreSQL 15", "Redis Cache", "Bind Mount Storage"],
             themeColor: "text-green-500",
             bgColor: "bg-green-500"
         }
@@ -234,7 +228,7 @@ export default function ArchitectureDiagram() {
                 <span
                     className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold">Client Side</span>
                 <StackBox title="Frontend" icon={<SiReact className="w-6 h-6"/>}
-                          items={["React SPA", "Browser Runtime", "Axios Http"]} themeColor="text-blue-500"/>
+                          items={["React SPA & TypeScript", "Dynamic API Routing", "Tanstack Query"]} themeColor="text-blue-500"/>
             </div>
 
             <DataFlow label="HTTPS Request" width="w-24"/>
@@ -266,12 +260,18 @@ export default function ArchitectureDiagram() {
             <div
                 className="relative border-2 border-dashed border-primary/20 bg-primary/5 rounded-3xl p-6 pt-10 flex flex-col items-center gap-4 shrink-0">
                 <div
-                    className="absolute -top-4 left-6 bg-background px-4 py-1.5 border border-primary/30 rounded-full flex items-center gap-3 shadow-lg shadow-primary/10">
-                    <SiDigitalocean className="text-[#0080FF] text-xl"/>
-                    <div className="h-4 w-[1px] bg-muted-foreground/20"></div>
-                    <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground">
-                        <SiUbuntu className="text-orange-500"/>
-                        <span>VPS (Docker)</span>
+                    className="absolute -top-4 left-6 bg-background py-1.5 border border-primary/30 rounded-full flex items-center shadow-lg shadow-primary/10 divide-x divide-muted-foreground/20">
+                    <div className="flex items-center gap-1.5 px-3 text-xs font-mono text-muted-foreground hover:text-foreground transition-colors">
+                        <SiDigitalocean className="text-[#0080FF] text-lg"/>
+                        <span>VPS</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 px-3 text-xs font-mono text-muted-foreground hover:text-foreground transition-colors">
+                        <SiUbuntu className="text-orange-500 text-lg"/>
+                        <span>Ubuntu</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 px-3 text-xs font-mono text-[#2496ED] font-medium">
+                        <SiDocker className="text-lg"/>
+                        <span>Docker</span>
                     </div>
                 </div>
 
