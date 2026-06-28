@@ -5,12 +5,16 @@ import {useApi} from "@/contexts/useApi.ts";
 
 const fetchTechStack = async (): Promise<TechStack[]> => {
     // Ambil response dari Axios
-    const response = await apiClient.get<ApiResponse<TechStack[]>>(
+    const response = await apiClient.get<ApiResponse<any>>(
         "/tech-stacks"
     );
 
     console.log("Tech Stacks response:", response.data);
-    return response.data.data || [];
+    const data = response.data.data;
+    if (data && typeof data === "object" && !Array.isArray(data) && Array.isArray((data as any).data)) {
+        return (data as any).data;
+    }
+    return Array.isArray(data) ? data : [];
 };
 
 export const useTechStacks = () => {
