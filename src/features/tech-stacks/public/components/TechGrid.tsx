@@ -18,8 +18,11 @@ export default function TechGrid({ techStacks }: TechGridProps) {
         );
     }
 
+    const categoriesArray = Array.isArray(categories) ? categories : [];
+    const techStacksArray = Array.isArray(techStacks) ? techStacks : [];
+
     // Group tech stacks by tech_stack_category_id
-    const groupedTechStacks = techStacks.reduce((acc, tech) => {
+    const groupedTechStacks = techStacksArray.reduce((acc, tech) => {
         const catId = tech.tech_stack_category_id ? Number(tech.tech_stack_category_id) : 0;
         if (!acc[catId]) {
             acc[catId] = [];
@@ -29,7 +32,7 @@ export default function TechGrid({ techStacks }: TechGridProps) {
     }, {} as Record<number, TechStack[]>);
 
     // Filter categories that actually have stacks, or are fallback
-    const activeCategories = categories.filter(cat => (groupedTechStacks[cat.id] || []).length > 0);
+    const activeCategories = categoriesArray.filter(cat => (groupedTechStacks[cat.id] || []).length > 0);
     const uncategorizedStacks = groupedTechStacks[0] || [];
 
     return (

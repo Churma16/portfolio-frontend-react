@@ -10,7 +10,7 @@ const fetchTechStack = async (): Promise<TechStack[]> => {
     );
 
     console.log("Tech Stacks response:", response.data);
-    return response.data.data;
+    return response.data.data || [];
 };
 
 export const useTechStacks = () => {

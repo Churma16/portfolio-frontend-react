@@ -6,7 +6,7 @@ const fetchTechStackCategories = async (): Promise<TechStackCategory[]> => {
     const response = await apiClient.get<ApiResponse<TechStackCategory[]>>(
         "/tech-stack-categories"
     );
-    return response.data.data;
+    return response.data.data || [];
 };
 
 export const useTechStackCategories = () => {
