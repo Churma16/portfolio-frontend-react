@@ -19,8 +19,8 @@ const DUMMY_TECH_STACKS: TechStack[] = [
 ];
 
 export default function Hero() {
-    const {data: profile} = useProfile();
-    const {data: techStacks = [], isError, isLoading} = useTechStacks();
+    const {data: profile, isLoading: isProfileLoading} = useProfile();
+    const {data: techStacks = [], isError, isLoading: isTechLoading} = useTechStacks();
     const isDevFallback = isError && import.meta.env.VITE_PROD === "false";
     const displayStacks = isDevFallback ? DUMMY_TECH_STACKS : techStacks;
 
@@ -38,12 +38,16 @@ export default function Hero() {
                     bioShort={profile?.bio_short}
                     isHireable={profile?.is_hireable}
                     cvFileUrl={profile?.cv_files ? `${storagePath}${profile.cv_files}` : undefined}
+                    isLoading={isProfileLoading}
                 />
-                <HeroAvatar avatarUrl={profile?.avatar ? `${storagePath}${profile.avatar}` : undefined}/>
+                <HeroAvatar 
+                    avatarUrl={profile?.avatar ? `${storagePath}${profile.avatar}` : undefined}
+                    isLoading={isProfileLoading}
+                />
             </div>
             
             <div className="absolute bottom-0 left-0 right-0 z-0">
-                {isLoading ? (
+                {isTechLoading ? (
                     <div className="hidden md:flex overflow-hidden relative items-center w-full min-h-[80px] opacity-30 gap-16 px-16">
                         {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(i => (
                             <div key={i} className="w-8 h-8 bg-muted/40 rounded-full shrink-0 animate-pulse" />

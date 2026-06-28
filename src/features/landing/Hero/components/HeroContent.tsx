@@ -7,6 +7,7 @@ interface HeroContentProps {
     bioShort?: string;
     isHireable?: boolean;
     cvFileUrl?: string;
+    isLoading?: boolean;
 }
 
 export default function HeroContent({
@@ -14,6 +15,7 @@ export default function HeroContent({
     bioShort,
     isHireable,
     cvFileUrl,
+    isLoading,
 }: HeroContentProps) {
     return (
         <div className="flex-1 text-center lg:text-left space-y-6">
@@ -32,7 +34,19 @@ export default function HeroContent({
             </motion.h1>
 
             <AnimatePresence mode="wait">
-                {name ? (
+                {isLoading ? (
+                    <motion.div
+                        key="profile-skeleton"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 0.3 }}
+                        className="text-lg text-slate-400 max-w-2xl mx-auto lg:mx-0 leading-relaxed space-y-2 flex flex-col items-center lg:items-start"
+                    >
+                        <div className="h-4 bg-slate-700/50 rounded animate-pulse w-40"></div>
+                        <div className="h-4 bg-slate-700/50 rounded animate-pulse w-48"></div>
+                    </motion.div>
+                ) : (
                     <motion.p
                         key="profile-text"
                         initial={{ opacity: 0, y: 20 }}
@@ -49,18 +63,6 @@ export default function HeroContent({
                             }}
                         />
                     </motion.p>
-                ) : (
-                    <motion.div
-                        key="profile-skeleton"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        transition={{ duration: 0.3 }}
-                        className="text-lg text-slate-400 max-w-2xl mx-auto lg:mx-0 leading-relaxed space-y-2"
-                    >
-                        <div className="h-4 bg-slate-700 rounded animate-pulse w-40"></div>
-                        <div className="h-4 bg-slate-700 rounded animate-pulse w-48"></div>
-                    </motion.div>
                 )}
             </AnimatePresence>
 
