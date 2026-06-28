@@ -20,7 +20,7 @@ const DUMMY_TECH_STACKS: TechStack[] = [
 
 export default function Hero() {
     const {data: profile} = useProfile();
-    const {data: techStacks = [], isError} = useTechStacks();
+    const {data: techStacks = [], isError, isLoading} = useTechStacks();
     const isDevFallback = isError && import.meta.env.VITE_PROD === "false";
     const displayStacks = isDevFallback ? DUMMY_TECH_STACKS : techStacks;
 
@@ -43,7 +43,15 @@ export default function Hero() {
             </div>
             
             <div className="absolute bottom-0 left-0 right-0 z-0">
-                <TechMarquee techStacks={displayStacks} variant="decorative" />
+                {isLoading ? (
+                    <div className="hidden md:flex overflow-hidden relative items-center w-full min-h-[80px] opacity-30 gap-16 px-16">
+                        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(i => (
+                            <div key={i} className="w-8 h-8 bg-muted/40 rounded-full shrink-0 animate-pulse" />
+                        ))}
+                    </div>
+                ) : (
+                    <TechMarquee techStacks={displayStacks} variant="decorative" />
+                )}
             </div>
         </section>
     );
