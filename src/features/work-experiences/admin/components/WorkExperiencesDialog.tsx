@@ -58,7 +58,7 @@ export default function WorkExperiencesDialog({
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent
-                className="max-w-3xl w-[95vw] bg-admin-card border border-white/10 text-foreground max-h-[90vh] overflow-y-auto">
+                className="max-w-3xl w-[95vw] bg-admin-card border border-admin-border/50 text-foreground max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
                     <DialogTitle>{experienceToEdit ? "Edit Work Experience" : "Add New Work Experience"}</DialogTitle>
                     <DialogDescription>Fill in the details below.</DialogDescription>
@@ -73,7 +73,7 @@ export default function WorkExperiencesDialog({
                                 value={formData.company}
                                 onChange={(e) => handleInputChange("company", e.target.value)}
                                 placeholder="E.g. Tech Company Inc."
-                                className="bg-black/20 border-white/10"
+                                className="bg-black/20 border-admin-border/30"
                                 required
                             />
                         </div>
@@ -83,7 +83,7 @@ export default function WorkExperiencesDialog({
                                 value={formData.position}
                                 onChange={(e) => handleInputChange("position", e.target.value)}
                                 placeholder="E.g. Senior Developer"
-                                className="bg-black/20 border-white/10"
+                                className="bg-black/20 border-admin-border/30"
                                 required
                             />
                         </div>
@@ -96,7 +96,7 @@ export default function WorkExperiencesDialog({
                             <Input
                                 value={formData.location}
                                 onChange={(e) => handleInputChange("location", e.target.value)}
-                                className="bg-black/20 border-white/10"
+                                className="bg-black/20 border-admin-border/30"
                             />
                         </div>
                         <div className="space-y-2 flex items-end">
@@ -105,7 +105,7 @@ export default function WorkExperiencesDialog({
                                     type="checkbox"
                                     checked={formData.is_current}
                                     onChange={(e) => handleInputChange("is_current", e.target.checked)}
-                                    className="w-4 h-4 rounded border-white/10 bg-black/20 text-primary"
+                                    className="w-4 h-4 rounded border-admin-border/30 bg-black/20 text-primary"
                                 />
                                 <span className="text-sm text-lara-text-tertiary">Currently Working Here</span>
                             </label>
@@ -120,7 +120,7 @@ export default function WorkExperiencesDialog({
                                 type="month"
                                 value={formData.start_date}
                                 onChange={(e) => handleInputChange("start_date", e.target.value)}
-                                className="bg-black/20 border-white/10"
+                                className="bg-black/20 border-admin-border/30"
                                 required
                             />
                         </div>
@@ -130,7 +130,7 @@ export default function WorkExperiencesDialog({
                                 type="month"
                                 value={formData.end_date}
                                 onChange={(e) => handleInputChange("end_date", e.target.value)}
-                                className="bg-black/20 border-white/10"
+                                className="bg-black/20 border-admin-border/30"
                                 disabled={formData.is_current}
                             />
                         </div>
@@ -142,7 +142,7 @@ export default function WorkExperiencesDialog({
                         <Textarea
                             value={formData.description}
                             onChange={(e) => handleInputChange("description", e.target.value)}
-                            className="bg-black/20 border-white/10"
+                            className="bg-black/20 border-admin-border/30"
                             rows={3}
                             required
                         />
@@ -157,7 +157,7 @@ export default function WorkExperiencesDialog({
                                 size="sm" 
                                 variant="outline" 
                                 onClick={handleAddAchievement}
-                                className="h-8 border-white/10 hover:bg-white/5 text-xs text-slate-300"
+                                className="h-8 border-admin-border/30 hover:bg-white/5 text-xs text-slate-300"
                             >
                                 + Add Achievement
                             </Button>
@@ -174,7 +174,7 @@ export default function WorkExperiencesDialog({
                                             value={achievement}
                                             onChange={(e) => handleAchievementChange(index, e.target.value)}
                                             placeholder={`Achievement #${index + 1}`}
-                                            className="bg-black/20 border-white/10 flex-1 text-sm"
+                                            className="bg-black/20 border-admin-border/30 flex-1 text-sm"
                                         />
                                         <Button
                                             type="button"

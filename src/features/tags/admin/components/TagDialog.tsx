@@ -35,7 +35,7 @@ export default function TagDialog({
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="bg-admin-card w-[95vw] border-white/10 text-foreground">
+            <DialogContent className="bg-admin-card w-[95vw] border-admin-border/50 text-foreground">
                 <DialogHeader>
                     <DialogTitle>
                         {dataToEdit ? "Edit Tag" : "Add Tag"}
@@ -49,7 +49,7 @@ export default function TagDialog({
                             onChange={(e) =>
                                 handleInputChange("name", e.target.value)}
                             placeholder="e.g. Mobile"
-                            className="bg-black/20 border-white/10"
+                            className="bg-black/20 border-admin-border/30"
                             required
                         />
                     </div>
@@ -59,10 +59,10 @@ export default function TagDialog({
                             value={formData.color}
                             onValueChange={(value) => handleInputChange("color", value)}
                         >
-                            <SelectTrigger className="bg-black/20 border-white/10 text-foreground">
+                            <SelectTrigger className="bg-black/20 border-admin-border/30 text-foreground">
                                 <SelectValue placeholder="Select color"/>
                             </SelectTrigger>
-                            <SelectContent className="bg-admin-card border-white/10 text-foreground">
+                            <SelectContent className="bg-admin-card border-admin-border/30 text-foreground">
                                 <SelectItem value="blue">Blue</SelectItem>
                                 <SelectItem value="green">Green</SelectItem>
                                 <SelectItem value="red">Red</SelectItem>
@@ -77,10 +77,10 @@ export default function TagDialog({
                             value={formData.category_id ? String(formData.category_id) : undefined}
                             onValueChange={(value) => handleInputChange("category_id", value)}
                         >
-                            <SelectTrigger className="bg-black/20 border-white/10 text-foreground">
+                            <SelectTrigger className="bg-black/20 border-admin-border/30 text-foreground">
                                 <SelectValue placeholder="Select a category"/>
                             </SelectTrigger>
-                            <SelectContent className="bg-admin-card border-white/10 text-foreground">
+                            <SelectContent className="bg-admin-card border-admin-border/30 text-foreground">
                                 {availableCategories && availableCategories.length > 0 &&
                                     availableCategories.map((category, index) => (
                                         <SelectItem key={index} value={String(category.id)}>

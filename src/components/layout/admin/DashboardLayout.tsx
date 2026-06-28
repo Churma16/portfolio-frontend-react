@@ -11,17 +11,17 @@ export default function DashboardLayout() {
 
     // Determine glow color based on current route
     const getGlowColor = () => {
-        if (location.pathname === "/admin") return "from-lara-blue";
-        if (location.pathname === "/admin/tech-stacks") return "from-cyan-500";
-        if (location.pathname === "/admin/tags") return "from-green-500";
-        if (location.pathname === "/admin/categories") return "from-purple-500";
-        if (location.pathname === "/admin/profile") return "from-pink-500";
-        return "from-lara-blue";
+        if (location.pathname === "/admin") return "from-primary";
+        if (location.pathname === "/admin/tech-stacks") return "from-primary";
+        if (location.pathname === "/admin/tags") return "from-secondary";
+        if (location.pathname === "/admin/categories") return "from-accent";
+        if (location.pathname === "/admin/profile") return "from-destructive";
+        return "from-primary";
     };
 
 
     return (
-        <div className="flex h-screen bg-[#050914] text-white font-sans relative overflow-hidden">
+        <div className="flex h-screen bg-background text-foreground font-sans relative overflow-hidden">
             {/* Background Glows */}
             <div
                 className={`absolute top-0 right-0 w-96 h-96 bg-gradient-to-br ${getGlowColor()} to-transparent rounded-full blur-3xl opacity-20 animate-[pulse_4s_cubic-bezier(0.4,0,0.6,1)_infinite] pointer-events-none`}
@@ -33,9 +33,9 @@ export default function DashboardLayout() {
 
             {/* --- MOBILE HEADER (Visible only on mobile) --- */}
             <div
-                className="md:hidden fixed top-0 left-0 right-0 h-16 bg-[#050914]/90 backdrop-blur-md border-b border-white/10 flex items-center justify-between px-4 z-50">
+                className="md:hidden fixed top-0 left-0 right-0 h-16 bg-background/90 backdrop-blur-md border-b border-admin-border/20 flex items-center justify-between px-4 z-50">
                 <span className="text-lg font-bold font-heading text-primary">
-                    Admin<span className="text-white">Panel</span>
+                    Admin<span className="text-foreground">Panel</span>
                 </span>
                 <button
                     onClick={() => setIsSidebarOpen(true)}
@@ -58,7 +58,7 @@ export default function DashboardLayout() {
 
             {/* --- MAIN CONTENT AREA --- */}
             <main
-                className={`flex-1 overflow-y-auto bg-gradient-to-br from-black/40 to-black/60 relative z-10 backdrop-blur-sm
+                className={`flex-1 overflow-y-auto bg-gradient-to-br from-background to-admin-card/50 relative z-10 backdrop-blur-sm
                     pt-16 md:pt-8 p-4 md:p-8
                 `}
             >

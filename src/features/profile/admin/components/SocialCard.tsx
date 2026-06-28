@@ -24,7 +24,7 @@ export default function SocialCard({socialsArray, setSocialsArray}: SocialCardPr
     };
 
     return (
-        <Card className="bg-admin-card/50 border-lara-border text-foreground shadow-lg">
+        <Card className="bg-admin-card/50 border-admin-border/50 text-foreground shadow-lg">
             <CardHeader className="flex flex-row items-center justify-between">
                 <div>
                     <CardTitle className="font-heading">

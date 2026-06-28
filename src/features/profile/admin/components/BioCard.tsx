@@ -21,7 +21,7 @@ export default function BioCard({
                                     handleCVChange,
                                 }: BioCardProps) {
     return (
-        <Card className="bg-admin-card/50 border-lara-border text-foreground shadow-lg">
+        <Card className="bg-admin-card/50 border-admin-border/50 text-foreground shadow-lg">
             <CardHeader>
                 <CardTitle className="font-heading">About You</CardTitle>
                 <CardDescription>

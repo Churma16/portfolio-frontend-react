@@ -34,7 +34,7 @@ export default function CategoryDialog({
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className=" w-[90vw] bg-admin-card border-white/10 text-foreground">
+            <DialogContent className=" w-[90vw] bg-admin-card border-admin-border/50 text-foreground">
                 <DialogHeader>
                     <DialogTitle>
                         {dataToEdit ? "Edit Category" : "Add Category"}
@@ -48,7 +48,7 @@ export default function CategoryDialog({
                             onChange={(e) =>
                                 handleInputChange("name", e.target.value)}
                             placeholder="e.g. Web Development"
-                            className="bg-black/20 border-white/10"
+                            className="bg-black/20 border-admin-border/30"
                             required
                         />
                     </div>
@@ -60,7 +60,7 @@ export default function CategoryDialog({
                             value={formData.color}
                             onChange={(e) =>
                                 handleInputChange("color", e.target.value)}
-                            className="bg-black/20 border-white/10 h-10 cursor-pointer"
+                            className="bg-black/20 border-admin-border/30 h-10 cursor-pointer"
                         />
                     </div>
                     <DialogFooter>

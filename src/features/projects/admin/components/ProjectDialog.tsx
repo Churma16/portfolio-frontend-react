@@ -59,7 +59,7 @@ export default function ProjectDialog({
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent
-                className="max-w-3xl w-[95vw] bg-admin-card border border-white/10 text-foreground max-h-[90vh] overflow-y-auto">
+                className="max-w-3xl w-[95vw] bg-admin-card border border-admin-border/50 text-foreground max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
                     <DialogTitle>
                         {projectToEdit ? "Edit Project" : "Add New Project"}
@@ -79,7 +79,7 @@ export default function ProjectDialog({
                                 value={formData.title}
                                 onChange={(e) => handleInputChange("title", e.target.value)}
                                 placeholder="E.g. E-Commerce App"
-                                className="bg-black/20 border-white/10"
+                                className="bg-black/20 border-admin-border/30"
                                 required
                             />
                         </div>
@@ -88,7 +88,7 @@ export default function ProjectDialog({
                             <Label>Thumbnail Image</Label>
                             <div className="space-y-2">
                                 <div
-                                    className="relative border-2 border-dashed border-white/20 rounded-lg p-4 text-center hover:border-white/40 transition-colors cursor-pointer group">
+                                    className="relative border-2 border-dashed border-admin-border/20 rounded-lg p-4 text-center hover:border-admin-border/40 transition-colors cursor-pointer group">
                                     <input
                                         type="file"
                                         accept="image/*"
@@ -128,7 +128,7 @@ export default function ProjectDialog({
                                 value={formData.repo_url}
                                 onChange={(e) => handleInputChange("repo_url", e.target.value)}
                                 placeholder="https://github.com/..."
-                                className="bg-black/20 border-white/10"
+                                className="bg-black/20 border-admin-border/30"
                             />
                         </div>
                         <div className="space-y-2">
@@ -137,9 +137,10 @@ export default function ProjectDialog({
                                 value={formData.demo_url}
                                 onChange={(e) => handleInputChange("demo_url", e.target.value)}
                                 placeholder="https://..."
-                                className="bg-black/20 border-white/10"
+                                className="bg-black/20 border-admin-border/30"
                             />
                         </div>
+
                     </div>
 
                     {/* Description */}
@@ -149,7 +150,7 @@ export default function ProjectDialog({
                             value={formData.content}
                             onChange={(e) => handleInputChange("content", e.target.value)}
                             placeholder="Tell a story about this project..."
-                            className="bg-black/20 border-white/10"
+                            className="bg-black/20 border-admin-border/30"
                             rows={4}
                         />
                     </div>

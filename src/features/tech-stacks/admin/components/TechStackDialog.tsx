@@ -35,7 +35,7 @@ export default function TechStackDialog({
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="w-[95vw] bg-admin-card border-white/10 text-foreground">
+            <DialogContent className="w-[95vw] bg-admin-card border-admin-border/50 text-foreground">
                 <DialogHeader>
                     <DialogTitle>
                         {dataToEdit ? "Edit Tech Stack" : "Add Tech Stack"}
@@ -49,7 +49,7 @@ export default function TechStackDialog({
                             onChange={(e) =>
                                 handleInputChange("name", e.target.value)}
                             placeholder="e.g. Laravel"
-                            className="bg-black/20 border-white/10"
+                            className="bg-black/20 border-admin-border/30"
                             required
                         />
                     </div>
@@ -60,7 +60,7 @@ export default function TechStackDialog({
                             onChange={(e) =>
                                 handleInputChange("icon", e.target.value)}
                             placeholder="e.g. SiLaravel"
-                            className="bg-black/20 border-white/10"
+                            className="bg-black/20 border-admin-border/30"
                         />
                         <p className="text-[10px] text-lara-text-muted-dark">
                             Use names from{" "}

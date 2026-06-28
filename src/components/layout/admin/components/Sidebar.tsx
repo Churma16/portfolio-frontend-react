@@ -106,15 +106,15 @@ export default function Sidebar({
     return (
         <aside
             className={`
-                fixed inset-y-0 left-0 z-50 w-64 border-r border-white/10 flex flex-col bg-gradient-to-b from-[#0a1428] to-[#050914] shadow-2xl transition-transform duration-300 ease-in-out
-                md:relative md:translate-x-0 md:bg-gradient-to-b md:from-[#0a1428]/80 md:to-[#050914]/80 md:backdrop-blur-sm md:shadow-none
+                fixed inset-y-0 left-0 z-50 w-64 border-r border-admin-border/20 flex flex-col bg-gradient-to-b from-admin-card to-background shadow-2xl transition-transform duration-300 ease-in-out
+                md:relative md:translate-x-0 md:bg-gradient-to-b md:from-admin-card/80 md:to-background/80 md:backdrop-blur-sm md:shadow-none
                 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}
             `}
         >
             {/* Header */}
-            <div className="p-6 flex items-center justify-between border-b border-white/5">
+            <div className="p-6 flex items-center justify-between border-b border-admin-border/10">
                 <h1 className="text-xl font-bold font-heading text-primary">
-                    Admin<span className="text-white">Panel</span>
+                    Admin<span className="text-foreground">Panel</span>
                 </h1>
                 <button
                     onClick={() => setIsSidebarOpen(false)}
@@ -135,7 +135,7 @@ export default function Sidebar({
                             flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group
                             ${isActive(item.to)
                             ? `${item.bgColor} ${item.borderColor} border text-white shadow-lg`
-                            : `text-slate-400 hover:text-white ${item.hoverBg} border border-transparent hover:border-white/10`
+                            : `text-slate-400 hover:text-white ${item.hoverBg} border border-transparent hover:border-admin-border/20`
                         }
                         `}
                     >
@@ -147,7 +147,7 @@ export default function Sidebar({
             </nav>
 
             {/* Footer */}
-            <div className="p-4 space-y-3 border-t border-white/5">
+            <div className="p-4 space-y-3 border-t border-admin-border/10">
                 <div className="flex items-center justify-between px-2">
                     <span className="text-xs font-semibold uppercase tracking-wider text-accent/60">
                         Backend
