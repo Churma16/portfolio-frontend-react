@@ -2,6 +2,7 @@ import {useState} from "react";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/components/ui/table.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {HiArrowDown, HiArrowUp, HiPlus,} from "react-icons/hi2";
+import {MapPin} from "lucide-react";
 import {WorkExperience} from "@/types";
 import WorkExperiencesDialog from "@/features/work-experiences/admin/components/WorkExperiencesDialog.tsx";
 import {useWorkExperiences} from "@/features/work-experiences/hooks/useWorkExperiences.ts";
@@ -161,8 +162,8 @@ export default function WorkExperiencesList() {
                                             <div className="text-xs text-lara-text-muted">
                                                 {experience.company}
                                             </div>
-                                            <div className="text-xs text-lara-text-muted-dark">
-                                                📍 {experience.location}
+                                            <div className="text-xs text-lara-text-muted-dark flex items-center">
+                                                <MapPin className="w-3 h-3 mr-1" /> {experience.location}
                                             </div>
                                         </div>
                                     </TableCell>

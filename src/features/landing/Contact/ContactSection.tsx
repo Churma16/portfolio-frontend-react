@@ -3,6 +3,7 @@ import {motion} from "framer-motion";
 import {HiPaperAirplane} from "react-icons/hi2";
 import {CgSpinner} from "react-icons/cg";
 import {useCreateMessage} from "@/hooks/useMessages.ts";
+import {PartyPopper} from "lucide-react";
 
 export default function ContactSection() {
     // Mutation hook untuk send message
@@ -234,7 +235,7 @@ export default function ContactSection() {
                                     Sending...
                                 </>
                             ) : mutation.isSuccess ? (
-                                "Message Sent Successfully! 🎉"
+                                <>Message Sent Successfully! <PartyPopper className="w-5 h-5 ml-1 inline-block" /></>
                             ) : (
                                 <>
                                     Send Message{" "}

@@ -1,6 +1,7 @@
 import {motion} from "framer-motion";
 import {SiRedis} from "react-icons/si";
 import useHealth from "@/hooks/useHealth.ts";
+import {Zap, Circle} from "lucide-react";
 
 
 export default function LiveStats() {
@@ -35,16 +36,16 @@ export default function LiveStats() {
                         key={redisTime}
                         initial={{scale: 1.2, color: "#fff"}}
                         animate={{scale: 1, color: "#4ade80"}}
-                        className="font-bold text-lara-accent-green text-base"
+                        className="font-bold text-lara-accent-green text-base flex items-center gap-1"
                     >
-                        {isLoading ? "..." : `${redisTime} ms`} ⚡
+                        {isLoading ? "..." : `${redisTime} ms`} <Zap className="w-4 h-4" />
                     </motion.span>
                 </div>
             </div>
 
             {isError && !isLoading && (
-                <p className="text-center text-[10px] text-lara-text-muted-dark font-mono mt-12 uppercase tracking-widest opacity-50">
-                    System Status: 🔴 Systems Offline
+                <p className="flex justify-center items-center gap-2 text-[10px] text-lara-text-muted-dark font-mono mt-12 uppercase tracking-widest opacity-50">
+                    System Status: <Circle className="w-2.5 h-2.5 fill-red-500 text-red-500" /> Systems Offline
                 </p>)
             }
 
@@ -55,8 +56,8 @@ export default function LiveStats() {
             }
 
             {!isLoading && !isError &&
-                <p className="text-center text-[10px] text-lara-text-muted-dark font-mono mt-12 uppercase tracking-widest opacity-50">
-                    System Status: 🟢 All Systems Operational
+                <p className="flex justify-center items-center gap-2 text-[10px] text-lara-text-muted-dark font-mono mt-12 uppercase tracking-widest opacity-50">
+                    System Status: <Circle className="w-2.5 h-2.5 fill-green-500 text-green-500" /> All Systems Operational
                 </p>
             }
 

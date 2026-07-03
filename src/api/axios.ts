@@ -68,7 +68,7 @@ apiClient.interceptors.request.use((config) => {
                 formData.append(key, String(value));
             });
 
-            console.log("📦 FormData Payload:", Array.from(formData.entries()));
+            console.log("FormData Payload:", Array.from(formData.entries()));
 
             config.data = formData;
             delete config.headers["Content-Type"];
@@ -84,7 +84,7 @@ apiClient.interceptors.response.use(
     (response) => response,
     (error) => {
         if (error.response?.status === 401) {
-            console.error("❌ 401 Unauthorized - Token Invalid/Expired");
+            console.error("401 Unauthorized - Token Invalid/Expired");
         }
         return Promise.reject(error);
     }

@@ -4,6 +4,7 @@ import {Label} from "@/components/ui/label.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {useChangePasswordForm} from "@/features/auth/Public/useChangePasswordForm.ts";
+import {Check} from "lucide-react";
 
 export default function ChangePasswordForm() {
     const {formData, handleInputChange, handleSubmit, isLoading, isSuccess} = useChangePasswordForm();
@@ -58,7 +59,7 @@ export default function ChangePasswordForm() {
                                 }`}
                                 disabled={isLoading || isSuccess}
                             >
-                                {isLoading ? "Updating..." : isSuccess ? "✓ Success!" : "Update Password"}
+                                {isLoading ? "Updating..." : isSuccess ? <><Check className="inline-block w-4 h-4 mr-1"/> Success!</> : "Update Password"}
                             </Button>
                         </CardFooter>
                     </form>

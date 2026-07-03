@@ -4,6 +4,7 @@ import {useNavigate} from "react-router-dom";
 import {motion} from "framer-motion";
 import {HiArrowRight, HiCommandLine, HiOutlineEnvelope, HiOutlineLockClosed, HiQrCode,} from "react-icons/hi2";
 import {CgSpinner} from "react-icons/cg";
+import {AlertTriangle} from "lucide-react";
 
 interface LoginFormProps {
     email: string;
@@ -42,10 +43,18 @@ export default function LoginForm({
             <div className="text-center mb-8">
                 <h1
                     className={`text-3xl font-bold mb-2 ${
-                        !isGlitch && "font-heading text-white"
+                        !isGlitch ? "font-heading text-white" : "flex items-center justify-center gap-2 text-red-500"
                     }`}
                 >
-                    {isGlitch ? "⚠️ SYSTEM_BREACH ⚠️" : "Welcome Back."}
+                    {isGlitch ? (
+                        <>
+                            <AlertTriangle className="w-8 h-8" />
+                            SYSTEM_BREACH
+                            <AlertTriangle className="w-8 h-8" />
+                        </>
+                    ) : (
+                        "Welcome Back."
+                    )}
                 </h1>
                 <p className={`text-sm ${!isGlitch && "text-slate-400"}`}>
                     {isGlitch
