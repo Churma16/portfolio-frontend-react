@@ -1,2 +1,2 @@
 export const HERO_TAGLINE_LINE1 = "Backend-Focused.";
-export const HERO_TAGLINE_LINE2 = "Client-Proven.";
+export const HERO_TAGLINE_LINE2 = "Requirements to Deployment.";
