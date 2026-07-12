@@ -1,15 +1,16 @@
 import {motion} from "framer-motion";
 import {Profile} from "@/types";
+import {Gamepad2, Utensils, Code2} from "lucide-react";
 
 export default function CodeWindow({profile}: { profile?: Profile }) {
     // Data JSON sesuai ASCII Art kamu
     const codeString = [
         {line: 1, text: "{"},
-        {line: 2, text: `  "name": "${profile?.name}",`, indent: true},
-        {line: 3, text: `  "role": "${profile?.role}",`, indent: true},
+        {line: 2, text: `  "name": "${profile?.name || "Fathan"}",`, indent: true},
+        {line: 3, text: `  "role": "${profile?.role || "Backend-Focused Software Engineer"}",`, indent: true},
         {
             line: 4,
-            text: `  "location": "${profile?.location}",`,
+            text: `  "location": "${profile?.location || "Jakarta, Indonesia"}",`,
             indent: true,
         },
         {
@@ -18,18 +19,17 @@ export default function CodeWindow({profile}: { profile?: Profile }) {
             indent: true,
         },
         {line: 6, text: '  "hobbies": [', indent: true},
-        {line: 7, text: '    "Gaming 🎮",', indent: true, subIndent: true},
+        {line: 7, text: '    "Gaming [game]",', indent: true, subIndent: true},
         {
             line: 8,
-            text: '    "Cooking 👨‍🍳",',
+            text: '    "Cooking [cook]",',
             indent: true,
             subIndent: true,
         },
-        {line: 9, text: '    "Coding 💻"', indent: true, subIndent: true},
+        {line: 9, text: '    "Coding </>"', indent: true, subIndent: true},
         {line: 10, text: "  ],", indent: true},
-        {line: 11, text: '  "hard_worker": true,', indent: true},
-        {line: 12, text: '  "food_lover": true', indent: true},
-        {line: 13, text: "}"},
+        {line: 11, text: '  "currently_exploring": "Go, AWS"', indent: true},
+        {line: 12, text: "}"},
     ];
 
     return (
@@ -97,6 +97,30 @@ export default function CodeWindow({profile}: { profile?: Profile }) {
     );
 }
 
+// Helper function to render text containing specific emojis as Lucide icons
+const renderStringValue = (val: string) => {
+    const iconMap: { [key: string]: React.ReactNode } = {
+        "[game]": <Gamepad2 className="inline-block w-3.5 h-3.5 ml-1 align-text-top text-orange-400" />,
+        "[cook]": <Utensils className="inline-block w-3.5 h-3.5 ml-1 align-text-top text-emerald-400" />,
+        "[code]": <Code2 className="inline-block w-3.5 h-3.5 ml-1 align-text-top text-sky-400" />
+    };
+
+    let elements: React.ReactNode[] = [val];
+    Object.entries(iconMap).forEach(([emoji, icon]) => {
+        elements = elements.flatMap((node) => {
+            if (typeof node !== "string") return node;
+            if (!node.includes(emoji)) return node;
+
+            const parts = node.split(emoji);
+            return parts.reduce((acc, part, index) => {
+                if (index === 0) return [part];
+                return [...acc, <span key={index} className="inline-flex items-center">{icon}</span>, part];
+            }, [] as React.ReactNode[]);
+        });
+    });
+
+    return <>{elements}</>;
+};
 // Helper function untuk mewarnai teks JSON
 const formatJSON = (text: string) => {
     // Regex sederhana untuk memisahkan Key dan Value
@@ -115,7 +139,7 @@ const formatJSON = (text: string) => {
         if (part.match(/".+?"/)) {
             return (
                 <span key={index} className="text-[#ce9178]">
-                    {part}
+                    {renderStringValue(part)}
                 </span>
             );
         }
