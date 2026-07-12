@@ -11,6 +11,7 @@ import TechStackList from "./features/tech-stacks/admin/TechStackList.tsx";
 import TagList from "./features/tags/admin/TagList.tsx";
 import CategoryList from "./features/categories/admin/CategoryList.tsx";
 import SetTokenPage from "./pages/auth/SetTokenPage.tsx";
+import PrivacyPolicy from "./pages/public/PrivacyPolicy.tsx";
 import ProfileForm from "./features/profile/admin/ProfileForm.tsx";
 import WorkExperiencesList from "@/features/work-experiences/admin/WorkExperiencesList.tsx";
 import ChangePasswordForm from "@/features/auth/Public/ChangePasswordForm.tsx";
@@ -37,6 +38,7 @@ function App() {
                 <Route path="/" element={<Home/>}/>
                 <Route path="/login" element={<LoginPage/>}/>
                 <Route path="/set-token" element={<SetTokenPage/>}/>
+                <Route path="/privacy-policy" element={<PrivacyPolicy/>}/>
 
                 {/* ADMIN ROUTES (Diproteksi) */}
                 <Route element={<ProtectedRoute/>}>
