@@ -7,6 +7,8 @@ import {Toaster} from "sonner";
 // 1. Import dari React Query
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+
 // 2. Import ApiProvider
 import {ApiProvider} from "@/contexts/ApiContext";
 
@@ -21,6 +23,9 @@ createRoot(document.getElementById("root")!).render(
                 <App/>
                 <Toaster richColors position="top-right"/>
             </ApiProvider>
+            
+            {/* React Query Devtools */}
+            <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-right" />
         </QueryClientProvider>
     </StrictMode>
 );
