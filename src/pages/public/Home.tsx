@@ -8,6 +8,8 @@ import ProjectSection from "../../features/projects/public/ProjectSection.tsx";
 import TechSection from "@/features/tech-stacks/public/TechSection.tsx";
 import WorkExperienceLaracast from "@/features/work-experiences/public/WorkExperiencesLaracast.tsx";
 import {useEffect, useState} from "react";
+import { useLocation } from "react-router-dom";
+import { useScrollToHash } from "@/hooks/useScrollToHash";
 import {HiArrowUp} from "react-icons/hi2";
 import {motion} from "framer-motion";
 import {SiApacherocketmq} from "react-icons/si";
@@ -63,6 +65,8 @@ const ReturnToTopButton = () => {
 };
 
 function App() {
+    useScrollToHash();
+
     return (
         <ApiProvider>
             <PublicLayout>

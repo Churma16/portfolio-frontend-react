@@ -1,5 +1,6 @@
 // Ensure JSX.Element is recognized by importing React
 import React, {JSX, RefObject, useState} from "react";
+import { Link } from "react-router-dom";
 import {Sheet, SheetContent, SheetTrigger} from "@/components/ui/sheet";
 import {AtSign, Fingerprint, FolderGit2, Layers, Menu, Network, Terminal, TrendingUp} from "lucide-react";
 // 1. Import komponen BackendToggle
@@ -15,19 +16,19 @@ interface NavLink {
 interface NavLinksProps {
     links?: NavLink[];
     activeHash: string;
-    underlineStyle: { left: number; width: number };
+    underlineStyle: { left: number; width: number; opacity: number };
     navRef: RefObject<HTMLDivElement | null>;
     isActive: (href: string) => boolean;
 }
 
 const DEFAULT_LINKS: NavLink[] = [
-    {href: "#home", label: "Home", labelMobile: "Home", icon: <Terminal size={18}/>},
-    {href: "#tech-stacks", label: "Tech", labelMobile: "Tech Stacks", icon: <Layers size={18}/>},
-    {href: "#projects", label: "Projects", labelMobile: "Projects", icon: <FolderGit2 size={18}/>},
-    {href: "#experiences", label: "Exp", labelMobile: "Experiences", icon: <TrendingUp size={18}/>},
-    {href: "#about", label: "About", labelMobile: "About", icon: <Fingerprint size={18}/>},
-    {href: "#architecture", label: "Arch", labelMobile: "Architecture", icon: <Network size={18}/>},
-    {href: "#contact", label: "Contact", labelMobile: "Contact", icon: <AtSign size={18}/>},
+    {href: "/#home", label: "Home", labelMobile: "Home", icon: <Terminal size={18}/>},
+    {href: "/#tech-stacks", label: "Tech", labelMobile: "Tech Stacks", icon: <Layers size={18}/>},
+    {href: "/#projects", label: "Projects", labelMobile: "Projects", icon: <FolderGit2 size={18}/>},
+    {href: "/#experiences", label: "Exp", labelMobile: "Experiences", icon: <TrendingUp size={18}/>},
+    {href: "/#about", label: "About", labelMobile: "About", icon: <Fingerprint size={18}/>},
+    {href: "/#architecture", label: "Arch", labelMobile: "Architecture", icon: <Network size={18}/>},
+    {href: "/#contact", label: "Contact", labelMobile: "Contact", icon: <AtSign size={18}/>},
 ];
 
 export default function NavLinks({
@@ -54,19 +55,20 @@ export default function NavLinks({
                     style={{
                         left: `${underlineStyle.left}px`,
                         width: `${underlineStyle.width}px`,
+                        opacity: underlineStyle.opacity,
                     }}
                 />
 
                 {links.map((link) => (
-                    <a
+                    <Link
                         key={link.href}
-                        href={link.href}
+                        to={link.href}
                         className={`hover:text-white transition-colors py-6 ${
                             isActive(link.href) ? "active text-primary" : ""
                         }`}
                     >
                         {link.label}
-                    </a>
+                    </Link>
                 ))}
             </div>
 
@@ -89,9 +91,9 @@ export default function NavLinks({
                     {/* Container Links */}
                     <nav className="flex flex-col gap-2">
                         {links.map((link) => (
-                            <a
+                            <Link
                                 key={link.href}
-                                href={link.href}
+                                to={link.href}
                                 onClick={handleLinkClick}
                                 className={`px-4 py-3 text-base font-medium rounded-lg transition-all ${
                                     isActive(link.href)
@@ -103,7 +105,7 @@ export default function NavLinks({
                                     {link.icon}
                                     {link.labelMobile}
                                 </span>
-                            </a>
+                            </Link>
                         ))}
                     </nav>
 
