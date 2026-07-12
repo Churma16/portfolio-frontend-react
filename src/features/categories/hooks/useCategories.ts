@@ -2,14 +2,14 @@ import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import apiClient from "../../../api/axios.ts";
 import {ApiResponse, Category} from "@/types";
 
+// Fetch categories from the API
 const fetchCategories = async (): Promise<Category[]> => {
-    const response = await apiClient.get<ApiResponse<Category[]>>(
-        "/categories"
-    );
+    const response = await apiClient.get<ApiResponse<Category[]>>("/categories");
     console.log("Categories response:", response.data);
     return response.data.data;
 };
 
+//
 export const useCategories = () => {
     return useQuery({
         queryKey: ["categories"],

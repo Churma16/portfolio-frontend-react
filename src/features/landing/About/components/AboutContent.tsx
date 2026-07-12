@@ -5,9 +5,10 @@ import AboutSectionHeader from "./AboutSectionHeader.tsx";
 
 interface AboutContentProps {
     bioLong?: string;
+    cvFileUrl?: string;
 }
 
-export default function AboutContent({ bioLong }: AboutContentProps) {
+export default function AboutContent({ bioLong, cvFileUrl }: AboutContentProps) {
     return (
         <motion.div
             initial={{ opacity: 0, x: -50 }}
@@ -50,10 +51,16 @@ export default function AboutContent({ bioLong }: AboutContentProps) {
 
             {/* Tombol Download CV */}
             <div className="pt-4">
-                <PixelButton variant="primary" href="/my-cv.pdf">
-                    <PixelDownload className="w-5 h-5" />
-                    Download Resume
-                </PixelButton>
+                <a
+                    href={cvFileUrl || "#"}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <PixelButton variant="primary">
+                        <PixelDownload className="w-5 h-5" />
+                        Download Resume
+                    </PixelButton>
+                </a>
             </div>
         </motion.div>
     );

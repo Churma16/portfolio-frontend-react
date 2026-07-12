@@ -157,7 +157,7 @@ export const useProjectForm = ({
                 formDataPayload.append('_method', 'PUT');
             }
 
-            console.log("📝 Payload before mutation (UPDATE):", {
+            console.log("Payload before mutation (UPDATE):", {
                 hasThumbnailFile: !!thumbnailFile,
                 title: payload.title,
                 content: payload.content,
@@ -174,7 +174,7 @@ export const useProjectForm = ({
                 payload.thumbnail = thumbnailFile;
             }
 
-            console.log("📝 Payload before mutation (CREATE):", {
+            console.log("Payload before mutation (CREATE):", {
                 hasThumbnailFile: !!thumbnailFile,
                 title: payload.title,
                 content: payload.content,

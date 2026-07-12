@@ -3,10 +3,14 @@ import apiClient from "../../../api/axios.ts";
 import {ApiResponse, TechStackCategory} from "@/types";
 
 const fetchTechStackCategories = async (): Promise<TechStackCategory[]> => {
-    const response = await apiClient.get<ApiResponse<TechStackCategory[]>>(
+    const response = await apiClient.get<ApiResponse<any>>(
         "/tech-stack-categories"
     );
-    return response.data.data;
+    const data = response.data.data;
+    if (data && typeof data === "object" && !Array.isArray(data) && Array.isArray((data as any).data)) {
+        return (data as any).data;
+    }
+    return Array.isArray(data) ? data : [];
 };
 
 export const useTechStackCategories = () => {

@@ -16,7 +16,7 @@ export const SERVICES: Service[] = [
     },
     {
         title: "Frontend Engineering",
-        description: "Developing responsive Single Page Applications (SPA) using React and Tailwind CSS. Currently expanding my skills in creating seamless user interfaces with a focus on clean design and interactivity.",
+        description: "Developing responsive Single Page Applications (SPA) using React and Tailwind CSS, with a strong focus on clean design and interactive user experiences.",
         icon: HiOutlineComputerDesktop,
     },
     {

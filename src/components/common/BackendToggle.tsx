@@ -8,14 +8,28 @@ const backends = [
     { id: "express", icon: "SiExpress", color: "bg-[#68A063]", shadow: "shadow-[#68A063]/50" }
 ] as const;
 
+// Each button is w-9 (36px) + gap-0.5 (2px) = 38px step
+const BUTTON_WIDTH = 36;
+const GAP = 2;
+
 export const BackendToggle = () => {
     const {activeBackend, switchBackend} = useApi();
 
+    const activeIndex = backends.findIndex(b => b.id === activeBackend);
+    const activeBackendDef = backends[activeIndex];
+
     return (
         <div className="flex items-center p-1 rounded-full bg-background/60 backdrop-blur-xl border border-border/50 shadow-inner relative gap-0.5">
+            {/* Single sliding indicator — animates x only, no DOM position tracking */}
+            <motion.div
+                className={`absolute top-1 left-1 w-9 h-8 rounded-full ${activeBackendDef.color} ${activeBackendDef.shadow} shadow-[0_0_12px_var(--tw-shadow-color)]`}
+                animate={{ x: activeIndex * (BUTTON_WIDTH + GAP) }}
+                transition={{ type: "spring", stiffness: 500, damping: 35 }}
+            />
+
             {backends.map((backend) => {
                 const isActive = activeBackend === backend.id;
-                
+
                 return (
                     <button
                         key={backend.id}
@@ -25,22 +39,12 @@ export const BackendToggle = () => {
                         }`}
                         aria-label={`Switch to ${backend.id}`}
                     >
-                        {isActive && (
-                            <motion.div
-                                layoutId="activeBackendIndicator"
-                                className={`absolute inset-0 rounded-full shadow-[0_0_12px_var(--tw-shadow-color)] ${backend.shadow} -z-10 ${backend.color}`}
-                                transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                            >
-                                {/* Inner glow effect for premium feel */}
-                                <div className="absolute inset-0 rounded-full bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                            </motion.div>
-                        )}
                         <TechIcon
                             name={backend.id}
                             icon={backend.icon}
                             className={`w-4 h-4 transition-all duration-300 relative z-10 ${
-                                isActive 
-                                    ? "text-white grayscale-0 opacity-100 drop-shadow-md" 
+                                isActive
+                                    ? "text-white grayscale-0 opacity-100 drop-shadow-md"
                                     : "grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-110"
                             }`}
                         />

@@ -6,6 +6,8 @@ import HeroCodeCard from "./components/HeroCodeCard.tsx";
 import SaveButton from "./components/SaveButton.tsx";
 import AdminHeader from "@/components/common/AdminHeader.tsx";
 
+import ProfileSkeleton from "./components/ProfileSkeleton.tsx";
+
 export default function ProfileForm() {
     const {
         isLoading,
@@ -31,7 +33,7 @@ export default function ProfileForm() {
         },
     });
 
-    if (isLoading) return <div className="p-8 text-foreground">Loading...</div>;
+    if (isLoading) return <ProfileSkeleton />;
 
     const handleCVChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];

@@ -1,6 +1,7 @@
 import {Link} from "react-router-dom";
 import {useEffect, useRef, useState} from "react";
 import Matter from "matter-js";
+import {Sparkles} from "lucide-react";
 
 interface Particle {
     x: number;
@@ -402,8 +403,8 @@ export default function NotFoundPage() {
             {/* Floating instruction - Responsive text size */}
             <div
                 className="absolute top-6 md:top-12 left-1/2 transform -translate-x-1/2 text-center z-20 pointer-events-none px-4">
-                <p className="text-gray-300 text-xs md:text-sm font-medium tracking-wide">
-                    ✨ Click anywhere to create chaos ✨
+                <p className="text-gray-300 text-xs md:text-sm font-medium tracking-wide flex items-center gap-1 justify-center">
+                    <Sparkles className="w-4 h-4 text-yellow-400" /> Click anywhere to create chaos <Sparkles className="w-4 h-4 text-yellow-400" />
                 </p>
             </div>
 

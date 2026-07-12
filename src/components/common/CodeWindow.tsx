@@ -1,5 +1,6 @@
 import {motion} from "framer-motion";
 import {Profile} from "@/types";
+import {Gamepad2, Utensils, Code2} from "lucide-react";
 
 export default function CodeWindow({profile}: { profile?: Profile }) {
     // Data JSON sesuai ASCII Art kamu
@@ -96,6 +97,32 @@ export default function CodeWindow({profile}: { profile?: Profile }) {
     );
 }
 
+// Helper function to render text containing specific emojis as Lucide icons
+const renderStringValue = (val: string) => {
+    const iconMap: { [key: string]: React.ReactNode } = {
+        "🎮": <Gamepad2 className="inline-block w-3.5 h-3.5 ml-1 align-text-top text-orange-400" />,
+        "👨‍🍳": <Utensils className="inline-block w-3.5 h-3.5 ml-1 align-text-top text-emerald-400" />,
+        "👨🍳": <Utensils className="inline-block w-3.5 h-3.5 ml-1 align-text-top text-emerald-400" />,
+        "💻": <Code2 className="inline-block w-3.5 h-3.5 ml-1 align-text-top text-sky-400" />
+    };
+
+    let elements: React.ReactNode[] = [val];
+    Object.entries(iconMap).forEach(([emoji, icon]) => {
+        elements = elements.flatMap((node) => {
+            if (typeof node !== "string") return node;
+            if (!node.includes(emoji)) return node;
+
+            const parts = node.split(emoji);
+            return parts.reduce((acc, part, index) => {
+                if (index === 0) return [part];
+                return [...acc, <span key={index} className="inline-flex items-center">{icon}</span>, part];
+            }, [] as React.ReactNode[]);
+        });
+    });
+
+    return <>{elements}</>;
+};
+
 // Helper function untuk mewarnai teks JSON
 const formatJSON = (text: string) => {
     // Regex sederhana untuk memisahkan Key dan Value
@@ -114,7 +141,7 @@ const formatJSON = (text: string) => {
         if (part.match(/".+?"/)) {
             return (
                 <span key={index} className="text-[#ce9178]">
-                    {part}
+                    {renderStringValue(part)}
                 </span>
             );
         }

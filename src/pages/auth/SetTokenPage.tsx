@@ -3,6 +3,7 @@ import {useNavigate} from "react-router-dom";
 import {HiArrowLeft, HiCheck, HiOutlineKey, HiOutlineTrash,} from "react-icons/hi2";
 import PublicLayout from "../../components/layout/public/PublicLayout.tsx";
 import {setToken as saveToken} from "@/lib/auth.ts";
+import {Check, AlertTriangle, Lightbulb} from "lucide-react";
 
 export default function SetTokenPage() {
     const navigate = useNavigate();
@@ -143,8 +144,8 @@ export default function SetTokenPage() {
                                             }`}
                                         >
                                             {isValidToken
-                                                ? "✓ Valid token - can access admin panel"
-                                                : "⚠ Please enter a token"}
+                                                ? <span className="flex items-center gap-1"><Check className="w-4 h-4"/> Valid token - can access admin panel</span>
+                                                : <span className="flex items-center gap-1"><AlertTriangle className="w-4 h-4"/> Please enter a token</span>}
                                         </p>
                                     </div>
                                 )}
@@ -189,8 +190,8 @@ export default function SetTokenPage() {
                             <div className="mt-8 space-y-4">
                                 <div className="p-4 rounded-xl bg-primary/5 border border-primary/20">
                                     <p className="text-xs text-accent/60 leading-relaxed">
-                                        <span className="text-primary font-semibold">
-                                            💡 Bearer Token:
+                                        <span className="text-primary font-semibold flex items-center gap-1">
+                                            <Lightbulb className="w-4 h-4"/> Bearer Token:
                                         </span>{" "}
                                         Once you set a token, it will be stored
                                         in browser's local storage and used for

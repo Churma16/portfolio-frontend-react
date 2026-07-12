@@ -249,7 +249,7 @@ export const useProfileForm = ({
             formDataPayload.append('_method', 'PUT');
         }
 
-        console.log("📝 Profile Payload:", {
+        console.log("Profile Payload:", {
             hasAvatarFile: !!avatarFile,
             hasCvFile: !!cvFile,
             activeBackend,
