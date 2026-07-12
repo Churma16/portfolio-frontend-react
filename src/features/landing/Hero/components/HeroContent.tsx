@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import HeroBadge from "./HeroBadge.tsx";
 import HeroButtons from "./HeroButtons.tsx";
+import { HERO_TAGLINE_LINE1, HERO_TAGLINE_LINE2 } from "../constants/hero.constants.ts";
 
 interface HeroContentProps {
     name?: string;
@@ -25,9 +26,9 @@ export default function HeroContent({
                 transition={{ duration: 0.5, delay: 0.1 }}
                 className="text-4xl sm:text-5xl lg:text-7xl font-heading font-extrabold text-white leading-tight"
             >
-                Ready to Build <br className="hidden lg:block" />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-hero-start to-hero-end">
-                    Scalable Apps.
+                <span className="whitespace-nowrap">{HERO_TAGLINE_LINE1}</span> <br className="hidden lg:block" />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-hero-start to-hero-end whitespace-nowrap">
+                    {HERO_TAGLINE_LINE2}
                 </span>
             </motion.h1>
 
