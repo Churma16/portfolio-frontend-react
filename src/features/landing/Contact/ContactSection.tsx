@@ -201,7 +201,7 @@ export default function ContactSection() {
                                 rows={5}
                                 value={formData.content}
                                 onChange={handleChange}
-                                placeholder="Hi Fathan! I have an idea for a web app and I'd love to discuss how your Laravel and React skills can help. Let's talk!"
+                                placeholder="Hi Fathan! I have an idea for a backend system and I'd love to discuss how your Go, Laravel, and Express experience can help. Let's talk!"
                                 className={`w-full bg-background/50 border ${
                                     errors.content
                                         ? "border-destructive/50 focus:border-destructive"
