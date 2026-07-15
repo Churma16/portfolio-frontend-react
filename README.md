@@ -1,73 +1,83 @@
-# React + TypeScript + Vite
+# Polyglot Portfolio - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+[![React Version](https://img.shields.io/badge/React-v19.x-61DAFB?logo=react&logoColor=white)](https://react.dev) [![Build Tool](https://img.shields.io/badge/Vite-v7.x-646CFF?logo=vite&logoColor=white)](https://vitejs.dev) [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-Currently, two official plugins are available:
+A modern, multi-theme personal portfolio web application built with React and Vite. It serves as an interactive resume, showcasing projects, work experiences, and tech stacks, and is designed to seamlessly integrate with three different backend implementations (Laravel, Go, Express).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## Key Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Public Visitor Pages
+*   **Hero Section**: Dynamic introduction with aesthetic styling.
+*   **Projects & Work Experiences**: Detailed showcase of professional background and past work.
+*   **Tech Stack**: Visual representation of skills and technologies.
+*   **Backend Toggle**: Dynamic switching between Laravel, Go, and Express backend APIs to demonstrate API integrations.
 
-## Expanding the ESLint configuration
+### Admin Dashboard
+*   **Content Management**: Full CRUD operations for projects, experiences, categories, and tags.
+*   **Protected Routes**: Secure access for authorized administrator only.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Tech Stack & Libraries
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+*   **Framework/Core**: React (v19) / Vite (v7) / TypeScript
+*   **Styling**: Tailwind CSS / Framer Motion
+*   **Data Fetching**: TanStack Query (v5) / Axios
+*   **Interactive / Graphics**: Three.js (@react-three/fiber & @react-three/drei), Matter.js (2D physics), tsParticles
+*   **UI Components**: Shadcn UI (Radix primitives), Tiptap Editor, Sonner (Toasts)
+*   **Form Management**: React Hook Form / Zod
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+---
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Installation & Setup
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Method 1: Local Development Setup
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+#### Prerequisites
+*   Node.js >= 18.x
+*   npm
+
+#### Steps
+1.  **Clone and Navigate**:
+    ```bash
+    git clone <repository-url>
+    cd my-portfolio
+    ```
+2.  **Install Dependencies**:
+    ```bash
+    npm install
+    ```
+3.  **Environment Configuration**:
+    Create `.env` based on `.env.example` (or configure your backend URLs):
+    ```bash
+    cp .env.example .env
+    ```
+4.  **Run Development Server**:
+    ```bash
+    npm run dev
+    ```
+5.  **Build for Production**:
+    ```bash
+    npm run build
+    ```
+
+---
+
+## Acknowledgements
+
+Special thanks and appreciation to:
+*   **Open Source Community**: For the amazing libraries and tools that made this project possible.
+
+---
+
+## Author
+
+**Churma16**
+
+---
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
