@@ -29,8 +29,20 @@ export default function Hero() {
 
     return (
         <section className="relative overflow-hidden pt-10 pb-20 lg:pt-8 lg:pb-32 flex flex-col">
-            <div
-                className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[120px] -z-10 opacity-50"/>
+            {/* Dot Pattern Background (Commented out for now)
+            <div 
+                className="absolute inset-0 z-0 pointer-events-none"
+                style={{
+                    backgroundImage: 'radial-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px)',
+                    backgroundSize: '24px 24px',
+                    maskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)',
+                    WebkitMaskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)'
+                }}
+            />
+            */}
+            
+            {/* Glow Background */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[120px] -z-10 opacity-50"/>
 
             <div className="flex flex-col-reverse lg:flex-row items-center justify-between gap-12 z-10">
                 <HeroContent
