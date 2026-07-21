@@ -1,25 +1,22 @@
+import { useFormContext, Controller } from "react-hook-form";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle,} from "@/components/ui/card.tsx";
 import {Textarea} from "@/components/ui/textarea.tsx";
 import {Label} from "@/components/ui/label.tsx";
 import {Switch} from "@/components/ui/switch.tsx";
 
 interface BioCardProps {
-    formData: {
-        bio_short: string;
-        bio_long: string;
-        is_hireable: boolean;
-    };
-    handleInputChange: (field: string, value: any) => void;
     cvFile: File | null;
     handleCVChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export default function BioCard({
-                                    formData,
-                                    handleInputChange,
                                     cvFile,
                                     handleCVChange,
                                 }: BioCardProps) {
+    const { register, watch, control } = useFormContext();
+    const bioShort = watch("bio_short");
+    const bioLong = watch("bio_long");
+
     return (
         <Card className="bg-admin-card/50 border-admin-border/50 text-foreground shadow-lg">
             <CardHeader>
@@ -34,8 +31,7 @@ export default function BioCard({
                     <div className="space-y-2">
                         <Label>Short Bio</Label>
                         <Textarea
-                            value={formData.bio_short}
-                            onChange={(e) => handleInputChange("bio_short", e.target.value)}
+                            {...register("bio_short")}
                             className="min-h-[100px] resize-none"
                             placeholder="Enter your short bio with HTML tags..."
                         />
@@ -43,8 +39,7 @@ export default function BioCard({
                     <div className="space-y-2">
                         <Label>Full Biography</Label>
                         <Textarea
-                            value={formData.bio_long}
-                            onChange={(e) => handleInputChange("bio_long", e.target.value)}
+                            {...register("bio_long")}
                             className="min-h-[250px] font-mono text-sm resize-none"
                             placeholder="Enter your full biography with HTML tags..."
                         />
@@ -60,9 +55,9 @@ export default function BioCard({
                             <Label className="text-primary text-sm">Short Bio Preview</Label>
                             <div
                                 className="bg-admin-field/50 p-4 rounded-lg min-h-[120px] border border-admin-border text-sm leading-relaxed prose prose-invert max-w-none">
-                                {formData.bio_short ? (
+                                {bioShort ? (
                                     <div
-                                        dangerouslySetInnerHTML={{__html: formData.bio_short}}
+                                        dangerouslySetInnerHTML={{__html: bioShort}}
                                         className="text-foreground"
                                     />
                                 ) : (
@@ -76,9 +71,9 @@ export default function BioCard({
                             <Label className="text-primary text-sm">Full Biography Preview</Label>
                             <div
                                 className="bg-admin-field/50 p-4 rounded-lg min-h-[120px] max-h-[300px] border border-admin-border text-sm leading-relaxed overflow-y-auto prose prose-invert max-w-none">
-                                {formData.bio_long ? (
+                                {bioLong ? (
                                     <div
-                                        dangerouslySetInnerHTML={{__html: formData.bio_long}}
+                                        dangerouslySetInnerHTML={{__html: bioLong}}
                                         className="text-foreground"
                                     />
                                 ) : (
@@ -99,10 +94,16 @@ export default function BioCard({
                                 Shows a "Hire Me" badge on your profile.
                             </p>
                         </div>
-                        <Switch
-                            checked={formData.is_hireable}
-                            onCheckedChange={(value) => handleInputChange("is_hireable", value)}
-                            className="data-[state=checked]:bg-green-500"
+                        <Controller
+                            control={control}
+                            name="is_hireable"
+                            render={({ field }) => (
+                                <Switch
+                                    checked={field.value}
+                                    onCheckedChange={field.onChange}
+                                    className="data-[state=checked]:bg-green-500"
+                                />
+                            )}
                         />
                     </div>
 

@@ -1,3 +1,4 @@
+import { useFormContext } from "react-hook-form";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle,} from "@/components/ui/card.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {Label} from "@/components/ui/label.tsx";
@@ -5,23 +6,15 @@ import {HiPencil} from "react-icons/hi2";
 import {useStoragePath} from "@/hooks/useStoragePath.ts";
 
 interface IdentityCardProps {
-    formData: {
-        name: string;
-        headline: string;
-        role: string;
-        location: string;
-    };
-    handleInputChange: (field: string, value: any) => void;
     avatarPreview: string;
     handleAvatarChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export default function IdentityCard({
-                                         formData,
-                                         handleInputChange,
                                          avatarPreview,
                                          handleAvatarChange,
                                      }: IdentityCardProps) {
+    const { register } = useFormContext();
     const storagePath = useStoragePath();
 
     return (
@@ -69,29 +62,25 @@ export default function IdentityCard({
                         <div className="space-y-2">
                             <Label>Full Name</Label>
                             <Input
-                                value={formData.name}
-                                onChange={(e) => handleInputChange("name", e.target.value)}
+                                {...register("name", { required: "Name is required" })}
                             />
                         </div>
                         <div className="space-y-2">
                             <Label>Headline</Label>
                             <Input
-                                value={formData.headline}
-                                onChange={(e) => handleInputChange("headline", e.target.value)}
+                                {...register("headline")}
                             />
                         </div>
                         <div className="space-y-2">
                             <Label>Current Role</Label>
                             <Input
-                                value={formData.role}
-                                onChange={(e) => handleInputChange("role", e.target.value)}
+                                {...register("role")}
                             />
                         </div>
                         <div className="space-y-2">
                             <Label>Location</Label>
                             <Input
-                                value={formData.location}
-                                onChange={(e) => handleInputChange("location", e.target.value)}
+                                {...register("location")}
                             />
                         </div>
                     </div>
