@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.0.7](https://github.com/Churma16/portfolio-frontend-react/compare/v0.0.6...v0.0.7) (2026-07-21)
+
+
+### Features
+
+* **auth:** redirect authenticated users from login ([5974935](https://github.com/Churma16/portfolio-frontend-react/commit/5974935a7a968aeff8df51c21c93355d384a5798))
+
 ## [0.0.6](https://github.com/Churma16/portfolio-frontend-react/compare/v0.0.5...v0.0.6) (2026-07-21)
 
 
