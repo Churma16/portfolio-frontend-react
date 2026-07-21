@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.0.5](https://github.com/Churma16/portfolio-frontend-react/compare/v0.0.4...v0.0.5) (2026-07-21)
+
+
+### Bug Fixes
+
+* **ci:** use npx -y for commit-and-tag-version ([a970518](https://github.com/Churma16/portfolio-frontend-react/commit/a970518f7bce4ba94c9cfa393fcd6bf99f1707cf))
+
 ## [0.0.4](https://github.com/Churma16/portfolio-frontend-react/compare/v0.0.3...v0.0.4) (2026-07-21)
 
 
