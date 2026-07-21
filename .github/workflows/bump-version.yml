@@ -32,7 +32,7 @@ jobs:
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - name: Bump Version and Generate Changelog
-        run: npx commit-and-tag-version
+        run: npx -y commit-and-tag-version
 
       - name: Push Changes
         run: |
