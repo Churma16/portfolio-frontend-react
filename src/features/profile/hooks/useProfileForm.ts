@@ -4,99 +4,15 @@ import { useProfile, useUpdateProfile } from "@/features/profile/hooks/useProfil
 import { useApi } from "@/contexts/useApi.ts";
 import { useStoragePath } from "@/hooks/useStoragePath.ts";
 import { useThumbnailUpload } from "@/hooks/useThumbnailUpload.ts";
-
-// ============================================================================
-// Types
-// ============================================================================
-
-interface UseProfileFormProps {
-    open: boolean;
-    onSuccess: () => void;
-    onClose: () => void;
-}
-
-export interface ProfileFormData {
-    name: string;
-    headline: string;
-    role: string;
-    location: string;
-    bio_short: string;
-    bio_long: string;
-    is_hireable: boolean;
-    socials: Array<{ platform: string; url: string }>;
-    hero_image_codes: Array<{ value: string }>;
-}
-
-// ============================================================================
-// Helper Functions
-// ============================================================================
-
-/**
- * Clean text: trim & remove extra whitespace
- */
-const cleanText = (text: string): string =>
-    text ? text.trim().replace(/\s+/g, " ") : "";
-
-/**
- * Transform form socials array → DB object format
- * Form: [{ platform: 'twitter', url: 'url1' }]
- * DB: { twitter: 'url1' }
- */
-const transformSocialsToDb = (socialsArray: Array<{ platform: string; url: string }>): string => {
-    const socialsObj = (socialsArray || []).reduce((acc, curr) => {
-        if (curr.platform && curr.url) {
-            acc[curr.platform.trim()] = curr.url.trim();
-        }
-        return acc;
-    }, {} as Record<string, string>);
-    return JSON.stringify(socialsObj);
-};
-
-/**
- * Transform form hero codes → DB array format
- * Form: [{ value: 'code1' }, { value: 'code2' }]
- * DB: ["code1", "code2"]
- */
-const transformHeroCodesToDb = (heroCodes: Array<{ value: string }>): string => {
-    const codesArray = (heroCodes || [])
-        .map((c) => c.value.trim())
-        .filter((val) => val !== "");
-    return JSON.stringify(codesArray);
-};
-
-/**
- * Transform DB socials object → form array format
- * DB: { twitter: 'url1' }
- * Form: [{ platform: 'twitter', url: 'url1' }]
- */
-const transformSocialsFromDb = (socials: any): Array<{ platform: string; url: string }> => {
-    if (!socials || typeof socials !== "object") return [];
-    return Object.entries(socials).map(([platform, url]) => ({
-        platform,
-        url: url as string,
-    }));
-};
-
-/**
- * Transform DB hero codes string → form array format
- * DB: "[\"code1\", \"code2\"]" or ["code1", "code2"]
- * Form: [{ value: 'code1' }, { value: 'code2' }]
- */
-const transformHeroCodesFromDb = (heroCodes: any): Array<{ value: string }> => {
-    let parsedCodes: string[] = [];
-
-    if (typeof heroCodes === "string") {
-        try {
-            parsedCodes = JSON.parse(heroCodes);
-        } catch {
-            parsedCodes = [];
-        }
-    } else if (Array.isArray(heroCodes)) {
-        parsedCodes = heroCodes;
-    }
-
-    return parsedCodes.map((code: string) => ({ value: code }));
-};
+import {
+    ProfileFormData,
+    UseProfileFormProps,
+    normalizeWhitespace,
+    deserializeHeroCodesFromDatabase,
+    serializeHeroCodesForDatabase,
+    deserializeSocialsFromDatabase,
+    serializeSocialsForDatabase,
+} from "../utils/profileForm.helpers.ts";
 
 // ============================================================================
 // Hook
@@ -165,8 +81,8 @@ export const useProfileForm = ({
 
         setTimeout(() => {
             if (profileData) {
-                const socialsFromDb = transformSocialsFromDb(profileData.socials);
-                const heroCodesFromDb = transformHeroCodesFromDb(profileData.hero_image_codes);
+                const socialsFromDb = deserializeSocialsFromDatabase(profileData.socials);
+                const heroCodesFromDb = deserializeHeroCodesFromDatabase(profileData.hero_image_codes);
 
                 reset({
                     name: profileData.name || "",
@@ -198,14 +114,14 @@ export const useProfileForm = ({
 
         const basePayload: any = {
             name: data.name.trim(),
-            headline: cleanText(data.headline) || "",
+            headline: normalizeWhitespace(data.headline) || "",
             role: data.role.trim() || "",
             location: data.location.trim() || "",
-            bio_short: cleanText(data.bio_short) || "",
-            bio_long: cleanText(data.bio_long) || "",
+            bio_short: normalizeWhitespace(data.bio_short) || "",
+            bio_long: normalizeWhitespace(data.bio_long) || "",
             is_hireable: data.is_hireable ? "1" : "0",
-            socials: transformSocialsToDb(data.socials),
-            hero_image_codes: transformHeroCodesToDb(data.hero_image_codes),
+            socials: serializeSocialsForDatabase(data.socials),
+            hero_image_codes: serializeHeroCodesForDatabase(data.hero_image_codes),
         };
 
         // Always use FormData for updates to ensure multipart/form-data content-type
