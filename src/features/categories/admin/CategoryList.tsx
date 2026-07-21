@@ -56,6 +56,7 @@ export default function CategoryList() {
             cellClassName: "text-right space-x-2",
             cell: (category) => (
                 <>
+                    
                     <Button
                         variant="ghost"
                         size="sm"
