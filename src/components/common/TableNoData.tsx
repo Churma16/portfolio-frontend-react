@@ -1,11 +1,11 @@
 import {TableCell, TableRow} from "@/components/ui/table.tsx";
 import {HiOutlineCube} from "react-icons/hi2";
 
-export default function TableNoData({data}: { data: string }) {
+export default function TableNoData({data, colspan = 7}: { data: string; colspan?: number }) {
     return (
         <TableRow>
             <TableCell
-                colSpan={7}
+                colSpan={colspan}
                 className="h-32 text-center text-slate-500"
             >
                 <div className="flex flex-col items-center justify-center gap-2">
