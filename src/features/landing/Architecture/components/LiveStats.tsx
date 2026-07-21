@@ -43,16 +43,16 @@ export default function LiveStats() {
                 </div>
             </div>
 
+            {isLoading && (
+                <p className="flex justify-center items-center gap-2 text-[10px] text-lara-text-muted-dark font-mono mt-12 uppercase tracking-widest opacity-50">
+                    System Status: <Circle className="w-2.5 h-2.5 fill-yellow-500 text-yellow-500 animate-pulse" /> Checking...
+                </p>)
+            }
+
             {isError && !isLoading && (
                 <p className="flex justify-center items-center gap-2 text-[10px] text-lara-text-muted-dark font-mono mt-12 uppercase tracking-widest opacity-50">
                     System Status: <Circle className="w-2.5 h-2.5 fill-red-500 text-red-500" /> Systems Offline
                 </p>)
-            }
-
-            {isLoading &&
-                <p className="text-center text-sm text-lara-text-muted-dark mt-4 animate-pulse">
-                    Fetching live stats...
-                </p>
             }
 
             {!isLoading && !isError &&
