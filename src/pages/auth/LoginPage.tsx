@@ -5,6 +5,11 @@ import GlitchBackground from "@/features/auth/Admin/components/GlitchBackground.
 import GlitchGhostElements from "@/features/auth/Admin/components/GlitchGhostElements.tsx";
 import {useLoginForm} from "@/features/auth/hooks/useLoginForm.ts";
 import {useGlitchEffect} from "@/features/auth/hooks/useGlitchEffect.ts";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { hasToken } from "@/lib/auth.ts";
+import { useApi } from "@/contexts/useApi.ts";
+
 
 const GLITCH_STYLES = `
     @keyframes glitch-anim-1 {
@@ -42,11 +47,19 @@ const GLITCH_STYLES = `
 export default function LoginPage() {
     const { email, setEmail, password, setPassword, status, errorMessage, handleSubmit } = useLoginForm();
     const isGlitch = useGlitchEffect();
+    const navigate = useNavigate();
+    const { activeBackend } = useApi();
+
+    useEffect(() => {
+        if (hasToken(activeBackend)) {
+            navigate("/admin", { replace: true });
+        }
+    }, [activeBackend, navigate]);
 
     return (
         <PublicLayout>
             <style>{GLITCH_STYLES}</style>
-            <div className="min-h-screen flex items-center justify-center relative overflow-hidden py-20">
+            <div className="h-[70vh] flex items-center justify-center relative overflow-hidden">
                 <GlitchBackground isGlitch={isGlitch} />
 
                 <div className="relative mx-4">
