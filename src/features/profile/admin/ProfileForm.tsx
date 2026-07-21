@@ -1,27 +1,22 @@
-import {useProfileForm} from "@/features/profile/hooks/useProfileForm.ts";
+import { FormProvider } from "react-hook-form";
+import { useProfileForm } from "@/features/profile/hooks/useProfileForm.ts";
 import IdentityCard from "./components/IdentityCard.tsx";
 import BioCard from "./components/BioCard.tsx";
 import SocialCard from "./components/SocialCard.tsx";
 import HeroCodeCard from "./components/HeroCodeCard.tsx";
 import SaveButton from "./components/SaveButton.tsx";
 import AdminHeader from "@/components/common/AdminHeader.tsx";
-
 import ProfileSkeleton from "./components/ProfileSkeleton.tsx";
 
 export default function ProfileForm() {
     const {
         isLoading,
         isSubmitting,
-        formData,
-        handleInputChange,
         avatarPreview,
         handleAvatarChange,
         cvFile,
         setCvFile,
-        socialsArray,
-        setSocialsArray,
-        heroCodesArray,
-        setHeroCodesArray,
+        methods,
         handleSubmit,
     } = useProfileForm({
         open: true,
@@ -43,35 +38,27 @@ export default function ProfileForm() {
     };
 
     return (
-        <div className="min-h-screen pb-32">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                <AdminHeader title={"Edit Profile"} subtitle={"Manage your public presence and bio."}/>
+        <FormProvider {...methods}>
+            <div className="min-h-screen pb-32">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <AdminHeader title={"Edit Profile"} subtitle={"Manage your public presence and bio."}/>
+                </div>
+                <div className="max-w-5xl mx-auto px-4 pt-8">
+                    <form onSubmit={handleSubmit} className="space-y-8">
+                        <IdentityCard
+                            avatarPreview={avatarPreview}
+                            handleAvatarChange={handleAvatarChange}
+                        />
+                        <BioCard
+                            cvFile={cvFile}
+                            handleCVChange={handleCVChange}
+                        />
+                        <SocialCard />
+                        <HeroCodeCard />
+                        <SaveButton isSubmitting={isSubmitting}/>
+                    </form>
+                </div>
             </div>
-            <div className="max-w-5xl mx-auto px-4 pt-8">
-                <form onSubmit={handleSubmit} className="space-y-8">
-                    <IdentityCard
-                        formData={formData}
-                        handleInputChange={handleInputChange}
-                        avatarPreview={avatarPreview}
-                        handleAvatarChange={handleAvatarChange}
-                    />
-                    <BioCard
-                        formData={formData}
-                        handleInputChange={handleInputChange}
-                        cvFile={cvFile}
-                        handleCVChange={handleCVChange}
-                    />
-                    <SocialCard
-                        socialsArray={socialsArray}
-                        setSocialsArray={setSocialsArray}
-                    />
-                    <HeroCodeCard
-                        heroCodesArray={heroCodesArray}
-                        setHeroCodesArray={setHeroCodesArray}
-                    />
-                    <SaveButton isSubmitting={isSubmitting}/>
-                </form>
-            </div>
-        </div>
+        </FormProvider>
     );
 }
