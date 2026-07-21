@@ -1,8 +1,9 @@
-import {FormEvent, useEffect, useState} from "react";
-import {useProfile, useUpdateProfile} from "@/features/profile/hooks/useProfile.ts";
-import {useApi} from "@/contexts/useApi.ts";
-import {useStoragePath} from "@/hooks/useStoragePath.ts";
-import {useThumbnailUpload} from "@/hooks/useThumbnailUpload.ts";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useProfile, useUpdateProfile } from "@/features/profile/hooks/useProfile.ts";
+import { useApi } from "@/contexts/useApi.ts";
+import { useStoragePath } from "@/hooks/useStoragePath.ts";
+import { useThumbnailUpload } from "@/hooks/useThumbnailUpload.ts";
 
 // ============================================================================
 // Types
@@ -14,7 +15,7 @@ interface UseProfileFormProps {
     onClose: () => void;
 }
 
-interface ProfileFormData {
+export interface ProfileFormData {
     name: string;
     headline: string;
     role: string;
@@ -22,8 +23,8 @@ interface ProfileFormData {
     bio_short: string;
     bio_long: string;
     is_hireable: boolean;
-    socials: string; // JSON string
-    hero_image_codes: string; // JSON string
+    socials: Array<{ platform: string; url: string }>;
+    hero_image_codes: Array<{ value: string }>;
 }
 
 // ============================================================================
@@ -34,7 +35,7 @@ interface ProfileFormData {
  * Clean text: trim & remove extra whitespace
  */
 const cleanText = (text: string): string =>
-    text.trim().replace(/\s+/g, " ");
+    text ? text.trim().replace(/\s+/g, " ") : "";
 
 /**
  * Transform form socials array → DB object format
@@ -42,9 +43,9 @@ const cleanText = (text: string): string =>
  * DB: { twitter: 'url1' }
  */
 const transformSocialsToDb = (socialsArray: Array<{ platform: string; url: string }>): string => {
-    const socialsObj = socialsArray.reduce((acc, curr) => {
+    const socialsObj = (socialsArray || []).reduce((acc, curr) => {
         if (curr.platform && curr.url) {
-            acc[curr.platform] = curr.url;
+            acc[curr.platform.trim()] = curr.url.trim();
         }
         return acc;
     }, {} as Record<string, string>);
@@ -57,7 +58,9 @@ const transformSocialsToDb = (socialsArray: Array<{ platform: string; url: strin
  * DB: ["code1", "code2"]
  */
 const transformHeroCodesToDb = (heroCodes: Array<{ value: string }>): string => {
-    const codesArray = heroCodes.map((c) => c.value.trim()).filter((val) => val !== "");
+    const codesArray = (heroCodes || [])
+        .map((c) => c.value.trim())
+        .filter((val) => val !== "");
     return JSON.stringify(codesArray);
 };
 
@@ -92,7 +95,7 @@ const transformHeroCodesFromDb = (heroCodes: any): Array<{ value: string }> => {
         parsedCodes = heroCodes;
     }
 
-    return parsedCodes.map((code: string) => ({value: code}));
+    return parsedCodes.map((code: string) => ({ value: code }));
 };
 
 // ============================================================================
@@ -104,9 +107,9 @@ export const useProfileForm = ({
                                    onSuccess,
                                    onClose,
                                }: UseProfileFormProps) => {
-    const {activeBackend} = useApi();
+    const { activeBackend } = useApi();
     const StoragePath = useStoragePath();
-    const {data: profileData, isLoading} = useProfile();
+    const { data: profileData, isLoading } = useProfile();
     const updateMutation = useUpdateProfile();
 
     // --- Avatar Upload Hook ---
@@ -122,31 +125,9 @@ export const useProfileForm = ({
     // --- CV Upload State ---
     const [cvFile, setCvFile] = useState<File | null>(null);
 
-    // --- Form Data State ---
-    const [formData, setFormData] = useState<ProfileFormData>({
-        name: "",
-        headline: "",
-        role: "",
-        location: "",
-        bio_short: "",
-        bio_long: "",
-        is_hireable: false,
-        socials: "{}",
-        hero_image_codes: "[]",
-    });
-
-    const [socialsArray, setSocialsArray] = useState<Array<{ platform: string; url: string }>>([]);
-    const [heroCodesArray, setHeroCodesArray] = useState<Array<{ value: string }>>([]);
-
-    const isSubmitting = updateMutation.isPending;
-
-    // --- Helper Functions ---
-    const handleInputChange = (field: string, value: any) => {
-        setFormData((prev) => ({...prev, [field]: value}));
-    };
-
-    const resetForm = () => {
-        setFormData({
+    // --- React Hook Form ---
+    const methods = useForm<ProfileFormData>({
+        defaultValues: {
             name: "",
             headline: "",
             role: "",
@@ -154,13 +135,28 @@ export const useProfileForm = ({
             bio_short: "",
             bio_long: "",
             is_hireable: false,
-            socials: "{}",
-            hero_image_codes: "[]",
+            socials: [],
+            hero_image_codes: [],
+        },
+    });
+
+    const { reset, handleSubmit } = methods;
+    const isSubmitting = updateMutation.isPending;
+
+    const resetForm = () => {
+        reset({
+            name: "",
+            headline: "",
+            role: "",
+            location: "",
+            bio_short: "",
+            bio_long: "",
+            is_hireable: false,
+            socials: [],
+            hero_image_codes: [],
         });
         resetAvatar();
         setCvFile(null);
-        setSocialsArray([]);
-        setHeroCodesArray([]);
     };
 
     // --- Effects ---
@@ -172,20 +168,18 @@ export const useProfileForm = ({
                 const socialsFromDb = transformSocialsFromDb(profileData.socials);
                 const heroCodesFromDb = transformHeroCodesFromDb(profileData.hero_image_codes);
 
-                setFormData({
-                    name: profileData.name,
-                    headline: profileData.headline,
-                    role: profileData.role,
-                    location: profileData.location,
-                    bio_short: profileData.bio_short,
-                    bio_long: profileData.bio_long,
+                reset({
+                    name: profileData.name || "",
+                    headline: profileData.headline || "",
+                    role: profileData.role || "",
+                    location: profileData.location || "",
+                    bio_short: profileData.bio_short || "",
+                    bio_long: profileData.bio_long || "",
                     is_hireable: Boolean(profileData.is_hireable),
-                    socials: JSON.stringify(profileData.socials || {}),
-                    hero_image_codes: JSON.stringify(profileData.hero_image_codes || []),
+                    socials: socialsFromDb,
+                    hero_image_codes: heroCodesFromDb,
                 });
 
-                setSocialsArray(socialsFromDb);
-                setHeroCodesArray(heroCodesFromDb);
                 setAvatarPreview(profileData.avatar ? `${StoragePath}${profileData.avatar}` : "");
                 setAvatarFile(null);
                 setCvFile(null);
@@ -193,27 +187,25 @@ export const useProfileForm = ({
                 resetForm();
             }
         }, 0);
-    }, [open, profileData]);
+    }, [open, profileData, reset]);
 
     // --- Submit Handler ---
-    const handleSubmit = (e: FormEvent) => {
-        e.preventDefault();
-
+    const onSubmit = (data: ProfileFormData) => {
         if (!profileData?.id) {
             alert("Profile ID not found");
             return;
         }
 
         const basePayload: any = {
-            name: formData.name.trim(),
-            headline: cleanText(formData.headline) || "",
-            role: formData.role.trim() || "",
-            location: formData.location.trim() || "",
-            bio_short: cleanText(formData.bio_short) || "",
-            bio_long: cleanText(formData.bio_long) || "",
-            is_hireable: formData.is_hireable ? "1" : "0",
-            socials: transformSocialsToDb(socialsArray),
-            hero_image_codes: transformHeroCodesToDb(heroCodesArray),
+            name: data.name.trim(),
+            headline: cleanText(data.headline) || "",
+            role: data.role.trim() || "",
+            location: data.location.trim() || "",
+            bio_short: cleanText(data.bio_short) || "",
+            bio_long: cleanText(data.bio_long) || "",
+            is_hireable: data.is_hireable ? "1" : "0",
+            socials: transformSocialsToDb(data.socials),
+            hero_image_codes: transformHeroCodesToDb(data.hero_image_codes),
         };
 
         // Always use FormData for updates to ensure multipart/form-data content-type
@@ -236,28 +228,31 @@ export const useProfileForm = ({
 
         // Add avatar if file is selected
         if (avatarFile) {
-            formDataPayload.append('avatar', avatarFile);
+            formDataPayload.append("avatar", avatarFile);
         }
 
         // Add cv if file is selected
         if (cvFile) {
-            formDataPayload.append('cv_files', cvFile);
+            formDataPayload.append("cv_files", cvFile);
         }
 
         // For Laravel, add _method field
         if (activeBackend === "laravel") {
-            formDataPayload.append('_method', 'PUT');
+            formDataPayload.append("_method", "PUT");
         }
 
         console.log("Profile Payload:", {
             hasAvatarFile: !!avatarFile,
             hasCvFile: !!cvFile,
             activeBackend,
-            formDataEntries: Array.from(formDataPayload.entries()).map(([k, v]) => [k, v instanceof File ? `[File: ${(v as File).name}]` : v]),
+            formDataEntries: Array.from(formDataPayload.entries()).map(([k, v]) => [
+                k,
+                v instanceof File ? `[File: ${(v as File).name}]` : v,
+            ]),
         });
 
         updateMutation.mutate(
-            {id: profileData.id, data: formDataPayload},
+            { id: profileData.id, data: formDataPayload },
             {
                 onSuccess: () => {
                     onSuccess();
@@ -276,16 +271,11 @@ export const useProfileForm = ({
     return {
         isLoading,
         isSubmitting,
-        formData,
-        handleInputChange,
         avatarPreview,
         handleAvatarChange,
         cvFile,
         setCvFile,
-        socialsArray,
-        setSocialsArray,
-        heroCodesArray,
-        setHeroCodesArray,
-        handleSubmit,
+        methods,
+        handleSubmit: handleSubmit(onSubmit),
     };
 };
