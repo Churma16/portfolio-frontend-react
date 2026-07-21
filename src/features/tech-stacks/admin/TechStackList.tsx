@@ -1,5 +1,4 @@
 import {useState} from "react";
-import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/components/ui/table.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {HiArrowDown, HiArrowUp, HiPencil, HiPlus, HiTrash} from "react-icons/hi2";
 import {TechStack} from "@/types";
@@ -8,10 +7,8 @@ import TechIcon from "../../../components/common/TechIcon.tsx";
 import {requestBothBackends} from "@/api/axios.ts";
 import {useReorderTechStack, useTechStacks} from "@/features/tech-stacks/hooks/useTechStacks.ts";
 import AdminHeader from "@/components/common/AdminHeader.tsx";
-import TableDataLoading from "@/components/common/TableDataLoading.tsx";
-import TableNoData from "@/components/common/TableNoData.tsx";
-
 import {useTechStackCategories} from "@/features/tech-stacks/hooks/useTechStackCategories.ts";
+import DataTable, {ColumnDef} from "@/components/common/DataTable.tsx";
 
 export default function TechStackList() {
     const {data: techStacks = [], isLoading, refetch} = useTechStacks();
@@ -47,6 +44,90 @@ export default function TechStackList() {
         reorderMutation.mutate({id, direction});
     };
 
+    const columns: ColumnDef<TechStack>[] = [
+        {
+            header: "ID",
+            headerClassName: "text-slate-300 w-[50px]",
+            cellClassName: "font-mono text-slate-500",
+            cell: (item) => `#${item.id}`,
+        },
+        {
+            header: "Order",
+            headerClassName: "text-slate-300 w-[80px] text-center",
+            cellClassName: "text-center",
+            cell: (item, index) => (
+                <div className="flex flex-col items-center gap-1">
+                    <Button
+                        size="icon"
+                        variant="ghost"
+                        className="h-6 w-6 text-lara-text-muted hover:text-foreground hover:bg-white/10 disabled:opacity-30"
+                        onClick={() => handleReorder(item.id, "up")}
+                        disabled={index === 0}
+                    >
+                        <HiArrowUp className="w-3 h-3"/>
+                    </Button>
+                    <Button
+                        size="icon"
+                        variant="ghost"
+                        className="h-6 w-6 text-lara-text-muted hover:text-foreground hover:bg-white/10 disabled:opacity-30"
+                        onClick={() => handleReorder(item.id, "down")}
+                        disabled={index === techStacks.length - 1}
+                    >
+                        <HiArrowDown className="w-3 h-3"/>
+                    </Button>
+                </div>
+            ),
+        },
+        {
+            header: "Icon",
+            headerClassName: "text-lara-text-tertiary",
+            cell: (item) => (
+                <TechIcon
+                    name={item.name}
+                    icon={item.icon}
+                    className="w-6 h-6 text-lara-text-tertiary mx-auto"
+                />
+            ),
+        },
+        {
+            header: "Name",
+            headerClassName: "text-lara-text-tertiary",
+            cellClassName: "font-medium text-foreground",
+            cell: (item) => item.name,
+        },
+        {
+            header: "Category",
+            headerClassName: "text-lara-text-tertiary",
+            cellClassName: "text-foreground",
+            cell: (item) => categories.find(c => c.id === item.tech_stack_category_id)?.name || "-",
+        },
+        {
+            header: "Actions",
+            headerClassName: "text-right text-lara-text-tertiary",
+            cellClassName: "text-right",
+            cell: (item) => (
+                <div className="flex items-center justify-end gap-2">
+                    <Button
+                        size="icon"
+                        variant="ghost"
+                        onClick={() => handleEdit(item)}
+                        className="h-8 w-8 text-lara-text-muted hover:text-foreground hover:bg-white/10"
+                    >
+                        <HiPencil className="w-4 h-4"/>
+                    </Button>
+                    <Button
+                        size="icon"
+                        variant="ghost"
+                        onClick={() => handleDelete(item.id)}
+                        className="h-8 w-8 text-lara-text-muted hover:text-lara-accent-red-light hover:bg-red-500/10"
+                    >
+                        <HiTrash className="w-4 h-4"/>
+                    </Button>
+                </div>
+            ),
+        },
+    ];
+
     return (
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -62,124 +143,12 @@ export default function TechStackList() {
                 </Button>
             </div>
 
-            <div className="rounded-xl border border-white/10 bg-background-blue/50 overflow-hidden">
-                <Table>
-                    <TableHeader className="bg-white/5">
-                        <TableRow className="border-white/5 hover:bg-transparent">
-                            <TableHead className="text-slate-300 w-[50px]">
-                                ID
-                            </TableHead>
-                            <TableHead className="text-slate-300 w-[80px] text-center">
-                                Order
-                            </TableHead>
-                            <TableHead className="text-lara-text-tertiary">
-                                Icon
-                            </TableHead>
-                            <TableHead className="text-lara-text-tertiary">
-                                Name
-                            </TableHead>
-                            <TableHead className="text-lara-text-tertiary">
-                                Category
-                            </TableHead>
-                            <TableHead className="text-right text-lara-text-tertiary">
-                                Actions
-                            </TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {isLoading && <TableDataLoading data="tech stacks"/>}
-
-                        {!isLoading && techStacks.length === 0 && <TableNoData data="tech stacks"/>}
-
-                        {!isLoading && techStacks.length > 0 &&
-                            techStacks.map((item, index) => (
-                                <TableRow
-                                    key={item.id}
-                                    className="border-white/5 hover:bg-white/5 transition-colors"
-                                >
-                                    <TableCell className="font-mono text-slate-500">
-                                        #{item.id}
-                                    </TableCell>
-                                    <TableCell>
-                                        <div className="flex flex-col items-center gap-1">
-                                            {/* Tombol NAIK */}
-                                            <Button
-                                                size="icon"
-                                                variant="ghost"
-                                                className="h-6 w-6 text-lara-text-muted hover:text-foreground hover:bg-white/10 disabled:opacity-30"
-                                                onClick={() =>
-                                                    handleReorder(
-                                                        item.id,
-                                                        "up"
-                                                    )
-                                                }
-                                                disabled={index === 0} // Disable jika item pertama
-                                            >
-                                                <HiArrowUp className="w-3 h-3"/>
-                                            </Button>
-
-                                            {/* Tombol TURUN */}
-                                            <Button
-                                                size="icon"
-                                                variant="ghost"
-                                                className="h-6 w-6 text-lara-text-muted hover:text-foreground hover:bg-white/10 disabled:opacity-30"
-                                                onClick={() =>
-                                                    handleReorder(
-                                                        item.id,
-                                                        "down"
-                                                    )
-                                                }
-                                                disabled={
-                                                    index ===
-                                                    techStacks.length - 1
-                                                } // Disable jika item terakhir
-                                            >
-                                                <HiArrowDown className="w-3 h-3"/>
-                                            </Button>
-                                        </div>
-                                    </TableCell>
-                                    <TableCell>
-                                        <TechIcon
-                                            name={item.name}
-                                            icon={item.icon}
-                                            className="w-6 h-6 text-lara-text-tertiary mx-auto"
-                                        />
-                                    </TableCell>
-                                    <TableCell className="font-medium text-foreground">
-                                        {item.name}
-                                    </TableCell>
-                                    <TableCell className="text-foreground">
-                                        {categories.find(c => c.id === item.tech_stack_category_id)?.name || "-"}
-                                    </TableCell>
-                                    <TableCell className="text-right">
-                                        <div className="flex items-center justify-end gap-2">
-                                            <Button
-                                                size="icon"
-                                                variant="ghost"
-                                                onClick={() => handleEdit(item)}
-                                                className="h-8 w-8 text-lara-text-muted hover:text-foreground hover:bg-white/10"
-                                            >
-                                                <HiPencil className="w-4 h-4"/>
-                                            </Button>
-                                            <Button
-                                                size="icon"
-                                                variant="ghost"
-                                                onClick={() =>
-                                                    handleDelete(item.id)
-                                                }
-                                                className="h-8 w-8 text-lara-text-muted hover:text-lara-accent-red-light hover:bg-red-500/10"
-                                            >
-                                                <HiTrash className="w-4 h-4"/>
-                                            </Button>
-                                        </div>
-                                    </TableCell>
-                                </TableRow>
-                            ))
-                        }
-
-                    </TableBody>
-                </Table>
-            </div>
+            <DataTable
+                data={techStacks}
+                columns={columns}
+                isLoading={isLoading}
+                dataName="tech stacks"
+            />
 
             <TechStackDialog
                 open={isDialogOpen}

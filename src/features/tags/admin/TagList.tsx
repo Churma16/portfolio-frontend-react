@@ -1,5 +1,4 @@
 import {useState} from "react";
-import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/components/ui/table.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {HiPlus} from "react-icons/hi2";
 import {Tag} from "@/types";
@@ -9,8 +8,7 @@ import apiClient from "@/api/axios.ts";
 import EditButton from "@/components/common/EditButton.tsx";
 import DeleteButton from "@/components/common/DeleteButton.tsx";
 import AdminHeader from "@/components/common/AdminHeader.tsx";
-import TableDataLoading from "@/components/common/TableDataLoading.tsx";
-import TableNoData from "@/components/common/TableNoData.tsx";
+import DataTable, {ColumnDef} from "@/components/common/DataTable.tsx";
 
 export default function TagList() {
     const { data: tags = [], isLoading, refetch } = useTags();
@@ -50,6 +48,39 @@ export default function TagList() {
         return map[color] || map.blue;
     };
 
+    const columns: ColumnDef<Tag>[] = [
+        {
+            header: "Name",
+            headerClassName: "text-lara-text-tertiary",
+            cell: (tag) => (
+                <span
+                    className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border ${getColorClass(
+                        tag.color ?? "blue"
+                    )}`}
+                >
+                    {tag.name}
+                </span>
+            ),
+        },
+        {
+            header: "Category",
+            headerClassName: "text-lara-text-tertiary",
+            cellClassName: "font-medium text-foreground",
+            cell: (tag) => tag.name,
+        },
+        {
+            header: "Actions",
+            headerClassName: "text-right text-lara-text-tertiary",
+            cellClassName: "text-right",
+            cell: (tag) => (
+                <div className="flex items-center justify-end gap-2">
+                    <EditButton<Tag> item={tag} onEdit={handleEdit}/>
+                    <DeleteButton<Tag> item={tag} onDelete={handleDelete}/>
+                </div>
+            ),
+        },
+    ];
+
     return (
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -65,56 +96,12 @@ export default function TagList() {
                 </Button>
             </div>
 
-            <div className="rounded-xl border border-white/10 bg-background-blue/50 overflow-hidden">
-                <Table>
-                    <TableHeader className="bg-white/5">
-                        <TableRow className="border-white/5 hover:bg-transparent">
-                            <TableHead className="text-lara-text-tertiary">
-                                Name
-                            </TableHead>
-                            <TableHead className="text-lara-text-tertiary">
-                                Category
-                            </TableHead>
-                            <TableHead className="text-right text-lara-text-tertiary">
-                                Actions
-                            </TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {isLoading && <TableDataLoading data="tags"/>}
-
-                        {!isLoading && tags.length === 0 && <TableNoData data="tags"/>}
-
-                        {!isLoading && tags.length > 0 &&
-                            tags.map((tag) => (
-                                <TableRow
-                                    key={tag.id}
-                                    className="border-white/5 hover:bg-white/5 transition-colors"
-                                >
-                                    <TableCell>
-                                        <span
-                                            className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border ${getColorClass(
-                                                tag.color ?? "blue"
-                                            )}`}
-                                        >
-                                            {tag.name}
-                                        </span>
-                                    </TableCell>
-                                    <TableCell className="font-medium text-foreground">
-                                        {tag.name}
-                                    </TableCell>
-                                    <TableCell className="text-right">
-                                        <div className="flex items-center justify-end gap-2">
-                                            <EditButton<Tag> item={tag} onEdit={handleEdit}/>
-                                            <DeleteButton<Tag> item={tag} onDelete={handleDelete}/>
-                                        </div>
-                                    </TableCell>
-                                </TableRow>
-                            ))
-                        }
-                    </TableBody>
-                </Table>
-            </div>
+            <DataTable
+                data={tags}
+                columns={columns}
+                isLoading={isLoading}
+                dataName="tags"
+            />
             <TagDialog
                 open={isDialogOpen}
                 onOpenChange={setIsDialogOpen}
