@@ -35,7 +35,7 @@ export default function LoginForm({
                 ${
                     isGlitch
                         ? "hacked-effect font-mono"
-                        : "bg-[#0a101f]/80 backdrop-blur-md border border-white/10"
+                        : "bg-card/80 backdrop-blur-md border border-border/50"
                 }
             `}
         >
@@ -70,18 +70,6 @@ export default function LoginForm({
                     </div>
                 )}
 
-                <div className="space-y-2">
-                    <p className="text-sm text-slate-400 mb-4 text-center">
-                        Or{" "}
-                        <button
-                            type="button"
-                            onClick={() => navigate("/set-token")}
-                            className="text-primary hover:underline font-semibold"
-                        >
-                            set bearer token manually
-                        </button>
-                    </p>
-                </div>
 
                 {/* Email Field */}
                 <div className="space-y-2">
@@ -103,7 +91,7 @@ export default function LoginForm({
                             onChange={(e) => setEmail(e.target.value)}
                             className={`w-full rounded-lg pl-10 pr-4 py-3 outline-none transition-none ${
                                 !isGlitch &&
-                                "bg-[#050914]/50 border border-white/10 focus:border-primary text-white placeholder:text-slate-600"
+                                "bg-background/50 border border-border/50 focus:border-primary text-foreground placeholder:text-muted-foreground"
                             }`}
                             placeholder={isGlitch ? "X_X_X_X" : "admin@churma.codes"}
                         />
@@ -130,7 +118,7 @@ export default function LoginForm({
                             onChange={(e) => setPassword(e.target.value)}
                             className={`w-full rounded-lg pl-10 pr-4 py-3 outline-none transition-none ${
                                 !isGlitch &&
-                                "bg-[#050914]/50 border border-white/10 focus:border-primary text-white placeholder:text-slate-600"
+                                "bg-background/50 border border-border/50 focus:border-primary text-foreground placeholder:text-muted-foreground"
                             }`}
                             placeholder="••••••••"
                         />
@@ -145,7 +133,7 @@ export default function LoginForm({
                         !isGlitch
                             ? status === "success"
                                 ? "bg-green-500 text-white"
-                                : "bg-primary text-white hover:bg-blue-600"
+                                : "bg-primary text-primary-foreground hover:bg-primary-hover"
                             : ""
                     }`}
                 >
