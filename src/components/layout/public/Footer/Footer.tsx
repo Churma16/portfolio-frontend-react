@@ -4,8 +4,6 @@ import FooterStatus from "./FooterStatus.tsx";
 import FooterBrand from "./FooterBrand.tsx";
 import FooterNav from "./FooterNav.tsx";
 import {useProfile} from "@/features/profile/hooks/useProfile.ts";
-import {SiDigitalocean} from "react-icons/si";
-
 export default function Footer() {
     const {data: profile} = useProfile();
 
@@ -32,16 +30,9 @@ export default function Footer() {
                 <div className="w-full h-px bg-border/40 mb-8" />
 
                 {/* Bottom Row: Meta & Status */}
-                <div className="flex flex-col lg:flex-row justify-between items-center gap-6">
+                <div className="flex flex-col md:flex-row md:justify-between items-center gap-6">
                     <FooterCopyright />
-                    <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
-                        <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground hover:text-primary transition-colors cursor-default">
-                            <SiDigitalocean className="text-lg"/>
-                            <span>Powered by DigitalOcean</span>
-                        </div>
-                        <div className="hidden sm:block w-1 h-1 rounded-full bg-border/60" />
-                        <FooterStatus />
-                    </div>
+                    <FooterStatus />
                 </div>
             </div>
         </footer>

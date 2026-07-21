@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export default function FooterNav() {
     return (
-        <nav className="flex flex-wrap gap-x-6 gap-y-2 text-sm font-medium text-muted-foreground">
+        <nav className="flex flex-wrap gap-x-6 gap-y-2 text-base font-normal text-muted-foreground">
             <Link to="/#home" className="hover:text-primary transition-colors">
                 Home
             </Link>

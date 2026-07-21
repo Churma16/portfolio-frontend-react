@@ -5,8 +5,8 @@ export default function FooterCopyright() {
     const currentYear = new Date().getFullYear();
 
     return (
-        <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4">
-            <p className="text-muted-foreground text-sm font-mono">
+        <div className="flex flex-col md:flex-row items-center gap-4">
+            <p className="text-muted-foreground text-sm font-mono text-center md:text-left">
                 &copy; {currentYear}{" "}
                 <span className="text-foreground font-bold">Churma.codes</span>.{" "}
                 All rights reserved.

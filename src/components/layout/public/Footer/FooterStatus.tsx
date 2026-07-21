@@ -16,10 +16,11 @@ export default function FooterStatus() {
     };
 
     return (
-        <AnimatePresence mode="wait">
-            <motion.div
-                key={isError ? "error" : isLoading ? "loading" : "success"}
-                className="flex items-center gap-2 bg-green-500/10 border border-green-500/20 px-3 py-1 rounded-full"
+        <div className="flex items-center">
+            <AnimatePresence mode="wait">
+                <motion.div
+                    key={isError ? "error" : isLoading ? "loading" : "success"}
+                className="flex items-center gap-2 px-3 py-1"
                 variants={statusVariants}
                 initial="hidden"
                 animate="visible"
@@ -37,13 +38,13 @@ export default function FooterStatus() {
                                 className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
                             <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
                         </motion.span>
-                        <motion.span
-                            className="text-xs font-mono text-red-400"
-                            variants={dotVariants}
-                            transition={{delay: 0.15}}
-                        >
-                            System: Offline (SGP1)
-                        </motion.span>
+                            <motion.span
+                                className="text-sm font-mono text-red-500"
+                                variants={dotVariants}
+                                transition={{delay: 0.15}}
+                            >
+                                System Offline
+                            </motion.span>
                     </>
                 )}
 
@@ -58,13 +59,13 @@ export default function FooterStatus() {
                                 className="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75"></span>
                             <span className="relative inline-flex rounded-full h-2 w-2 bg-yellow-500"></span>
                         </motion.span>
-                        <motion.span
-                            className="text-xs font-mono text-yellow-400"
-                            variants={dotVariants}
-                            transition={{delay: 0.15}}
-                        >
-                            System: Loading...
-                        </motion.span>
+                            <motion.span
+                                className="text-sm font-mono text-yellow-500"
+                                variants={dotVariants}
+                                transition={{delay: 0.15}}
+                            >
+                                System Loading...
+                            </motion.span>
                     </>
                 )}
 
@@ -79,17 +80,19 @@ export default function FooterStatus() {
                                 className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                             <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
                         </motion.span>
-                        <motion.span
-                            className="text-xs font-mono text-green-400"
-                            variants={dotVariants}
-                            transition={{delay: 0.15}}
-                        >
-                            System: Online (SGP1)
-                        </motion.span>
+                            <motion.span
+                                className="text-sm font-mono text-green-500"
+                                variants={dotVariants}
+                                transition={{delay: 0.15}}
+                            >
+                                System Online
+                            </motion.span>
                     </>
                 )}
-            </motion.div>
-        </AnimatePresence>
+                </motion.div>
+            </AnimatePresence>
+            <span className="text-sm font-mono text-muted-foreground"> / SGP1 / Powered by DigitalOcean</span>
+        </div>
     );
 
 }
