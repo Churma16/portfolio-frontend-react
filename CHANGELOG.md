@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.0.4](https://github.com/Churma16/portfolio-frontend-react/compare/v0.0.3...v0.0.4) (2026-07-21)
+
+
+### Features
+
+* try ci/cd trigger ([1f416f9](https://github.com/Churma16/portfolio-frontend-react/commit/1f416f9a6a15a85a36a6a6f2638cec64540c0e96))
+
 ## [0.0.3](https://github.com/Churma16/portfolio-frontend-react/compare/v0.0.2...v0.0.3) (2026-07-21)
 
 ## [0.0.2](https://github.com/Churma16/portfolio-frontend-react/compare/v0.0.1...v0.0.2) (2026-07-21)
