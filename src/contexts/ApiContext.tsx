@@ -17,8 +17,13 @@ const API_CONFIG = {
     },
     express: {
         baseURL: import.meta.env.VITE_EXPRESS_URL || "http://localhost:4000/api",
-        storageURL: import.meta.env.VITE_GO_FILE_URL || "http://localhost:8080/files/",
+        storageURL: import.meta.env.VITE_EXPRESS_FILE_URL || "http://localhost:4000/files/",
         label: "Express",
+    },
+    spring: {
+        baseURL: import.meta.env.VITE_SPRING_URL || "http://localhost:8081/api",
+        storageURL: import.meta.env.VITE_SPRING_FILE_URL || "http://localhost:8081/files/",
+        label: "Spring Boot",
     }
 };
 

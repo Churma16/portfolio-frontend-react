@@ -5,14 +5,16 @@ export const TOKEN_KEYS = {
     laravel: "laravel_token",
     go: "go_token",
     express: "express_token",
+    spring: "spring_token",
 };
 
-export type BackendType = "laravel" | "go" | "express";
+export type BackendType = "laravel" | "go" | "express" | "spring";
 
 export const logout = () => {
     localStorage.removeItem(TOKEN_KEYS.laravel);
     localStorage.removeItem(TOKEN_KEYS.go);
     localStorage.removeItem(TOKEN_KEYS.express);
+    localStorage.removeItem(TOKEN_KEYS.spring);
     window.location.href = "/";
 };
 

@@ -1,4 +1,4 @@
-export type BackendType = 'laravel' | 'go' | 'express';
+export type BackendType = 'laravel' | 'go' | 'express' | 'spring';
 
 export const API_CONFIG = {
     laravel: {
@@ -12,8 +12,13 @@ export const API_CONFIG = {
         label: "Go (Golang)",
     },
     express: {
-        baseURL: "http://localhost:8000/api", // Placeholder: using Laravel URL for now
+        baseURL: "http://localhost:4000/api",
         tokenKey: "express_token",
         label: "Express (Node.js)",
+    },
+    spring: {
+        baseURL: "http://localhost:8081/api",
+        tokenKey: "spring_token",
+        label: "Spring Boot (Java)",
     }
 };

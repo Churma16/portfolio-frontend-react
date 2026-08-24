@@ -3,17 +3,66 @@ import {FormEvent, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import apiClient from "@/api/axios.ts";
-import {setToken} from "@/lib/auth.ts";
+import {BackendType, setToken} from "@/lib/auth.ts";
 import {useApi} from "@/contexts/useApi.ts";
+
+interface BackendLoginStrategy {
+    getBaseUrl: () => string;
+    extractToken: (responseData: any) => string | undefined;
+}
+
+const backendLoginStrategies: Record<BackendType, BackendLoginStrategy> = {
+    laravel: {
+        getBaseUrl: () => import.meta.env.VITE_LARAVEL_URL || "http://localhost:8000/api",
+        extractToken: (responseData) => responseData.access_token || responseData.token || responseData.data?.access_token,
+    },
+    go: {
+        getBaseUrl: () => import.meta.env.VITE_GO_URL || "http://localhost:8080/api",
+        extractToken: (responseData) => responseData.token || responseData.access_token || responseData.data?.token,
+    },
+    express: {
+        getBaseUrl: () => import.meta.env.VITE_EXPRESS_URL || "http://localhost:4000/api",
+        extractToken: (responseData) => responseData.token || responseData.access_token || responseData.data?.token,
+    },
+    spring: {
+        getBaseUrl: () => import.meta.env.VITE_SPRING_URL || "http://localhost:8081/api",
+        extractToken: (responseData) => responseData.token || responseData.access_token || responseData.data?.token,
+    },
+};
 
 export const useLoginForm = () => {
     const navigate = useNavigate();
-    const {activeBackend} = useApi(); // Get current backend
+    const {activeBackend} = useApi();
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [errorMessage, setErrorMessage] = useState("");
+
+    const syncSecondaryBackends = async (currentBackend: BackendType, userCredentials: { email: string; password: string }) => {
+        const allBackends = Object.keys(backendLoginStrategies) as BackendType[];
+        const secondaryBackends = allBackends.filter((backend) => backend !== currentBackend);
+
+        const loginPromises = secondaryBackends.map(async (backend) => {
+            const strategy = backendLoginStrategies[backend];
+            const targetUrl = `${strategy.getBaseUrl()}/login`;
+
+            try {
+                const response = await axios.post(targetUrl, userCredentials, {
+                    headers: { Accept: "application/json" }
+                });
+                const token = strategy.extractToken(response.data);
+                if (token) {
+                    setToken(token, backend);
+                    console.log(`Token automatically saved to secondary backend: ${backend}_token`);
+                }
+            } catch (err) {
+                console.warn(`Could not automatically login to secondary backend (${backend}):`, err);
+            }
+        });
+
+        await Promise.allSettled(loginPromises);
+    };
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
@@ -21,11 +70,12 @@ export const useLoginForm = () => {
         setErrorMessage("");
 
         try {
-            // This will automatically go to Laravel OR Go based on Context
+            // Primary backend login via configured axios client
             const response = await apiClient.post("/login", {email, password});
             console.log(`Response Login (${activeBackend}):`, response.data);
 
-            const token = response.data.access_token || response.data.token || response.data.data?.access_token;
+            const activeStrategy = backendLoginStrategies[activeBackend];
+            const token = activeStrategy.extractToken(response.data);
 
             if (!token) {
                 setStatus("error");
@@ -33,34 +83,11 @@ export const useLoginForm = () => {
                 return;
             }
 
-            // PASS THE BACKEND TYPE to setToken!
             setToken(token, activeBackend);
             console.log(`Token saved to ${activeBackend}_token`);
 
-            // Attempt to login to the other backends in parallel/background so all stay logged in
-            const allBackends = ["laravel", "go", "express"] as const;
-            const otherBackends = allBackends.filter(b => b !== activeBackend);
-
-            for (const backend of otherBackends) {
-                const url = backend === "laravel"
-                    ? (import.meta.env.VITE_LARAVEL_URL || "http://localhost:8000/api")
-                    : backend === "express"
-                        ? (import.meta.env.VITE_EXPRESS_URL || "http://localhost:4000/api")
-                        : (import.meta.env.VITE_GO_URL || "http://localhost:8080/api");
-
-                try {
-                    const otherResponse = await axios.post(`${url}/login`, {email, password}, {
-                        headers: { Accept: "application/json" }
-                    });
-                    const otherToken = otherResponse.data.access_token || otherResponse.data.token || otherResponse.data.data?.access_token;
-                    if (otherToken) {
-                        setToken(otherToken, backend);
-                        console.log(`Token automatically saved to secondary backend: ${backend}_token`);
-                    }
-                } catch (err) {
-                    console.warn(`Could not automatically login to secondary backend (${backend}):`, err);
-                }
-            }
+            // Authenticate with remaining backends in parallel
+            await syncSecondaryBackends(activeBackend, {email, password});
 
             setStatus("success");
             setTimeout(() => navigate("/admin"), 1500);
