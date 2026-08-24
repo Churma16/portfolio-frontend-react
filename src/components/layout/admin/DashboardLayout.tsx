@@ -38,7 +38,9 @@ export default function DashboardLayout() {
                     Admin<span className="text-foreground">Panel</span>
                 </span>
                 <button
+                    type="button"
                     onClick={() => setIsSidebarOpen(true)}
+                    aria-label="Open sidebar"
                     className="p-2 text-slate-300 hover:text-white hover:bg-white/10 rounded-lg"
                 >
                     <HiBars3 className="w-6 h-6"/>
@@ -47,8 +49,10 @@ export default function DashboardLayout() {
 
             {/* --- MOBILE OVERLAY (Backdrop ketika sidebar terbuka) --- */}
             {isSidebarOpen && (
-                <div
-                    className="fixed inset-0 bg-black/80 z-40 md:hidden backdrop-blur-sm"
+                <button
+                    type="button"
+                    aria-label="Close sidebar backdrop"
+                    className="fixed inset-0 bg-black/80 z-40 md:hidden backdrop-blur-sm w-full h-full border-none cursor-default"
                     onClick={() => setIsSidebarOpen(false)}
                 />
             )}

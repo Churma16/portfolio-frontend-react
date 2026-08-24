@@ -24,6 +24,7 @@ export default function TechError() {
                 </p>
                 
                 <button
+                    type="button"
                     onClick={() => window.location.reload()}
                     className="flex items-center gap-2 px-6 py-3 bg-background border border-border hover:bg-muted hover:border-primary/50 text-foreground rounded-full transition-all duration-300 group shadow-sm"
                 >

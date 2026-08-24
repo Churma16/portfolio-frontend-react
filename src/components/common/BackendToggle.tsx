@@ -33,8 +33,9 @@ export const BackendToggle = () => {
 
                 return (
                     <button
+                        type="button"
                         key={backend.id}
-                        onClick={() => switchBackend(backend.id as any)}
+                        onClick={() => switchBackend(backend.id)}
                         className={`relative w-9 h-8 flex items-center justify-center rounded-full transition-colors duration-300 z-10 group ${
                             isActive ? "text-white" : "text-muted-foreground hover:text-foreground"
                         }`}

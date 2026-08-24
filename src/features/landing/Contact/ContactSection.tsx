@@ -83,10 +83,11 @@ export default function ContactSection() {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             {/* Input Name */}
                             <div className="space-y-2">
-                                <label className="text-sm font-medium text-muted-foreground">
+                                <label htmlFor="contact-name" className="text-sm font-medium text-muted-foreground">
                                     Name
                                 </label>
                                 <input
+                                    id="contact-name"
                                     type="text"
                                     name="name"
                                     value={formData.name}
@@ -107,10 +108,11 @@ export default function ContactSection() {
 
                             {/* Input Email */}
                             <div className="space-y-2">
-                                <label className="text-sm font-medium text-muted-foreground">
+                                <label htmlFor="contact-email" className="text-sm font-medium text-muted-foreground">
                                     Email
                                 </label>
                                 <input
+                                    id="contact-email"
                                     type="email"
                                     name="email"
                                     value={formData.email}
@@ -132,10 +134,11 @@ export default function ContactSection() {
 
                         {/* Message */}
                         <div className="space-y-2">
-                            <label className="text-sm font-medium text-muted-foreground">
+                            <label htmlFor="contact-message" className="text-sm font-medium text-muted-foreground">
                                 Message
                             </label>
                             <textarea
+                                id="contact-message"
                                 name="content"
                                 rows={5}
                                 value={formData.content}

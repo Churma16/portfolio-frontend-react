@@ -127,6 +127,7 @@ export default function Sidebar({
                     Admin<span className="text-foreground">Panel</span>
                 </h1>
                 <button
+                    type="button"
                     onClick={() => setIsSidebarOpen(false)}
                     className="md:hidden text-slate-400 hover:text-white transition-colors"
                 >
@@ -165,6 +166,7 @@ export default function Sidebar({
                     <BackendToggle/>
                 </div>
                 <button
+                    type="button"
                     onClick={handleLogout}
                     className="flex items-center gap-3 px-4 py-3 w-full text-left text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all duration-200 border border-transparent hover:border-red-500/30 group"
                 >

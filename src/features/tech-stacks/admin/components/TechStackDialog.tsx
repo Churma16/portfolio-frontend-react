@@ -85,9 +85,10 @@ export default function TechStackDialog({
                         <p className="text-[10px] text-lara-text-muted-dark">
                             Use names from{" "}
                             <a
-                                href="https://react-icons.github.io/react-icons/icons/si/"
+                                href="https://simpleicons.org/"
                                 target="_blank"
-                                className="text-lara-accent-blue-light underline"
+                                rel="noopener noreferrer"
+                                className="text-primary underline"
                             >
                                 Simple Icons
                             </a>{" "}
@@ -95,11 +96,11 @@ export default function TechStackDialog({
                             <a
                                 href="https://react-icons.github.io/react-icons/icons/hi2/"
                                 target="_blank"
-                                className="text-lara-accent-blue-light underline"
+                                rel="noopener noreferrer"
+                                className="text-primary underline"
                             >
                                 HeroIcons 2
-                            </a>
-                            .
+                            </a>.
                         </p>
                     </div>
                     {/* Preview Icon */}

@@ -43,10 +43,18 @@ export default function WorkExperiencesBody({workExperiences}: { workExperiences
                     {workExperiences.map((workExperience: WorkExperience, index: number) => (
                         <div
                             key={workExperience.id}
-                            className="relative pl-12 md:pl-20 group cursor-pointer"
+                            role="button"
+                            tabIndex={0}
+                            className="relative pl-12 md:pl-20 group cursor-pointer focus:outline-none"
                             onMouseEnter={() => setHoveredIndex(index)}
                             onMouseLeave={() => setHoveredIndex(null)}
                             onClick={() => setClickedIndex(clickedIndex === index ? null : index)}
+                            onKeyDown={(event) => {
+                                if (event.key === "Enter" || event.key === " ") {
+                                    event.preventDefault();
+                                    setClickedIndex(clickedIndex === index ? null : index);
+                                }
+                            }}
                         >
                             {/* DOT PENANDA */}
                             <motion.div

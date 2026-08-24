@@ -52,7 +52,9 @@ export default function ProjectModal({
                             <div
                                 className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60"/>
                             <button
+                                type="button"
                                 onClick={() => setSelectedId(null)}
+                                aria-label="Close modal"
                                 className="absolute top-3 right-3 p-2 bg-black/40 text-foreground rounded-full hover:bg-red-500 hover:text-foreground transition-all backdrop-blur-md border border-white/10 active:scale-95"
                             >
                                 <HiXMark className="w-6 h-6"/>

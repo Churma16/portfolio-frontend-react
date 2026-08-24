@@ -76,6 +76,8 @@
         --chart-3: 197 37% 24%;
         --chart-4: 43 74% 66%;
         --chart-5: 27 87% 67%;
+
+        --glitch-intensity: 1;
     }
 
     /* ==========================================
@@ -268,8 +270,6 @@
         --admin-card-border: 229, 32, 34;
         --admin-field-bg: 200, 68, 10;
     }
-    /* Ensure glitch intensity is defined globally */
-    --glitch-intensity: 1;
 }
 
 .glitch-active {

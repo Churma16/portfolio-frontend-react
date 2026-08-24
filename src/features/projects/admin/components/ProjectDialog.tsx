@@ -165,12 +165,13 @@ export default function ProjectDialog({
                                 const isSelected =
                                     selectedCategoryId === category.id;
                                 return (
-                                    <div
+                                    <button
+                                        type="button"
                                         key={category.id}
                                         onClick={() =>
                                             setSelectedCategoryId(category.id)
                                         }
-                                        className={`cursor-pointer px-4 py-2 rounded-lg border transition-all duration-200 select-none
+                                        className={`cursor-pointer px-4 py-2 rounded-lg border transition-all duration-200 select-none text-left
                                             ${
                                             isSelected
                                                 ? "bg-purple-500/20 border-purple-500 text-foreground shadow-[0_0_10px_rgba(168,85,247,0.3)]"
@@ -181,7 +182,7 @@ export default function ProjectDialog({
                                         <span className="text-sm font-medium">
                                             {category.name}
                                         </span>
-                                    </div>
+                                    </button>
                                 );
                             })}
                         </div>
@@ -198,10 +199,11 @@ export default function ProjectDialog({
                                     stack.id
                                 );
                                 return (
-                                    <div
+                                    <button
+                                        type="button"
                                         key={stack.id}
                                         onClick={() => toggleStack(stack.id)}
-                                        className={`cursor-pointer flex items-center gap-2 px-3 py-2 rounded-lg border transition-all duration-200 select-none
+                                        className={`cursor-pointer flex items-center gap-2 px-3 py-2 rounded-lg border transition-all duration-200 select-none text-left
                                             ${
                                             isSelected
                                                 ? "bg-primary/20 border-primary text-foreground shadow-[0_0_10px_rgba(59,130,246,0.3)]"
@@ -221,7 +223,7 @@ export default function ProjectDialog({
                                         <span className="text-xs font-medium">
                                             {stack.name}
                                         </span>
-                                    </div>
+                                    </button>
                                 );
                             })}
                         </div>
@@ -238,7 +240,8 @@ export default function ProjectDialog({
                                     tag.id
                                 );
                                 return (
-                                    <div
+                                    <button
+                                        type="button"
                                         key={tag.id}
                                         onClick={() => toggleTag(tag.id)}
                                         className={`cursor-pointer px-3 py-1.5 rounded-full border text-[11px] font-bold uppercase tracking-wide transition-all duration-200 select-none
@@ -250,7 +253,7 @@ export default function ProjectDialog({
                                         `}
                                     >
                                         #{tag.name}
-                                    </div>
+                                    </button>
                                 );
                             })}
                         </div>

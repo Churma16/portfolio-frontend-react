@@ -7,10 +7,9 @@ export default function TechHeader() {
                 {TECH_SECTION_TITLE.split(" ").slice(0, -1).join(" ")}{" "}
                 <span className="text-primary">
                     {TECH_SECTION_TITLE.split(" ").slice(-1)[0]}
-                </span>
-                .
+                </span>.
             </h2>
-            <p className="text-lara-text-muted text-lg">
+            <p className="text-muted-foreground text-lg">
                 {TECH_SECTION_SUBTITLE}
             </p>
         </div>

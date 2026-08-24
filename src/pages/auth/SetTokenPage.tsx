@@ -90,12 +90,14 @@ export default function SetTokenPage() {
                                 {/* Token Input */}
                                 <div className="space-y-3">
                                     <label
+                                        htmlFor="admin-token"
                                         className="text-sm font-bold uppercase tracking-widest text-accent/60 flex items-center gap-2">
                                         <div className="w-1 h-1 bg-primary rounded-full"/>
                                         Admin Token
                                     </label>
                                     <div className="relative group">
                                         <textarea
+                                            id="admin-token"
                                             value={token}
                                             onChange={(e) =>
                                                 setToken(e.target.value)

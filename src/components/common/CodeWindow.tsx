@@ -54,7 +54,7 @@ export default function CodeWindow({profile}: { profile?: Profile }) {
                 {/* Nama File */}
                 <div className="ml-4 text-xs text-slate-400 font-sans flex items-center gap-1.5">
                     <span className="text-yellow-400">{`{}`}</span>
-                    about_me.json
+                    <span>about_me.json</span>
                 </div>
             </div>
 
@@ -125,12 +125,12 @@ const renderStringValue = (val: string) => {
 
 // Helper function untuk mewarnai teks JSON
 const formatJSON = (text: string) => {
-    // Regex sederhana untuk memisahkan Key dan Value
-    const parts = text.split(/(".+?":)/g).filter(Boolean);
+    // Regex linear untuk memisahkan Key dan Value
+    const parts = text.split(/("[^"]+":)/g).filter(Boolean);
 
     return parts.map((part, index) => {
         // Jika Key ("name":) -> Warna Biru Langit
-        if (part.match(/".+?":/)) {
+        if (/^"[^"]+":$/.test(part)) {
             return (
                 <span key={index} className="text-sky-400">
                     {part}
@@ -138,7 +138,7 @@ const formatJSON = (text: string) => {
             );
         }
         // Jika String Value ("Aditya") -> Warna Orange/Coklat Muda
-        if (part.match(/".+?"/)) {
+        if (/^"[^"]*"$/.test(part)) {
             return (
                 <span key={index} className="text-[#ce9178]">
                     {renderStringValue(part)}

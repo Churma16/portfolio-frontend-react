@@ -75,7 +75,7 @@ export default function NavLinks({
             {/* Mobile Navigation */}
             <Sheet open={open} onOpenChange={setOpen}>
                 <SheetTrigger asChild>
-                    <button className="md:hidden p-2 hover:bg-primary/10 rounded-lg transition-colors">
+                    <button type="button" aria-label="Open menu" className="md:hidden p-2 hover:bg-primary/10 rounded-lg transition-colors">
                         <Menu size={24} className="text-accent"/>
                     </button>
                 </SheetTrigger>

@@ -45,7 +45,7 @@ export default function WorkExperiencesSkeleton() {
                         className="absolute left-[19px] top-2 bottom-0 w-[2px] bg-border rounded-full md:left-[27px] overflow-hidden"></div>
 
                     {/* Skeleton Items */}
-                    {[...Array(3)].map((_, index) => (
+                    {Array.from({ length: 3 }).map((_, index) => (
                         <motion.div key={index} className="relative pl-12 md:pl-20 group" variants={itemVariants}>
                             {/* Dot Skeleton */}
                             <motion.div

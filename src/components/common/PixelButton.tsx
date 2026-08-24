@@ -5,17 +5,23 @@ import {cn} from "../../lib/utils";
 interface PixelButtonProps {
     children: ReactNode;
     variant?: "primary" | "dark"; // Biru atau Gelap
+    type?: "button" | "submit" | "reset";
     href?: string;
     to?: string;
     className?: string;
+    onClick?: () => void;
+    disabled?: boolean;
 }
 
 export default function PixelButton({
     children,
     variant = "primary",
+    type = "button",
     href,
     to,
     className,
+    onClick,
+    disabled,
 }: PixelButtonProps) {
     // 1. Tentukan Warna
     const baseStyles =
@@ -59,5 +65,14 @@ export default function PixelButton({
         );
     }
 
-    return <button className={combinedClassName}>{children}</button>;
+    return (
+        <button
+            type={type}
+            onClick={onClick}
+            disabled={disabled}
+            className={combinedClassName}
+        >
+            {children}
+        </button>
+    );
 }

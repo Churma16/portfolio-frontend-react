@@ -18,10 +18,10 @@ export default function HeroBadge({ isHireable }: HeroBadgeProps) {
                 >
                     <span className="relative flex h-2 w-2">
                         <span
-                            className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+                            className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
                     </span>
-                    Available for Hire
+                    <span>Available for Hire</span>
                 </motion.div>
             ) : (
                 <motion.div
@@ -33,9 +33,9 @@ export default function HeroBadge({ isHireable }: HeroBadgeProps) {
                     className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-500/10 border border-slate-500/20 text-slate-400 text-xs font-bold uppercase tracking-wider mx-auto lg:mx-0"
                 >
                     <span className="relative flex h-2 w-2">
-                        <span className="relative inline-flex rounded-full h-2 w-2 bg-slate-400"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-slate-400" />
                     </span>
-                    Not Available
+                    <span>Not Available</span>
                 </motion.div>
             )}
         </AnimatePresence>

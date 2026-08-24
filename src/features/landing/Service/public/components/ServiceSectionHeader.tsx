@@ -7,8 +7,7 @@ export default function ServiceSectionHeader() {
                 {SERVICE_SECTION_TITLE.split(" ").slice(0, -1).join(" ")}{" "}
                 <span className="text-primary">
                     {SERVICE_SECTION_TITLE.split(" ").slice(-1)[0]}
-                </span>
-                .
+                </span>.
             </h2>
             <p className="text-muted-foreground text-lg">
                 {SERVICE_SECTION_SUBTITLE}
