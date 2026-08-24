@@ -1,22 +1,11 @@
-import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import apiClient from "../../../api/axios.ts";
-import {ApiResponse, TechStackCategory} from "@/types";
-
-const fetchTechStackCategories = async (): Promise<TechStackCategory[]> => {
-    const response = await apiClient.get<ApiResponse<any>>(
-        "/tech-stack-categories"
-    );
-    const data = response.data.data;
-    if (data && typeof data === "object" && !Array.isArray(data) && Array.isArray((data as any).data)) {
-        return (data as any).data;
-    }
-    return Array.isArray(data) ? data : [];
-};
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { TechStackCategory } from "@/types";
+import { techStackService } from "../api/techStackService.ts";
 
 export const useTechStackCategories = () => {
     return useQuery({
         queryKey: ["tech-stack-categories"],
-        queryFn: fetchTechStackCategories,
+        queryFn: () => techStackService.fetchTechStackCategories(),
         staleTime: 1000 * 60 * 5,
     });
 };
@@ -25,11 +14,10 @@ export const useCreateTechStackCategory = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async (newData: any) => {
-            return await apiClient.post("/tech-stack-categories", newData);
-        },
+        mutationFn: (payload: Partial<TechStackCategory> | Record<string, unknown>) =>
+            techStackService.createTechStackCategory(payload),
         onSuccess: () => {
-            queryClient.invalidateQueries({queryKey: ["tech-stack-categories"]});
+            queryClient.invalidateQueries({ queryKey: ["tech-stack-categories"] });
         },
     });
 };
@@ -38,12 +26,16 @@ export const useUpdateTechStackCategory = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async ({id, data}: { id: number; data: any }) => {
-            return await apiClient.put(`/tech-stack-categories/${id}`, data);
-        },
+        mutationFn: ({
+            id,
+            data,
+        }: {
+            id: number;
+            data: Partial<TechStackCategory> | Record<string, unknown>;
+        }) => techStackService.updateTechStackCategory(id, data),
         onSuccess: () => {
-            queryClient.invalidateQueries({queryKey: ["tech-stack-categories"]});
-        }
+            queryClient.invalidateQueries({ queryKey: ["tech-stack-categories"] });
+        },
     });
 };
 
@@ -51,11 +43,9 @@ export const useDeleteTechStackCategory = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async (id: number) => {
-            return await apiClient.delete(`/tech-stack-categories/${id}`);
-        },
+        mutationFn: (id: number) => techStackService.deleteTechStackCategory(id),
         onSuccess: () => {
-            queryClient.invalidateQueries({queryKey: ["tech-stack-categories"]});
-        }
+            queryClient.invalidateQueries({ queryKey: ["tech-stack-categories"] });
+        },
     });
 };

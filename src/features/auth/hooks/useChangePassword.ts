@@ -1,10 +1,9 @@
-import {useMutation} from "@tanstack/react-query";
-import apiClient from "@/api/axios.ts";
+import { useMutation } from "@tanstack/react-query";
+import { authService } from "../api/authService.ts";
 
 export const useChangePassword = () => {
     return useMutation({
-        mutationFn: async (data: { old_password: string; new_password: string }) => {
-            return await apiClient.post("change-password", data);
-        }
+        mutationFn: (data: { old_password: string; new_password: string }) =>
+            authService.changePassword(data),
     });
 };

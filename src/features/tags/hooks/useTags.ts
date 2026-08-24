@@ -1,21 +1,11 @@
-import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import apiClient from "../../../api/axios.ts";
-import {ApiResponse, Tag} from "@/types";
-
-const fetchTags = async (): Promise<Tag[]> => {
-    // Ambil response dari Axios
-    const response = await apiClient.get<ApiResponse<Tag[]>>(
-        "/tags"
-    );
-
-    console.log("Tag response:", response.data);
-    return response.data.data;
-};
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Tag } from "@/types";
+import { tagService } from "../api/tagService.ts";
 
 export const useTags = () => {
     return useQuery({
         queryKey: ["tags"],
-        queryFn: fetchTags,
+        queryFn: () => tagService.fetchTags(),
         staleTime: 1000 * 60 * 5,
     });
 };
@@ -24,24 +14,33 @@ export const useCreateTag = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async (newData: any) => {
-            return await apiClient.post("/tags", newData);
-        },
+        mutationFn: (payload: Partial<Tag> | Record<string, unknown>) =>
+            tagService.createTag(payload),
         onSuccess: () => {
-            queryClient.invalidateQueries({queryKey: ["tags"]});
+            queryClient.invalidateQueries({ queryKey: ["tags"] });
         },
     });
-}
+};
 
 export const useUpdateTag = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async ({id, data}: { id: number; data: any }) => {
-            return await apiClient.put(`/tags/${id}`, data);
-        },
+        mutationFn: ({ id, data }: { id: number; data: Partial<Tag> | Record<string, unknown> }) =>
+            tagService.updateTag(id, data),
         onSuccess: () => {
-            queryClient.invalidateQueries({queryKey: ["tags"]});
-        }
+            queryClient.invalidateQueries({ queryKey: ["tags"] });
+        },
     });
-}
+};
+
+export const useDeleteTag = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: (id: number) => tagService.deleteTag(id),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["tags"] });
+        },
+    });
+};

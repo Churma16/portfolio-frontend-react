@@ -1,35 +1,23 @@
-import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import apiClient, {requestBothBackends} from "@/api/axios.ts";
-import {ApiResponse, WorkExperience} from "@/types";
-
-const fetchWorkExperiences = async (): Promise<WorkExperience[]> => {
-    const response = await apiClient.get<ApiResponse<WorkExperience[]>>(
-        "/work-experiences?with=tags,techStacks",
-    );
-
-    console.log("Work Experiences response:", response.data);
-    return response.data.data;
-};
-
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { WorkExperience } from "@/types";
+import { workExperienceService } from "../api/workExperienceService.ts";
 
 export const useWorkExperiences = () => {
     return useQuery({
         queryKey: ["work-experiences"],
-        queryFn: fetchWorkExperiences,
+        queryFn: () => workExperienceService.fetchWorkExperiences(),
         staleTime: 1000 * 60 * 5,
     });
-}
+};
 
 export const useCreateWorkExperience = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async (newData: any) => {
-            return await requestBothBackends("post", "/work-experiences", newData);
-        },
+        mutationFn: (payload: Partial<WorkExperience> | Record<string, unknown>) =>
+            workExperienceService.createWorkExperience(payload),
         onSuccess: () => {
-            // Setelah sukses, suruh mata-mata update data di papan tulis (Cache)
-            queryClient.invalidateQueries({queryKey: ["work-experiences"]});
+            queryClient.invalidateQueries({ queryKey: ["work-experiences"] });
         },
     });
 };
@@ -38,12 +26,26 @@ export const useUpdateWorkExperience = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async ({id, data}: { id: number; data: any }) => {
-            return await requestBothBackends("put", `/work-experiences/${id}`, data);
-        },
+        mutationFn: ({
+            id,
+            data,
+        }: {
+            id: number;
+            data: Partial<WorkExperience> | Record<string, unknown>;
+        }) => workExperienceService.updateWorkExperience(id, data),
         onSuccess: () => {
-            queryClient.invalidateQueries({queryKey: ["work-experiences"]});
+            queryClient.invalidateQueries({ queryKey: ["work-experiences"] });
         },
     });
 };
 
+export const useDeleteWorkExperience = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: (id: number) => workExperienceService.deleteWorkExperience(id),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["work-experiences"] });
+        },
+    });
+};

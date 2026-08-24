@@ -1,64 +1,24 @@
-import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import apiClient from "../../../api/axios.ts";
-import {ApiResponse, Profile} from "@/types";
-import {useApi} from "@/contexts/useApi.ts";
-
-const fetchProfile = async (): Promise<Profile> => {
-    const response = await apiClient.get<ApiResponse<Profile>>("/profiles");
-
-    console.log("Profile response:", response.data);
-    return response.data.data;
-};
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useApi } from "@/contexts/useApi.ts";
+import { profileService } from "../api/profileService.ts";
 
 export const useProfile = () => {
     return useQuery({
         queryKey: ["profile"],
-        queryFn: fetchProfile,
+        queryFn: () => profileService.fetchProfile(),
         staleTime: 1000 * 60 * 5,
     });
 };
 
 export function useUpdateProfile() {
     const queryClient = useQueryClient();
-    const {activeBackend} = useApi(); // Get 'laravel' or 'go'
+    const { activeBackend } = useApi();
 
     return useMutation({
-        mutationFn: async ({id, data}: { id: number; data: any }) => {
-
-            const isFormData = data instanceof FormData;
-
-            if (isFormData) {
-                // When it's FormData, use POST for Laravel (has _method: PUT), PUT for Go/Express
-                if (activeBackend !== 'laravel') {
-                    return await apiClient.put(`/profiles/${id}`, data);
-                } else {
-                    // Laravel with _method: PUT in FormData
-                    return await apiClient.post(`/profiles/${id}`, data);
-                }
-            }
-
-            // Check if data contains File object (will be converted to FormData by interceptor)
-            const hasFile = Object.values(data).some(
-                (value) => value instanceof File
-            );
-
-            if (hasFile) {
-                // When there's a file, we need different approaches for different backends
-                if (activeBackend !== 'laravel') {
-                    // Go/Express API supports PUT with FormData directly
-                    return await apiClient.put(`/profiles/${id}`, data);
-                } else {
-                    // Laravel requires POST with _method: PUT for FormData
-                    // The _method field is already in the payload from useProjectForm
-                    return await apiClient.post(`/profiles/${id}`, data);
-                }
-            } else {
-                // For regular JSON (no file), always use PUT
-                return await apiClient.put(`/profiles/${id}`, data);
-            }
-        },
+        mutationFn: ({ id, data }: { id: number; data: FormData | Record<string, unknown> }) =>
+            profileService.updateProfile(id, data, activeBackend),
         onSuccess: () => {
-            queryClient.invalidateQueries({queryKey: ["profile"]});
-        }
+            queryClient.invalidateQueries({ queryKey: ["profile"] });
+        },
     });
 }

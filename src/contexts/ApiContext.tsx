@@ -21,8 +21,8 @@ const API_CONFIG = {
         label: "Express",
     },
     spring: {
-        baseURL: import.meta.env.VITE_SPRING_URL || "http://localhost:8081/api",
-        storageURL: import.meta.env.VITE_SPRING_FILE_URL || "http://localhost:8081/files/",
+        baseURL: import.meta.env.VITE_SPRING_URL || "https://api-java.churma.codes/api",
+        storageURL: import.meta.env.VITE_SPRING_FILE_URL || "https://api-java.churma.codes/storage/",
         label: "Spring Boot",
     }
 };

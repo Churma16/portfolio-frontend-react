@@ -1,19 +1,11 @@
-import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import apiClient from "../../../api/axios.ts";
-import {ApiResponse, Category} from "@/types";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Category } from "@/types";
+import { categoryService } from "../api/categoryService.ts";
 
-// Fetch categories from the API
-const fetchCategories = async (): Promise<Category[]> => {
-    const response = await apiClient.get<ApiResponse<Category[]>>("/categories");
-    console.log("Categories response:", response.data);
-    return response.data.data;
-};
-
-//
 export const useCategories = () => {
     return useQuery({
         queryKey: ["categories"],
-        queryFn: fetchCategories,
+        queryFn: () => categoryService.fetchCategories(),
         staleTime: 1000 * 60 * 5,
     });
 };
@@ -22,37 +14,38 @@ export const useCreateCategory = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async (newData: any) => {
-            return await apiClient.post("/categories", newData);
-        },
+        mutationFn: (payload: Partial<Category> | Record<string, unknown>) =>
+            categoryService.createCategory(payload),
         onSuccess: () => {
-            queryClient.invalidateQueries({queryKey: ["categories"]});
+            queryClient.invalidateQueries({ queryKey: ["categories"] });
         },
-    })
-}
+    });
+};
 
 export const useUpdateCategory = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async ({id, data}: { id: number; data: any }) => {
-            return await apiClient.put(`/categories/${id}`, data);
-        },
+        mutationFn: ({
+            id,
+            data,
+        }: {
+            id: number;
+            data: Partial<Category> | Record<string, unknown>;
+        }) => categoryService.updateCategory(id, data),
         onSuccess: () => {
-            queryClient.invalidateQueries({queryKey: ["categories"]});
-        }
+            queryClient.invalidateQueries({ queryKey: ["categories"] });
+        },
     });
-}
+};
 
 export const useDeleteCategory = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async (id: number) => {
-            return await apiClient.delete(`/categories/${id}`);
-        },
+        mutationFn: (id: number) => categoryService.deleteCategory(id),
         onSuccess: () => {
-            queryClient.invalidateQueries({queryKey: ["categories"]});
-        }
+            queryClient.invalidateQueries({ queryKey: ["categories"] });
+        },
     });
-}
+};

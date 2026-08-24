@@ -21,5 +21,9 @@ export function useStoragePath(): string {
         return import.meta.env.VITE_GO_FILE_URL || '/storage/';
     }
 
+    if (activeBackend === 'spring') {
+        return import.meta.env.VITE_SPRING_FILE_URL || '/storage/';
+    }
+
     return import.meta.env.VITE_LARAVEL_FILE_URL || '/storage/';
 }
