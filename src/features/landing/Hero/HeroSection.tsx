@@ -5,18 +5,7 @@ import {useApi} from "@/contexts/useApi.ts";
 import {useStoragePath} from "@/hooks/useStoragePath.ts";
 import TechMarquee from "@/features/tech-stacks/public/components/TechMarquee.tsx";
 import {useTechStacks} from "@/features/tech-stacks/hooks/useTechStacks.ts";
-import { TechStack } from "@/types";
-
-const DUMMY_TECH_STACKS: TechStack[] = [
-    { id: 1, name: "React", icon: "SiReact", created_at: "", updated_at: "" },
-    { id: 2, name: "Laravel", icon: "SiLaravel", created_at: "", updated_at: "" },
-    { id: 3, name: "Go", icon: "SiGo", created_at: "", updated_at: "" },
-    { id: 4, name: "TypeScript", icon: "SiTypescript", created_at: "", updated_at: "" },
-    { id: 5, name: "Tailwind CSS", icon: "SiTailwindcss", created_at: "", updated_at: "" },
-    { id: 6, name: "Node.js", icon: "SiNode.js", created_at: "", updated_at: "" },
-    { id: 7, name: "Express", icon: "SiExpress", created_at: "", updated_at: "" },
-    { id: 8, name: "MySQL", icon: "SiMysql", created_at: "", updated_at: "" },
-];
+import {DUMMY_TECH_STACKS} from "./constants/dummyTechStacks.ts";
 
 export default function Hero() {
     const {data: profile, isLoading: isProfileLoading} = useProfile();

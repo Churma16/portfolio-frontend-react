@@ -1,7 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import PixelButton from "../../../../components/common/PixelButton.tsx";
 import { PixelDownload } from "@/components/common/PixelIcon.tsx";
-import AboutSectionHeader from "./AboutSectionHeader.tsx";
 
 interface AboutContentProps {
     bioLong?: string;
@@ -17,7 +16,9 @@ export default function AboutContent({ bioLong, cvFileUrl }: AboutContentProps) 
             transition={{ duration: 0.6 }}
             className="space-y-6"
         >
-            <AboutSectionHeader />
+            <h2 className="text-3xl md:text-4xl font-heading font-bold text-foreground">
+                Beyond the <span className="text-primary">Code</span>.
+            </h2>
 
             <AnimatePresence mode="wait">
                 {bioLong ? (
