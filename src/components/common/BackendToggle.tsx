@@ -5,7 +5,8 @@ import TechIcon from "@/components/common/TechIcon.tsx";
 const backends = [
     { id: "laravel", icon: "SiLaravel", color: "bg-blue-600", shadow: "shadow-blue-600/50" },
     { id: "go", icon: "SiGo", color: "bg-[#00ADD8]", shadow: "shadow-[#00ADD8]/50" },
-    { id: "express", icon: "SiExpress", color: "bg-[#68A063]", shadow: "shadow-[#68A063]/50" }
+    { id: "express", icon: "SiExpress", color: "bg-[#68A063]", shadow: "shadow-[#68A063]/50" },
+    { id: "spring", icon: "SiSpringboot", color: "bg-[#E52022]", shadow: "shadow-[#E52022]/50" }
 ] as const;
 
 // Each button is w-9 (36px) + gap-0.5 (2px) = 38px step

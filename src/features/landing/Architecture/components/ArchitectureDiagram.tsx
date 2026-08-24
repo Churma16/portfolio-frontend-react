@@ -1,6 +1,6 @@
 import {motion} from "framer-motion";
 import {HiShieldCheck} from "react-icons/hi2";
-import {SiCloudflare, SiDigitalocean, SiGo, SiLaravel, SiMysql, SiPostgresql, SiReact, SiUbuntu, SiExpress, SiDocker} from "react-icons/si";
+import {SiCloudflare, SiDigitalocean, SiGo, SiLaravel, SiMysql, SiPostgresql, SiReact, SiUbuntu, SiExpress, SiDocker, SiSpringboot} from "react-icons/si";
 
 import {useApi} from "@/contexts/useApi.ts";
 
@@ -38,7 +38,7 @@ const StackBox = ({title, icon, items, themeColor = "text-blue-400", bgColor = "
 
 // 2. WRAPPER ANIMASI SHUFFLE (Grid Stacking)
 const ShuffleStack = ({activeId, children}: { activeId: string; children: React.ReactNode[] }) => {
-    const order = ['laravel', 'go', 'express'];
+    const order = ['laravel', 'go', 'express', 'spring'];
 
     return (
         <div className="grid w-full min-w-[200px]" style={{gridTemplateAreas: "'stack'"}}>
@@ -48,7 +48,7 @@ const ShuffleStack = ({activeId, children}: { activeId: string; children: React.
                 const activeIndex = order.indexOf(activeId) !== -1 ? order.indexOf(activeId) : 0;
                 const childIndex = order.indexOf(childId) !== -1 ? order.indexOf(childId) : 0;
                 
-                const position = (childIndex - activeIndex + 3) % 3;
+                const position = (childIndex - activeIndex + 4) % 4;
 
                 let y = 0;
                 let x = 0;
@@ -59,23 +59,29 @@ const ShuffleStack = ({activeId, children}: { activeId: string; children: React.
                 let rotateX = 0;
 
                 if (position === 1) {
-                    // Item yang indeksnya "setelah" active (misal active Go, ini Express)
-                    y = -20;
-                    x = 25; // geser ke KANAN
-                    scale = 0.9;
+                    y = -15;
+                    x = 20;
+                    scale = 0.92;
                     zIndex = 20;
                     opacity = 0.8;
-                    rotateZ = 4; // miring kanan
-                    rotateX = 5;
+                    rotateZ = 3;
+                    rotateX = 4;
                 } else if (position === 2) {
-                    // Item yang indeksnya "sebelum" active (misal active Go, ini Laravel)
-                    y = -40;
-                    x = -25; // geser ke KIRI
-                    scale = 0.8;
+                    y = -30;
+                    x = -20;
+                    scale = 0.84;
                     zIndex = 10;
-                    opacity = 0.4;
-                    rotateZ = -4; // miring kiri
-                    rotateX = 10;
+                    opacity = 0.5;
+                    rotateZ = -3;
+                    rotateX = 8;
+                } else if (position === 3) {
+                    y = -45;
+                    x = 0;
+                    scale = 0.76;
+                    zIndex = 5;
+                    opacity = 0.3;
+                    rotateZ = 0;
+                    rotateX = 12;
                 }
 
                 return (
@@ -190,6 +196,14 @@ export default function ArchitectureDiagram() {
             items: ["Express.js (Node)", "Domain-Driven Design", "Sequelize ORM"],
             themeColor: "text-green-500",
             bgColor: "bg-green-500"
+        },
+        {
+            id: "spring",
+            title: "API Engine",
+            icon: <SiSpringboot className="w-6 h-6"/>,
+            items: ["Spring Boot 3", "Spring Data JPA", "Spring Security"],
+            themeColor: "text-red-500",
+            bgColor: "bg-red-500"
         }
     ];
 
@@ -217,6 +231,14 @@ export default function ArchitectureDiagram() {
             items: ["PostgreSQL 15", "Redis Cache", "Bind Mount Storage"],
             themeColor: "text-green-500",
             bgColor: "bg-green-500"
+        },
+        {
+            id: "spring",
+            title: "Storage & Cache",
+            icon: <SiPostgresql className="w-6 h-6"/>,
+            items: ["PostgreSQL 15", "Redis Cache", "Bind Mount Storage"],
+            themeColor: "text-red-500",
+            bgColor: "bg-red-500"
         }
     ];
 

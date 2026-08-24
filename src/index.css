@@ -1,5 +1,5 @@
-/* 1. IMPORT ALL FONTS (Laravel + Go) */
-@import url("https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600;800&family=Kanit:wght@300;500;700&family=Roboto:wght@300;400;500;700&family=Source+Code+Pro:wght@400;600&family=Work+Sans:wght@300;400;500;600;700&display=swap");
+/* 1. IMPORT ALL FONTS (Laravel + Go + Express + Java/Spring) */
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Hanken+Grotesk:wght@300;400;500;600;800&family=Kanit:wght@300;500;700&family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Roboto:wght@300;400;500;700&family=Source+Code+Pro:wght@400;600&family=Work+Sans:wght@300;400;500;600;700&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -206,6 +206,67 @@
         --admin-card-border: 64, 64, 64;
         /* Aksen hijau Node untuk field aktif */
         --admin-field-bg: 104, 160, 99;
+    }
+
+    /* ==========================================
+       THEME 4: JAVA / SPRING BOOT (Official Brand Style)
+       Activated via <html data-theme="spring">
+       ========================================== */
+    [data-theme="spring"] {
+        /* Base App Colors: Coffee room dark */
+        --background: 0 43% 3%;        /* #0A0404 */
+        --foreground: 23 32% 94%;      /* #F5EDE8 - warm cream */
+
+        --card: 0 43% 6%;              /* #140808 */
+        --card-foreground: 23 32% 94%;
+
+        --popover: 0 43% 6%;
+        --popover-foreground: 23 32% 94%;
+
+        /* Brand Primary: Java Red (#E52022) */
+        --primary: 359 80% 51%;        /* #E52022 */
+        --primary-foreground: 0 0% 100%;
+        --primary-hover: 359 80% 41%;
+        --primary-shadow: 359 80% 20%;
+        --hero-gradient-start: 359 80% 51%;
+        --hero-gradient-end: 18 90% 45%; /* #C8440A - Java burnt orange */
+
+        /* Subtle Tech Badges (Red-Slate) */
+        --tech-bg: 359 30% 12%;
+        --tech-border: 359 30% 22%;
+        --tech-text: 23 20% 80%;
+        --tech-hover-border: 359 30% 32%;
+
+        /* Secondary: Java Burnt Orange (#C8440A) */
+        --secondary: 18 90% 41%;
+        --secondary-foreground: 0 0% 100%;
+
+        /* Muted: Warm Coffee Brown */
+        --muted: 0 20% 15%;
+        --muted-foreground: 14 14% 60%;
+
+        /* Accent: Java Red */
+        --accent: 359 80% 51%;
+        --accent-foreground: 0 0% 100%;
+
+        /* Destructive: Bright Red */
+        --destructive: 0 80% 40%;
+        --destructive-foreground: 0 0% 100%;
+
+        /* Borders: Dark Warm Red */
+        --border: 0 35% 18%;
+        --input: 0 20% 15%;
+        --ring: 359 80% 51%;
+
+        /* FONTS: Modern tech look */
+        --font-body: 'DM Sans', sans-serif;
+        --font-heading: 'Plus Jakarta Sans', sans-serif;
+        --font-code: 'Source Code Pro', monospace;
+
+        /* ADMIN VARIABLES (RGB) */
+        --admin-card-bg: 20, 8, 8;
+        --admin-card-border: 229, 32, 34;
+        --admin-field-bg: 200, 68, 10;
     }
     /* Ensure glitch intensity is defined globally */
     --glitch-intensity: 1;

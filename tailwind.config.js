@@ -13,6 +13,10 @@ export default {
                 "go-heading": ["Work Sans", "sans-serif"],
                 "go-body": ["Roboto", "sans-serif"],
                 "go-code": ["Source Code Pro", "monospace"],
+
+                // Java / Spring Brand Fonts
+                "java-heading": ["Plus Jakarta Sans", "sans-serif"],
+                "java-body": ["DM Sans", "sans-serif"],
             },
             colors: {
                 // ==========================================
