@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.0.8](https://github.com/Churma16/portfolio-frontend-react/compare/v0.0.7...v0.0.8) (2026-08-24)
+
+
+### Features
+
+* **api:** integrate Spring Boot backend support and connect hooks to service modules ([2014956](https://github.com/Churma16/portfolio-frontend-react/commit/20149569bbefa7b6e06ecf39e20af4e8aba026b1))
+* **landing:** add ReturnToTop button, useContactForm hook, and update Hero/About sections ([2c93e64](https://github.com/Churma16/portfolio-frontend-react/commit/2c93e6469a71603a09af72742ed33e0a29049cec))
+
 ## [0.0.7](https://github.com/Churma16/portfolio-frontend-react/compare/v0.0.6...v0.0.7) (2026-07-21)
 
 
