@@ -7,16 +7,18 @@ import { buildFormData, hasFilePayload } from "@/lib/formDataUtils";
 const savedBackend = localStorage.getItem("preferred_backend");
 const isGo = savedBackend === "go";
 const isExpress = savedBackend === "express";
+const isSpring = savedBackend === "spring";
 
 // 2. Define the URLs here (so they are available instantly)
 const LARAVEL_URL = import.meta.env.VITE_LARAVEL_URL;
 const GO_URL = import.meta.env.VITE_GO_URL;
 const EXPRESS_URL = import.meta.env.VITE_EXPRESS_URL || "http://localhost:4000/api";
+const SPRING_URL = import.meta.env.VITE_SPRING_URL || "https://api-java.churma.codes/api";
 
 // Create a blank instance.
 // The Base URL and Headers will be injected dynamically by ApiContext.
 const apiClient = axios.create({
-    baseURL: isGo ? GO_URL : isExpress ? EXPRESS_URL : LARAVEL_URL,
+    baseURL: isGo ? GO_URL : isExpress ? EXPRESS_URL : isSpring ? SPRING_URL : LARAVEL_URL,
     headers: {
         Accept: "application/json",
     },
@@ -57,7 +59,7 @@ export const requestBothBackends = async <T = unknown>(
     data?: unknown,
     config?: AxiosRequestConfig
 ): Promise<AxiosResponse<T> | null> => {
-    const backends: readonly BackendType[] = ["laravel", "go", "express"];
+    const backends: readonly BackendType[] = ["laravel", "go", "express", "spring"];
     const activeBackend = (localStorage.getItem("preferred_backend") as BackendType) || "laravel";
 
     let activeResult: AxiosResponse<T> | null = null;
@@ -69,7 +71,9 @@ export const requestBothBackends = async <T = unknown>(
                 ? import.meta.env.VITE_LARAVEL_URL || "http://localhost:8000/api"
                 : backend === "express"
                 ? import.meta.env.VITE_EXPRESS_URL || "http://localhost:4000/api"
-                : import.meta.env.VITE_GO_URL || "http://localhost:8080/api";
+                : backend === "go"
+                ? import.meta.env.VITE_GO_URL || "http://localhost:8080/api"
+                : import.meta.env.VITE_SPRING_URL || "https://api-java.churma.codes/api";
 
         const token = getToken(backend);
 
