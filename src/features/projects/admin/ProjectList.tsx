@@ -3,29 +3,20 @@ import {Button} from "@/components/ui/button.tsx";
 import {HiArrowDown, HiArrowUp, HiPencil, HiPlus, HiTrash,} from "react-icons/hi2";
 import {Project} from "@/types";
 import ProjectDialog from "./components/ProjectDialog.tsx";
-import {useProjects, useReorderProject} from "../hooks/useProjects.ts";
-import {requestBothBackends} from "@/api/axios.ts";
-import {useApi} from "@/contexts/useApi.ts";
+import {useDeleteProject, useProjects, useReorderProject} from "../hooks/useProjects.ts";
+import {useStoragePath} from "@/hooks/useStoragePath.ts";
 import AdminHeader from "@/components/common/AdminHeader.tsx";
 import DataTable, {ColumnDef} from "@/components/common/DataTable.tsx";
 
 export default function ProjectList() {
     const {data: projects = [], isLoading, refetch} = useProjects();
     const reorderMutation = useReorderProject();
+    const deleteMutation = useDeleteProject();
 
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [projectToEdit, setProjectToEdit] = useState<Project | null>(null);
-    const {activeBackend} = useApi();
+    const storagePath = useStoragePath();
 
-    const isGo = activeBackend === 'go';
-
-    const StoragePath = isGo
-        ? import.meta.env.VITE_GO_FILE_URL || '/files/'
-        : import.meta.env.VITE_LARAVEL_FILE_URL || '/files/';
-
-
-    // --- FUNGSI REORDER ---
-    // Anda perlu menghubungkan ini ke API backend Anda nantinya
     const handleReorder = async (id: number, direction: "up" | "down") => {
         reorderMutation.mutate({id, direction});
     };
@@ -42,12 +33,7 @@ export default function ProjectList() {
 
     const handleDelete = async (project: Project) => {
         if (!confirm("Are you sure?")) return;
-        try {
-            await requestBothBackends("delete", `/projects/${project.id}`);
-            refetch();
-        } catch (error) {
-            console.error("Delete error:", error);
-        }
+        deleteMutation.mutate(project.id);
     };
 
     const columns: ColumnDef<Project>[] = [
@@ -91,7 +77,7 @@ export default function ProjectList() {
                 <div className="flex items-center gap-4">
                     <div className="w-12 h-12 rounded-lg bg-slate-800 overflow-hidden shrink-0 border border-white/10">
                         <img
-                            src={`${StoragePath}${project.thumbnail}`}
+                            src={`${storagePath}${project.thumbnail}`}
                             alt={project.title}
                             className="w-full h-full object-cover"
                         />

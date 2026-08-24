@@ -1,9 +1,10 @@
-import {FormEvent, useEffect, useState} from "react";
-import {useCreateProject, useUpdateProject} from "@/features/projects/hooks/useProjects.ts";
-import {useApi} from "@/contexts/useApi.ts";
-import {Project} from "@/types";
-import {useStoragePath} from "@/hooks/useStoragePath.ts";
-import {useThumbnailUpload} from "@/hooks/useThumbnailUpload.ts";
+import { FormEvent, useEffect, useState } from "react";
+import { useCreateProject, useUpdateProject } from "@/features/projects/hooks/useProjects.ts";
+import { useApi } from "@/contexts/useApi.ts";
+import { Project } from "@/types";
+import { useStoragePath } from "@/hooks/useStoragePath.ts";
+import { useThumbnailUpload } from "@/hooks/useThumbnailUpload.ts";
+import { buildFormData } from "@/lib/formDataUtils.ts";
 
 // ============================================================================
 // Types
@@ -21,13 +22,13 @@ interface UseProjectFormProps {
 // ============================================================================
 
 export const useProjectForm = ({
-                                   projectToEdit,
-                                   open,
-                                   onSuccess,
-                                   onClose,
-                               }: UseProjectFormProps) => {
-    const {activeBackend} = useApi(); // Get 'laravel' or 'go'
-    const StoragePath = useStoragePath();
+    projectToEdit,
+    open,
+    onSuccess,
+    onClose,
+}: UseProjectFormProps) => {
+    const { activeBackend } = useApi();
+    const storagePath = useStoragePath();
 
     // --- Mutations ---
     const createMutation = useCreateProject();
@@ -58,7 +59,7 @@ export const useProjectForm = ({
 
     // --- Helper Functions ---
     const handleInputChange = (field: keyof typeof formData, value: string | boolean) => {
-        setFormData((prev) => ({...prev, [field]: value}));
+        setFormData((prev) => ({ ...prev, [field]: value }));
     };
 
     const toggleStack = (id: number) => {
@@ -72,7 +73,6 @@ export const useProjectForm = ({
             prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
         );
     };
-
 
     const resetForm = () => {
         setFormData({
@@ -102,115 +102,69 @@ export const useProjectForm = ({
                     repo_url: projectToEdit.repo_url || "",
                     demo_url: projectToEdit.demo_url || "",
                 });
-                setThumbnailPreview(`${StoragePath}${projectToEdit.thumbnail}`);
+                setThumbnailPreview(`${storagePath}${projectToEdit.thumbnail}`);
                 setThumbnailFile(null);
                 setSelectedCategoryId(projectToEdit.category?.id || null);
-                setSelectedStackIds(projectToEdit.tech_stack?.map((s) => s.id) || []);
-                setSelectedTagIds(projectToEdit.tags?.map((t) => t.id) || []);
+                setSelectedStackIds(projectToEdit.tech_stack?.map((stack) => stack.id) || []);
+                setSelectedTagIds(projectToEdit.tags?.map((tag) => tag.id) || []);
             } else {
                 resetForm();
             }
         }, 0);
-    }, [open, projectToEdit]);
+    }, [open, projectToEdit, storagePath]);
 
     // --- Submit Handler ---
-    const handleSubmit = (e: FormEvent) => {
-        e.preventDefault();
+    const handleSubmit = (event: FormEvent) => {
+        event.preventDefault();
 
-        // Explicitly exclude thumbnail from spread, we'll add it conditionally below
-        const {thumbnail: _, ...formDataWithoutThumbnail} = formData;
+        // Explicitly exclude existing thumbnail string, file is handled separately
+        const { thumbnail: _existingThumbnail, ...formDataWithoutThumbnail } = formData;
 
-        const payload: any = {
+        const payload: Record<string, unknown> = {
             ...formDataWithoutThumbnail,
             tech_stack_ids: selectedStackIds,
             tag_ids: selectedTagIds,
             category_id: selectedCategoryId,
         };
 
-        // When updating, always use FormData to ensure server receives multipart/form-data
-        // This prevents "request Content-Type isn't multipart/form-data" errors
-        if (projectToEdit) {
-            const formDataPayload = new FormData();
-
-            // Add all form fields
-            Object.entries(payload).forEach(([key, value]) => {
-                if (value === null || value === undefined) {
-                    return;
-                }
-
-                if (Array.isArray(value)) {
-                    formDataPayload.append(key, JSON.stringify(value));
-                } else if (value instanceof File) {
-                    formDataPayload.append(key, value);
-                } else {
-                    formDataPayload.append(key, String(value));
-                }
-            });
-
-            // Add thumbnail if a new one was selected
-            if (thumbnailFile) {
-                formDataPayload.append('thumbnail', thumbnailFile);
-            }
-
-            // For Laravel, add _method field
-            if (activeBackend === 'laravel') {
-                formDataPayload.append('_method', 'PUT');
-            }
-
-            console.log("Payload before mutation (UPDATE):", {
-                hasThumbnailFile: !!thumbnailFile,
-                title: payload.title,
-                content: payload.content,
-                repo_url: payload.repo_url,
-                demo_url: payload.demo_url,
-                activeBackend,
-                formDataEntries: Array.from(formDataPayload.entries()).map(([k, v]) => [k, v instanceof File ? `[File: ${(v as File).name}]` : v]),
-            });
-
-            payload.__formDataPayload = formDataPayload;
-        } else {
-            // For creating, only use FormData if there's a file
-            if (thumbnailFile) {
-                payload.thumbnail = thumbnailFile;
-            }
-
-            console.log("Payload before mutation (CREATE):", {
-                hasThumbnailFile: !!thumbnailFile,
-                title: payload.title,
-                content: payload.content,
-                repo_url: payload.repo_url,
-                demo_url: payload.demo_url,
-                activeBackend,
-                hasThumbnailPayload: !!payload.thumbnail,
-                allKeys: Object.keys(payload),
-            });
-        }
-
         const callbacks = {
             onSuccess: () => {
                 onSuccess();
                 onClose();
             },
-            onError: (err: unknown) => {
-                console.error("Error submit", err);
+            onError: (error: unknown) => {
+                console.error("Error submitting project:", error);
                 alert("Failed to save project. Please try again.");
             },
         };
 
         if (projectToEdit) {
-            // Use the FormData payload we prepared
-            const dataToSend = payload.__formDataPayload || payload;
+            // When updating, build clean FormData
+            const updatePayload = buildFormData(payload, {
+                activeBackend,
+                isUpdate: true,
+                customFiles: thumbnailFile ? { thumbnail: thumbnailFile } : undefined,
+            });
+
             updateMutation.mutate(
-                {id: projectToEdit.id, data: dataToSend},
+                { id: projectToEdit.id, data: updatePayload },
                 callbacks
             );
         } else {
-            createMutation.mutate(payload, callbacks);
+            // For creating: send FormData if file is included, otherwise plain payload
+            const createPayload = thumbnailFile
+                ? buildFormData(payload, {
+                      activeBackend,
+                      isUpdate: false,
+                      customFiles: { thumbnail: thumbnailFile },
+                  })
+                : payload;
+
+            createMutation.mutate(createPayload, callbacks);
         }
     };
 
     // --- Return ---
-
     return {
         formData,
         handleInputChange,

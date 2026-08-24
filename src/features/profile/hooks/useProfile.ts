@@ -58,7 +58,7 @@ export function useUpdateProfile() {
             }
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({queryKey: ["profiles"]});
+            queryClient.invalidateQueries({queryKey: ["profile"]});
         }
     });
 }

@@ -56,27 +56,43 @@ export const useCreateProject = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async (newData: any) => {
-            return await requestBothBackends("post", "/projects", newData);
+        mutationFn: async (payload: FormData | ProjectPayload | Record<string, unknown>) => {
+            return await requestBothBackends("post", "/projects", payload);
         },
         onSuccess: () => {
             queryClient.invalidateQueries({queryKey: ["projects"]});
         }
     });
-}
+};
 
 export const useUpdateProject = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async ({id, data}: { id: number; data: any }) => {
+        mutationFn: async ({id, data}: { id: number; data: FormData | Partial<ProjectPayload> | Record<string, unknown> }) => {
             return await requestBothBackends("put", `/projects/${id}`, data);
         },
         onSuccess: () => {
             queryClient.invalidateQueries({queryKey: ["projects"]});
         }
     });
-}
+};
+
+export const useDeleteProject = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (id: number) => {
+            return await requestBothBackends("delete", `/projects/${id}`);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({queryKey: ["projects"]});
+        },
+        onError: (error: unknown) => {
+            console.error("Error deleting project:", error);
+        }
+    });
+};
 
 export const useReorderProject = () => {
     const queryClient = useQueryClient();
@@ -88,5 +104,5 @@ export const useReorderProject = () => {
         onSuccess: () => {
             queryClient.invalidateQueries({queryKey: ["projects"]});
         },
-    })
-}
+    });
+};

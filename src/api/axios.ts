@@ -1,21 +1,21 @@
 // src/api/axios.ts
-import axios from "axios";
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import { getToken, BackendType } from "@/lib/auth";
+import { buildFormData, hasFilePayload } from "@/lib/formDataUtils";
 
 // 1. Read the preference IMMEDIATELY (Before React even loads)
-const savedBackend = localStorage.getItem('preferred_backend');
-const isGo = savedBackend === 'go';
-const isExpress = savedBackend === 'express';
+const savedBackend = localStorage.getItem("preferred_backend");
+const isGo = savedBackend === "go";
+const isExpress = savedBackend === "express";
 
 // 2. Define the URLs here (so they are available instantly)
-// You can also use import.meta.env.VITE_LARAVEL_URL if you prefer
 const LARAVEL_URL = import.meta.env.VITE_LARAVEL_URL;
 const GO_URL = import.meta.env.VITE_GO_URL;
 const EXPRESS_URL = import.meta.env.VITE_EXPRESS_URL || "http://localhost:4000/api";
 
-// Create a blank instance. 
+// Create a blank instance.
 // The Base URL and Headers will be injected dynamically by ApiContext.
 const apiClient = axios.create({
-    // If 'go' or 'express' was saved, use their URL. Otherwise default to Laravel.
     baseURL: isGo ? GO_URL : isExpress ? EXPRESS_URL : LARAVEL_URL,
     headers: {
         Accept: "application/json",
@@ -23,63 +23,22 @@ const apiClient = axios.create({
     withCredentials: false,
 });
 
-// KEEP: Auto-detect File objects and convert to FormData
+// Auto-detect File objects and convert to FormData
 apiClient.interceptors.request.use((config) => {
-    // Check if data is already FormData
     if (config.data instanceof FormData) {
         delete config.headers["Content-Type"];
         return config;
     }
 
-    // Check if data contains File object
-    if (config.data && typeof config.data === 'object') {
-        const hasFile = Object.values(config.data).some(
-            (value) => value instanceof File || (Array.isArray(value) && value.some(v => v instanceof File))
-        );
-
-        if (hasFile) {
-            // Convert object with File to FormData
-            const formData = new FormData();
-
-            Object.entries(config.data).forEach(([key, value]) => {
-                // Skip null/undefined/empty values
-                if (value === null || value === undefined) {
-                    return;
-                }
-
-                // Handle arrays - stringify them
-                if (Array.isArray(value)) {
-                    formData.append(key, JSON.stringify(value));
-                    return;
-                }
-
-                // Skip empty strings
-                if (typeof value === 'string' && value.trim() === '') {
-                    return;
-                }
-
-                // Handle File objects
-                if (value instanceof File) {
-                    formData.append(key, value);
-                    return;
-                }
-
-                // Handle all other values - convert to string
-                formData.append(key, String(value));
-            });
-
-            console.log("FormData Payload:", Array.from(formData.entries()));
-
-            config.data = formData;
-            delete config.headers["Content-Type"];
-            return config;
-        }
+    if (config.data && typeof config.data === "object" && hasFilePayload(config.data)) {
+        config.data = buildFormData(config.data as Record<string, unknown>);
+        delete config.headers["Content-Type"];
     }
 
     return config;
 });
 
-// KEEP: Global Error Handling
+// Global Error Handling
 apiClient.interceptors.response.use(
     (response) => response,
     (error) => {
@@ -92,87 +51,64 @@ apiClient.interceptors.response.use(
 
 export default apiClient;
 
-import { getToken } from '@/lib/auth';
-
-export const requestBothBackends = async (
-    method: 'post' | 'put' | 'delete',
+export const requestBothBackends = async <T = unknown>(
+    method: "post" | "put" | "delete",
     url: string,
-    data?: any,
-    config?: any
-) => {
-    const backends = ['laravel', 'go', 'express'] as const;
-    const activeBackend = localStorage.getItem('preferred_backend') || 'laravel';
-    
-    let activeResult: any = null;
-    let activeError: any = null;
+    data?: unknown,
+    config?: AxiosRequestConfig
+): Promise<AxiosResponse<T> | null> => {
+    const backends: readonly BackendType[] = ["laravel", "go", "express"];
+    const activeBackend = (localStorage.getItem("preferred_backend") as BackendType) || "laravel";
+
+    let activeResult: AxiosResponse<T> | null = null;
+    let activeError: unknown = null;
 
     const promises = backends.map(async (backend) => {
-        const baseURL = backend === 'laravel' 
-            ? (import.meta.env.VITE_LARAVEL_URL || "http://localhost:8000/api")
-            : backend === 'express'
-                ? (import.meta.env.VITE_EXPRESS_URL || "http://localhost:4000/api")
-                : (import.meta.env.VITE_GO_URL || "http://localhost:8080/api");
-            
+        const baseURL =
+            backend === "laravel"
+                ? import.meta.env.VITE_LARAVEL_URL || "http://localhost:8000/api"
+                : backend === "express"
+                ? import.meta.env.VITE_EXPRESS_URL || "http://localhost:4000/api"
+                : import.meta.env.VITE_GO_URL || "http://localhost:8080/api";
+
         const token = getToken(backend);
-        
-        const headers: any = {
+
+        const headers: Record<string, string> = {
             Accept: "application/json",
-            ...(config?.headers || {})
+            ...((config?.headers as Record<string, string>) || {}),
         };
         if (token) {
             headers.Authorization = `Bearer ${token}`;
         }
 
         let finalMethod = method;
-        let finalUrl = url;
+        const finalUrl = url;
         let finalData = data;
 
-        // Laravel PUT with files trick: convert to POST and add _method=PUT
-        const isUpdate = method === 'put';
-        
-        // If data is FormData, we need to handle it per-backend
+        const isUpdate = method === "put";
+
         if (data instanceof FormData) {
-            // We must clone or create a new FormData for each backend to avoid cross-modifying it
-            const fd = new FormData();
+            // Clone FormData for each backend
+            const clonedFormData = new FormData();
             for (const [key, value] of data.entries()) {
-                fd.append(key, value);
+                clonedFormData.append(key, value);
             }
-            
-            if (isUpdate && backend === 'laravel') {
-                finalMethod = 'post';
-                if (!fd.has('_method')) {
-                    fd.append('_method', 'PUT');
+
+            if (isUpdate && backend === "laravel") {
+                finalMethod = "post";
+                if (!clonedFormData.has("_method")) {
+                    clonedFormData.append("_method", "PUT");
                 }
             }
-            finalData = fd;
-        } else if (data && typeof data === 'object' && !(data instanceof File)) {
-            // If data is a plain object, check if it contains any File objects
-            const hasFile = Object.values(data).some(
-                (value) => value instanceof File || (Array.isArray(value) && value.some(v => v instanceof File))
-            );
+            finalData = clonedFormData;
+        } else if (data && typeof data === "object" && !(data instanceof File) && hasFilePayload(data)) {
+            finalData = buildFormData(data as Record<string, unknown>, {
+                activeBackend: backend,
+                isUpdate,
+            });
 
-            if (hasFile) {
-                // Convert to FormData
-                const formData = new FormData();
-                Object.entries(data).forEach(([key, value]) => {
-                    if (value === null || value === undefined) return;
-                    if (Array.isArray(value)) {
-                        formData.append(key, JSON.stringify(value));
-                        return;
-                    }
-                    if (typeof value === 'string' && value.trim() === '') return;
-                    if (value instanceof File) {
-                        formData.append(key, value);
-                        return;
-                    }
-                    formData.append(key, String(value));
-                });
-
-                if (isUpdate && backend === 'laravel') {
-                    finalMethod = 'post';
-                    formData.append('_method', 'PUT');
-                }
-                finalData = formData;
+            if (isUpdate && backend === "laravel") {
+                finalMethod = "post";
             }
         }
 
@@ -182,19 +118,19 @@ export const requestBothBackends = async (
                 url: `${baseURL}${finalUrl}`.replace(/([^:])\/\/+/g, "$1/"),
                 data: finalData,
                 headers,
-                ...config
+                ...config,
             });
-            
+
             if (backend === activeBackend) {
                 activeResult = res;
             }
             return res;
-        } catch (err) {
-            console.error(`Error requesting ${backend}:`, err);
+        } catch (error) {
+            console.error(`Error requesting ${backend}:`, error);
             if (backend === activeBackend) {
-                activeError = err;
+                activeError = error;
             }
-            throw err;
+            throw error;
         }
     });
 

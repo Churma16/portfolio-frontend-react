@@ -15,9 +15,9 @@ interface CreateMessagePayload {
     content: string;
 }
 
-export const useMessage = () => {
+export const useMessages = () => {
     return useQuery({
-        queryKey: ["message"],
+        queryKey: ["messages"],
         queryFn: fetchMessage,
         staleTime: 1000 * 60 * 5,
     });
@@ -35,9 +35,9 @@ export const useCreateMessage = () => {
             return response.data.data;
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["message"] });
+            queryClient.invalidateQueries({ queryKey: ["messages"] });
         },
-        onError: (err: any) => {
+        onError: (err: unknown) => {
             console.error("Error sending message:", err);
         },
     });

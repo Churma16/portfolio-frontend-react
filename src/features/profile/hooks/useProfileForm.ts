@@ -14,15 +14,17 @@ import {
     serializeSocialsForDatabase,
 } from "../utils/profileForm.helpers.ts";
 
+import { buildFormData } from "@/lib/formDataUtils.ts";
+
 // ============================================================================
 // Hook
 // ============================================================================
 
 export const useProfileForm = ({
-                                   open,
-                                   onSuccess,
-                                   onClose,
-                               }: UseProfileFormProps) => {
+    open,
+    onSuccess,
+    onClose,
+}: UseProfileFormProps) => {
     const { activeBackend } = useApi();
     const StoragePath = useStoragePath();
     const { data: profileData, isLoading } = useProfile();
@@ -103,7 +105,7 @@ export const useProfileForm = ({
                 resetForm();
             }
         }, 0);
-    }, [open, profileData, reset]);
+    }, [open, profileData, reset, StoragePath]);
 
     // --- Submit Handler ---
     const onSubmit = (data: ProfileFormData) => {
@@ -112,7 +114,7 @@ export const useProfileForm = ({
             return;
         }
 
-        const basePayload: any = {
+        const basePayload: Record<string, unknown> = {
             name: data.name.trim(),
             headline: normalizeWhitespace(data.headline) || "",
             role: data.role.trim() || "",
@@ -124,47 +126,13 @@ export const useProfileForm = ({
             hero_image_codes: serializeHeroCodesForDatabase(data.hero_image_codes),
         };
 
-        // Always use FormData for updates to ensure multipart/form-data content-type
-        const formDataPayload = new FormData();
-
-        // Add all form fields
-        Object.entries(basePayload).forEach(([key, value]) => {
-            if (value === null || value === undefined) {
-                return;
-            }
-
-            if (Array.isArray(value)) {
-                formDataPayload.append(key, JSON.stringify(value));
-            } else if (value instanceof File) {
-                formDataPayload.append(key, value);
-            } else {
-                formDataPayload.append(key, String(value));
-            }
-        });
-
-        // Add avatar if file is selected
-        if (avatarFile) {
-            formDataPayload.append("avatar", avatarFile);
-        }
-
-        // Add cv if file is selected
-        if (cvFile) {
-            formDataPayload.append("cv_files", cvFile);
-        }
-
-        // For Laravel, add _method field
-        if (activeBackend === "laravel") {
-            formDataPayload.append("_method", "PUT");
-        }
-
-        console.log("Profile Payload:", {
-            hasAvatarFile: !!avatarFile,
-            hasCvFile: !!cvFile,
+        const formDataPayload = buildFormData(basePayload, {
             activeBackend,
-            formDataEntries: Array.from(formDataPayload.entries()).map(([k, v]) => [
-                k,
-                v instanceof File ? `[File: ${(v as File).name}]` : v,
-            ]),
+            isUpdate: true,
+            customFiles: {
+                avatar: avatarFile,
+                cv_files: cvFile,
+            },
         });
 
         updateMutation.mutate(
@@ -175,8 +143,8 @@ export const useProfileForm = ({
                     onClose();
                     alert("Profile Updated!");
                 },
-                onError: (err: any) => {
-                    console.error("Error submitting profile:", err);
+                onError: (error: unknown) => {
+                    console.error("Error submitting profile:", error);
                     alert("Failed to save profile. Please try again.");
                 },
             }
