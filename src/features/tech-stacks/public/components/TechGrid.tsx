@@ -81,8 +81,7 @@ export default function TechGrid({ techStacks }: TechGridProps) {
                     const categoryStacks = groupedTechStacks[categoryItem.id] || [];
                     const isToolsCategory = 
                         categoryItem.name.toLowerCase().includes("tool") || 
-                        categoryItem.name.toLowerCase().includes("other") || 
-                        categoryStacks.length > 5;
+                        categoryItem.name.toLowerCase().includes("other");
 
                     return (
                         <motion.div 
