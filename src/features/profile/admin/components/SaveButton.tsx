@@ -8,11 +8,11 @@ interface SaveButtonProps {
 
 export default function SaveButton({ isSubmitting }: SaveButtonProps) {
     return (
-        <div className="sticky bottom-6 right-8 z-50"> {/* Ensure 'right-8' is applied correctly */}
+        <div className="sticky bottom-4 sm:bottom-6 z-40 flex justify-end">
             <Button
                 type="submit"
                 size="lg"
-                className="bg-primary hover:bg-blue-600 shadow-[0_0_20px_rgba(59,130,246,0.5)] transition-all hover:scale-105"
+                className="w-full sm:w-auto bg-primary hover:bg-primary-hover text-primary-foreground shadow-[0_0_20px_rgba(59,130,246,0.5)] transition-all hover:scale-105"
                 disabled={isSubmitting}
             >
                 {isSubmitting ? (

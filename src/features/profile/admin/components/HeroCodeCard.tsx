@@ -17,7 +17,7 @@ export default function HeroCodeCard() {
 
     return (
         <Card className="bg-admin-card/50 border-admin-border/50 text-foreground shadow-lg">
-            <CardHeader className="flex flex-row items-center justify-between">
+            <CardHeader className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div>
                     <CardTitle className="font-heading">
                         Hero Code Animation
@@ -31,6 +31,7 @@ export default function HeroCodeCard() {
                     size="sm"
                     variant="secondary"
                     onClick={handleAddCode}
+                    className="w-full sm:w-auto"
                 >
                     <HiPlus className="w-4 h-4 mr-2" /> Add Line
                 </Button>

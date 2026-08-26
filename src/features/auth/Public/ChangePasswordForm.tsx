@@ -52,10 +52,10 @@ export default function ChangePasswordForm() {
                         <CardFooter>
                             <Button
                                 type="submit"
-                                className={`min-w-[120px] transition-colors duration-300 ${
+                                className={`w-full sm:w-auto min-w-[120px] transition-colors duration-300 ${
                                     isSuccess
                                         ? 'bg-green-600 hover:bg-green-600 text-white'
-                                        : 'bg-primary hover:bg-blue-600'
+                                        : 'bg-primary hover:bg-primary-hover text-primary-foreground'
                                 }`}
                                 disabled={isLoading || isSuccess}
                             >
