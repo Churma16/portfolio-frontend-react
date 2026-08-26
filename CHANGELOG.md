@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.0.0](https://github.com/Churma16/portfolio-frontend-react/compare/v0.0.9...v1.0.0) (2026-08-26)
+
+### Features
+
+* **admin:** improve mobile responsiveness and semantic styling across admin dialogs and lists ([ea56d9c](https://github.com/Churma16/portfolio-frontend-react/commit/ea56d9c1a4ff443c02946312b82810a288e86fab))
+* **landing:** optimize TechGrid responsive layout with compact tool view ([3876e09](https://github.com/Churma16/portfolio-frontend-react/commit/3876e093e5a22c3b81cff5a5c325d3e06c42e99f))
+* **projects:** add 2-column desktop layout and lightbox zoom to ProjectModal ([8052e61](https://github.com/Churma16/portfolio-frontend-react/commit/8052e613563f7f2e2d364c08de253ac9e3a66dd1))
+* **ui:** add mobile card view and responsive design to DataTable and layout ([8ab1f35](https://github.com/Churma16/portfolio-frontend-react/commit/8ab1f354ea1ed377a17a5cd31871db80d7532e07))
 ## [0.0.9](https://github.com/Churma16/portfolio-frontend-react/compare/v0.0.8...v0.0.9) (2026-08-26)
 
 
