@@ -59,12 +59,12 @@ export default function ProjectDialog({
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent
-                className="max-w-3xl w-[95vw] bg-admin-card border border-admin-border/50 text-foreground max-h-[90vh] overflow-y-auto">
+                className="max-w-3xl w-[95vw] bg-admin-card border border-admin-border/50 text-foreground max-h-[92vh] overflow-y-auto p-4 sm:p-6">
                 <DialogHeader>
                     <DialogTitle>
                         {projectToEdit ? "Edit Project" : "Add New Project"}
                     </DialogTitle>
-                    <DialogDescription>
+                    <DialogDescription className="text-xs sm:text-sm">
                         Fill in the details below. Click on Tech Stacks and Tags
                         to toggle them.
                     </DialogDescription>
@@ -157,10 +157,10 @@ export default function ProjectDialog({
 
                     {/* --- CATEGORY SELECTOR (Single Selection) --- */}
                     <div className="space-y-3">
-                        <Label className="text-lara-accent-purple font-bold uppercase tracking-wider text-xs">
+                         <Label className="text-lara-accent-purple font-bold uppercase tracking-wider text-xs">
                             Select Category
                         </Label>
-                        <div className="flex flex-wrap gap-2 p-4 rounded-xl bg-black/20 border border-white/5">
+                        <div className="flex flex-wrap gap-2 p-3 sm:p-4 rounded-xl bg-black/20 border border-white/5 max-h-36 overflow-y-auto">
                             {availableCategories.map((category) => {
                                 const isSelected =
                                     selectedCategoryId === category.id;
@@ -171,7 +171,7 @@ export default function ProjectDialog({
                                         onClick={() =>
                                             setSelectedCategoryId(category.id)
                                         }
-                                        className={`cursor-pointer px-4 py-2 rounded-lg border transition-all duration-200 select-none text-left
+                                        className={`cursor-pointer px-3 py-1.5 rounded-lg border transition-all duration-200 select-none text-left
                                             ${
                                             isSelected
                                                 ? "bg-purple-500/20 border-purple-500 text-foreground shadow-[0_0_10px_rgba(168,85,247,0.3)]"
@@ -179,7 +179,7 @@ export default function ProjectDialog({
                                         }
                                         `}
                                     >
-                                        <span className="text-sm font-medium">
+                                        <span className="text-xs font-medium">
                                             {category.name}
                                         </span>
                                     </button>
@@ -193,7 +193,7 @@ export default function ProjectDialog({
                         <Label className="text-primary font-bold uppercase tracking-wider text-xs">
                             Select Tech Stacks
                         </Label>
-                        <div className="flex flex-wrap gap-2 p-4 rounded-xl bg-black/20 border border-white/5">
+                        <div className="flex flex-wrap gap-2 p-3 sm:p-4 rounded-xl bg-black/20 border border-white/5 max-h-48 overflow-y-auto">
                             {availableStacks.map((stack) => {
                                 const isSelected = selectedStackIds.includes(
                                     stack.id
@@ -203,7 +203,7 @@ export default function ProjectDialog({
                                         type="button"
                                         key={stack.id}
                                         onClick={() => toggleStack(stack.id)}
-                                        className={`cursor-pointer flex items-center gap-2 px-3 py-2 rounded-lg border transition-all duration-200 select-none text-left
+                                        className={`cursor-pointer flex items-center gap-2 px-3 py-1.5 rounded-lg border transition-all duration-200 select-none text-left
                                             ${
                                             isSelected
                                                 ? "bg-primary/20 border-primary text-foreground shadow-[0_0_10px_rgba(59,130,246,0.3)]"
@@ -214,7 +214,7 @@ export default function ProjectDialog({
                                         <TechIcon
                                             name={stack.name}
                                             icon={stack.icon}
-                                            className={`w-4 h-4 ${
+                                            className={`w-3.5 h-3.5 ${
                                                 isSelected
                                                     ? "text-primary"
                                                     : "text-slate-500"
@@ -234,7 +234,7 @@ export default function ProjectDialog({
                         <Label className="text-lara-accent-green font-bold uppercase tracking-wider text-xs">
                             Select Tags
                         </Label>
-                        <div className="flex flex-wrap gap-2 p-4 rounded-xl bg-black/20 border border-white/5">
+                        <div className="flex flex-wrap gap-2 p-3 sm:p-4 rounded-xl bg-black/20 border border-white/5 max-h-36 overflow-y-auto">
                             {availableTags.map((tag) => {
                                 const isSelected = selectedTagIds.includes(
                                     tag.id
@@ -259,17 +259,18 @@ export default function ProjectDialog({
                         </div>
                     </div>
 
-                    <DialogFooter>
+                    <DialogFooter className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-2 pt-2">
                         <Button
                             type="button"
                             variant="ghost"
                             onClick={() => onOpenChange(false)}
+                            className="w-full sm:w-auto"
                         >
                             Cancel
                         </Button>
                         <Button
                             type="submit"
-                            className="bg-primary hover:bg-blue-600 min-w-[120px]"
+                            className="w-full sm:w-auto bg-primary hover:bg-primary-hover min-w-[120px]"
                             disabled={isSubmitting}
                         >
                             {isSubmitting ? (<CgSpinner className="animate-spin mr-2"/>) : null}

@@ -34,7 +34,7 @@ export default function CategoryDialog({
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className=" w-[90vw] bg-admin-card border-admin-border/50 text-foreground">
+            <DialogContent className="w-[95vw] max-w-md bg-admin-card border-admin-border/50 text-foreground p-4 sm:p-6 max-h-[92vh] overflow-y-auto">
                 <DialogHeader>
                     <DialogTitle>
                         {dataToEdit ? "Edit Category" : "Add Category"}
@@ -63,10 +63,18 @@ export default function CategoryDialog({
                             className="bg-black/20 border-admin-border/30 h-10 cursor-pointer"
                         />
                     </div>
-                    <DialogFooter>
+                    <DialogFooter className="flex flex-col-reverse sm:flex-row gap-2 pt-2">
+                        <Button
+                            type="button"
+                            variant="ghost"
+                            onClick={() => onOpenChange(false)}
+                            className="w-full sm:w-auto"
+                        >
+                            Cancel
+                        </Button>
                         <Button
                             type="submit"
-                            className="bg-primary"
+                            className="w-full sm:w-auto bg-primary hover:bg-primary-hover"
                             disabled={isSubmitting}
                         >
                             {isSubmitting && (

@@ -58,10 +58,10 @@ export default function WorkExperiencesDialog({
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent
-                className="max-w-3xl w-[95vw] bg-admin-card border border-admin-border/50 text-foreground max-h-[90vh] overflow-y-auto">
+                className="max-w-3xl w-[95vw] bg-admin-card border border-admin-border/50 text-foreground max-h-[92vh] overflow-y-auto p-4 sm:p-6">
                 <DialogHeader>
                     <DialogTitle>{experienceToEdit ? "Edit Work Experience" : "Add New Work Experience"}</DialogTitle>
-                    <DialogDescription>Fill in the details below.</DialogDescription>
+                    <DialogDescription className="text-xs sm:text-sm">Fill in the details below.</DialogDescription>
                 </DialogHeader>
 
                 <form onSubmit={handleSubmit} className="space-y-6 mt-4">
@@ -204,9 +204,9 @@ export default function WorkExperiencesDialog({
                         onToggle={toggleTag}
                     />
 
-                    <DialogFooter>
-                        <Button type="button" variant="ghost" onClick={() => onOpenChange(false)}>Cancel</Button>
-                        <Button type="submit" className="bg-primary hover:bg-blue-600 min-w-[120px]"
+                    <DialogFooter className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-2 pt-2">
+                        <Button type="button" variant="ghost" onClick={() => onOpenChange(false)} className="w-full sm:w-auto">Cancel</Button>
+                        <Button type="submit" className="w-full sm:w-auto bg-primary hover:bg-primary-hover min-w-[120px]"
                                 disabled={isSubmitting}>
                             {isSubmitting ? <CgSpinner className="animate-spin mr-2"/> : null}
                             {experienceToEdit ? "Update Experience" : "Create Experience"}

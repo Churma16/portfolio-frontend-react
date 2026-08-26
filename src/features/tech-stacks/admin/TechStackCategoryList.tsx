@@ -84,13 +84,13 @@ export default function TechStackCategoryList() {
     return (
         <div className="space-y-6">
             {/* Header */}
-            <div className="flex justify-between items-start">
+            <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-4">
                 <div>
                     <AdminHeader title={"Tech Stack Categories"} subtitle={"Manage your tech stack categories"}/>
                 </div>
                 <Button
                     onClick={handleCreate}
-                    className="bg-primary hover:bg-primary/90"
+                    className="w-full sm:w-auto bg-primary hover:bg-primary-hover text-primary-foreground"
                 >
                     <HiOutlinePlus className="w-5 h-5 mr-2"/> Add Tech Stack Category
                 </Button>

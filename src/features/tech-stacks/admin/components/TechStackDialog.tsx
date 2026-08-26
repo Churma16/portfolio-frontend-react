@@ -38,7 +38,7 @@ export default function TechStackDialog({
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="w-[95vw] bg-admin-card border-admin-border/50 text-foreground">
+            <DialogContent className="w-[95vw] max-w-lg bg-admin-card border border-admin-border/50 text-foreground p-4 sm:p-6 max-h-[92vh] overflow-y-auto">
                 <DialogHeader>
                     <DialogTitle>
                         {dataToEdit ? "Edit Tech Stack" : "Add Tech Stack"}
@@ -116,10 +116,18 @@ export default function TechStackDialog({
                             />
                         </div>
                     )}
-                    <DialogFooter>
+                    <DialogFooter className="flex flex-col-reverse sm:flex-row gap-2 pt-2">
+                        <Button
+                            type="button"
+                            variant="ghost"
+                            onClick={() => onOpenChange(false)}
+                            className="w-full sm:w-auto"
+                        >
+                            Cancel
+                        </Button>
                         <Button
                             type="submit"
-                            className="bg-primary"
+                            className="w-full sm:w-auto bg-primary hover:bg-primary-hover"
                             disabled={isSubmitting}
                         >
                             {isSubmitting && (

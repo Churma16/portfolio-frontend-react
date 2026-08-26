@@ -48,24 +48,26 @@ export default function ProjectList() {
             headerClassName: "text-slate-300 w-[80px] text-center",
             cellClassName: "text-center",
             cell: (project, index) => (
-                <div className="flex flex-col items-center gap-1">
+                <div className="flex flex-row md:flex-col items-center gap-1">
                     <Button
                         size="icon"
                         variant="ghost"
-                        className="h-6 w-6 text-lara-text-muted hover:text-foreground hover:bg-white/10 disabled:opacity-30"
+                        className="h-7 w-7 text-muted-foreground hover:text-foreground hover:bg-white/10 disabled:opacity-30"
                         onClick={() => handleReorder(project.id, "up")}
                         disabled={index === 0}
+                        aria-label="Move project up"
                     >
-                        <HiArrowUp className="w-3 h-3"/>
+                        <HiArrowUp className="w-3.5 h-3.5"/>
                     </Button>
                     <Button
                         size="icon"
                         variant="ghost"
-                        className="h-6 w-6 text-lara-text-muted hover:text-foreground hover:bg-white/10 disabled:opacity-30"
+                        className="h-7 w-7 text-muted-foreground hover:text-foreground hover:bg-white/10 disabled:opacity-30"
                         onClick={() => handleReorder(project.id, "down")}
                         disabled={index === projects.length - 1}
+                        aria-label="Move project down"
                     >
-                        <HiArrowDown className="w-3 h-3"/>
+                        <HiArrowDown className="w-3.5 h-3.5"/>
                     </Button>
                 </div>
             ),
@@ -183,13 +185,13 @@ export default function ProjectList() {
 
     return (
         <div className="space-y-6">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-4">
                 <div>
                     <AdminHeader title={"Projects"} subtitle={"Manage your portfolio showcase here."}/>
                 </div>
                 <Button
                     onClick={handleCreate}
-                    className="bg-primary hover:bg-blue-600 text-foreground gap-2"
+                    className="w-full sm:w-auto bg-primary hover:bg-primary-hover text-primary-foreground gap-2"
                 >
                     <HiPlus className="w-4 h-4"/>
                     Add New Project

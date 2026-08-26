@@ -83,13 +83,13 @@ export default function TagList() {
 
     return (
         <div className="space-y-6">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-4">
                 <div>
                     <AdminHeader title={"Tags"} subtitle={"Manage your project tags here."}/>
                 </div>
                 <Button
                     onClick={handleCreate}
-                    className="bg-primary hover:bg-blue-600 text-foreground gap-2"
+                    className="w-full sm:w-auto bg-primary hover:bg-primary-hover text-primary-foreground gap-2"
                 >
                     <HiPlus className="w-4 h-4" />
                     Add New Tag

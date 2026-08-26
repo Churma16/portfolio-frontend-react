@@ -35,7 +35,7 @@ export default function TagDialog({
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="bg-admin-card w-[95vw] border-admin-border/50 text-foreground">
+            <DialogContent className="bg-admin-card w-[95vw] max-w-md border-admin-border/50 text-foreground p-4 sm:p-6 max-h-[92vh] overflow-y-auto">
                 <DialogHeader>
                     <DialogTitle>
                         {dataToEdit ? "Edit Tag" : "Add Tag"}
@@ -92,10 +92,18 @@ export default function TagDialog({
                         </Select>
                     </div>
 
-                    <DialogFooter>
+                    <DialogFooter className="flex flex-col-reverse sm:flex-row gap-2 pt-2">
+                        <Button
+                            type="button"
+                            variant="ghost"
+                            onClick={() => onOpenChange(false)}
+                            className="w-full sm:w-auto"
+                        >
+                            Cancel
+                        </Button>
                         <Button
                             type="submit"
-                            className="bg-primary"
+                            className="w-full sm:w-auto bg-primary hover:bg-primary-hover"
                             disabled={isSubmitting}
                         >
                             {isSubmitting && (
