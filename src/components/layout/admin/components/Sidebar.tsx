@@ -129,7 +129,8 @@ export default function Sidebar({
                 <button
                     type="button"
                     onClick={() => setIsSidebarOpen(false)}
-                    className="md:hidden text-slate-400 hover:text-white transition-colors"
+                    aria-label="Close sidebar"
+                    className="md:hidden p-2 text-slate-400 hover:text-foreground hover:bg-white/10 rounded-lg transition-colors"
                 >
                     <HiXMark className="w-6 h-6"/>
                 </button>

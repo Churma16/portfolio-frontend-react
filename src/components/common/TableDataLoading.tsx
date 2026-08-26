@@ -8,10 +8,10 @@ export default function TableDataLoading({data, colspan = 7}: { data: string, co
                 colSpan={colspan}
                 className="h-32 text-center"
             >
-                <div className="flex flex-col items-center justify-center gap-3 text-lara-text-muted-dark/80">
+                <div className="flex flex-col items-center justify-center gap-3 text-muted-foreground">
                     {/* Simple SVG Spinner */}
                     <svg
-                        className="h-6 w-6 animate-spin text-lara-primary"
+                        className="h-6 w-6 animate-spin text-primary"
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
@@ -31,8 +31,8 @@ export default function TableDataLoading({data, colspan = 7}: { data: string, co
                         />
                     </svg>
                     <span className="text-sm font-medium animate-pulse">
-                Loading {data} data...
-            </span>
+                        Loading {data} data...
+                    </span>
                 </div>
             </TableCell>
         </TableRow>

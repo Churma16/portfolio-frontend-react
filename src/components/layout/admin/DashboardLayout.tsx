@@ -32,7 +32,7 @@ export default function DashboardLayout() {
             />
 
             {/* --- MOBILE HEADER (Visible only on mobile) --- */}
-            <div
+            <header
                 className="md:hidden fixed top-0 left-0 right-0 h-16 bg-background/90 backdrop-blur-md border-b border-admin-border/20 flex items-center justify-between px-4 z-50">
                 <span className="text-lg font-bold font-heading text-primary">
                     Admin<span className="text-foreground">Panel</span>
@@ -41,11 +41,11 @@ export default function DashboardLayout() {
                     type="button"
                     onClick={() => setIsSidebarOpen(true)}
                     aria-label="Open sidebar"
-                    className="p-2 text-slate-300 hover:text-white hover:bg-white/10 rounded-lg"
+                    className="p-2 text-slate-300 hover:text-foreground hover:bg-white/10 rounded-lg transition-colors"
                 >
                     <HiBars3 className="w-6 h-6"/>
                 </button>
-            </div>
+            </header>
 
             {/* --- MOBILE OVERLAY (Backdrop ketika sidebar terbuka) --- */}
             {isSidebarOpen && (
@@ -62,9 +62,7 @@ export default function DashboardLayout() {
 
             {/* --- MAIN CONTENT AREA --- */}
             <main
-                className={`flex-1 overflow-y-auto bg-gradient-to-br from-background to-admin-card/50 relative z-10 backdrop-blur-sm
-                    pt-16 md:pt-8 p-4 md:p-8
-                `}
+                className="flex-1 overflow-y-auto bg-gradient-to-br from-background to-admin-card/50 relative z-10 backdrop-blur-sm pt-20 px-4 pb-12 md:pt-8 md:px-8 md:pb-8"
             >
                 {/* Content Glow Border */}
                 <div
