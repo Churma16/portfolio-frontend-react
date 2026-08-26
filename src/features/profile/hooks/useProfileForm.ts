@@ -98,7 +98,12 @@ export const useProfileForm = ({
                     hero_image_codes: heroCodesFromDb,
                 });
 
-                setAvatarPreview(profileData.avatar ? `${StoragePath}${profileData.avatar}` : "");
+                if (profileData.avatar) {
+                    const isFullUrl = profileData.avatar.startsWith("http://") || profileData.avatar.startsWith("https://");
+                    setAvatarPreview(isFullUrl ? profileData.avatar : `${StoragePath}${profileData.avatar}`);
+                } else {
+                    setAvatarPreview("");
+                }
                 setAvatarFile(null);
                 setCvFile(null);
             } else {

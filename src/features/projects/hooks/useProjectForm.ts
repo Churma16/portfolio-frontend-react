@@ -102,7 +102,12 @@ export const useProjectForm = ({
                     repo_url: projectToEdit.repo_url || "",
                     demo_url: projectToEdit.demo_url || "",
                 });
-                setThumbnailPreview(`${storagePath}${projectToEdit.thumbnail}`);
+                if (projectToEdit.thumbnail) {
+                    const isFullUrl = projectToEdit.thumbnail.startsWith("http://") || projectToEdit.thumbnail.startsWith("https://");
+                    setThumbnailPreview(isFullUrl ? projectToEdit.thumbnail : `${storagePath}${projectToEdit.thumbnail}`);
+                } else {
+                    setThumbnailPreview("");
+                }
                 setThumbnailFile(null);
                 setSelectedCategoryId(projectToEdit.category?.id || null);
                 setSelectedStackIds(projectToEdit.tech_stack?.map((stack) => stack.id) || []);

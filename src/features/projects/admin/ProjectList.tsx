@@ -75,12 +75,25 @@ export default function ProjectList() {
             headerClassName: "text-slate-300",
             cell: (project) => (
                 <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-lg bg-slate-800 overflow-hidden shrink-0 border border-white/10">
-                        <img
-                            src={`${storagePath}${project.thumbnail}`}
-                            alt={project.title}
-                            className="w-full h-full object-cover"
-                        />
+                    <div className="w-12 h-12 rounded-lg bg-slate-800 overflow-hidden shrink-0 border border-white/10 flex items-center justify-center">
+                        {project.thumbnail ? (
+                            <img
+                                src={
+                                    project.thumbnail.startsWith("http://") || project.thumbnail.startsWith("https://")
+                                        ? project.thumbnail
+                                        : `${storagePath}${project.thumbnail}`
+                                }
+                                alt={project.title}
+                                className="w-full h-full object-cover"
+                                onError={(e) => {
+                                    (e.currentTarget as HTMLElement).style.opacity = '0.3';
+                                }}
+                            />
+                        ) : (
+                            <div className="text-[10px] text-slate-500 font-mono">
+                                NO IMG
+                            </div>
+                        )}
                     </div>
                     <div>
                         <div className="font-bold text-foreground">
