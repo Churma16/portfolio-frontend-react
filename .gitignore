@@ -28,4 +28,5 @@ src/features/work-experiences/public/unused
 /docs
 .agents/AGENTS.md
 *.tsbuildinfo
+.scannerwork/
 
