@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.0.9](https://github.com/Churma16/portfolio-frontend-react/compare/v0.0.8...v0.0.9) (2026-08-26)
+
+
+### Bug Fixes
+
+* **ui:** support absolute CDN image URLs for avatar and project thumbnails ([fd3e245](https://github.com/Churma16/portfolio-frontend-react/commit/fd3e245163ff4d8c7e6d3642367923f23cd5e2c2))
+
 ## [0.0.8](https://github.com/Churma16/portfolio-frontend-react/compare/v0.0.7...v0.0.8) (2026-08-24)
 
 
