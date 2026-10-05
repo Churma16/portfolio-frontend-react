@@ -5,9 +5,6 @@ on:
     tags:
       - 'v*'
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -18,7 +15,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '25'
+          node-version: '24'
 
       - name: Install Dependencies
         run: npm install
@@ -26,24 +23,43 @@ jobs:
       - name: Inject Environment Variables
         run: |
           echo 'VITE_PROD=true' >> .env
-          echo 'VITE_API_URL="https://churma.codes/api/"' >> .env
-          echo 'VITE_FILE_URL="https://churma.codes/storage/"' >> .env
-          echo 'VITE_LARAVEL_URL="https://churma.codes/api/"' >> .env
-          echo 'VITE_LARAVEL_FILE_URL="https://churma.codes/storage/"' >> .env
+          echo 'VITE_API_URL="https://api-laravel.churma.codes/api/"' >> .env
+          echo 'VITE_FILE_URL="https://api-laravel.churma.codes/storage/"' >> .env
+          echo 'VITE_LARAVEL_URL="https://api-laravel.churma.codes/api/"' >> .env
+          echo 'VITE_LARAVEL_FILE_URL="https://api-laravel.churma.codes/storage/"' >> .env
           echo 'VITE_GO_URL="https://api-go.churma.codes/api/"' >> .env
           echo 'VITE_GO_FILE_URL="https://api-go.churma.codes/storage/"' >> .env
           echo 'VITE_EXPRESS_URL="https://api-express.churma.codes/api/"' >> .env
+          echo 'VITE_EXPRESS_FILE_URL="https://api-express.churma.codes/storage/"' >> .env
+          echo 'VITE_SPRING_URL="https://api-java.churma.codes/api"' >> .env
+          echo 'VITE_SPRING_FILE_URL="https://api-java.churma.codes/storage/"' >> .env
           echo 'VITE_STORAGE_CDN_URL="https://cdn.churma.codes/"' >> .env
 
       - name: Build Application
         run: npm run build
 
       - name: Deploy to VPS
-        uses: appleboy/scp-action@v0.1.7
+        uses: appleboy/scp-action@v1
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USERNAME }}
           key: ${{ secrets.VPS_SSH_KEY }}
           source: "dist/"
-          target: "/root/my-app/frontend"
+          target: "/root/churma-codes/frontend/dist"
           strip_components: 1
+
+      - name: Reload Edge Nginx and Verify Deployment
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            set -euo pipefail
+            if [ -d /root/churma-codes/scripts ]; then
+              cd /root/churma-codes
+              ./scripts/deploy.sh frontend
+              ./scripts/smoke-test.sh frontend
+            else
+              echo "[info] /root/churma-codes not yet initialized. Files copied to /root/churma-codes/frontend/dist."
+            fi
