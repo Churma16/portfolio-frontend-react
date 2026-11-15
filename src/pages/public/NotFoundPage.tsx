@@ -149,6 +149,7 @@ export default function NotFoundPage() {
 
         // Animation loop
         let frameCount = 0;
+        let animationFrameId: number;
         const animate = () => {
             frameCount++;
             Engine.update(engine);
@@ -347,10 +348,10 @@ export default function NotFoundPage() {
 
             ctx.restore();
 
-            requestAnimationFrame(animate);
+            animationFrameId = requestAnimationFrame(animate);
         };
 
-        animate();
+        animationFrameId = requestAnimationFrame(animate);
 
         // Handle window resize
         const handleResize = () => {
@@ -361,9 +362,12 @@ export default function NotFoundPage() {
         window.addEventListener("resize", handleResize);
 
         return () => {
+            cancelAnimationFrame(animationFrameId);
             window.removeEventListener("resize", handleResize);
             canvas.removeEventListener("click", handleClick);
             canvas.removeEventListener("mousemove", handleMouseMove);
+            World.clear(engine.world, false);
+            Engine.clear(engine);
         };
     }, []);
 
