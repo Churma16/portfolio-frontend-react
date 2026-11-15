@@ -6,12 +6,12 @@ import {useApi} from "@/contexts/useApi.ts";
  * @returns Storage path URL
  */
 export function useStoragePath(): string {
+    const {activeBackend} = useApi();
+
     const cdnUrl = import.meta.env.VITE_STORAGE_CDN_URL;
     if (cdnUrl) {
         return cdnUrl.endsWith('/') ? cdnUrl : `${cdnUrl}/`;
     }
-
-    const {activeBackend} = useApi();
 
     if (activeBackend === 'express') {
         return import.meta.env.VITE_EXPRESS_FILE_URL || import.meta.env.VITE_GO_FILE_URL || '/storage/';
