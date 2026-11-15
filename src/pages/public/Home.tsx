@@ -9,25 +9,22 @@ import TechSection from "@/features/tech-stacks/public/TechSection.tsx";
 import WorkExperienceLaracast from "@/features/work-experiences/public/WorkExperiencesLaracast.tsx";
 import ReturnToTopButton from "@/components/common/ReturnToTopButton.tsx";
 import { useScrollToHash } from "@/hooks/useScrollToHash";
-import { ApiProvider } from "@/contexts/ApiContext";
 
 function Home() {
     useScrollToHash();
 
     return (
-        <ApiProvider>
-            <PublicLayout>
-                <Hero />
-                <TechSection />
-                <ProjectSection />
-                <WorkExperienceLaracast />
-                <AboutSection />
-                <ServicesSection />
-                <ArchitectureSection />
-                <ContactSection />
-                <ReturnToTopButton />
-            </PublicLayout>
-        </ApiProvider>
+        <PublicLayout>
+            <Hero />
+            <TechSection />
+            <ProjectSection />
+            <WorkExperienceLaracast />
+            <AboutSection />
+            <ServicesSection />
+            <ArchitectureSection />
+            <ContactSection />
+            <ReturnToTopButton />
+        </PublicLayout>
     );
 }
 
