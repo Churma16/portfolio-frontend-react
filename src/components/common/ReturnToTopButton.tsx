@@ -50,7 +50,7 @@ export default function ReturnToTopButton() {
                 }}
                 className="flex items-center justify-center"
             >
-                {isRocketActive ? <SiApacherocketmq /> : <HiArrowUp className="w-6 h-6" />}
+                {isRocketActive ? <SiApacherocketmq className="w-6 h-6" /> : <HiArrowUp className="w-6 h-6" />}
             </motion.div>
         </motion.button>
     );

@@ -1,29 +1,35 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {HiArrowLeft, HiCheck, HiOutlineKey, HiOutlineTrash,} from "react-icons/hi2";
 import PublicLayout from "../../components/layout/public/PublicLayout.tsx";
-import {setToken as saveToken} from "@/lib/auth.ts";
+import {setToken as saveToken, getToken, TOKEN_KEYS} from "@/lib/auth.ts";
+import {useApi} from "@/contexts/useApi.ts";
 import {Check, AlertTriangle, Lightbulb} from "lucide-react";
 
 export default function SetTokenPage() {
     const navigate = useNavigate();
-    const [token, setToken] = useState(localStorage.getItem("token") || "");
+    const {activeBackend} = useApi();
+    const [token, setToken] = useState(() => getToken(activeBackend) || "");
     const [copied, setCopied] = useState(false);
+
+    useEffect(() => {
+        setToken(getToken(activeBackend) || "");
+    }, [activeBackend]);
 
     const handleSetToken = (e: React.FormEvent) => {
         e.preventDefault();
         if (token.trim()) {
-            saveToken(token);
+            saveToken(token.trim(), activeBackend);
             setCopied(true);
             setTimeout(() => {
-                navigate("/admin/dashboard");
+                navigate("/admin");
             }, 1000);
         }
     };
 
     const handleClearToken = () => {
         if (window.confirm("Are you sure you want to clear the token?")) {
-            localStorage.removeItem("token");
+            localStorage.removeItem(TOKEN_KEYS[activeBackend]);
             setToken("");
         }
     };
