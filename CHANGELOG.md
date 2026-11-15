@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.0.1](https://github.com/Churma16/portfolio-frontend-react/compare/v1.0.0...v1.0.1) (2026-11-15)
+
+
+### Bug Fixes
+
+* **p0:** resolve runtime crashes, memory leaks, and auth routing (Phase 1 Triage) ([#2](https://github.com/Churma16/portfolio-frontend-react/issues/2)) ([b3f989c](https://github.com/Churma16/portfolio-frontend-react/commit/b3f989c909f8873f1fb6064a47e5fd099a19dd4d)), closes [#1](https://github.com/Churma16/portfolio-frontend-react/issues/1) [#1](https://github.com/Churma16/portfolio-frontend-react/issues/1) [#1](https://github.com/Churma16/portfolio-frontend-react/issues/1) [#1](https://github.com/Churma16/portfolio-frontend-react/issues/1)
+
 ## [1.0.0](https://github.com/Churma16/portfolio-frontend-react/compare/v0.0.9...v1.0.0) (2026-08-26)
 
 ### Features
