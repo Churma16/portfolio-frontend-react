@@ -38,7 +38,13 @@ export const useChangePasswordForm = () => {
                 const axiosError = error as AxiosError<{
                     meta?: { message?: string; code?: number };
                     errors?: Record<string, string[]>
-                }>;
+                }> & { isUnsupportedBackend?: boolean };
+
+                // Handle backends that do not implement POST /api/change-password
+                if (axiosError.response?.status === 404 || axiosError.isUnsupportedBackend) {
+                    toast.error("Change password is currently supported on the Go backend API.");
+                    return;
+                }
 
                 // Check if response has meta.message (your API structure)
                 if (axiosError.response?.data?.meta?.message) {

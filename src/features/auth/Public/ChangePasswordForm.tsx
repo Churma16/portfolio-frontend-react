@@ -4,10 +4,13 @@ import {Label} from "@/components/ui/label.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {useChangePasswordForm} from "@/features/auth/Public/useChangePasswordForm.ts";
-import {Check} from "lucide-react";
+import {Check, Info} from "lucide-react";
+import {useApi} from "@/contexts/useApi.ts";
 
 export default function ChangePasswordForm() {
     const {formData, handleInputChange, handleSubmit, isLoading, isSuccess} = useChangePasswordForm();
+    const {activeBackend} = useApi();
+    const isGoBackend = activeBackend === "go";
 
     return (
         <div className="min-h-screen pb-32">
@@ -25,7 +28,16 @@ export default function ChangePasswordForm() {
                         </CardDescription>
                     </CardHeader>
                     <form onSubmit={handleSubmit}>
-                        <CardContent>
+                        <CardContent className="space-y-4">
+                            {!isGoBackend && (
+                                <div className="p-3.5 rounded-xl bg-primary/10 border border-primary/20 text-muted-foreground text-xs leading-relaxed flex items-start gap-2.5">
+                                    <Info className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                                    <span>
+                                        Change password endpoint is currently supported on the <strong className="text-foreground">Go</strong> backend API.
+                                        When active backend is set to <strong className="text-foreground capitalize">{activeBackend}</strong>, changing password may return route not found.
+                                    </span>
+                                </div>
+                            )}
                             <div className="flex flex-col md:flex-row gap-4 items-stretch w-full">
                                 <div className="space-y-2 md:flex-1">
                                     <Label>Old Password</Label>
