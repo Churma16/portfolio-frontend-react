@@ -62,7 +62,7 @@ export const authService = {
             return response.data;
         } catch (error: unknown) {
             if (axios.isAxiosError(error) && error.response?.status === 404) {
-                (error as Record<string, unknown>).isUnsupportedBackend = true;
+                ((error as unknown) as Record<string, unknown>).isUnsupportedBackend = true;
             }
             throw error;
         }
