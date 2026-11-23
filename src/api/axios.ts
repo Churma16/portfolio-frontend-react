@@ -40,9 +40,15 @@ apiClient.interceptors.request.use((config) => {
     return config;
 });
 
-// Global Error Handling
+// Global Error Handling & Response Normalization
 apiClient.interceptors.response.use(
-    (response) => response,
+    (response) => {
+        // Standardize 204 No Content and empty DELETE responses to transparently provide { success: true }
+        if (response.status === 204 || (response.config.method?.toLowerCase() === "delete" && !response.data)) {
+            response.data = { success: true };
+        }
+        return response;
+    },
     (error) => {
         if (error.response?.status === 401) {
             console.error("401 Unauthorized - Token Invalid/Expired");
@@ -124,6 +130,10 @@ export const requestBothBackends = async <T = unknown>(
                 headers,
                 ...config,
             });
+
+            if (res.status === 204 || (finalMethod === "delete" && !res.data)) {
+                res.data = { success: true } as T;
+            }
 
             if (backend === activeBackend) {
                 activeResult = res;

@@ -57,7 +57,14 @@ export const authService = {
     },
 
     async changePassword(payload: { old_password: string; new_password: string }) {
-        const response = await apiClient.post("/change-password", payload);
-        return response.data;
+        try {
+            const response = await apiClient.post("/change-password", payload);
+            return response.data;
+        } catch (error: unknown) {
+            if (axios.isAxiosError(error) && error.response?.status === 404) {
+                ((error as unknown) as Record<string, unknown>).isUnsupportedBackend = true;
+            }
+            throw error;
+        }
     },
 };
