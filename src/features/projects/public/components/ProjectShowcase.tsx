@@ -3,6 +3,7 @@ import {Project} from "@/types";
 import ProjectCard from "./ProjectCard.tsx";
 import ProjectModal from "@/features/projects/public/components/ProjectModal.tsx";
 import {useStoragePath} from "@/hooks/useStoragePath.ts";
+import {trackEvent} from "@/lib/telemetry";
 
 interface ProjectShowcaseProps {
     projects: Project[];
@@ -34,7 +35,13 @@ export default function ProjectShowcase({projects}: ProjectShowcaseProps) {
                         key={project.id}
                         index={index}
                         project={project}
-                        onClick={() => setSelectedId(project.id)}
+                        onClick={() => {
+                            trackEvent("project_view", {
+                                project: project.title,
+                                project_id: String(project.id),
+                            });
+                            setSelectedId(project.id);
+                        }}
                     />
                 ))}
             </div>

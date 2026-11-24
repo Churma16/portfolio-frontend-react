@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import PixelButton from "../../../../components/common/PixelButton.tsx";
 import { PixelDownload } from "@/components/common/PixelIcon.tsx";
+import { trackEvent } from "@/lib/telemetry";
 
 interface AboutContentProps {
     bioLong?: string;
@@ -56,6 +57,7 @@ export default function AboutContent({ bioLong, cvFileUrl }: AboutContentProps) 
                     href={cvFileUrl || "#"}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={() => trackEvent("cv_download")}
                 >
                     <PixelButton variant="primary">
                         <PixelDownload className="w-5 h-5" />
