@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import PixelButton from "../../../../components/common/PixelButton.tsx";
 import { PixelChat, PixelDownload, PixelPlay } from "@/components/common/PixelIcon.tsx";
+import { trackEvent } from "@/lib/telemetry";
 
 interface HeroButtonsProps {
     cvFileUrl?: string;
@@ -23,6 +24,7 @@ export default function HeroButtons({ cvFileUrl }: HeroButtonsProps) {
                 href={cvFileUrl || "#"}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackEvent("cv_download")}
             >
                 <PixelButton variant="primary">
                     <PixelDownload className="w-5 h-5" />

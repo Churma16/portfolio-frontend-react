@@ -3,6 +3,7 @@ import React, {createContext, ReactNode, useEffect, useRef, useState} from 'reac
 import apiClient from '@/api/axios';
 import {BackendType, getToken} from '@/lib/auth';
 import {useQueryClient} from '@tanstack/react-query';
+import {trackEvent} from '@/lib/telemetry';
 
 const API_CONFIG = {
     laravel: {
@@ -46,6 +47,10 @@ export const ApiProvider = ({children}: { children: ReactNode }) => {
     const backendRef = useRef(activeBackend);
 
     const switchBackend = (backend: BackendType) => {
+        if (backend !== activeBackend) {
+            trackEvent("backend_toggle", { target: backend, previous: activeBackend });
+        }
+
         // A. Update Ref DULUAN (Penting! Sebelum re-render terjadi)
         backendRef.current = backend;
 
