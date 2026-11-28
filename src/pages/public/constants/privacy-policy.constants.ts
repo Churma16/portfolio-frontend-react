@@ -40,7 +40,7 @@ export const PRIVACY_POLICY_SECTIONS: PrivacyPolicySection[] = [
         id: "third-party-services",
         iconName: "Globe",
         title: "Third-Party Services",
-        content: "This site is hosted on DigitalOcean and served through Cloudflare, which may collect standard technical data (such as IP address) for security and performance purposes, as part of their own service operations."
+        content: "This site is hosted on Tencent Cloud and served through Cloudflare, which may collect standard technical data (such as IP address) for security and performance purposes, as part of their own service operations."
     },
     {
         id: "your-rights",
