@@ -91,7 +91,7 @@ export default function FooterStatus() {
                 )}
                 </motion.div>
             </AnimatePresence>
-            <span className="text-sm font-mono text-muted-foreground"> / SGP1 / Powered by DigitalOcean</span>
+            <span className="text-sm font-mono text-muted-foreground"> / SGP1 / Powered by Tencent Cloud</span>
         </div>
     );
 
