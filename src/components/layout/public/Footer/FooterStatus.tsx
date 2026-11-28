@@ -16,83 +16,87 @@ export default function FooterStatus() {
     };
 
     return (
-        <div className="flex items-center">
+        <div className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2">
             <AnimatePresence mode="wait">
                 <motion.div
                     key={isError ? "error" : isLoading ? "loading" : "success"}
-                className="flex items-center gap-2 px-3 py-1"
-                variants={statusVariants}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-                transition={{duration: 0.3}}
-            >
-                {isError && (
-                    <>
-                        <motion.span
-                            className="relative flex h-2 w-2"
-                            variants={dotVariants}
-                            transition={{delay: 0.1}}
-                        >
-                            <span
-                                className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
-                        </motion.span>
+                    className="flex items-center gap-2 px-2.5 py-1 whitespace-nowrap"
+                    variants={statusVariants}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                    transition={{duration: 0.3}}
+                >
+                    {isError && (
+                        <>
                             <motion.span
-                                className="text-sm font-mono text-red-500"
+                                className="relative flex h-2 w-2 shrink-0"
+                                variants={dotVariants}
+                                transition={{delay: 0.1}}
+                            >
+                                <span
+                                    className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                            </motion.span>
+                            <motion.span
+                                className="text-sm font-mono text-red-500 whitespace-nowrap"
                                 variants={dotVariants}
                                 transition={{delay: 0.15}}
                             >
                                 System Offline
                             </motion.span>
-                    </>
-                )}
+                        </>
+                    )}
 
-                {isLoading && (
-                    <>
-                        <motion.span
-                            className="relative flex h-2 w-2"
-                            variants={dotVariants}
-                            transition={{delay: 0.1}}
-                        >
-                            <span
-                                className="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-2 w-2 bg-yellow-500"></span>
-                        </motion.span>
+                    {isLoading && (
+                        <>
                             <motion.span
-                                className="text-sm font-mono text-yellow-500"
+                                className="relative flex h-2 w-2 shrink-0"
+                                variants={dotVariants}
+                                transition={{delay: 0.1}}
+                            >
+                                <span
+                                    className="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-yellow-500"></span>
+                            </motion.span>
+                            <motion.span
+                                className="text-sm font-mono text-yellow-500 whitespace-nowrap"
                                 variants={dotVariants}
                                 transition={{delay: 0.15}}
                             >
                                 System Loading...
                             </motion.span>
-                    </>
-                )}
+                        </>
+                    )}
 
-                {!isError && !isLoading && (
-                    <>
-                        <motion.span
-                            className="relative flex h-2 w-2"
-                            variants={dotVariants}
-                            transition={{delay: 0.1}}
-                        >
-                            <span
-                                className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-                        </motion.span>
+                    {!isError && !isLoading && (
+                        <>
                             <motion.span
-                                className="text-sm font-mono text-green-500"
+                                className="relative flex h-2 w-2 shrink-0"
+                                variants={dotVariants}
+                                transition={{delay: 0.1}}
+                            >
+                                <span
+                                    className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                            </motion.span>
+                            <motion.span
+                                className="text-sm font-mono text-green-500 whitespace-nowrap"
                                 variants={dotVariants}
                                 transition={{delay: 0.15}}
                             >
                                 System Online
                             </motion.span>
-                    </>
-                )}
+                        </>
+                    )}
                 </motion.div>
             </AnimatePresence>
-            <span className="text-sm font-mono text-muted-foreground"> / SGP1 / Powered by Tencent Cloud</span>
+            <div className="flex items-center gap-1.5 text-xs sm:text-sm font-mono text-muted-foreground whitespace-nowrap">
+                <span className="hidden sm:inline">/</span>
+                <span>SGP1</span>
+                <span>/</span>
+                <span>Powered by Tencent Cloud</span>
+            </div>
         </div>
     );
-
 }
