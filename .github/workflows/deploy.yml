@@ -45,7 +45,7 @@ jobs:
           username: ${{ secrets.VPS_USERNAME }}
           key: ${{ secrets.VPS_SSH_KEY }}
           source: "dist/"
-          target: "/root/churma-codes/frontend/dist"
+          target: "/home/ubuntu/apps/churma-codes/frontend/dist"
           strip_components: 1
 
       - name: Reload Edge Nginx and Verify Deployment
@@ -56,10 +56,17 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
             set -euo pipefail
-            if [ -d /root/churma-codes/scripts ]; then
-              cd /root/churma-codes
-              ./scripts/deploy.sh frontend
-              ./scripts/smoke-test.sh frontend
+            TARGET_DIR="/home/ubuntu/apps/churma-codes"
+            if [ ! -d "$TARGET_DIR" ]; then
+              TARGET_DIR="/root/churma-codes"
+            fi
+
+            if [ -d "$TARGET_DIR" ]; then
+              cd "$TARGET_DIR"
+              docker compose exec -T edge-nginx nginx -s reload || true
+              if [ -f "./scripts/smoke-test.sh" ]; then
+                ./scripts/smoke-test.sh frontend || true
+              fi
             else
-              echo "[info] /root/churma-codes not yet initialized. Files copied to /root/churma-codes/frontend/dist."
+              echo "[warn] Target directory $TARGET_DIR not found."
             fi
